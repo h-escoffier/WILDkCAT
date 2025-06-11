@@ -1,0 +1,16 @@
+# Ignore Mac system files 
+.DS_Store
+
+# Ignore Python cache files
+__pycache__/
+*.__pycache__
+
+# Ignore VS Code settings
+.vscode/
+tempCodeRunnerFile.py
+
+# Ignore Test related files 
+*.egg-info/
+.pytest_cache/
+
+# Ignore personal files 
