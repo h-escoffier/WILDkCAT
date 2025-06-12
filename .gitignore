@@ -15,3 +15,10 @@ tempCodeRunnerFile.py
 
 # Ignore personal files 
 *.ipynb
+
+# Ignore non functional approaches 
+non_functional_approaches
+
+
+
+
