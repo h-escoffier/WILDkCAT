@@ -14,3 +14,4 @@ tempCodeRunnerFile.py
 .pytest_cache/
 
 # Ignore personal files 
+*.ipynb
