@@ -64,7 +64,6 @@ def extract_kcat_from_model(model_path, output_file, metabolite_type="kegg.compo
     df.to_csv(output_file, sep="\t", index=False)
 
 
-
 def remove_nan_values(kcat_path, output_path=None):
     """
     Removes rows where any column contains the string 'NaN'.
@@ -107,20 +106,20 @@ def generate_enzyme_xlsx_with_uniprot(tsv_path, xlsx_output_path, max_rows=None)
     print(f"XLSX file saved to: {xlsx_output_path}")
 
 
-if __name__ == "__main__":
-    print("start")
-    extract_kcat_from_model(
-        model_path='data/model/Human-GEM.xml',
-        output_file='output/Human-GEM_kcat_kegg.tsv',
-        metabolite_type="kegg.compound"
-    )
-    remove_nan_values(
-        kcat_path='output/Human-GEM_kcat_kegg.tsv',
-        output_path='output/Human-GEM_kcat_kegg_cleaned.tsv'
-    )
-    # generate_enzyme_xlsx_with_uniprot(
-    #     tsv_path='output/Human-GEM_kcat_kegg_cleaned.tsv',
-    #     xlsx_output_path='output/Human-GEM_kcat_kegg.xlsx',
-    #     max_rows=500
-    # )
-    print("end")
+# if __name__ == "__main__":
+#     print("start")
+#     extract_kcat_from_model(
+#         model_path='data/model/Human-GEM.xml',
+#         output_file='output/Human-GEM_kcat_kegg.tsv',
+#         metabolite_type="kegg.compound"
+#     )
+#     remove_nan_values(
+#         kcat_path='output/Human-GEM_kcat_kegg.tsv',
+#         output_path='output/Human-GEM_kcat_kegg_cleaned.tsv'
+#     )
+#     # generate_enzyme_xlsx_with_uniprot(
+#     #     tsv_path='output/Human-GEM_kcat_kegg_cleaned.tsv',
+#     #     xlsx_output_path='output/Human-GEM_kcat_kegg.xlsx',
+#     #     max_rows=500
+#     # )
+#     print("end")
