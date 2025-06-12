@@ -72,16 +72,45 @@ def remove_nan_values(kcat_path, output_path=None):
         df_cleaned.to_csv(kcat_path, sep="\t", index=False)
 
 
+def generate_enzyme_xlsx_with_uniprot(tsv_path, xlsx_output_path, max_rows=None):
+    """
+    Generate an XLSX file with UniProt ID in 'Enzyme', and KEGG compound IDs in 'Substrates' and 'Products'.
 
-if __name__ == "__main__":
-    print("Starting kcat extraction from model...")
-    extract_kcat_from_model(
-        model_path='data/model/Human-GEM.xml',
-        output_file='output/Human-GEM_kcat.tsv'
-    )
-    print("Kcat extraction completed and saved to output/Human-GEM_kcat.tsv")
-    remove_nan_values(
-        kcat_path='output/Human-GEM_kcat.tsv',
-        output_path='output/Human-GEM_kcat_cleaned.tsv'
-    )
-    print("NaN values removed and cleaned kcat saved to output/Human-GEM_kcat_cleaned.tsv")
+    Parameters:
+    - tsv_path (str): Input TSV file with columns: RxnID, EC Code, Uniprot, KEGG substrate, KEGG product
+    - xlsx_output_path (str): Output XLSX file path
+    - max_rows (int, optional): Number of rows to limit processing (for testing)
+    """
+    df = pd.read_csv(tsv_path, sep="\t", dtype=str)
+    
+    rows = []
+    for i, row in df.iterrows():
+        if max_rows and i >= max_rows:
+            break
+        rows.append({
+            "Enzyme": row["Uniprot"],
+            "Substrates": row["KEGG_Substrate"],
+            "Products": row["KEGG_Product"]
+        })
+
+    out_df = pd.DataFrame(rows)
+    out_df.to_excel(xlsx_output_path, index=False)
+    print(f"XLSX file saved to: {xlsx_output_path}")
+
+
+# if __name__ == "__main__":
+#     print("start")
+#     extract_kcat_from_model(
+#         model_path='data/model/Human-GEM.xml',
+#         output_file='output/Human-GEM_kcat.tsv'
+#     )
+#     remove_nan_values(
+#         kcat_path='output/Human-GEM_kcat.tsv',
+#         output_path='output/Human-GEM_kcat_cleaned.tsv'
+#     )
+#     generate_enzyme_xlsx_with_uniprot(
+#         tsv_path='output/Human-GEM_kcat_cleaned.tsv',
+#         xlsx_output_path='output/Human-GEM_kcat.xlsx',
+#         max_rows=500
+#     )
+#     print("end")
