@@ -56,10 +56,32 @@ def extract_kcat_from_model(model_path, output_file):
     df.to_csv(output_file, sep="\t", index=False)
 
 
-# if __name__ == "__main__":
-#     print("Starting kcat extraction from model...")
-#     extract_kcat_from_model(
-#         model_path='data/model/Human-GEM.xml',
-#         output_file='output/Human-GEM_kcat.tsv'
-#     )
-#     print("Kcat extraction completed and saved to output/Human-GEM_kcat.tsv")
+def remove_nan_values(kcat_path, output_path=None):
+    """
+    Removes rows where any column contains the string 'NaN'.
+    """
+    import pandas as pd
+
+    df = pd.read_csv(kcat_path, sep="\t", dtype=str)  # Force strings
+    # Keep rows where none of the values are the string "NaN"
+    df_cleaned = df[~df.apply(lambda row: row.astype(str).str.contains("NaN")).any(axis=1)]
+
+    if output_path:
+        df_cleaned.to_csv(output_path, sep="\t", index=False)
+    else:
+        df_cleaned.to_csv(kcat_path, sep="\t", index=False)
+
+
+
+if __name__ == "__main__":
+    print("Starting kcat extraction from model...")
+    extract_kcat_from_model(
+        model_path='data/model/Human-GEM.xml',
+        output_file='output/Human-GEM_kcat.tsv'
+    )
+    print("Kcat extraction completed and saved to output/Human-GEM_kcat.tsv")
+    remove_nan_values(
+        kcat_path='output/Human-GEM_kcat.tsv',
+        output_path='output/Human-GEM_kcat_cleaned.tsv'
+    )
+    print("NaN values removed and cleaned kcat saved to output/Human-GEM_kcat_cleaned.tsv")
