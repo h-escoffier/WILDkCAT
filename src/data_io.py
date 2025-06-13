@@ -54,10 +54,23 @@ def add_sequences_to_file(kcat_path, output_path):
     return df
 
 
-if __name__ == "__main__":
-    print("start")
-    df_with_sequences = add_sequences_to_file(
-        kcat_path="output/Human-GEM_kcat_clean.tsv", 
-        output_path="output/Human-GEM_kcat_clean.tsv"
-    )
-    print("end")
+def format_metabolic_data(tsv_path):
+    df = pd.read_csv(tsv_path, sep='\t')
+
+    enzymes, substrates, products = [], [], []
+
+    for _, row in df.iterrows():
+        enzymes.append(row['Sequence'])
+        substrates.append(row['Substrates'])
+        products.append(row['Products'])
+
+    return  enzymes, substrates, products
+
+
+# if __name__ == "__main__":
+#     print("start")
+#     df_with_sequences = add_sequences_to_file(
+#         kcat_path="output/Human-GEM_kcat_clean.tsv", 
+#         output_path="output/Human-GEM_kcat_clean.tsv"
+#     )
+#     print("end")
