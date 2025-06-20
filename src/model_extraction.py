@@ -5,8 +5,9 @@ import pandas as pd
 def extract_kcat_from_model(model_path, output_file):
     """
     Extracts kinetic parameters from a GEM model and saves them to a TSV file,
-    including both KEGG and ChEBI metabolite annotations.
-    
+    including EC codes, UniProt IDs, directionality, and KEGG/ChEBI annotations.
+    Reversible reactions are included twice with a 'Direction' column.
+
     Parameters:
     - model_path: Path to the SBML model file.
     - output_file: Path to the output TSV file.
@@ -18,10 +19,9 @@ def extract_kcat_from_model(model_path, output_file):
         ec_code = rxn.annotation.get("ec-code", None)
         if ec_code is None:
             continue
-
         ec_list = ec_code if isinstance(ec_code, list) else [ec_code]
 
-        # Extract UniProt IDs from associated genes
+        # Extract UniProt-annotated genes only
         uniprot_ids = set()
         for gene in rxn.genes:
             if "uniprot" in gene.annotation:
@@ -30,32 +30,34 @@ def extract_kcat_from_model(model_path, output_file):
                     uniprot_ids.add(ids)
                 else:
                     uniprot_ids.update(ids)
+
         if not uniprot_ids:
             uniprot_ids = {"NaN"}
 
-        # Extract metabolite annotations
-        kegg_substrates, kegg_products = [], []
-        chebi_substrates, chebi_products = [], []
+        # Helper to extract metabolite annotations
+        def extract_met_annotations():
+            kegg_substrates, kegg_products = [], []
+            chebi_substrates, chebi_products = [], []
 
-        for met, coeff in rxn.metabolites.items():
-            kegg = met.annotation.get("kegg.compound", "NaN")
-            if isinstance(kegg, list):
-                kegg = kegg[0]
-            elif not isinstance(kegg, str):
-                kegg = str(kegg)
+            for met, coeff in rxn.metabolites.items():
+                kegg = met.annotation.get("kegg.compound", "NaN")
+                kegg = kegg[0] if isinstance(kegg, list) else str(kegg)
+                chebi = met.annotation.get("chebi", "NaN")
+                chebi = chebi[0] if isinstance(chebi, list) else str(chebi)
 
-            chebi = met.annotation.get("chebi", "NaN")
-            if isinstance(chebi, list):
-                chebi = chebi[0]
-            elif not isinstance(chebi, str):
-                chebi = str(chebi)
+                if coeff < 0:
+                    kegg_substrates.append(kegg)
+                    chebi_substrates.append(chebi)
+                else:
+                    kegg_products.append(kegg)
+                    chebi_products.append(chebi)
 
-            if coeff < 0:
-                kegg_substrates.append(kegg)
-                chebi_substrates.append(chebi)
-            else:
-                kegg_products.append(kegg)
-                chebi_products.append(chebi)
+            return kegg_substrates, kegg_products, chebi_substrates, chebi_products
+
+        # First direction (forward)
+        kegg_sub, kegg_prod, chebi_sub, chebi_prod = extract_met_annotations()
+
+        direction_fwd = "reversible_forward" if rxn.lower_bound == -1000 and rxn.upper_bound == 1000 else "irreversible"
 
         for ec in ec_list:
             for up in uniprot_ids:
@@ -63,11 +65,27 @@ def extract_kcat_from_model(model_path, output_file):
                     "RxnID": rxn.id,
                     "EC_Code": ec,
                     "Uniprot": up,
-                    "kegg.compound_Substrate": ";".join(kegg_substrates) if kegg_substrates else "NaN",
-                    "kegg.compound_Product": ";".join(kegg_products) if kegg_products else "NaN",
-                    "chebi_Substrate": ";".join(chebi_substrates) if chebi_substrates else "NaN",
-                    "chebi_Product": ";".join(chebi_products) if chebi_products else "NaN"
+                    "Direction": direction_fwd,
+                    "kegg.compound_Substrate": ";".join(kegg_sub) if kegg_sub else "NaN",
+                    "kegg.compound_Product": ";".join(kegg_prod) if kegg_prod else "NaN",
+                    "chebi_Substrate": ";".join(chebi_sub) if chebi_sub else "NaN",
+                    "chebi_Product": ";".join(chebi_prod) if chebi_prod else "NaN"
                 })
+
+        # If reversible rxn add reverse direction 
+        if rxn.lower_bound == -1000 and rxn.upper_bound == 1000:
+            for ec in ec_list:
+                for up in uniprot_ids:
+                    records.append({
+                        "RxnID": rxn.id,
+                        "EC_Code": ec,
+                        "Uniprot": up,
+                        "Direction": "reversible_reverse",
+                        "kegg.compound_Substrate": ";".join(kegg_prod) if kegg_prod else "NaN",
+                        "kegg.compound_Product": ";".join(kegg_sub) if kegg_sub else "NaN",
+                        "chebi_Substrate": ";".join(chebi_prod) if chebi_prod else "NaN",
+                        "chebi_Product": ";".join(chebi_sub) if chebi_sub else "NaN"
+                    })
 
     df = pd.DataFrame(records)
     df.to_csv(output_file, sep="\t", index=False)
@@ -114,6 +132,7 @@ def remove_nan_values(kcat_path, output_path=None):
             "RxnID": row["RxnID"],
             "EC_Code": row["EC_Code"],
             "Uniprot": row["Uniprot"],
+            "Direction": row["Direction"],
             "Substrates": substrates,
             "Products": products
         })
@@ -154,10 +173,10 @@ def generate_enzyme_xlsx_with_uniprot(tsv_path, xlsx_output_path, max_rows=None)
 
 if __name__ == "__main__":
     print("start")
-    extract_kcat_from_model(
-        model_path='model/Human-GEM.xml',
-        output_file='output/Human-GEM_kcat.tsv'
-    )
+    # extract_kcat_from_model(
+    #     model_path='model/Human-GEM.xml',
+    #     output_file='output/Human-GEM_kcat.tsv'
+    # )
     remove_nan_values(
         kcat_path='output/Human-GEM_kcat.tsv',
         output_path='output/Human-GEM_kcat_clean.tsv'

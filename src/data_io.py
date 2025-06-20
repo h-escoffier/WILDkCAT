@@ -54,23 +54,32 @@ def add_sequences_to_file(kcat_path, output_path):
     return df
 
 
-def format_metabolic_data(tsv_path):
-    df = pd.read_csv(tsv_path, sep='\t')
+def remove_nan_values(kcat_path, output_path=None):
+    """
+    Removes rows with NaN values from the kcat DataFrame.
 
-    enzymes, substrates, products = [], [], []
+    Parameters:
+        kcat_path (str): Path to the input kcat file.
+        output_path (str, optional): Path to save the output file without NaN values.
 
-    for _, row in df.iterrows():
-        enzymes.append(row['Sequence'])
-        substrates.append(row['Substrates'])
-        products.append(row['Products'])
+    Returns:
+        pd.DataFrame: DataFrame without NaN values.
+    """
+    df = pd.read_csv(kcat_path, sep='\t')
+    df_cleaned = df.dropna()
+    if output_path:
+        df_cleaned.to_csv(output_path, sep='\t', index=False)
+    return df_cleaned
 
-    return  enzymes, substrates, products
 
-
-# if __name__ == "__main__":
-#     print("start")
-#     df_with_sequences = add_sequences_to_file(
-#         kcat_path="output/Human-GEM_kcat_clean.tsv", 
-#         output_path="output/Human-GEM_kcat_clean.tsv"
-#     )
-#     print("end")
+if __name__ == "__main__":
+    print("start")
+    df_with_sequences = add_sequences_to_file(
+        kcat_path="output/Human-GEM_kcat_clean.tsv", 
+        output_path="output/Human-GEM_kcat_seq.tsv"
+    )
+    remove_nan_values(
+        kcat_path='output/Human-GEM_kcat_seq.tsv',
+        output_path='output/Human-GEM_kcat_seq_clean.tsv'
+    )
+    print("end")
