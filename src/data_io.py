@@ -188,7 +188,7 @@ def format_file_for_catapro(kcat_path, output_file):
         'sequence': df['Sequence'],
         'smiles': df['SMILES']
     })
-    formatted_df.to_csv(output_file, sep='\t', index=False)
+    formatted_df.to_csv(output_file, sep=',', index=False)
 
 
 def remove_nan_values(kcat_path, output_path=None):
@@ -230,6 +230,6 @@ if __name__ == "__main__":
     #                    max_entries=100)
     format_file_for_catapro(
         kcat_path="output/CataPro/kcat_Human-GEM_seq_smiles.tsv", 
-        output_file="output/CataPro/kcat_Human-GEM_formatted.tsv"
+        output_file="output/CataPro/kcat_Human-GEM_formatted.csv"
     ) 
     print("end")
