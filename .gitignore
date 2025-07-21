@@ -15,11 +15,11 @@ tempCodeRunnerFile.py
 
 # Ignore personal files 
 *.ipynb
+.env
 
 # Ignore non functional approaches 
 non_functional_approaches
 
 # Ignore data files (Too large to include in the repo)
 data
-
-
+in_progress/*

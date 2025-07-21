@@ -1,6 +1,51 @@
-from cobra.io import read_sbml_model
+import logging
 import pandas as pd 
 from tqdm import tqdm
+
+from cobra.io import load_json_model, load_matlab_model, read_sbml_model
+
+
+def read_model(model_path):
+    """
+    Reads a metabolic model from a given path.
+    
+    Parameters:
+    - model_path: Path to a model file.
+    
+    Returns:
+    - model: The COBRA model object.
+    """
+    # Check the file extension
+    if model_path.endswith(".json"):
+        return load_json_model(model_path)
+    elif model_path.endswith(".mat"):
+        return load_matlab_model(model_path)
+    elif model_path.endswith(".xml") or model_path.endswith(".sbml"):
+        return read_sbml_model(model_path)
+    else:
+        raise ValueError(f"Unsupported model file format: {model_path}")
+
+
+def is_reversible(rxn, rev_bound=1000):
+    """
+    Checks if a reaction is reversible.
+    
+    Parameters:
+    - rxn: The reaction object to check.
+    - rev_bound: The standard reversibility bound (default is 1000).
+    
+    Returns:
+    - bool: True if the reaction is reversible, False otherwise.
+    """
+    return rxn.lower_bound == -rev_bound and rxn.upper_bound == rev_bound
+
+
+def extract_uniprot_ids(gene):
+    """Returns a list of UniProt IDs for a gene."""
+    ids = gene.annotation.get("uniprot", [])
+    if isinstance(ids, str):
+        return [ids]
+    return list(ids) if ids else []
 
 
 # Extract values from a GEM model to use TurNiP method 
@@ -14,7 +59,7 @@ def extract_kcat_from_model(model_path, output_file):
     - model_path: Path to the SBML model file.
     - output_file: Path to the output TSV file.
     """
-    model = read_sbml_model(model_path)
+    model = read_model(model_path)
     records = []
 
     for rxn in model.reactions:
@@ -93,206 +138,80 @@ def extract_kcat_from_model(model_path, output_file):
     df.to_csv(output_file, sep="\t", index=False)
 
 
-def remove_nan_values(kcat_path, output_path=None):
-    """
-    Filters out rows where:
-    - Both KEGG and ChEBI metabolite annotations contain 'NaN'
-    - Uniprot field contains 'NaN'
-
-    Keeps only rows where either KEGG or ChEBI metabolite annotations are fully valid.
-    If both are valid, prefers KEGG. Outputs columns:
-    RxnID, EC_Code, Uniprot, Substrates, Products
-    """
-
-    df = pd.read_csv(kcat_path, sep="\t", dtype=str).fillna("NaN")
-
-    def is_valid(field):
-        """Check if all values in a semicolon-separated field are valid (i.e., not 'NaN')."""
-        return all(x.strip() != "NaN" for x in str(field).split(";"))
-
-    cleaned_records = []
-
-    for _, row in df.iterrows():
-        if row["Uniprot"] == "NaN":
-            continue  # Skip rows without a valid Uniprot ID
-
-        kegg_sub_valid = is_valid(row["kegg.compound_Substrate"])
-        kegg_prod_valid = is_valid(row["kegg.compound_Product"])
-        chebi_sub_valid = is_valid(row["chebi_Substrate"])
-        chebi_prod_valid = is_valid(row["chebi_Product"])
-
-        if kegg_sub_valid and kegg_prod_valid:
-            substrates = row["kegg.compound_Substrate"]
-            products = row["kegg.compound_Product"]
-        elif chebi_sub_valid and chebi_prod_valid:
-            substrates = row["chebi_Substrate"]
-            products = row["chebi_Product"]
-        else:
-            continue  # Skip if neither set is valid
-
-        cleaned_records.append({
-            "RxnID": row["RxnID"],
-            "EC_Code": row["EC_Code"],
-            "Uniprot": row["Uniprot"],
-            "Direction": row["Direction"],
-            "Substrates": substrates,
-            "Products": products
-        })
-
-    cleaned_df = pd.DataFrame(cleaned_records)
-
-    if output_path:
-        cleaned_df.to_csv(output_path, sep="\t", index=False)
-    else:
-        cleaned_df.to_csv(kcat_path, sep="\t", index=False)
-
-
-def generate_enzyme_xlsx_with_uniprot(tsv_path, xlsx_output_path, max_rows=None):
-    """
-    Generate an XLSX file with UniProt ID in 'Enzyme', and KEGG compound IDs in 'Substrates' and 'Products'.
-
-    Parameters:
-    - tsv_path (str): Input TSV file with columns: RxnID, EC Code, Uniprot, KEGG substrate, KEGG product
-    - xlsx_output_path (str): Output XLSX file path
-    - max_rows (int, optional): Number of rows to limit processing (for testing)
-    """
-    df = pd.read_csv(tsv_path, sep="\t", dtype=str)
-    
-    rows = []
-    for i, row in df.iterrows():
-        if max_rows and i >= max_rows:
-            break
-        rows.append({
-            "Enzyme": row["Uniprot"],
-            "Substrates": row["KEGG_Substrate"],
-            "Products": row["KEGG_Product"]
-        })
-
-    out_df = pd.DataFrame(rows)
-    out_df.to_excel(xlsx_output_path, index=False)
-    print(f"XLSX file saved to: {xlsx_output_path}")
-
-
-# Extract values from a GEM model to use CataPro method
 def extract_uniprot_from_model(model_path, output_file=None):
     """
-    Extracts UniProt IDs from a GEM model.
+    Extracts UniProt IDs and annotated substrates for each reaction in the model.
+    Reversible reactions are handled with forward and reverse directions.
 
     Parameters:
-    - model_path: Path to the SBML model file.
-    - output_file: Optional path to save the UniProt IDs to a file.
+    - model_path (str): Path to the model file.
+    - output_file (str, optional): Path to save the output TSV.
 
     Returns:
-    
+    - DataFrame with extracted data.
     """
+    model = read_model(model_path)
     all_rxns = []
-    model = read_sbml_model(model_path)
-    for rxn in tqdm(iterable=model.reactions, desc=f"Extracting rxn from {model.id}"):
-        # Check if the reaction is reversible
-        if rxn.lower_bound == -1000:
-            rev = "reversible"
-        else:
-            rev = "irreversible"
-        # Extract substrates
-        substrates_id_forward, substrates_name_forward, substrates_kegg_forward = [], [], []
-        substrates_id_reverse, substrates_name_reverse, substrates_kegg_reverse = [], [], []
+
+    for rxn in tqdm(model.reactions, desc=f"Extracting from {model.id}"):
+        direction = "reversible" if is_reversible(rxn) else "irreversible"
+
+        # Split substrates based on reaction direction
+        substrates_fwd, names_fwd, kegg_fwd = [], [], []
+        substrates_rev, names_rev, kegg_rev = [], [], []
+
         for met, coeff in rxn.metabolites.items():
-                if coeff < 0:
-                    substrates_id_forward.append(met.id)
-                    substrates_name_forward.append(met.name)
-                    if "kegg.compound" in met.annotation:
-                        substrates_kegg_forward.append(met.annotation["kegg.compound"])
-                    else:
-                        substrates_kegg_forward.append("NaN")
-                elif coeff > 0 and rev == "reversible":
-                    substrates_id_reverse.append(met.id)
-                    substrates_name_reverse.append(met.name)
-                    if "kegg.compound" in met.annotation:
-                        substrates_kegg_reverse.append(met.annotation["kegg.compound"])
-                    else:
-                        substrates_kegg_reverse.append("NaN")
-        # print(f"Reaction: {rxn.id}, Direction: {rev}")
-        # print(f"Substrates: {', '.join(substrates_id_forward)}")
-        # print(f"Substrates Names: {', '.join(substrates_name_forward)}")
-        # Extract genes and UniProt IDs
-        genes, uniprot_ids = [], []
+            kegg = met.annotation.get("kegg.compound", "NaN")
+            kegg = kegg[0] if isinstance(kegg, list) else str(kegg)
+            if coeff < 0:
+                substrates_fwd.append(met.id)
+                names_fwd.append(met.name)
+                kegg_fwd.append(kegg)
+            elif coeff > 0 and direction == "reversible":
+                substrates_rev.append(met.id)
+                names_rev.append(met.name)
+                kegg_rev.append(kegg)
+
+        # Extract UniProt IDs
+        uniprot_ids = []
         for gene in rxn.genes:
-            genes.append(gene.id)
-            if "uniprot" in gene.annotation:
-                entry = gene.annotation["uniprot"]
-                if isinstance(entry, list):
-                    uniprot_ids.extend(entry)
-                else:
-                    uniprot_ids.append(entry)
+            uniprot_ids.extend(extract_uniprot_ids(gene))
+
+        for uid in uniprot_ids:
+            if direction == "irreversible":
+                for idx, sid in enumerate(substrates_fwd):
+                    all_rxns.append({
+                        "RxnID": rxn.id,
+                        "Uniprot": uid,
+                        "Direction": direction,
+                        "Substrates_ID": sid,
+                        "Substrates_Name": names_fwd[idx],
+                        "Substrates_KEGG": kegg_fwd[idx]
+                    })
             else:
-                uniprot_ids.append("Missing")  # TODO : Handle missing UniProt IDs
-        # print(f"Genes: {', '.join(genes)}")
-        # print(f"UniProt IDs: {', '.join(uniprot_ids)}")
-        if len(uniprot_ids) != 0:
-            for uniprot_id in uniprot_ids:
-                if uniprot_id == "Missing":
-                    continue  # Skip reactions with missing UniProt IDs
-                if rev == "irreversible":
-                    for substrate_id in substrates_id_forward:
-                        all_rxns.append({
-                            "RxnID": rxn.id,
-                            "Uniprot": uniprot_id,
-                            "Direction": rev,
-                            "Substrates_ID": substrate_id,
-                            "Substrates_Name": substrates_name_forward[substrates_id_forward.index(substrate_id)],
-                            "Substrates_KEGG": substrates_kegg_forward[substrates_id_forward.index(substrate_id)],
-                            # "Genes": ",".join(genes),
-                        })
-                else:
-                    for substrate_id in substrates_id_forward:
-                        all_rxns.append({
-                            "RxnID": rxn.id,
-                            "Uniprot": uniprot_id,
-                            "Direction": 'reversible_forward',
-                            "Substrates_ID": substrate_id,
-                            "Substrates_Name": substrates_name_forward[substrates_id_forward.index(substrate_id)],
-                            "Substrates_KEGG": substrates_kegg_forward[substrates_id_forward.index(substrate_id)],
-                            # "Genes": ",".join(genes),
-                        })
-                    for substrate_id in substrates_id_reverse:
-                        all_rxns.append({
-                            "RxnID": rxn.id,
-                            "Uniprot": uniprot_id,
-                            "Direction": 'reversible_reverse',
-                            "Substrates_ID": substrate_id,
-                            "Substrates_Name": substrates_name_reverse[substrates_id_reverse.index(substrate_id)],
-                            "Substrates_KEGG": substrates_kegg_reverse[substrates_id_reverse.index(substrate_id)],
-                            # "Genes": ",".join(genes),
-                        })
-            # if rev == "irreversible": 
-            #     all_rxns.append({
-            #         "RxnID": rxn.id,
-            #         "Direction": rev,
-            #         "Substrates_ID": ",".join(substrates_id_forward),
-            #         "Substrates_Name": ",".join(substrates_name_forward),
-            #         "Genes": ",".join(genes),
-            #         "Uniprot": ",".join(uniprot_ids)
-            #     })
-            # else:
-            #     all_rxns.append({
-            #         "RxnID": rxn.id,
-            #         "Direction": 'reversible_forward',
-            #         "Substrates_ID": ",".join(substrates_id_forward),
-            #         "Substrates_Name": ",".join(substrates_name_forward),
-            #         "Genes": ",".join(genes),
-            #         "Uniprot": ",".join(uniprot_ids)
-            #     })
-            #     all_rxns.append({
-            #         "RxnID": rxn.id,
-            #         "Direction": "reversible_reverse",
-            #         "Substrates_ID": ",".join(substrates_id_reverse),
-            #         "Substrates_Name": ",".join(substrates_name_reverse),
-            #         "Genes": ",".join(genes),
-            #         "Uniprot": ",".join(uniprot_ids)
-            #     })
+                for idx, sid in enumerate(substrates_fwd):
+                    all_rxns.append({
+                        "RxnID": rxn.id,
+                        "Uniprot": uid,
+                        "Direction": "reversible_forward",
+                        "Substrates_ID": sid,
+                        "Substrates_Name": names_fwd[idx],
+                        "Substrates_KEGG": kegg_fwd[idx]
+                    })
+                for idx, sid in enumerate(substrates_rev):
+                    all_rxns.append({
+                        "RxnID": rxn.id,
+                        "Uniprot": uid,
+                        "Direction": "reversible_reverse",
+                        "Substrates_ID": sid,
+                        "Substrates_Name": names_rev[idx],
+                        "Substrates_KEGG": kegg_rev[idx]
+                    })
+
     df = pd.DataFrame(all_rxns)
     if output_file:
         df.to_csv(output_file, sep="\t", index=False)
+        logging.info(f"Saved UniProt extraction to {output_file}")
     return df
  
 
@@ -313,8 +232,16 @@ if __name__ == "__main__":
     #     max_rows=500
     # )
     # CataPro
+    # extract_uniprot_from_model(
+    #     model_path='model/Human-GEM.xml',
+    #     output_file='output/CataPro/kcat_Human-GEM.tsv'
+    # ) 
     extract_uniprot_from_model(
-        model_path='model/Human-GEM.xml',
-        output_file='output/CataPro/kcat_Human-GEM.tsv'
+        model_path='model/e_coli_core.json',
+        output_file='output/EColiCore/test.tsv'
     ) 
+    extract_kcat_from_model(
+        model_path='model/e_coli_core.json',
+        output_file='output/EColiCore/test_kcat.tsv'
+    )
     print("end")

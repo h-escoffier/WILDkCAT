@@ -1,0 +1,478 @@
+RxnID	Uniprot	Direction	Substrates_ID	Substrates_Name	Substrates_KEGG
+PFK	P06999	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+PFK	P06999	irreversible	f6p_c	D-Fructose 6-phosphate	C05345
+PFK	P0A796	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+PFK	P0A796	irreversible	f6p_c	D-Fructose 6-phosphate	C05345
+PFL	P09373	irreversible	coa_c	Coenzyme A	C00010
+PFL	P09373	irreversible	pyr_c	Pyruvate	C00022
+PFL	P68066	irreversible	coa_c	Coenzyme A	C00010
+PFL	P68066	irreversible	pyr_c	Pyruvate	C00022
+PFL	P32674	irreversible	coa_c	Coenzyme A	C00010
+PFL	P32674	irreversible	pyr_c	Pyruvate	C00022
+PFL	P0A9N4	irreversible	coa_c	Coenzyme A	C00010
+PFL	P0A9N4	irreversible	pyr_c	Pyruvate	C00022
+PFL	P42632	irreversible	coa_c	Coenzyme A	C00010
+PFL	P42632	irreversible	pyr_c	Pyruvate	C00022
+PFL	P32675	irreversible	coa_c	Coenzyme A	C00010
+PFL	P32675	irreversible	pyr_c	Pyruvate	C00022
+PGI	P0A6T1	reversible_forward	g6p_c	D-Glucose 6-phosphate	C00092
+PGI	P0A6T1	reversible_reverse	f6p_c	D-Fructose 6-phosphate	C05345
+PGK	P0A799	reversible_forward	3pg_c	3-Phospho-D-glycerate	C00197
+PGK	P0A799	reversible_forward	atp_c	ATP C10H12N5O13P3	C00002
+PGK	P0A799	reversible_reverse	13dpg_c	3-Phospho-D-glyceroyl phosphate	C00236
+PGK	P0A799	reversible_reverse	adp_c	ADP C10H12N5O10P2	C00008
+PGL	P52697	irreversible	6pgl_c	6-phospho-D-glucono-1,5-lactone	C01236
+PGL	P52697	irreversible	h2o_c	H2O H2O	C00001
+ACALD	P0A9Q7	reversible_forward	acald_c	Acetaldehyde	C00084
+ACALD	P0A9Q7	reversible_forward	coa_c	Coenzyme A	C00010
+ACALD	P0A9Q7	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+ACALD	P0A9Q7	reversible_reverse	accoa_c	Acetyl-CoA	C00024
+ACALD	P0A9Q7	reversible_reverse	h_c	H+	C00080
+ACALD	P0A9Q7	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+ACALD	P77580	reversible_forward	acald_c	Acetaldehyde	C00084
+ACALD	P77580	reversible_forward	coa_c	Coenzyme A	C00010
+ACALD	P77580	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+ACALD	P77580	reversible_reverse	accoa_c	Acetyl-CoA	C00024
+ACALD	P77580	reversible_reverse	h_c	H+	C00080
+ACALD	P77580	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+AKGt2r	P0AEX3	reversible_forward	akg_e	2-Oxoglutarate	C00026
+AKGt2r	P0AEX3	reversible_forward	h_e	H+	C00080
+AKGt2r	P0AEX3	reversible_reverse	akg_c	2-Oxoglutarate	C00026
+AKGt2r	P0AEX3	reversible_reverse	h_c	H+	C00080
+PGM	P0A7A2	reversible_forward	2pg_c	D-Glycerate 2-phosphate	C00631
+PGM	P0A7A2	reversible_reverse	3pg_c	3-Phospho-D-glycerate	C00197
+PGM	P62707	reversible_forward	2pg_c	D-Glycerate 2-phosphate	C00631
+PGM	P62707	reversible_reverse	3pg_c	3-Phospho-D-glycerate	C00197
+PGM	P37689	reversible_forward	2pg_c	D-Glycerate 2-phosphate	C00631
+PGM	P37689	reversible_reverse	3pg_c	3-Phospho-D-glycerate	C00197
+PIt2r	P0AFJ7	reversible_forward	h_e	H+	C00080
+PIt2r	P0AFJ7	reversible_forward	pi_e	Phosphate	C00009
+PIt2r	P0AFJ7	reversible_reverse	h_c	H+	C00080
+PIt2r	P0AFJ7	reversible_reverse	pi_c	Phosphate	C00009
+PIt2r	P43676	reversible_forward	h_e	H+	C00080
+PIt2r	P43676	reversible_forward	pi_e	Phosphate	C00009
+PIt2r	P43676	reversible_reverse	h_c	H+	C00080
+PIt2r	P43676	reversible_reverse	pi_c	Phosphate	C00009
+ALCD2x	P0A9Q7	reversible_forward	etoh_c	Ethanol	C00469
+ALCD2x	P0A9Q7	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+ALCD2x	P0A9Q7	reversible_reverse	acald_c	Acetaldehyde	C00084
+ALCD2x	P0A9Q7	reversible_reverse	h_c	H+	C00080
+ALCD2x	P0A9Q7	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+ALCD2x	P25437	reversible_forward	etoh_c	Ethanol	C00469
+ALCD2x	P25437	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+ALCD2x	P25437	reversible_reverse	acald_c	Acetaldehyde	C00084
+ALCD2x	P25437	reversible_reverse	h_c	H+	C00080
+ALCD2x	P25437	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+ALCD2x	P39451	reversible_forward	etoh_c	Ethanol	C00469
+ALCD2x	P39451	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+ALCD2x	P39451	reversible_reverse	acald_c	Acetaldehyde	C00084
+ALCD2x	P39451	reversible_reverse	h_c	H+	C00080
+ALCD2x	P39451	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+ACKr	P0A6A3	reversible_forward	ac_c	Acetate	C00033
+ACKr	P0A6A3	reversible_forward	atp_c	ATP C10H12N5O13P3	C00002
+ACKr	P0A6A3	reversible_reverse	actp_c	Acetyl phosphate	C00227
+ACKr	P0A6A3	reversible_reverse	adp_c	ADP C10H12N5O10P2	C00008
+ACKr	P11868	reversible_forward	ac_c	Acetate	C00033
+ACKr	P11868	reversible_forward	atp_c	ATP C10H12N5O13P3	C00002
+ACKr	P11868	reversible_reverse	actp_c	Acetyl phosphate	C00227
+ACKr	P11868	reversible_reverse	adp_c	ADP C10H12N5O10P2	C00008
+ACKr	P33221	reversible_forward	ac_c	Acetate	C00033
+ACKr	P33221	reversible_forward	atp_c	ATP C10H12N5O13P3	C00002
+ACKr	P33221	reversible_reverse	actp_c	Acetyl phosphate	C00227
+ACKr	P33221	reversible_reverse	adp_c	ADP C10H12N5O10P2	C00008
+PPC	P00864	irreversible	co2_c	CO2 CO2	C00011
+PPC	P00864	irreversible	h2o_c	H2O H2O	C00001
+PPC	P00864	irreversible	pep_c	Phosphoenolpyruvate	C00074
+ACONTa	P36683	reversible_forward	cit_c	Citrate	C00158
+ACONTa	P36683	reversible_reverse	acon_C_c	Cis-Aconitate	C00417
+ACONTa	P36683	reversible_reverse	h2o_c	H2O H2O	C00001
+ACONTa	P25516	reversible_forward	cit_c	Citrate	C00158
+ACONTa	P25516	reversible_reverse	acon_C_c	Cis-Aconitate	C00417
+ACONTa	P25516	reversible_reverse	h2o_c	H2O H2O	C00001
+ACONTb	P36683	reversible_forward	acon_C_c	Cis-Aconitate	C00417
+ACONTb	P36683	reversible_forward	h2o_c	H2O H2O	C00001
+ACONTb	P36683	reversible_reverse	icit_c	Isocitrate	C00311
+ACONTb	P25516	reversible_forward	acon_C_c	Cis-Aconitate	C00417
+ACONTb	P25516	reversible_forward	h2o_c	H2O H2O	C00001
+ACONTb	P25516	reversible_reverse	icit_c	Isocitrate	C00311
+PPCK	P22259	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+PPCK	P22259	irreversible	oaa_c	Oxaloacetate	C00036
+PPS	P23538	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+PPS	P23538	irreversible	h2o_c	H2O H2O	C00001
+PPS	P23538	irreversible	pyr_c	Pyruvate	C00022
+ADK1	P69441	reversible_forward	amp_c	AMP C10H12N5O7P	C00020
+ADK1	P69441	reversible_forward	atp_c	ATP C10H12N5O13P3	C00002
+ADK1	P69441	reversible_reverse	adp_c	ADP C10H12N5O10P2	C00008
+AKGDH	P0AFG6	irreversible	akg_c	2-Oxoglutarate	C00026
+AKGDH	P0AFG6	irreversible	coa_c	Coenzyme A	C00010
+AKGDH	P0AFG6	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+AKGDH	P0AFG3	irreversible	akg_c	2-Oxoglutarate	C00026
+AKGDH	P0AFG3	irreversible	coa_c	Coenzyme A	C00010
+AKGDH	P0AFG3	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+AKGDH	P0A9P0	irreversible	akg_c	2-Oxoglutarate	C00026
+AKGDH	P0A9P0	irreversible	coa_c	Coenzyme A	C00010
+AKGDH	P0A9P0	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+ATPS4r	P68699	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P68699	reversible_forward	h_e	H+	C00080
+ATPS4r	P68699	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P68699	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P68699	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P68699	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0ABC0	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0ABC0	reversible_forward	h_e	H+	C00080
+ATPS4r	P0ABC0	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0ABC0	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0ABC0	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0ABC0	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0AB98	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0AB98	reversible_forward	h_e	H+	C00080
+ATPS4r	P0AB98	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0AB98	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0AB98	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0AB98	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0ABA4	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0ABA4	reversible_forward	h_e	H+	C00080
+ATPS4r	P0ABA4	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0ABA4	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0ABA4	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0ABA4	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0A6E6	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0A6E6	reversible_forward	h_e	H+	C00080
+ATPS4r	P0A6E6	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0A6E6	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0A6E6	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0A6E6	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0ABB4	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0ABB4	reversible_forward	h_e	H+	C00080
+ATPS4r	P0ABB4	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0ABB4	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0ABB4	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0ABB4	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0ABB0	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0ABB0	reversible_forward	h_e	H+	C00080
+ATPS4r	P0ABB0	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0ABB0	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0ABB0	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0ABB0	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0ABA6	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0ABA6	reversible_forward	h_e	H+	C00080
+ATPS4r	P0ABA6	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0ABA6	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0ABA6	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0ABA6	reversible_reverse	h_c	H+	C00080
+ATPS4r	P0ABA0	reversible_forward	adp_c	ADP C10H12N5O10P2	C00008
+ATPS4r	P0ABA0	reversible_forward	h_e	H+	C00080
+ATPS4r	P0ABA0	reversible_forward	pi_c	Phosphate	C00009
+ATPS4r	P0ABA0	reversible_reverse	atp_c	ATP C10H12N5O13P3	C00002
+ATPS4r	P0ABA0	reversible_reverse	h2o_c	H2O H2O	C00001
+ATPS4r	P0ABA0	reversible_reverse	h_c	H+	C00080
+PTAr	P77218	reversible_forward	accoa_c	Acetyl-CoA	C00024
+PTAr	P77218	reversible_forward	pi_c	Phosphate	C00009
+PTAr	P77218	reversible_reverse	actp_c	Acetyl phosphate	C00227
+PTAr	P77218	reversible_reverse	coa_c	Coenzyme A	C00010
+PTAr	P0A9M8	reversible_forward	accoa_c	Acetyl-CoA	C00024
+PTAr	P0A9M8	reversible_forward	pi_c	Phosphate	C00009
+PTAr	P0A9M8	reversible_reverse	actp_c	Acetyl phosphate	C00227
+PTAr	P0A9M8	reversible_reverse	coa_c	Coenzyme A	C00010
+PYK	P0AD61	irreversible	adp_c	ADP C10H12N5O10P2	C00008
+PYK	P0AD61	irreversible	h_c	H+	C00080
+PYK	P0AD61	irreversible	pep_c	Phosphoenolpyruvate	C00074
+PYK	P21599	irreversible	adp_c	ADP C10H12N5O10P2	C00008
+PYK	P21599	irreversible	h_c	H+	C00080
+PYK	P21599	irreversible	pep_c	Phosphoenolpyruvate	C00074
+RPE	P0AG07	reversible_forward	ru5p__D_c	D-Ribulose 5-phosphate	C00199
+RPE	P0AG07	reversible_reverse	xu5p__D_c	D-Xylulose 5-phosphate	C00231
+RPE	P39362	reversible_forward	ru5p__D_c	D-Ribulose 5-phosphate	C00199
+RPE	P39362	reversible_reverse	xu5p__D_c	D-Xylulose 5-phosphate	C00231
+CS	P0ABH7	irreversible	accoa_c	Acetyl-CoA	C00024
+CS	P0ABH7	irreversible	h2o_c	H2O H2O	C00001
+CS	P0ABH7	irreversible	oaa_c	Oxaloacetate	C00036
+RPI	P0A7Z0	reversible_forward	r5p_c	Alpha-D-Ribose 5-phosphate	C03736
+RPI	P0A7Z0	reversible_reverse	ru5p__D_c	D-Ribulose 5-phosphate	C00199
+RPI	P37351	reversible_forward	r5p_c	Alpha-D-Ribose 5-phosphate	C03736
+RPI	P37351	reversible_reverse	ru5p__D_c	D-Ribulose 5-phosphate	C00199
+SUCCt2_2	P0A830	irreversible	h_e	H+	C00080
+SUCCt2_2	P0A830	irreversible	succ_e	Succinate	C00042
+CYTBD	P0ABK2	irreversible	h_c	H+	C00080
+CYTBD	P0ABK2	irreversible	o2_c	O2 O2	C00007
+CYTBD	P0ABK2	irreversible	q8h2_c	Ubiquinol-8	NaN
+CYTBD	P26458	irreversible	h_c	H+	C00080
+CYTBD	P26458	irreversible	o2_c	O2 O2	C00007
+CYTBD	P26458	irreversible	q8h2_c	Ubiquinol-8	NaN
+CYTBD	P0ABJ9	irreversible	h_c	H+	C00080
+CYTBD	P0ABJ9	irreversible	o2_c	O2 O2	C00007
+CYTBD	P0ABJ9	irreversible	q8h2_c	Ubiquinol-8	NaN
+CYTBD	P26459	irreversible	h_c	H+	C00080
+CYTBD	P26459	irreversible	o2_c	O2 O2	C00007
+CYTBD	P26459	irreversible	q8h2_c	Ubiquinol-8	NaN
+D_LACt2	Q46839	reversible_forward	h_e	H+	C00080
+D_LACt2	Q46839	reversible_forward	lac__D_e	D-Lactate	C00256
+D_LACt2	Q46839	reversible_reverse	h_c	H+	C00080
+D_LACt2	Q46839	reversible_reverse	lac__D_c	D-Lactate	C00256
+D_LACt2	P33231	reversible_forward	h_e	H+	C00080
+D_LACt2	P33231	reversible_forward	lac__D_e	D-Lactate	C00256
+D_LACt2	P33231	reversible_reverse	h_c	H+	C00080
+D_LACt2	P33231	reversible_reverse	lac__D_c	D-Lactate	C00256
+ENO	P0A6P9	reversible_forward	2pg_c	D-Glycerate 2-phosphate	C00631
+ENO	P0A6P9	reversible_reverse	h2o_c	H2O H2O	C00001
+ENO	P0A6P9	reversible_reverse	pep_c	Phosphoenolpyruvate	C00074
+SUCDi	P69054	irreversible	q8_c	Ubiquinone-8	C17569
+SUCDi	P69054	irreversible	succ_c	Succinate	C00042
+SUCDi	P07014	irreversible	q8_c	Ubiquinone-8	C17569
+SUCDi	P07014	irreversible	succ_c	Succinate	C00042
+SUCDi	P0AC44	irreversible	q8_c	Ubiquinone-8	C17569
+SUCDi	P0AC44	irreversible	succ_c	Succinate	C00042
+SUCDi	P0AC41	irreversible	q8_c	Ubiquinone-8	C17569
+SUCDi	P0AC41	irreversible	succ_c	Succinate	C00042
+SUCOAS	P0A836	reversible_forward	atp_c	ATP C10H12N5O13P3	C00002
+SUCOAS	P0A836	reversible_forward	coa_c	Coenzyme A	C00010
+SUCOAS	P0A836	reversible_forward	succ_c	Succinate	C00042
+SUCOAS	P0A836	reversible_reverse	adp_c	ADP C10H12N5O10P2	C00008
+SUCOAS	P0A836	reversible_reverse	pi_c	Phosphate	C00009
+SUCOAS	P0A836	reversible_reverse	succoa_c	Succinyl-CoA	C00091
+SUCOAS	P0AGE9	reversible_forward	atp_c	ATP C10H12N5O13P3	C00002
+SUCOAS	P0AGE9	reversible_forward	coa_c	Coenzyme A	C00010
+SUCOAS	P0AGE9	reversible_forward	succ_c	Succinate	C00042
+SUCOAS	P0AGE9	reversible_reverse	adp_c	ADP C10H12N5O10P2	C00008
+SUCOAS	P0AGE9	reversible_reverse	pi_c	Phosphate	C00009
+SUCOAS	P0AGE9	reversible_reverse	succoa_c	Succinyl-CoA	C00091
+TALA	P0A867	reversible_forward	g3p_c	Glyceraldehyde 3-phosphate	C00661
+TALA	P0A867	reversible_forward	s7p_c	Sedoheptulose 7-phosphate	C05382
+TALA	P0A867	reversible_reverse	e4p_c	D-Erythrose 4-phosphate	C00279
+TALA	P0A867	reversible_reverse	f6p_c	D-Fructose 6-phosphate	C05345
+TALA	P0A870	reversible_forward	g3p_c	Glyceraldehyde 3-phosphate	C00661
+TALA	P0A870	reversible_forward	s7p_c	Sedoheptulose 7-phosphate	C05382
+TALA	P0A870	reversible_reverse	e4p_c	D-Erythrose 4-phosphate	C00279
+TALA	P0A870	reversible_reverse	f6p_c	D-Fructose 6-phosphate	C05345
+THD2	P07001	irreversible	h_e	H+	C00080
+THD2	P07001	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+THD2	P07001	irreversible	nadp_c	Nicotinamide adenine dinucleotide phosphate	C00006
+THD2	P0AB67	irreversible	h_e	H+	C00080
+THD2	P0AB67	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+THD2	P0AB67	irreversible	nadp_c	Nicotinamide adenine dinucleotide phosphate	C00006
+TKT1	P27302	reversible_forward	r5p_c	Alpha-D-Ribose 5-phosphate	C03736
+TKT1	P27302	reversible_forward	xu5p__D_c	D-Xylulose 5-phosphate	C00231
+TKT1	P27302	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+TKT1	P27302	reversible_reverse	s7p_c	Sedoheptulose 7-phosphate	C05382
+TKT1	P33570	reversible_forward	r5p_c	Alpha-D-Ribose 5-phosphate	C03736
+TKT1	P33570	reversible_forward	xu5p__D_c	D-Xylulose 5-phosphate	C00231
+TKT1	P33570	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+TKT1	P33570	reversible_reverse	s7p_c	Sedoheptulose 7-phosphate	C05382
+TKT2	P27302	reversible_forward	e4p_c	D-Erythrose 4-phosphate	C00279
+TKT2	P27302	reversible_forward	xu5p__D_c	D-Xylulose 5-phosphate	C00231
+TKT2	P27302	reversible_reverse	f6p_c	D-Fructose 6-phosphate	C05345
+TKT2	P27302	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+TKT2	P33570	reversible_forward	e4p_c	D-Erythrose 4-phosphate	C00279
+TKT2	P33570	reversible_forward	xu5p__D_c	D-Xylulose 5-phosphate	C00231
+TKT2	P33570	reversible_reverse	f6p_c	D-Fructose 6-phosphate	C05345
+TKT2	P33570	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+TPI	P0A858	reversible_forward	dhap_c	Dihydroxyacetone phosphate	C00111
+TPI	P0A858	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+FBA	P0A991	reversible_forward	fdp_c	D-Fructose 1,6-bisphosphate	C00354
+FBA	P0A991	reversible_reverse	dhap_c	Dihydroxyacetone phosphate	C00111
+FBA	P0A991	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+FBA	P77704	reversible_forward	fdp_c	D-Fructose 1,6-bisphosphate	C00354
+FBA	P77704	reversible_reverse	dhap_c	Dihydroxyacetone phosphate	C00111
+FBA	P77704	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+FBA	P0AB71	reversible_forward	fdp_c	D-Fructose 1,6-bisphosphate	C00354
+FBA	P0AB71	reversible_reverse	dhap_c	Dihydroxyacetone phosphate	C00111
+FBA	P0AB71	reversible_reverse	g3p_c	Glyceraldehyde 3-phosphate	C00661
+FBP	P0A993	irreversible	fdp_c	D-Fructose 1,6-bisphosphate	C00354
+FBP	P0A993	irreversible	h2o_c	H2O H2O	C00001
+FBP	P0A9C9	irreversible	fdp_c	D-Fructose 1,6-bisphosphate	C00354
+FBP	P0A9C9	irreversible	h2o_c	H2O H2O	C00001
+FORt2	P0AC23	irreversible	for_e	Formate	C00058
+FORt2	P0AC23	irreversible	h_e	H+	C00080
+FORt2	P77733	irreversible	for_e	Formate	C00058
+FORt2	P77733	irreversible	h_e	H+	C00080
+FORt	P0AC23	irreversible	for_e	Formate	C00058
+FORt	P77733	irreversible	for_e	Formate	C00058
+FRD7	P00363	irreversible	fum_c	Fumarate	C00122
+FRD7	P00363	irreversible	q8h2_c	Ubiquinol-8	NaN
+FRD7	P0A8Q3	irreversible	fum_c	Fumarate	C00122
+FRD7	P0A8Q3	irreversible	q8h2_c	Ubiquinol-8	NaN
+FRD7	P0A8Q0	irreversible	fum_c	Fumarate	C00122
+FRD7	P0A8Q0	irreversible	q8h2_c	Ubiquinol-8	NaN
+FRD7	P0AC47	irreversible	fum_c	Fumarate	C00122
+FRD7	P0AC47	irreversible	q8h2_c	Ubiquinol-8	NaN
+FRUpts2	P0AA04	irreversible	fru_e	D-Fructose	C01496
+FRUpts2	P0AA04	irreversible	pep_c	Phosphoenolpyruvate	C00074
+FRUpts2	P69805	irreversible	fru_e	D-Fructose	C01496
+FRUpts2	P69805	irreversible	pep_c	Phosphoenolpyruvate	C00074
+FRUpts2	P69801	irreversible	fru_e	D-Fructose	C01496
+FRUpts2	P69801	irreversible	pep_c	Phosphoenolpyruvate	C00074
+FRUpts2	P69797	irreversible	fru_e	D-Fructose	C01496
+FRUpts2	P69797	irreversible	pep_c	Phosphoenolpyruvate	C00074
+FRUpts2	P08839	irreversible	fru_e	D-Fructose	C01496
+FRUpts2	P08839	irreversible	pep_c	Phosphoenolpyruvate	C00074
+FUM	P05042	reversible_forward	fum_c	Fumarate	C00122
+FUM	P05042	reversible_forward	h2o_c	H2O H2O	C00001
+FUM	P05042	reversible_reverse	mal__L_c	L-Malate	C00149
+FUM	P0AC33	reversible_forward	fum_c	Fumarate	C00122
+FUM	P0AC33	reversible_forward	h2o_c	H2O H2O	C00001
+FUM	P0AC33	reversible_reverse	mal__L_c	L-Malate	C00149
+FUM	P14407	reversible_forward	fum_c	Fumarate	C00122
+FUM	P14407	reversible_forward	h2o_c	H2O H2O	C00001
+FUM	P14407	reversible_reverse	mal__L_c	L-Malate	C00149
+FUMt2_2	P0A830	irreversible	fum_e	Fumarate	C00122
+FUMt2_2	P0A830	irreversible	h_e	H+	C00080
+G6PDH2r	P0AC53	reversible_forward	g6p_c	D-Glucose 6-phosphate	C00092
+G6PDH2r	P0AC53	reversible_forward	nadp_c	Nicotinamide adenine dinucleotide phosphate	C00006
+G6PDH2r	P0AC53	reversible_reverse	6pgl_c	6-phospho-D-glucono-1,5-lactone	C01236
+G6PDH2r	P0AC53	reversible_reverse	h_c	H+	C00080
+G6PDH2r	P0AC53	reversible_reverse	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+GAPD	P0A9B2	reversible_forward	g3p_c	Glyceraldehyde 3-phosphate	C00661
+GAPD	P0A9B2	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+GAPD	P0A9B2	reversible_forward	pi_c	Phosphate	C00009
+GAPD	P0A9B2	reversible_reverse	13dpg_c	3-Phospho-D-glyceroyl phosphate	C00236
+GAPD	P0A9B2	reversible_reverse	h_c	H+	C00080
+GAPD	P0A9B2	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+GLCpts	P69805	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P69805	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLCpts	P69797	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P69797	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLCpts	P08839	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P08839	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLCpts	P0AA04	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P0AA04	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLCpts	P69786	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P69786	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLCpts	P69783	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P69783	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLCpts	P69801	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P69801	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLCpts	P19642	irreversible	glc__D_e	D-Glucose	C00031
+GLCpts	P19642	irreversible	pep_c	Phosphoenolpyruvate	C00074
+GLNS	P0A9C5	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+GLNS	P0A9C5	irreversible	glu__L_c	L-Glutamate	C00025
+GLNS	P0A9C5	irreversible	nh4_c	Ammonium	C00014
+GLNS	P78061	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+GLNS	P78061	irreversible	glu__L_c	L-Glutamate	C00025
+GLNS	P78061	irreversible	nh4_c	Ammonium	C00014
+GLNabc	P0AEQ3	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+GLNabc	P0AEQ3	irreversible	gln__L_e	L-Glutamine	C00064
+GLNabc	P0AEQ3	irreversible	h2o_c	H2O H2O	C00001
+GLNabc	P0AEQ6	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+GLNabc	P0AEQ6	irreversible	gln__L_e	L-Glutamine	C00064
+GLNabc	P0AEQ6	irreversible	h2o_c	H2O H2O	C00001
+GLNabc	P10346	irreversible	atp_c	ATP C10H12N5O13P3	C00002
+GLNabc	P10346	irreversible	gln__L_e	L-Glutamine	C00064
+GLNabc	P10346	irreversible	h2o_c	H2O H2O	C00001
+GLUDy	P00370	reversible_forward	glu__L_c	L-Glutamate	C00025
+GLUDy	P00370	reversible_forward	h2o_c	H2O H2O	C00001
+GLUDy	P00370	reversible_forward	nadp_c	Nicotinamide adenine dinucleotide phosphate	C00006
+GLUDy	P00370	reversible_reverse	akg_c	2-Oxoglutarate	C00026
+GLUDy	P00370	reversible_reverse	h_c	H+	C00080
+GLUDy	P00370	reversible_reverse	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+GLUDy	P00370	reversible_reverse	nh4_c	Ammonium	C00014
+GLUN	P0A6W0	irreversible	gln__L_c	L-Glutamine	C00064
+GLUN	P0A6W0	irreversible	h2o_c	H2O H2O	C00001
+GLUN	P77454	irreversible	gln__L_c	L-Glutamine	C00064
+GLUN	P77454	irreversible	h2o_c	H2O H2O	C00001
+GLUN	P05041	irreversible	gln__L_c	L-Glutamine	C00064
+GLUN	P05041	irreversible	h2o_c	H2O H2O	C00001
+GLUSy	P09832	irreversible	akg_c	2-Oxoglutarate	C00026
+GLUSy	P09832	irreversible	gln__L_c	L-Glutamine	C00064
+GLUSy	P09832	irreversible	h_c	H+	C00080
+GLUSy	P09832	irreversible	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+GLUSy	P09831	irreversible	akg_c	2-Oxoglutarate	C00026
+GLUSy	P09831	irreversible	gln__L_c	L-Glutamine	C00064
+GLUSy	P09831	irreversible	h_c	H+	C00080
+GLUSy	P09831	irreversible	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+GLUt2r	P21345	reversible_forward	glu__L_e	L-Glutamate	C00025
+GLUt2r	P21345	reversible_forward	h_e	H+	C00080
+GLUt2r	P21345	reversible_reverse	glu__L_c	L-Glutamate	C00025
+GLUt2r	P21345	reversible_reverse	h_c	H+	C00080
+GND	P00350	irreversible	6pgc_c	6-Phospho-D-gluconate	C00345
+GND	P00350	irreversible	nadp_c	Nicotinamide adenine dinucleotide phosphate	C00006
+H2Ot	P60844	reversible_forward	h2o_e	H2O H2O	C00001
+H2Ot	P60844	reversible_reverse	h2o_c	H2O H2O	C00001
+ICDHyr	P08200	reversible_forward	icit_c	Isocitrate	C00311
+ICDHyr	P08200	reversible_forward	nadp_c	Nicotinamide adenine dinucleotide phosphate	C00006
+ICDHyr	P08200	reversible_reverse	akg_c	2-Oxoglutarate	C00026
+ICDHyr	P08200	reversible_reverse	co2_c	CO2 CO2	C00011
+ICDHyr	P08200	reversible_reverse	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+ICL	P0A9G6	irreversible	icit_c	Isocitrate	C00311
+LDH_D	P06149	reversible_forward	lac__D_c	D-Lactate	C00256
+LDH_D	P06149	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+LDH_D	P06149	reversible_reverse	h_c	H+	C00080
+LDH_D	P06149	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+LDH_D	P06149	reversible_reverse	pyr_c	Pyruvate	C00022
+LDH_D	P52643	reversible_forward	lac__D_c	D-Lactate	C00256
+LDH_D	P52643	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+LDH_D	P52643	reversible_reverse	h_c	H+	C00080
+LDH_D	P52643	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+LDH_D	P52643	reversible_reverse	pyr_c	Pyruvate	C00022
+MALS	P37330	irreversible	accoa_c	Acetyl-CoA	C00024
+MALS	P37330	irreversible	glx_c	Glyoxylate	C00048
+MALS	P37330	irreversible	h2o_c	H2O H2O	C00001
+MALS	P08997	irreversible	accoa_c	Acetyl-CoA	C00024
+MALS	P08997	irreversible	glx_c	Glyoxylate	C00048
+MALS	P08997	irreversible	h2o_c	H2O H2O	C00001
+MALt2_2	P0A830	irreversible	h_e	H+	C00080
+MALt2_2	P0A830	irreversible	mal__L_e	L-Malate	C00149
+MDH	P61889	reversible_forward	mal__L_c	L-Malate	C00149
+MDH	P61889	reversible_forward	nad_c	Nicotinamide adenine dinucleotide	C00003
+MDH	P61889	reversible_reverse	h_c	H+	C00080
+MDH	P61889	reversible_reverse	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+MDH	P61889	reversible_reverse	oaa_c	Oxaloacetate	C00036
+ME1	P26616	irreversible	mal__L_c	L-Malate	C00149
+ME1	P26616	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+ME2	P76558	irreversible	mal__L_c	L-Malate	C00149
+ME2	P76558	irreversible	nadp_c	Nicotinamide adenine dinucleotide phosphate	C00006
+NADH16	P0AFD1	irreversible	h_c	H+	C00080
+NADH16	P0AFD1	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFD1	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFE0	irreversible	h_c	H+	C00080
+NADH16	P0AFE0	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFE0	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P33599	irreversible	h_c	H+	C00080
+NADH16	P33599	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P33599	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFC3	irreversible	h_c	H+	C00080
+NADH16	P0AFC3	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFC3	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFC7	irreversible	h_c	H+	C00080
+NADH16	P0AFC7	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFC7	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P33607	irreversible	h_c	H+	C00080
+NADH16	P33607	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P33607	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P33602	irreversible	h_c	H+	C00080
+NADH16	P33602	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P33602	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P31979	irreversible	h_c	H+	C00080
+NADH16	P31979	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P31979	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFF0	irreversible	h_c	H+	C00080
+NADH16	P0AFF0	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFF0	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFD4	irreversible	h_c	H+	C00080
+NADH16	P0AFD4	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFD4	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFD6	irreversible	h_c	H+	C00080
+NADH16	P0AFD6	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFD6	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFE4	irreversible	h_c	H+	C00080
+NADH16	P0AFE4	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFE4	irreversible	q8_c	Ubiquinone-8	C17569
+NADH16	P0AFE8	irreversible	h_c	H+	C00080
+NADH16	P0AFE8	irreversible	nadh_c	Nicotinamide adenine dinucleotide - reduced	C00004
+NADH16	P0AFE8	irreversible	q8_c	Ubiquinone-8	C17569
+NADTRHD	P27306	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+NADTRHD	P27306	irreversible	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+NADTRHD	P07001	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+NADTRHD	P07001	irreversible	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+NADTRHD	P0AB67	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+NADTRHD	P0AB67	irreversible	nadph_c	Nicotinamide adenine dinucleotide phosphate - reduced	C00005
+NH4t	P69681	reversible_forward	nh4_e	Ammonium	C00014
+NH4t	P69681	reversible_reverse	nh4_c	Ammonium	C00014
+PDH	P06959	irreversible	coa_c	Coenzyme A	C00010
+PDH	P06959	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+PDH	P06959	irreversible	pyr_c	Pyruvate	C00022
+PDH	P0AFG8	irreversible	coa_c	Coenzyme A	C00010
+PDH	P0AFG8	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+PDH	P0AFG8	irreversible	pyr_c	Pyruvate	C00022
+PDH	P0A9P0	irreversible	coa_c	Coenzyme A	C00010
+PDH	P0A9P0	irreversible	nad_c	Nicotinamide adenine dinucleotide	C00003
+PDH	P0A9P0	irreversible	pyr_c	Pyruvate	C00022

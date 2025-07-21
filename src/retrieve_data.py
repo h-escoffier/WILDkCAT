@@ -252,9 +252,12 @@ def add_sequences_to_file(kcat_path, output_path):
 if __name__ == "__main__":
     # Example usage
     print('start')
-    add_smiles_to_file(
-        kcat_path="output/CataPro/kcat_Human-GEM.tsv",
-        output_path="output/CataPro/kcat_Human-GEM_smiles.tsv", 
-        max_entries=10
+    # add_smiles_to_file(
+    #     kcat_path="output/CataPro/kcat_Human-GEM.tsv",
+    #     output_path="output/CataPro/kcat_Human-GEM_smiles.tsv"
+    # )
+    add_sequences_to_file(
+        kcat_path="output/CataPro/kcat_Human-GEM_smiles.tsv",
+        output_path="output/CataPro/kcat_Human-GEM_smiles_sequences.tsv"
     )
     print('end')
