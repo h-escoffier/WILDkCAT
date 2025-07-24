@@ -1,8 +1,9 @@
+import re 
 import logging
-import pandas as pd 
 import requests
+import pandas as pd 
 from tqdm import tqdm
-
+from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 
@@ -27,26 +28,6 @@ def read_model(model_path: str):
         return read_sbml_model(model_path)
     else:
         raise ValueError(f"Unsupported model file format: {model_path}")
-    
-
-def retrieve_ec_code(model): 
-    """
-    Retrieve EC codes from a COBRA model.
-
-    Parameters:
-    - model: COBRA.Model
-        The COBRA model object.
-
-    Returns:
-    - list(ec_codes): list
-        A list of unique EC codes found in the model's reactions.
-    """
-    ec_codes = set()
-    for reaction in model.reactions:
-        ec = reaction.annotation.get("ec-code")
-        if ec:
-            ec_codes.update(ec if isinstance(ec, list) else [ec])
-    return list(ec_codes)
 
 
 def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
@@ -83,110 +64,176 @@ def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
 
     return genes
 
- 
-def create_kcat_output(model, organism_code):
-    """
-    Create a DataFrame with detailed reaction info including KEGG reaction IDs,
-    EC codes, genes, substrates, and products. Handles reversible reactions by
-    including reverse direction as separate entries.
 
-    Parameters:
-    - model: COBRA.Model
-    - organism_code: str (e.g., 'eco', 'hsa')
+@lru_cache(maxsize=None)
+def cached_get_kegg_genes_by_ec(organism_code, ec_code):
+    """Cached wrapper to avoid repeated KEGG API calls."""
+    return get_kegg_genes_by_ec(organism_code, ec_code)
 
-    Returns:
-    - pd.DataFrame
+
+def parse_gpr(gpr_str):
     """
-    rows = []
-    for rxn in model.reactions:
-        # 1) Reaction ID
-        rxn_id = rxn.id
-        
-        # 2) KEGG reaction annotation (if exists)
-        kegg_rxn_id = None
-        if "kegg.reaction" in rxn.annotation:
-            kegg = rxn.annotation["kegg.reaction"]
+    Parse GPR into groups (OR → multiple entries, AND → combined).
+    Example: '(gene1 and gene2) or gene3' ->
+             [['gene1','gene2'], ['gene3']]
+    """
+    if not gpr_str:
+        return []
+
+    # Split by 'or' (outer level)
+    or_groups = re.split(r'\s+or\s+', gpr_str, flags=re.IGNORECASE)
+
+    parsed_groups = []
+    for group in or_groups:
+        # Remove parentheses and split 'and'
+        genes = re.split(r'\s+and\s+', group.replace("(", "").replace(")", ""), flags=re.IGNORECASE)
+        genes = [g.strip() for g in genes if g.strip()]
+        if genes:
+            parsed_groups.append(genes)
+
+    return parsed_groups
+
+
+def split_metabolites(metabolites):
+    """
+    Return two lists: names and KEGG IDs separately.
+    """
+    names = []
+    kegg_ids = []
+    for m, coeff in metabolites.items():
+        if coeff < 0:  # substrate
+            name = m.name if m.name else m.id
+            kegg = m.annotation.get("kegg.compound")
             if isinstance(kegg, list):
-                kegg_rxn_id = ";".join(kegg)
-            else:
-                kegg_rxn_id = kegg
-        
-        # 3) EC codes (may be list or string)
+                kegg = kegg[0]
+            names.append(name)
+            kegg_ids.append(kegg if kegg else "")
+    return names, kegg_ids
+
+
+def create_kcat_output(model, organism_code):
+    rows = []
+
+    for rxn in tqdm(model.reactions, desc=f"Processing {model.name} reactions"):
+        # --- KEGG Reaction ID ---
+        kegg_rxn_id = rxn.annotation.get("kegg.reaction")
+        if isinstance(kegg_rxn_id, list):
+            kegg_rxn_id = ";".join(kegg_rxn_id)
+
+        # --- EC Codes ---
         ec_codes = rxn.annotation.get("ec-code")
         if not ec_codes:
-            ec_codes = []
-        elif isinstance(ec_codes, str):
+            continue
+        if isinstance(ec_codes, str):
             ec_codes = [ec_codes]
-        
-        # 4) For each EC code, get genes from KEGG
-        ec_genes_map = {}
+
+        # --- Substrates / Products ---
+        subs_names = []
+        subs_keggs = []
+        prod_names = []
+        prod_keggs = []
+        for m, coeff in rxn.metabolites.items():
+            name = m.name if m.name else m.id
+            kegg = m.annotation.get("kegg.compound")
+            if isinstance(kegg, list):
+                kegg = kegg[0]
+            if coeff < 0:  # substrate
+                subs_names.append(name)
+                subs_keggs.append(kegg if kegg else "")
+            elif coeff > 0:  # product
+                prod_names.append(name)
+                prod_keggs.append(kegg if kegg else "")
+
+        # --- GPR parsing ---
+        gpr_groups = parse_gpr(rxn.gene_reaction_rule)
+
+        # --- For each EC code ---
         for ec in ec_codes:
-            genes = get_kegg_genes_by_ec(organism_code, ec)
-            ec_genes_map[ec] = genes
-        
-        # 5) Collect genes related to the reaction itself (from model.gene_reaction_rule)
-        # This is an alternative gene source, but for now we'll keep focus on KEGG genes.
-        # We could also parse rxn.genes or rxn.gene_reaction_rule if needed.
-        
-        # 6) Prepare substrates and products strings: "met_id:coeff"
-        substrates = []
-        products = []
-        for met, coeff in rxn.metabolites.items():
-            # coeff < 0 means substrate, coeff > 0 means product
-            s = f"{met.id}({abs(coeff)})"
-            if coeff < 0:
-                substrates.append(s)
-            elif coeff > 0:
-                products.append(s)
-        
-        # 7) Add forward reaction entry
-        rows.append({
-            "rxn": rxn_id,
-            "KEGG_rxn_id": kegg_rxn_id,
-            "ec-code": ";".join(ec_codes) if ec_codes else None,
-            "genes": ";".join([g for genes in ec_genes_map.values() for g in genes]) if ec_genes_map else None,
-            "substrates": ";".join(substrates),
-            "products": ";".join(products),
-            "direction": "forward"
-        })
-        
-        # 8) If reversible, add reverse reaction entry with substrates and products swapped
-        if rxn.reversibility:
-            rows.append({
-                "rxn": rxn_id,
-                "KEGG_rxn_id": kegg_rxn_id,
-                "ec-code": ";".join(ec_codes) if ec_codes else None,
-                "genes": ";".join([g for genes in ec_genes_map.values() for g in genes]) if ec_genes_map else None,
-                "substrates": ";".join(products),   # swapped here
-                "products": ";".join(substrates),   # swapped here
-                "direction": "reverse"
-            })
-    
-    df = pd.DataFrame(rows)
+            # KEGG genes for EC
+            kegg_genes = cached_get_kegg_genes_by_ec(organism_code, ec)
+
+            # If no genes are associated with the EC code in the model 
+            if not gpr_groups:
+                rows.append({
+                    "rxn": rxn.id,
+                    "KEGG_rxn_id": kegg_rxn_id,
+                    "ec_code": ec,
+                    "direction": "forward",
+                    "substrates_name": ";".join(subs_names),
+                    "substrates_kegg": ";".join(subs_keggs),
+                    "products_name": ";".join(prod_names),
+                    "products_kegg": ";".join(prod_keggs),
+                    "genes_model": "",
+                    "kegg_genes": ";".join(kegg_genes),
+                    "intersection_genes": ""
+                })
+                if rxn.reversibility:
+                    rows.append({
+                        "rxn": rxn.id,
+                        "KEGG_rxn_id": kegg_rxn_id,
+                        "ec_code": ec,
+                        "direction": "reverse",
+                        "substrates_name": ";".join(prod_names),
+                        "substrates_kegg": ";".join(prod_keggs),
+                        "products_name": ";".join(subs_names),
+                        "products_kegg": ";".join(subs_keggs),
+                        "genes_model": "",
+                        "kegg_genes": ";".join(kegg_genes),
+                        "intersection_genes": ""
+                    })
+                continue
+
+            # Otherwise process per GPR group
+            for genes_group in gpr_groups:
+                intersection = list(set(genes_group) & set(kegg_genes))
+
+                # Forward row
+                rows.append({
+                    "rxn": rxn.id,
+                    "KEGG_rxn_id": kegg_rxn_id,
+                    "ec_code": ec,
+                    "direction": "forward",
+                    "substrates_name": ";".join(subs_names),
+                    "substrates_kegg": ";".join(subs_keggs),
+                    "products_name": ";".join(prod_names),
+                    "products_kegg": ";".join(prod_keggs),
+                    "genes_model": ";".join(genes_group),
+                    "kegg_genes": ";".join(kegg_genes),
+                    "intersection_genes": ";".join(intersection) if intersection else ""
+                })
+
+                # Reverse row if reversible
+                if rxn.reversibility:
+                    rows.append({
+                        "rxn": rxn.id,
+                        "KEGG_rxn_id": kegg_rxn_id,
+                        "ec_code": ec,
+                        "direction": "reverse",
+                        "substrates_name": ";".join(prod_names),
+                        "substrates_kegg": ";".join(prod_keggs),
+                        "products_name": ";".join(subs_names),
+                        "products_kegg": ";".join(subs_keggs),
+                        "genes_model": ";".join(genes_group),
+                        "kegg_genes": ";".join(kegg_genes),
+                        "intersection_genes": ";".join(intersection) if intersection else ""
+                    })
+
+    # Remove duplicates
+    df = pd.DataFrame(rows).drop_duplicates(
+        subset=["ec_code", "genes_model", "substrates_name", "products_name", "direction"]
+    )
+
+    logging.info("Total of possible kcat values: %d", len(df))
+
     return df
 
 
-
-
 def run(model_path, organism_code):
-    # model = read_model(model_path)
-    # ec_codes = retrieve_ec_code(model)
-    # logging.info(f"Retrieved {len(ec_codes)} EC codes from the model.")
-    # data = []
-    # for ec_code in ec_codes:
-    #     genes = get_kegg_genes_by_ec(organism_code, ec_code)
-    #     data.append({
-    #         "ec_code": ec_code,
-    #         "genes": ", ".join(genes) if genes else None
-    #     })   
-    # # Export results to a CSV file
-    # pd.DataFrame(data).to_csv("output/ec_codes.csv", index=False)
-    # logging.info("EC codes saved to ec_codes.csv")
     model = read_model(model_path)
     logging.info(f"Model loaded with {len(model.reactions)} reactions.")
     df = create_kcat_output(model, organism_code)
-    df.to_csv("output/kcat_reaction_info.csv", index=False)
-    logging.info("kcat reaction info saved to output/kcat_reaction_info.csv")
+    df.to_csv("output/ecoli_kcat.tsv", sep='\t', index=False)
+    logging.info("Output saved to 'output/ecoli_kcat.tsv'")
 
 
 if __name__ == "__main__":
