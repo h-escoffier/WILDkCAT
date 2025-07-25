@@ -185,6 +185,17 @@ def create_kcat_output(model, organism_code):
 
             # Otherwise process per GPR group
             for genes_group in gpr_groups:
+                # Retieve UniprotIDs for the genes in the group
+                genes_group = [g.strip() for g in genes_group if g.strip()]
+                uniprot_ids = []
+                for gene in genes_group: 
+                    uniprot = model.genes.get_by_id(gene).annotation.get("uniprot")
+                    if uniprot:
+                        if isinstance(uniprot, list):
+                            uniprot_ids.extend(uniprot)
+                        else:
+                            uniprot_ids.append(uniprot)
+                uniprot_ids = list(set(uniprot_ids))
                 intersection = list(set(genes_group) & set(kegg_genes))
 
                 # Forward row
@@ -198,6 +209,7 @@ def create_kcat_output(model, organism_code):
                     "products_name": ";".join(prod_names),
                     "products_kegg": ";".join(prod_keggs),
                     "genes_model": ";".join(genes_group),
+                    "uniprot_model": ";".join(uniprot_ids),
                     "kegg_genes": ";".join(kegg_genes),
                     "intersection_genes": ";".join(intersection) if intersection else ""
                 })
@@ -214,6 +226,7 @@ def create_kcat_output(model, organism_code):
                         "products_name": ";".join(subs_names),
                         "products_kegg": ";".join(subs_keggs),
                         "genes_model": ";".join(genes_group),
+                        "uniprot_model": ";".join(uniprot_ids),
                         "kegg_genes": ";".join(kegg_genes),
                         "intersection_genes": ";".join(intersection) if intersection else ""
                     })
@@ -224,7 +237,6 @@ def create_kcat_output(model, organism_code):
     )
 
     logging.info("Total of possible kcat values: %d", len(df))
-
     return df
 
 
