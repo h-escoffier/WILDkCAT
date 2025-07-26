@@ -9,6 +9,9 @@ import datetime
 import os
 
 
+# TODO: Implement matching score calculation with a expert of the field 
+
+
 # ---------------------------------------------
 # Retrieve turnover number (kcat) from SABIO-RK 
 # for a given EC number & KEGG reaction ID
@@ -17,10 +20,17 @@ import os
 
 def get_turnover_number_sabio(
         ec_number,
-        kegg_reaction_id: str = "",
+        kegg_reaction_id,
         ):
     """
-    TODO 
+    Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.
+
+    Parameters:
+        ec_number (str): Enzyme Commission number.
+        kegg_reaction_id (str): KEGG reaction ID.
+
+    Returns:
+        pd.DataFrame: DataFrame containing SABIO-RK entries for kcat.
     """
     base_url = 'https://sabiork.h-its.org/sabioRestWebServices/searchKineticLaws/entryIDs'
     parameters = 'https://sabiork.h-its.org/entry/exportToExcelCustomizable'
@@ -39,7 +49,7 @@ def get_turnover_number_sabio(
     request = requests.get(base_url, params=query)
     request.raise_for_status()  # Raise if 404 error
     if request.text == "no data found":
-        logging.warning('%s: No data found for the query.' % query_string)
+        logging.warning('%s: No data found for the query.' % f"{kegg_reaction_id} - {ec_number}")
         return pd.DataFrame()  # Return empty DataFrame if no data found
 
     entryIDs = [int(x) for x in request.text.strip().split('\n')]
@@ -52,6 +62,7 @@ def get_turnover_number_sabio(
     # Pathway, Product, PubMedID, Publication, Rate Equation, SabioReactionID, Substrate
     query = {'format':'tsv', 'fields[]':['EntryID', 'ECNumber', 'KeggReactionID', 'Reaction', 'Substrate', 'Product', 
                                          'UniProtKB_AC', 'Organism', 'Enzyme Variant', 'Temperature', 'pH', 
+                                         'Activator', 'Cofactor', 'Inhibitor',
                                          'KineticMechanismType', 'Parameter']}
 
     # Make POST request
@@ -61,6 +72,11 @@ def get_turnover_number_sabio(
     # Format the response into a DataFrame
     df = pd.read_csv(StringIO(request.text), sep='\t')
     df = df[df['parameter.name'].str.lower() == 'kcat'].reset_index(drop=True) # Keep only kcat parameters
+    # Remove rows with Activator, Cofactor, Inhibitor
+    # df = df[df['Activator'].isna() & df['Cofactor'].isna() & df['Inhibitor'].isna()]
+    # Drop unnecessary columns
+    # df = df.drop(columns=['Activator', 'Cofactor', 'Inhibitor'], errors='ignore')
+    # Convert Temperature and pH to numeric, coercing errors to NaN
     df['Temperature'] = pd.to_numeric(df['Temperature'], errors='coerce')
     df['pH'] = pd.to_numeric(df['pH'], errors='coerce')
     return df
@@ -82,36 +98,62 @@ def to_set(s):
 
 def find_rxn_direction(kcat_dict, sabio_df):
     """
-    TODO : I coded this to find the direction of the rxn bc I only have names :/// 
+    Determines the reaction direction in SABIO-RK data by matching substrate and product names.
+
+    Parameters:
+        kcat_dict (dict): Dictionary containing substrate and product names under 'substrates_name' and 'products_name'.
+        sabio_df (pd.DataFrame): DataFrame containing SABIO-RK entries with 'Substrate' and 'Product' columns.
+
+    Returns:
+        pd.DataFrame: Filtered SABIO-RK DataFrame with matching substrates or products, or empty DataFrame if no match.
     """
     # Convert lists to sets
     substrates_kcat = to_set(kcat_dict['substrates_name'])
     products_kcat = to_set(kcat_dict['products_name'])
 
     # 1. Look for a substrate match
-    sabio_df['Substrate_set'] = sabio_df['Substrate'].apply(to_set)
-    substrate_matches = sabio_df[
-        sabio_df['Substrate_set'].apply(lambda s: not substrates_kcat.isdisjoint(s))
+    sabio_df_substrate = sabio_df.copy()
+    sabio_df_substrate['Substrate_set'] = sabio_df_substrate['Substrate'].apply(to_set)
+    substrate_matches = sabio_df_substrate[
+        sabio_df_substrate['Substrate_set'].apply(lambda s: not substrates_kcat.isdisjoint(s))
     ]
     if not substrate_matches.empty:
         # drop 'Substrate_set' column
         substrate_matches = substrate_matches.drop(columns=['Substrate_set'])
-        return substrate_matches
-
+        return substrate_matches, None
+    
     # 2. If no substrate match, look for a product match
-    sabio_df['Product_set'] = sabio_df['Product'].apply(to_set) 
-    product_matches = sabio_df[
-        sabio_df['Product_set'].apply(lambda p: not products_kcat.isdisjoint(p))
+    sabio_df_product = sabio_df.copy()
+    sabio_df_product['Product_set'] = sabio_df_product['Product'].apply(to_set) 
+    product_matches = sabio_df_product[
+        sabio_df_product['Product_set'].apply(lambda p: not products_kcat.isdisjoint(p))
     ]
     if not product_matches.empty:
-        product_matches = product_matches.drop(columns=['Substrate_set', 'Product_set'])
-        return product_matches  # return all rows with product match
+        product_matches = product_matches.drop(columns=['Substrate_set', 'Product_set'], errors='ignore')
+        return product_matches, None
 
-    # 3. If neither substrate nor product matches, log a warning
+    # 3. If neither substrate nor product matches, check if the opposite direction matches
+    sabio_df_substrate = sabio_df.copy()
+    sabio_df_substrate['Substrate_set'] = sabio_df_substrate['Substrate'].apply(to_set)
+    substrate_matches = sabio_df_substrate[
+        sabio_df_substrate['Substrate_set'].apply(lambda s: not products_kcat.isdisjoint(s))
+    ]
+    if not substrate_matches.empty:
+        return pd.DataFrame(), 8
+    
+    sabio_df_product = sabio_df.copy()
+    sabio_df_product['Product_set'] = sabio_df_product['Product'].apply(to_set)
+    product_matches = sabio_df_product[
+        sabio_df_product['Product_set'].apply(lambda p: not substrates_kcat.isdisjoint(p))
+    ]
+    if not product_matches.empty:
+        return pd.DataFrame(), 8
+
+    # 4. If neither substrate nor product matches, log a warning
     kegg_rxn_id = sabio_df['KeggReactionID'].iloc[0] if 'KeggReactionID' in sabio_df.columns else 'Unknown'
     ec_code = sabio_df['ECNumber'].iloc[0] if 'ECNumber' in sabio_df.columns else 'Unknown'
     logging.warning('%s: No substrate or product matches between the two data sets.' % f"{kegg_rxn_id} - {ec_code}")
-    return pd.DataFrame()
+    return pd.DataFrame(), 9
 
 
 # ---------------------------------------------
@@ -285,21 +327,39 @@ def find_best_match(kcat_dict, sabio_df, general_criterias):
 
 def extract_kcat_from_sabio(kcat_dict, general_criterias):  
     """
-    TODO
+    Extracts the kcat value from SABIO-RK for a given kcat_dict and general criteria.
+
+    Parameters:
+        kcat_dict (dict): Dictionary containing kcat information (EC code, KEGG reaction ID, substrates, products, etc.).
+        general_criterias (dict): Dictionary of general criteria functions for filtering SABIO-RK entries.
+
+    Returns:
+        tuple: (kcat value or None, matching score)
     """
     sabio_df = cached_get_turnover_number_sabio(kcat_dict['ec_code'], kcat_dict['KEGG_rxn_id'])
     if sabio_df.empty: 
-        return (None, 9) # No corresponding data for the EC code and KEGG reaction ID in SABIO-RK
-    sabio_df = find_rxn_direction(kcat_dict, sabio_df)
+        return (None, 10) # No corresponding data for the EC code and KEGG reaction ID in SABIO-RK
+    sabio_df, matching_score = find_rxn_direction(kcat_dict, sabio_df)
     if sabio_df.empty: 
-        return (None, 8) # No match found in SABIO-RK for the given substrates/products
+        return (None, matching_score) # No match found in SABIO-RK for the given substrates/products
     # Find the best match
     return find_best_match(kcat_dict, sabio_df, general_criterias)
 
 
-def run(kcat_file_path, organism, temperature_range, pH_range, variant = "wildtype", report=True):
+def run_sabio_rk(kcat_file_path, organism, temperature_range, pH_range, variant = "wildtype", report=True):
     """
-    TODO
+    Runs the SABIO-RK kcat matching pipeline for a given input file and criteria.
+
+    Parameters:
+        kcat_file_path (str): Path to the input TSV file containing kcat data.
+        organism (str): Organism name to match in SABIO-RK entries.
+        temperature_range (tuple): Acceptable temperature range (min, max) for matching.
+        pH_range (tuple): Acceptable pH range (min, max) for matching.
+        variant (str, optional): Enzyme variant to match (default is "wildtype").
+        report (bool, optional): If True, generates an HTML report of matching statistics.
+
+    Returns:
+        None. Outputs a TSV file with matched kcat values and an optional HTML report.
     """
     # Create a dict with the general criterias
     general_criterias = {
@@ -322,8 +382,6 @@ def run(kcat_file_path, organism, temperature_range, pH_range, variant = "wildty
         if 'KEGG_rxn_id' not in kcat_dict or pd.isna(kcat_dict['KEGG_rxn_id']):
             continue 
 
-        # print(f"Processing {kcat_dict['ec_code']} with KEGG reaction ID {kcat_dict['KEGG_rxn_id']}...")
-
         # Extract kcat and matching score
         kcat, matching_score = extract_kcat_from_sabio(kcat_dict, general_criterias)
         
@@ -333,6 +391,7 @@ def run(kcat_file_path, organism, temperature_range, pH_range, variant = "wildty
 
     kcat_df.to_csv("in_progress/kcat_with_scores.tsv", sep='\t', index=False)
     logging.info("Output saved to 'in_progress/kcat_with_scores.tsv'")
+    
     if report:
 
         # Gather statistics
@@ -366,22 +425,34 @@ def run(kcat_file_path, organism, temperature_range, pH_range, variant = "wildty
         """
 
         # Save report
-        os.makedirs("reports", exist_ok=True)
-        report_path = "reports/kcat_report.html"
-        with open(report_path, "w") as f:
+        report_path = "reports/sabio_rk_report.html"
+        with open(report_path, "w", encoding="utf-8") as f:
             f.write(html)
         logging.info(f"HTML report saved to '{report_path}'")
 
+
 if __name__ == "__main__":
-    # 1. Send a request to SABIO-RK API
+    # Test : Send a request to SABIO-RK API
+    # kcat_dict = {'Index': 12, 'rxn': 'ACALD', 'KEGG_rxn_id': 'R00228', 'ec_code': '1.2.1.10', 'direction': 'reverse', 
+    #              'substrates_name': 'Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced', 'substrates_kegg': 'C00024;C00080;C00004', 
+    #              'products_name': 'Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide', 'products_kegg': 'C00084;C00010;C00003', 
+    #              'genes_model': 'b0351', 'uniprot_model': 'P77580', 'kegg_genes': 'b0351;b1241', 'intersection_genes': 'b0351', 
+    #              'kcat': None, 'matching_score': None}
+
     # df = get_turnover_number_sabio(
-    #     ec_number="4.2.1.2",
-    #     kegg_reaction_id="R01082",
+    #     ec_number="1.2.1.10",
+    #     kegg_reaction_id="R00228",
     # )
 
-    # Main function 
-    run("output/ecoli_kcat.tsv", 
-        'Escherichia coli',
-        (20, 37),
-        (6, 8), 
-    )
+    # df.to_csv("in_progress/sabio_rk_test.tsv", sep='\t', index=False)
+
+    # sabio_df = find_rxn_direction(kcat_dict, df)
+    # print(sabio_df)
+
+    # Test : Main function 
+    run_sabio_rk('output/ecoli_kcat.tsv', 
+                 'Escherichia coli',
+                 (20, 37),
+                 (6, 8)
+                 )
+    
