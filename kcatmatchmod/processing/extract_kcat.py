@@ -240,16 +240,70 @@ def create_kcat_output(model, organism_code):
     return df
 
 
-def run(model_path, organism_code):
+def run_extraction(model_path, organism_code, report=True):
+    """
+    Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.
+    Parameters:
+        model_path (str): Path to the metabolic model file 
+        organism_code (str): Organism code of the model (e.g., 'eco' for E. coli).
+        report (bool, optional): If True, generates an HTML report with summary statistics. Defaults to True.
+
+    """
     model = read_model(model_path)
     logging.info(f"Model loaded with {len(model.reactions)} reactions.")
     df = create_kcat_output(model, organism_code)
     df.to_csv("output/ecoli_kcat.tsv", sep='\t', index=False)
     logging.info("Output saved to 'output/ecoli_kcat.tsv'")
+    
+    if report: 
+
+        # Model statistics
+        num_model_reactions = len(model.reactions)
+        num_model_metabolites = len(model.metabolites)
+        num_model_genes = len(model.genes)
+
+        # Kcat extraction statistics
+        num_reactions = df['rxn'].nunique()
+        num_ec_codes = df['ec_code'].nunique()
+        num_kegg_rxn_ids = df['KEGG_rxn_id'].nunique()
+        num_ec_kegg_pairs = df[['ec_code', 'KEGG_rxn_id']].drop_duplicates().shape[0]
+
+        # Coverage statistics
+        rxn_coverage = 100.0 * num_reactions / num_model_reactions if num_model_reactions else 0
+
+        html = f"""
+        <html>
+        <head><title>Kcat Extraction Report</title></head>
+        <body>
+        <h1>Kcat Extraction Report</h1>
+        <h2>Model Overview</h2>
+        <ul>
+            <li><b>Model name:</b> {model.name}</li>
+            <li><b>Number of reactions:</b> {num_model_reactions}</li>
+            <li><b>Number of metabolites:</b> {num_model_metabolites}</li>
+            <li><b>Number of genes:</b> {num_model_genes}</li>
+        </ul>
+        <h2>Kcat Extraction Statistics</h2>
+        <ul>
+            <li><b>Number of reactions with kcat informations:</b> {num_reactions} ({rxn_coverage:.1f}% of model reactions)</li>
+            <li><b>Number of unique EC codes:</b> {num_ec_codes}</li>
+            <li><b>Number of unique KEGG reaction IDs:</b> {num_kegg_rxn_ids}</li>
+            <li><b>Number of unique (EC code, KEGG rxn ID) pairs:</b> {num_ec_kegg_pairs}</li>
+            <li><b>Total rows in output:</b> {len(df)}</li>
+        </ul>
+        </body>
+        </html>
+        """
+
+        # Save report
+        report_path = "reports/kcat_summary.html"
+        with open(report_path, "w", encoding="utf-8") as f:
+            f.write(html)
+        logging.info(f"HTML report saved to '{report_path}'")
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     print("Starting EC code extraction...")
-    run("model/e_coli_core.json", 'eco')
+    run_extraction("model/e_coli_core.json", 'eco')
     print("EC code extraction completed.")
