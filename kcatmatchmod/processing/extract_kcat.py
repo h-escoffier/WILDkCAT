@@ -271,6 +271,10 @@ def run_extraction(model_path, organism_code, report=True):
         # Coverage statistics
         rxn_coverage = 100.0 * num_reactions / num_model_reactions if num_model_reactions else 0
 
+        # Percentage of unique EC codes with at least one KEGG gene
+        ec_with_kegg_gene = df.groupby('ec_code')['kegg_genes'].apply(lambda x: any(g for g in x if g)).sum()
+        percent_ec_with_kegg_gene = 100.0 * ec_with_kegg_gene / num_ec_codes if num_ec_codes else 0
+
         html = f"""
         <html>
         <head><title>Kcat Extraction Report</title></head>
@@ -290,6 +294,7 @@ def run_extraction(model_path, organism_code, report=True):
             <li><b>Number of unique KEGG reaction IDs:</b> {num_kegg_rxn_ids}</li>
             <li><b>Number of unique (EC code, KEGG rxn ID) pairs:</b> {num_ec_kegg_pairs}</li>
             <li><b>Total rows in output:</b> {len(df)}</li>
+            <li><b>Percentage of unique EC codes with KEGG genes:</b> {percent_ec_with_kegg_gene:.1f}%</li>
         </ul>
         </body>
         </html>
@@ -304,6 +309,4 @@ def run_extraction(model_path, organism_code, report=True):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    print("Starting EC code extraction...")
     run_extraction("model/e_coli_core.json", 'eco')
-    print("EC code extraction completed.")
