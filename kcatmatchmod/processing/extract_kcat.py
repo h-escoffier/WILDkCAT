@@ -6,6 +6,8 @@ from tqdm import tqdm
 from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
+from reports import report_extraction
+
 
 def read_model(model_path: str):
     """
@@ -256,56 +258,8 @@ def run_extraction(model_path, organism_code, report=True):
     logging.info("Output saved to 'output/ecoli_kcat.tsv'")
     
     if report: 
-
-        # Model statistics
-        num_model_reactions = len(model.reactions)
-        num_model_metabolites = len(model.metabolites)
-        num_model_genes = len(model.genes)
-
-        # Kcat extraction statistics
-        num_reactions = df['rxn'].nunique()
-        num_ec_codes = df['ec_code'].nunique()
-        num_kegg_rxn_ids = df['KEGG_rxn_id'].nunique()
-        num_ec_kegg_pairs = df[['ec_code', 'KEGG_rxn_id']].drop_duplicates().shape[0]
-
-        # Coverage statistics
-        rxn_coverage = 100.0 * num_reactions / num_model_reactions if num_model_reactions else 0
-
-        # Percentage of unique EC codes with at least one KEGG gene
-        ec_with_kegg_gene = df.groupby('ec_code')['kegg_genes'].apply(lambda x: any(g for g in x if g)).sum()
-        percent_ec_with_kegg_gene = 100.0 * ec_with_kegg_gene / num_ec_codes if num_ec_codes else 0
-
-        html = f"""
-        <html>
-        <head><title>Kcat Extraction Report</title></head>
-        <body>
-        <h1>Kcat Extraction Report</h1>
-        <h2>Model Overview</h2>
-        <ul>
-            <li><b>Model name:</b> {model.name}</li>
-            <li><b>Number of reactions:</b> {num_model_reactions}</li>
-            <li><b>Number of metabolites:</b> {num_model_metabolites}</li>
-            <li><b>Number of genes:</b> {num_model_genes}</li>
-        </ul>
-        <h2>Kcat Extraction Statistics</h2>
-        <ul>
-            <li><b>Number of reactions with kcat informations:</b> {num_reactions} ({rxn_coverage:.1f}% of model reactions)</li>
-            <li><b>Number of unique EC codes:</b> {num_ec_codes}</li>
-            <li><b>Number of unique KEGG reaction IDs:</b> {num_kegg_rxn_ids}</li>
-            <li><b>Number of unique (EC code, KEGG rxn ID) pairs:</b> {num_ec_kegg_pairs}</li>
-            <li><b>Total rows in output:</b> {len(df)}</li>
-            <li><b>Percentage of unique EC codes with KEGG genes:</b> {percent_ec_with_kegg_gene:.1f}%</li>
-        </ul>
-        </body>
-        </html>
-        """
-
-        # Save report
-        report_path = "reports/kcat_summary.html"
-        with open(report_path, "w", encoding="utf-8") as f:
-            f.write(html)
-        logging.info(f"HTML report saved to '{report_path}'")
-
+        report_extraction(model, df)
+        
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
