@@ -11,6 +11,10 @@ def retrieve_kcat_from_sabio_rk():
                  pH_range=(6, 8))
 
 
+def retrieve_kcat_from_uniprot(): 
+    pass 
+
+
 def retrieve_kcat_from_catapro(): 
     pass 
 

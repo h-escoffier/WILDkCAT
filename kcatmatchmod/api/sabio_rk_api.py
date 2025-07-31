@@ -8,7 +8,7 @@ from functools import lru_cache
 from reports import report_sabio_rk
 
 
-# TODO: Implement matching score calculation with a expert of the field 
+# TODO: Implement matching score calculation with a expert of the field
 
 
 # ---------------------------------------------
@@ -19,7 +19,7 @@ from reports import report_sabio_rk
 
 def get_turnover_number_sabio(
         ec_number,
-        kegg_reaction_id,
+        kegg_reaction_id='',
         ):
     """
     Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.
@@ -153,7 +153,7 @@ def find_rxn_direction(kcat_dict, sabio_df):
 
 
 # ---------------------------------------------
-# Helper functions for matching
+# Matching functions 
 # ---------------------------------------------
 
 
@@ -256,7 +256,7 @@ def create_kcat_value(df, method='mean'):
 
 
 # ---------------------------------------------
-# Main function to find best match
+# Find best match
 # ---------------------------------------------
 
 
@@ -302,7 +302,7 @@ def find_best_match(kcat_dict, sabio_df, general_criterias):
         kcat = create_kcat_value(match)
         return kcat, 6
     # 7. No match found
-    logging.warning('%s: No match found in SABIO-RK - 7' % (kcat_dict['KEGG_rxn_id'], kcat_dict['ec_code'])) # Should never happen
+    logging.warning('%s: Matching failed' % (kcat_dict['KEGG_rxn_id'], kcat_dict['ec_code'])) # Should never happen
     return None, 7
 
         
@@ -384,21 +384,11 @@ def run_sabio_rk(kcat_file_path, organism, temperature_range, pH_range, variant 
 
 if __name__ == "__main__":
     # Test : Send a request to SABIO-RK API
-    # kcat_dict = {'Index': 12, 'rxn': 'ACALD', 'KEGG_rxn_id': 'R00228', 'ec_code': '1.2.1.10', 'direction': 'reverse', 
-    #              'substrates_name': 'Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced', 'substrates_kegg': 'C00024;C00080;C00004', 
-    #              'products_name': 'Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide', 'products_kegg': 'C00084;C00010;C00003', 
-    #              'genes_model': 'b0351', 'uniprot_model': 'P77580', 'kegg_genes': 'b0351;b1241', 'intersection_genes': 'b0351', 
-    #              'kcat': None, 'matching_score': None}
-
     # df = get_turnover_number_sabio(
-    #     ec_number="1.2.4.1",
-    #     kegg_reaction_id="R00209",
+    #     ec_number="2.7.1.11",
+    #     # kegg_reaction_id="R00209",
     # )
-
     # df.to_csv("in_progress/sabio_rk_test.tsv", sep='\t', index=False)
-
-    # sabio_df = find_rxn_direction(kcat_dict, df)
-    # print(sabio_df)
 
     # Test : Main function 
     run_sabio_rk('output/ecoli_kcat.tsv', 

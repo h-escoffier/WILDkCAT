@@ -7,22 +7,14 @@ from dotenv import load_dotenv
 from functools import lru_cache
 import hashlib
 import os 
-
-
-import hashlib
-import time
-import string
-import re
-import urllib.request
-import pandas as pd
-
+import re 
 
 
 load_dotenv()
 
 
 # ---------------------------------------------
-# Retrieve turnover number (kcat) from BRENDA 
+# Retrieve turnover number (kcat) from BRENDA
 # for a given EC number & KEGG reaction ID
 # ---------------------------------------------
 
@@ -73,13 +65,64 @@ def get_turnover_number_brenda(
 
     # Remove None values (-999)
     data = [entry for entry in data if entry.get('turnoverNumber') is not None and entry.get('turnoverNumber') != '-999']
-    return pd.DataFrame(data)
+    df = pd.DataFrame(data)
+    # Extract pH from commentary
+    df["pH"] = df["commentary"].str.extract(r"pH\s*([\d\.]+)")
+    # Extract temperature from commentary
+    df["temperature"] = df["commentary"].str.extract(r"([\d\.]+)\?C")
+    df["variant"] = df["commentary"].apply(get_variant)
+    # Drop unnecessary columns
+    df.drop(columns=["commentary", "ligandStructureId"], inplace=True, errors='ignore')
+    return df
+
+
+def get_variant(text):
+    text = text.lower()
+    if "wild" in text:  # wild-type ou wild type
+        return "wild-type"
+    elif any(word in text for word in ["mutant", "mutated", "mutation"]):
+        return "mutant"
+    return None
+
+
+# ---------------------------------------------
+# Matching functions 
+# ---------------------------------------------
+
+
+def matching(): 
+    pass 
+
+
+def match_organism_substrate_ph_temp(): 
+    pass 
+
+
+# ---------------------------------------------
+# Find best match
+# ---------------------------------------------
+
+
+def find_best_match():
+    pass 
+
+
+# ---------------------------------------------
+# Main functions
+# ---------------------------------------------
+
+
+def extract_kcat_from_brenda(): 
+    pass 
+
+
+def run_brenda(): 
+    pass 
 
 
 if __name__ == "__main__":
-    # Example usage
-
-    turnover_data = get_turnover_number_brenda(
+    # Test : Send a request to BRENDA API
+    df = get_turnover_number_brenda(
         ec_number="2.7.1.11",
     )
-    turnover_data.to_csv("in_progress/turnover_data_ec_4.tsv", sep='\t', index=False)
+    df.to_csv("in_progress/brenda_test.tsv", sep='\t', index=False)
