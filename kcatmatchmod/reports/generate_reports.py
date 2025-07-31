@@ -3,8 +3,7 @@ import pandas as pd
 import datetime
 
 
-
-def report_extraction(model, df):
+def report_extraction(model, df, transferred):
     """
     Generate an HTML report summarizing the kcat extraction results.
     
@@ -38,15 +37,16 @@ def report_extraction(model, df):
     <h1>Kcat Extraction Report</h1>
     <h2>Model Overview</h2>
     <ul>
-        <li><b>Model name:</b> {model.name}</li>
+        <li><b>Model name:</b> {model.id}</li>
         <li><b>Number of reactions:</b> {num_model_reactions}</li>
         <li><b>Number of metabolites:</b> {num_model_metabolites}</li>
         <li><b>Number of genes:</b> {num_model_genes}</li>
     </ul>
     <h2>Kcat Extraction Statistics</h2>
     <ul>
-        <li><b>Number of reactions with kcat informations:</b> {num_reactions} ({rxn_coverage:.1f}% of model reactions)</li>
-        <li><b>Number of unique EC codes:</b> {num_ec_codes}</li>
+        <li><b>Number of reactions with EC informations:</b> {num_reactions} ({rxn_coverage:.1f}% of model reactions)</li>
+        <li><b>Number of EC found in KEGG:</b> {num_ec_codes}</li>
+        <li><b>Number of EC not found in KEGG:</b> {transferred}</li>
         <li><b>Number of unique KEGG reaction IDs:</b> {num_kegg_rxn_ids}</li>
         <li><b>Number of unique (EC code, KEGG rxn ID) pairs:</b> {num_ec_kegg_pairs}</li>
         <li><b>Total rows in output:</b> {len(df)}</li>

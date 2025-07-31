@@ -5,7 +5,9 @@ from tqdm import tqdm
 from io import StringIO
 from functools import lru_cache
 
-from reports import report_sabio_rk
+
+from kcatmatchmod.utils.matching import create_kcat_value
+from kcatmatchmod.reports.generate_reports import report_sabio_rk
 
 
 # TODO: Implement matching score calculation with a expert of the field
@@ -228,33 +230,6 @@ def match_ec_only(kcat_dict, sabio_df, general_criterias):
     return sabio_df[mask].copy()
 
 
-def create_kcat_value(df, method='mean'):
-    """
-    Aggregate kcat values from the DataFrame using the specified method.
-
-    Parameters:
-        df (pd.DataFrame): DataFrame containing SABIO-RK entries.
-        method (str): Aggregation method: 'mean', 'max', or 'min'.
-
-    Returns:
-        float or None: Aggregated kcat value, or None if no valid values.
-    """
-    # Ensure the column exists and is numeric
-    if 'parameter.startValue' not in df.columns:
-        return None
-    values = pd.to_numeric(df['parameter.startValue'], errors='coerce').dropna()
-    if values.empty:
-        return None
-    if method == 'mean':
-        return values.mean()
-    elif method == 'max':
-        return values.max()
-    elif method == 'min':
-        return values.min()
-    else:
-        raise ValueError("Invalid 'method' parameter. Choose from 'mean', 'max', or 'min'.")
-
-
 # ---------------------------------------------
 # Find best match
 # ---------------------------------------------
@@ -365,7 +340,7 @@ def run_sabio_rk(kcat_file_path, organism, temperature_range, pH_range, variant 
         kcat_dict = row._asdict()
 
         # if 'KEGG_rxn_id' is missing, skip this row
-        if 'KEGG_rxn_id' not in kcat_dict or pd.isna(kcat_dict['KEGG_rxn_id']):
+        if 'KEGG_rxn_id' not in kcat_dict or pd.isna(kcat_dict['KEGG_rxn_id']):  # TODO: Should be process also 
             continue 
 
         # Extract kcat and matching score

@@ -61,6 +61,7 @@ def get_turnover_number_brenda(
     # Format the response into a DataFrame
     data = serialize_object(result)
     if not data:
+        logging.warning('%s: No data found for the query.' % f"{ec_number}")
         return pd.DataFrame()
 
     # Remove None values (-999)
@@ -83,6 +84,12 @@ def get_variant(text):
     elif any(word in text for word in ["mutant", "mutated", "mutation"]):
         return "mutant"
     return None
+
+
+@lru_cache(maxsize=None)
+def cached_get_turnover_number_brenda(ec_number):
+    """Cached wrapper to avoid repeated BRENDA API calls."""
+    return get_turnover_number_brenda(ec_number)
 
 
 # ---------------------------------------------
@@ -112,12 +119,47 @@ def find_best_match():
 # ---------------------------------------------
 
 
-def extract_kcat_from_brenda(): 
-    pass 
+def extract_kcat_from_brenda(kcat_dict, general_criterias): 
+    """
+    TODO:
+    """
+    brenda_df = cached_get_turnover_number_brenda(kcat_dict['ec_code'])
+    if brenda_df.empty: 
+        return (None, 10) # No corresponding data for the EC code in BRENDA
+    # Find the best match 
+    return find_best_match(brenda_df, kcat_dict, general_criterias)
+    
 
+def run_brenda(kcat_file_path, organism, temperature_range, pH_range, variant = "wildtype", report=True):  # TODO: The run function could be shared with the other APIs
+    """
+    TODO: 
+    """
+    general_criterias = {
+        "Organism": lambda x: x == organism,
+        "Temperature": lambda x: temperature_range[0] <= x <= temperature_range[1],
+        "pH": lambda x: pH_range[0] <= x <= pH_range[1],
+        "Enzyme Variant": lambda x: x == variant,
+    }
 
-def run_brenda(): 
-    pass 
+    # Read the kcat file
+    kcat_df = pd.read_csv(kcat_file_path, sep='\t')
+
+    # Initialize new columns
+    kcat_df['kcat'] = None
+    kcat_df['matching_score'] = None
+
+    for row in tqdm(kcat_df.itertuples(), total=len(kcat_df), desc="Processing BRENDA"):
+        kcat_dict = row._asdict()
+
+        # Extract kcat and matching score
+        kcat, matching_score = extract_kcat_from_brenda(kcat_dict, general_criterias)
+
+        # Assign results to the main dataframe
+        kcat_df.loc[row.Index, 'kcat'] = kcat
+        kcat_df.loc[row.Index, 'matching_score'] = matching_score
+
+    kcat_df.to_csv("output/ecoli_kcat_brenda.tsv", sep='\t', index=False) # TODO: avoid to hardcode the output path
+    logging.info("Output saved to 'output/ecoli_kcat_brenda.tsv'")
 
 
 if __name__ == "__main__":

@@ -85,11 +85,17 @@ def convert_kegg_to_smiles(kegg_compound_id):
     """
     sid = convert_kegg_compound_to_sid(kegg_compound_id)
     if sid is None:
+        logging.warning('%s: Failed to retrieve SID for KEGG compound ID %s' % (kegg_compound_id))
         return None
     cid = convert_sid_to_cid(sid)
     if cid is None:
+        logging.warning('%s: Failed to retrieve CID for KEGG compound ID %s' % (kegg_compound_id))
         return None
-    return convert_cid_to_smiles(cid)
+    smiles = convert_cid_to_smiles(cid)
+    if smiles is None:
+        logging.warning('%s: Failed to retrieve SMILES for KEGG compound ID %s' % (kegg_compound_id))
+        return None
+    return smiles
     
 
 @lru_cache(maxsize=None)
@@ -134,8 +140,46 @@ def cached_convert_uniprot_to_sequence(uniprot_id):
 # ---------------------------------------------
 
 
-def create_catapro_input_file(kcat_file_path, output_path):
-    pass 
+def create_catapro_input_file(kcat_df, output_path):
+    """
+    TODO: 
+    """
+    catapro_input = []
+
+    for _, row in tqdm(kcat_df.iterrows(), total=len(kcat_df), desc="Generating CataPro input"):
+        uniprot = row['uniprot_model']
+        ec_code = row['ec_code']
+
+        # If multiple UniProt IDs continue TODO: Find a way to handle this 
+        if len(uniprot.split(';')) > 1:        
+            logging.warning(f"Multiple UniProt IDs found for {ec_code}: {uniprot}.")
+            continue
+
+        sequence = cached_convert_uniprot_to_sequence(uniprot) 
+        if sequence is None:
+            continue
+        
+        smiles_list = []
+        
+        for kegg_compound_id in row['substrates_kegg'].split(';'):
+            smiles = cached_convert_kegg_to_smiles(kegg_compound_id)
+            if smiles is not None:
+                smiles_list.append(smiles[0]) # If multiple SMILES, take the first one TODO: Handle this case
+        
+        if len(smiles_list) > 0:
+            for smiles in smiles_list:
+                catapro_input.append({
+                    "Enzyme_id": uniprot,
+                    "type": "wild",  # TODO: I think it should be always 'wild' ? 
+                    "sequence": sequence,
+                    "smiles": smiles
+                })
+
+    # Generate CataPro input file
+    catapro_input_df = pd.DataFrame(catapro_input)
+    catapro_input_df.to_csv(output_path, sep=',', index=False)
+
+    return catapro_input_df
 
 
 # ---------------------------------------------
@@ -150,19 +194,26 @@ def integrate_catapro_predictions(kcat_file_path, catapro_predictions_path, outp
 # Main functions
 # ---------------------------------------------
 
-def run_catapro(kcat_file_path, output_path, report=True):
+
+def run_catapro(kcat_file_path, limit_matching_score, output_path, report=True):
     """
     TODO 
     """
-    # Load kcat file 
-    # Identify the kcat values to predict
-    # Retrieve SMILES and sequences
-    # Create CataPro input file
+    # Read the kcat file
+    kcat_df = pd.read_csv(kcat_file_path, sep='\t')
+
+    # Subset rows with no values or matching score above the limit
+    kcat_df = kcat_df[(kcat_df['matching_score'] > limit_matching_score) | (kcat_df['matching_score'].isnull())]
+    # Drop rows with no UniProt ID or no substrates_kegg
+    kcat_df = kcat_df[kcat_df['uniprot_model'].notnull() & kcat_df['substrates_kegg'].notnull()]
+    
+    # Generate CataPro input file
+    catapro_input = create_catapro_input_file(kcat_df, output_path)
+
     # Run CataPro predictions
     # Integrate CataPro predictions into kcat file
     # Save the output file
     # Generate report if required
-    pass
 
 
 if __name__ == "__main__":
@@ -170,7 +221,7 @@ if __name__ == "__main__":
     # print(convert_kegg_to_smiles("C00008"))
 
     # Test : Retrieve Sequence from UniProt ID
-    print(convert_uniprot_to_sequence("P0A796"))
+    # print(convert_uniprot_to_sequence("P0A796"))
 
     # Test : Main function
-    # run_catapro("input/kcat_file.tsv", "output/catapro_input.tsv
+    run_catapro("output/ecoli_kcat_sabio.tsv", 9, "in_progress/catapro_input.tsv")

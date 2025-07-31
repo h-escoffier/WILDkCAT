@@ -4,32 +4,14 @@ import requests
 import pandas as pd 
 from tqdm import tqdm
 from functools import lru_cache
-from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
-from reports import report_extraction
+from kcatmatchmod.reports.generate_reports import report_extraction
+from kcatmatchmod.utils.model_function import read_model
 
 
-def read_model(model_path: str):
-    """
-    Reads a metabolic model from a given path.
-    
-    Parameters:
-    - model_path: str
-        Path to a model file.
-    
-    Returns:
-    - model: COBRA.Model
-        The COBRA model object.
-    """
-    # Check the file extension
-    if model_path.endswith(".json"):
-        return load_json_model(model_path)
-    elif model_path.endswith(".mat"):
-        return load_matlab_model(model_path)
-    elif model_path.endswith(".xml") or model_path.endswith(".sbml"):
-        return read_sbml_model(model_path)
-    else:
-        raise ValueError(f"Unsupported model file format: {model_path}")
+# TODO: Implement Retry mechanism for API calls (to deal with status 502, 503, 504)
+# TODO: The KEGG genes have to match the genes in the model to be able to check the intersection
+# TODO: The report can be improved with more statistics, e.g. number of kcats dropped because the EC have been transferred etc.
 
 
 def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
@@ -47,10 +29,11 @@ def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
         List of gene identifiers (KEGG format).
     """
     # Get KEGG orthologs (or reactions) associated with the EC code
-    ec_url = f"https://rest.kegg.jp/link/{organism_code}/enzyme:{ec_code}"
-    response = requests.get(ec_url)
+    url = f"https://rest.kegg.jp/link/{organism_code}/enzyme:{ec_code}"
+    response = requests.get(url)
     
     if response.status_code != 200:
+        logging.warning(f"Failed to retrieve data from KEGG API: {response.status_code} - {ec_code}")
         return []  # or raise Exception(f"Failed to retrieve data from KEGG API: {response.status_code}")
     
     if response.text == "\n":
@@ -71,6 +54,29 @@ def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
 def cached_get_kegg_genes_by_ec(organism_code, ec_code):
     """Cached wrapper to avoid repeated KEGG API calls."""
     return get_kegg_genes_by_ec(organism_code, ec_code)
+
+
+def is_ec_code_transferred(ec_code): 
+    """
+    TODO: 
+    """
+    url = f'https://rest.kegg.jp/list/{ec_code}'
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        logging.error(f"Failed to retrieve data from KEGG API: {response.status_code}")
+        return None
+
+    if "Transferred to" in response.text:
+        logging.warning(f"EC code {ec_code} has been transferred.")
+        return True
+    return False
+
+
+@lru_cache(maxsize=None)
+def cached_is_ec_code_transferred(ec_code):
+    """Cached wrapper to avoid repeated KEGG API calls."""
+    return is_ec_code_transferred(ec_code)
 
 
 def parse_gpr(gpr_str):
@@ -115,8 +121,8 @@ def split_metabolites(metabolites):
 
 def create_kcat_output(model, organism_code):
     rows = []
-
-    for rxn in tqdm(model.reactions, desc=f"Processing {model.name} reactions"):
+    transferred_count = 0
+    for rxn in tqdm(model.reactions, desc=f"Processing {model.id} reactions"):
         # --- KEGG Reaction ID ---
         kegg_rxn_id = rxn.annotation.get("kegg.reaction")
         if isinstance(kegg_rxn_id, list):
@@ -153,6 +159,12 @@ def create_kcat_output(model, organism_code):
         for ec in ec_codes:
             # KEGG genes for EC
             kegg_genes = cached_get_kegg_genes_by_ec(organism_code, ec)
+
+            if kegg_genes == []:
+                is_transferred = cached_is_ec_code_transferred(ec)
+                if is_transferred: 
+                    transferred_count += 1
+                continue
 
             # If no genes are associated with the EC code in the model 
             if not gpr_groups:
@@ -239,10 +251,10 @@ def create_kcat_output(model, organism_code):
     )
 
     logging.info("Total of possible kcat values: %d", len(df))
-    return df
+    return df, transferred_count
 
 
-def run_extraction(model_path, organism_code, report=True):
+def run_extraction(model_path, output_path, organism_code, report=True):
     """
     Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.
     Parameters:
@@ -253,14 +265,16 @@ def run_extraction(model_path, organism_code, report=True):
     """
     model = read_model(model_path)
     logging.info(f"Model loaded with {len(model.reactions)} reactions.")
-    df = create_kcat_output(model, organism_code)
-    df.to_csv("output/ecoli_kcat.tsv", sep='\t', index=False)
-    logging.info("Output saved to 'output/ecoli_kcat.tsv'")
-    
-    if report: 
-        report_extraction(model, df)
+    df, transferred = create_kcat_output(model, organism_code)
+    df.to_csv(output_path, sep='\t', index=False)
+    logging.info(f"Output saved to '{output_path}'")
+
+    if report:
+        report_extraction(model, df, transferred)
         
 
 if __name__ == "__main__":
+    # Test : Run extraction on a model
     logging.basicConfig(level=logging.INFO)
-    run_extraction("model/e_coli_core.json", 'eco')
+    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')
