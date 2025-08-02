@@ -16,8 +16,6 @@ def report_extraction(model, df, transferred):
     num_reactions = df['rxn'].nunique()
     num_ec_codes = df['ec_code'].nunique()
     num_ec_codes_transferred = transferred
-    num_ec_codes_in_model = num_ec_codes + num_ec_codes_transferred
-    num_kegg_rxn_ids = df['KEGG_rxn_id'].nunique()
 
     rxn_coverage = 100.0 * num_reactions / num_model_reactions if num_model_reactions else 0
     percent_ec_retrieved = 100.0 * num_ec_codes / (num_ec_codes + num_ec_codes_transferred) if (num_ec_codes + num_ec_codes_transferred) else 0
@@ -185,22 +183,12 @@ def report_extraction(model, df, transferred):
                     </tr>
                     <tr>
                         <td>EC codes found in KEGG</td>
-                        <td>{num_ec_codes} (100%)</td>
+                        <td>{num_ec_codes} ({percent_ec_retrieved:.1f}%)</td>
                         <td>
                             <div class="progress">
-                                <div class="progress-bar" style="width:100%;"></div>
+                                <div class="progress-bar" style="width:{percent_ec_retrieved}%;"></div>
                             </div>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>EC codes not found (transferred)</td>
-                        <td>{num_ec_codes_transferred}</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Unique KEGG reaction IDs</td>
-                        <td>{num_kegg_rxn_ids}</td>
-                        <td>-</td>
                     </tr>
                     <tr>
                         <td>Total rows in output</td>
@@ -212,7 +200,7 @@ def report_extraction(model, df, transferred):
         </div>
 
         <footer>
-            Report generated automatically. &copy; {datetime.datetime.now().year}
+            KcatMetaMod - Report generated automatically. 
         </footer>
     </body>
     </html>
