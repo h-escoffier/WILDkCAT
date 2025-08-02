@@ -1,14 +1,15 @@
+import logging
 from api import run_sabio_rk
 
 def retrieve_kcat_from_brenda(): 
     pass 
 
 
-def retrieve_kcat_from_sabio_rk():
-    run_sabio_rk(input_file='output/ecoli_kcat.tsv',
-                 organism='Escherichia coli',
-                 temperature_range=(20, 37),
-                 pH_range=(6, 8))
+def retrieve_kcat_from_sabio_rk(kcat_path, organism, temperature_range, pH_range):
+    run_sabio_rk(kcat_path,
+                 organism,
+                 temperature_range,
+                 pH_range)
 
 
 def retrieve_kcat_from_uniprot(): 
@@ -24,4 +25,13 @@ def retrieve_kcat_from_turnip():
 
 
 def run_retrieve_kcat(kcat_path, organism, temperature_range, pH_range):
-    pass 
+    # Retrieve kcat values from SABIO-RK
+    df = retrieve_kcat_from_sabio_rk(kcat_path, organism, temperature_range, pH_range)
+    # Retrieve kcat values from BRENDA
+    df = retrieve_kcat_from_brenda()
+    # Retrieve kcat values from UniProt
+    df = retrieve_kcat_from_uniprot()
+    # Retrieve kcat values from CaTaPro
+    df = retrieve_kcat_from_catapro()
+    # Save the output DataFrame to a file
+    df.to_csv(kcat_path, sep="\t", index=False)

@@ -7,6 +7,7 @@ from functools import lru_cache, wraps
 from time import sleep
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
+from kcatmatchmod.api.api_utilities import safe_requests_get
 from kcatmatchmod.reports.generate_reports import report_extraction
 
 
@@ -31,35 +32,6 @@ def read_model(model_path: str):
         return read_sbml_model(model_path)
     else:
         logging.error(f"Unsupported model file format: {model_path}")
-
-
-# --- API Utilities ---
-
-
-def retry_api(max_retries=3, backoff_factor=1.5):
-    """Decorator to retry API calls with exponential backoff."""
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            delay = 1
-            for attempt in range(max_retries):
-                try:
-                    return func(*args, **kwargs)
-                except (requests.RequestException, ValueError) as e:
-                    logging.warning(f"API call failed ({e}), retry {attempt+1}/{max_retries}...")
-                    sleep(delay)
-                    delay *= backoff_factor
-            logging.error(f"API call failed after {max_retries} retries.")
-            return None
-        return wrapper
-    return decorator
-
-
-@retry_api(max_retries=4, backoff_factor=2)
-def safe_requests_get(url, timeout=10):
-    response = requests.get(url, timeout=timeout)
-    response.raise_for_status()
-    return response
 
 
 # --- KEGG API ---
@@ -296,5 +268,5 @@ def run_extraction(model_path, output_path, organism_code, report=True):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
-    # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')
+    # run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')
