@@ -8,7 +8,11 @@ from time import sleep
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 from kcatmatchmod.api.api_utilities import safe_requests_get
-from kcatmatchmod.reports.generate_reports import report_extraction
+from kcatmatchmod.utils.generate_reports import report_extraction
+
+
+# TODO: Check the genes format in KEGG and model.genes and keep only the lines with a correct intersection between KEGG genes and model.genes
+# TODO: I don't know if we should keep the EC codes for which no KEGG genes were found for the organism ?
 
 
 # --- Load Model ---
@@ -155,11 +159,12 @@ def create_kcat_output(model, organism_code):
 
     Returns:
         df (pandas.DataFrame) : A DataFrame with columns including reaction ID, KEGG reaction ID, EC code, direction, substrate/product names and KEGG IDs, model genes, UniProt IDs, KEGG genes, and intersection genes.
-        transferred_count (int) : The number of EC codes for which kcat values were transferred.
+        report_statistics (dict) : A dictionary with statistics for the report, including the number of incomplete/incorrect EC codes and EC for which kcat values were transferred.
     """
     rows = []
-    transferred_count = 0
+    set_incomplete_ec_codes, set_transferred_ec_codes, set_no_genes_ec_codes = set(), set(), set()
     ec_pattern = re.compile(r"^\d+\.\d+\.\d+\.\d+$")
+    
     for rxn in tqdm(model.reactions, desc=f"Processing {model.id} reactions"):
         kegg_rxn_id = rxn.annotation.get("kegg.reaction")
         if isinstance(kegg_rxn_id, list):
@@ -184,14 +189,22 @@ def create_kcat_output(model, organism_code):
         gpr_groups = parse_gpr(rxn.gene_reaction_rule)
         for ec in ec_codes:
             if not ec_pattern.match(ec):
-                logging.warning(f"EC code '{ec}' is not in the correct format, skipping.")
+                if ec not in set_incomplete_ec_codes:
+                    set_incomplete_ec_codes.add(ec)
+                    logging.warning(f"EC code '{ec}' is not in the correct format, skipping.")
                 continue
             kegg_genes = get_kegg_genes_by_ec(organism_code, ec)
             if not kegg_genes:
                 is_transferred = is_ec_code_transferred(ec)
                 if is_transferred:
-                    transferred_count += 1
-                continue
+                    if ec not in set_transferred_ec_codes:
+                        set_transferred_ec_codes.add(ec)
+                else: 
+                    # No genes found for this organism 
+                    if ec not in set_no_genes_ec_codes:
+                        set_no_genes_ec_codes.add(ec)
+                    logging.warning(f"No KEGG genes found for EC code '{ec}' in organism '{organism_code}'.")
+                kegg_genes = []
             if not gpr_groups:
                 for direction, sn, sk, pn, pk in [
                     ("forward", subs_names, subs_keggs, prod_names, prod_keggs),
@@ -245,11 +258,28 @@ def create_kcat_output(model, organism_code):
                         "kegg_genes": ";".join(kegg_genes),
                         "intersection_genes": ";".join(intersection) if intersection else ""
                     })
+
+    # Create output 
     df = pd.DataFrame(rows).drop_duplicates(
         subset=["ec_code", "genes_model", "substrates_name", "products_name", "direction"]
     )
+    before_ec_filter = len(df)
+    before_nb_reactions = df['rxn'].nunique()
+    df = df[~df["ec_code"].isin(set_transferred_ec_codes)]
+    nb_lines_dropped = before_ec_filter - len(df)
+    nb_rxns_dropped = before_nb_reactions - df['rxn'].nunique()
+    
     logging.info("Total of possible kcat values: %d", len(df))
-    return df, transferred_count
+
+    report_statistics = {
+        "incomplete_ec_codes": len(set_incomplete_ec_codes),
+        "transferred_ec_codes": len(set_transferred_ec_codes),
+        "no_genes_ec_codes": len(set_no_genes_ec_codes),
+        "nb_of_reactions_due_to_unconsistent_ec": nb_rxns_dropped,
+        "nb_of_lines_dropped_due_to_unconsistent_ec": nb_lines_dropped
+    }
+
+    return df, report_statistics
 
 
 # --- Main ---
@@ -258,15 +288,16 @@ def create_kcat_output(model, organism_code):
 def run_extraction(model_path, output_path, organism_code, report=True):
     """Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report."""
     model = read_model(model_path)
-    logging.info(f"Model loaded with {len(model.reactions)} reactions.")
-    df, transferred = create_kcat_output(model, organism_code)
+    df, report_statistics = create_kcat_output(model, organism_code)
+
     df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
     if report:
-        report_extraction(model, df, transferred)
+        report_extraction(model, df, report_statistics)
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    # run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
-    run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')
+    # Test : Main function
+    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')
