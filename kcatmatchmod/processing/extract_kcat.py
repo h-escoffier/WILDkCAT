@@ -1,10 +1,8 @@
 import re
 import logging
-import requests
 import pandas as pd
 from tqdm import tqdm
-from functools import lru_cache, wraps
-from time import sleep
+from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 from kcatmatchmod.api.api_utilities import safe_requests_get
