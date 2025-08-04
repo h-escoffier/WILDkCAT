@@ -5,7 +5,6 @@ import pandas as pd
 from tqdm import tqdm
 from functools import lru_cache
 
-from kcatmatchmod.utils.model_function import read_model
 # TODO: from kcatmatchmod.reports.generate_reports import report_format_model
 
 

@@ -6,10 +6,13 @@ import re
 from io import StringIO
 from functools import lru_cache
 
+from kcatmatchmod.api.api_utilities import retry_api, safe_requests_get
 
-# ---------------------------------------------
-# Retrieve SMILES from KEGG ID
-# ---------------------------------------------
+
+# TODO: Integrate safe requests and retry_api decorators in the functions below
+
+
+# --- API --- 
 
 
 def convert_kegg_compound_to_sid(kegg_compound_id):
@@ -73,6 +76,7 @@ def convert_cid_to_smiles(cid):
         return None
 
 
+@lru_cache(maxsize=None)
 def convert_kegg_to_smiles(kegg_compound_id):
     """
     Convert the KEGG compound ID to the PubChem Compound ID (CID).
@@ -98,15 +102,9 @@ def convert_kegg_to_smiles(kegg_compound_id):
     return smiles
     
 
+# --- Retrieve Sequences from UniProtID --- 
+
 @lru_cache(maxsize=None)
-def cached_convert_kegg_to_smiles(kegg_compound_id):
-    return convert_kegg_to_smiles(kegg_compound_id)
-
-
-# ---------------------------------------------
-# Retrieve Sequences from UniProtID 
-# ---------------------------------------------
-
 def convert_uniprot_to_sequence(uniprot_id):
     """
     Convert a UniProt accession ID to its corresponding amino acid sequence.
@@ -130,14 +128,7 @@ def convert_uniprot_to_sequence(uniprot_id):
         return None
 
 
-@lru_cache(maxsize=None)
-def cached_convert_uniprot_to_sequence(uniprot_id):
-    return convert_uniprot_to_sequence(uniprot_id)
-
-
-# ---------------------------------------------
-# Create CataPro input file 
-# ---------------------------------------------
+# --- Create CataPro input file ---
 
 
 def create_catapro_input_file(kcat_df, output_path):
@@ -155,14 +146,14 @@ def create_catapro_input_file(kcat_df, output_path):
             logging.warning(f"Multiple UniProt IDs found for {ec_code}: {uniprot}.")
             continue
 
-        sequence = cached_convert_uniprot_to_sequence(uniprot) 
+        sequence = convert_uniprot_to_sequence(uniprot) 
         if sequence is None:
             continue
         
         smiles_list = []
         
         for kegg_compound_id in row['substrates_kegg'].split(';'):
-            smiles = cached_convert_kegg_to_smiles(kegg_compound_id)
+            smiles = convert_kegg_to_smiles(kegg_compound_id)
             if smiles is not None:
                 smiles_list.append(smiles[0]) # If multiple SMILES, take the first one TODO: Handle this case
         
@@ -177,22 +168,18 @@ def create_catapro_input_file(kcat_df, output_path):
 
     # Generate CataPro input file
     catapro_input_df = pd.DataFrame(catapro_input)
-    catapro_input_df.to_csv(output_path, sep=',', index=False)
+    catapro_input_df.to_csv(output_path, sep=',', index=True)
 
     return catapro_input_df
 
 
-# ---------------------------------------------
-# Integrate CataPro predictions into kcat file 
-# ---------------------------------------------
+# --- Integrate CataPro predictions into kcat file ---
 
 def integrate_catapro_predictions(kcat_file_path, catapro_predictions_path, output_path):
     pass 
 
 
-# ---------------------------------------------
-# Main functions
-# ---------------------------------------------
+# --- Main ---
 
 
 def run_catapro(kcat_file_path, limit_matching_score, output_path, report=True):
@@ -203,7 +190,7 @@ def run_catapro(kcat_file_path, limit_matching_score, output_path, report=True):
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
 
     # Subset rows with no values or matching score above the limit
-    kcat_df = kcat_df[(kcat_df['matching_score'] > limit_matching_score) | (kcat_df['matching_score'].isnull())]
+    # kcat_df = kcat_df[(kcat_df['matching_score'] < limit_matching_score) | (kcat_df['matching_score'].isnull())]
     # Drop rows with no UniProt ID or no substrates_kegg
     kcat_df = kcat_df[kcat_df['uniprot_model'].notnull() & kcat_df['substrates_kegg'].notnull()]
     
@@ -224,4 +211,4 @@ if __name__ == "__main__":
     # print(convert_uniprot_to_sequence("P0A796"))
 
     # Test : Main function
-    run_catapro("output/ecoli_kcat_sabio.tsv", 9, "in_progress/catapro_input.tsv")
+    run_catapro("output/ecoli_kcat_sabio.tsv", 9, "in_progress/catapro_input.csv")

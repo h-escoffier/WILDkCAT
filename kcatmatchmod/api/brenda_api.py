@@ -9,7 +9,7 @@ import hashlib
 import os 
 
 from kcatmatchmod.utils.matching import find_best_match
-from kcatmatchmod.reports.generate_reports import report_api
+from kcatmatchmod.utils.generate_reports import report_api
 
 
 load_dotenv()
@@ -148,6 +148,8 @@ def run_brenda(kcat_file_path, output_path, organism, temperature_range, pH_rang
     if report:
         # Generate report
         report_api(kcat_df, "brenda")
+    
+    return kcat_df
 
 
 
@@ -159,13 +161,13 @@ if __name__ == "__main__":
     # df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
 
     # Test: Main function
-    # run_brenda('output/ecoli_kcat.tsv',
-    #            'output/ecoli_kcat_brenda.tsv',
-    #            'Escherichia coli',
-    #            (20, 37),
-    #            (6, 8)
-    #     )
+    run_brenda('output/ecoli_kcat.tsv',
+               'output/ecoli_kcat_brenda.tsv',
+               'Escherichia coli',
+               (20, 37),
+               (6, 8)
+        )
     
     # Test: Generate report
-    df = pd.read_csv('output/ecoli_kcat_brenda.tsv', sep='\t')
-    report_api(df, "brenda")
+    # df = pd.read_csv('output/ecoli_kcat_brenda.tsv', sep='\t')
+    # report_api(df, "brenda")

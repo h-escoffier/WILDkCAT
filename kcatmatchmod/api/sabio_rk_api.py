@@ -7,7 +7,7 @@ from functools import lru_cache
 
 from kcatmatchmod.api.api_utilities import retry_api
 from kcatmatchmod.utils.matching import find_best_match
-from kcatmatchmod.reports.generate_reports import report_api
+from kcatmatchmod.utils.generate_reports import report_api
 
 
 # TODO: Implement matching score calculation with a expert of the field
@@ -18,9 +18,7 @@ from kcatmatchmod.reports.generate_reports import report_api
 
 @lru_cache(maxsize=None)
 @retry_api(max_retries=4, backoff_factor=2)
-def get_turnover_number_sabio(
-        ec_number
-        ):
+def get_turnover_number_sabio(ec_number):
     """
     Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.
 
@@ -44,14 +42,14 @@ def get_turnover_number_sabio(
 
     # Make GET request
     request = requests.get(base_url, params=query)
-    request.raise_for_status()  # Raise if 404 error
+    request.raise_for_status()
     if request.text == "no data found":
         logging.warning('%s: No data found for the query.' % f"{ec_number}")
         return pd.DataFrame()  # Return empty DataFrame if no data found
 
     entryIDs = [int(x) for x in request.text.strip().split('\n')]
 
-    # -- Retrieve informations matching the entryIDs -- 
+    # Retrieve informations matching the entryIDs
     data_field = {'entryIDs[]': entryIDs}
     # Possible fields to retrieve:
     # EntryID, Reaction, Buffer, ECNumber, CellularLocation, UniProtKB_AC, Tissue, Enzyme Variant, Enzymename, Organism
