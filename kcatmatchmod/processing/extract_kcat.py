@@ -85,7 +85,7 @@ def is_ec_code_transferred(ec_code):
     if not response:
         return None
     if "Transferred to" in response.text:
-        logging.warning(f"EC code {ec_code} has been transferred.")
+        logging.warning(f"EC code {ec_code} transferred to {response.text.split('Transferred to', 1)[1].lower().strip()}")
         return True
     return False
 
@@ -201,7 +201,7 @@ def create_kcat_output(model, organism_code):
                     # No genes found for this organism 
                     if ec not in set_no_genes_ec_codes:
                         set_no_genes_ec_codes.add(ec)
-                    logging.warning(f"No KEGG genes found for EC code '{ec}' in organism '{organism_code}'.")
+                    # logging.warning(f"No KEGG genes found for EC code '{ec}' in organism '{organism_code}'.")
                 kegg_genes = []
             if not gpr_groups:
                 for direction, sn, sk, pn, pk in [
@@ -298,4 +298,5 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # Test : Main function
     run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
     # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')
