@@ -40,8 +40,7 @@ def get_turnover_number_brenda(
     password = hashlib.sha256(password.encode("utf-8")).hexdigest()
     settings = Settings(strict=False)
 
-    # print(client.service.__getattr__('getTurnoverNumber').__doc__)
-    parameters = [
+    parameters_kcat = [
         email,
         password,
         f'ecNumber*{ec_number}',
@@ -54,23 +53,53 @@ def get_turnover_number_brenda(
         "literature*"
     ]
 
-    client = Client(wsdl, settings=settings)
-    result = client.service.getTurnoverNumber(*parameters)
-    
+    parameters_org = [
+        email,
+        password,
+        f'ecNumber*{ec_number}',
+        "organism*",
+        "sequenceCode*", 
+        "commentary*", 
+        "literature*",
+        "textmining*"
+    ]
 
+    client = Client(wsdl, settings=settings)
+
+    # print(client.service.__getattr__('getTurnoverNumber').__doc__)
+    # print(client.service.__getattr__('getOrganism').__doc__)
+    
+    result_kcat = client.service.getTurnoverNumber(*parameters_kcat)
+    result_organism = client.service.getOrganism(*parameters_org)
+    
     # Format the response into a DataFrame
-    data = serialize_object(result)
+    data = serialize_object(result_kcat)
+    data_organism = serialize_object(result_organism)
+
     if not data:
         logging.warning('%s: No data found for the query.' % f"{ec_number}")
         return pd.DataFrame()
 
     # Remove None values (-999)
     data = [entry for entry in data if entry.get('turnoverNumber') is not None and entry.get('turnoverNumber') != '-999']
+    
     df = pd.DataFrame(data)
+    df_org = pd.DataFrame(data_organism)
+
+    # Format the organism response
+    df_org.drop(columns=['commentary', 'textmining'], inplace=True, errors='ignore')
+    
+    # Merge on the literature column
+    df_org['literature'] = df_org['literature'].apply(lambda x: x[0] if isinstance(x, list) and len(x) > 0 else x)
+    df['literature'] = df['literature'].apply(lambda x: x[0] if isinstance(x, list) and len(x) > 0 else x)
+    df = pd.merge(df, df_org, on=['literature', 'organism'], how='left')
+    df.drop_duplicates(inplace=True)
+
     # Rename columns for consistency with other APIs
     df.rename(columns={
         'turnoverNumber': 'parameter.startValue',
         'turnoverNumberMaximum': 'parameter.endValue',
+        'sequenceCode' : 'UniProtKB_AC',
         'substrate': 'Substrate',
         'organism': 'Organism',
         'ecNumber': 'ECNumber'}, inplace=True) 
@@ -155,18 +184,18 @@ def run_brenda(kcat_file_path, output_path, organism, temperature_range, pH_rang
 
 if __name__ == "__main__":
     # Test : Send a request to BRENDA API
-    # df = get_turnover_number_brenda(
-    #     ec_number="2.7.1.11",
-    # )
-    # df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
+    df = get_turnover_number_brenda(
+        ec_number="2.7.1.11",
+    )
+    df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
 
     # Test: Main function
-    run_brenda('output/ecoli_kcat.tsv',
-               'output/ecoli_kcat_brenda.tsv',
-               'Escherichia coli',
-               (20, 37),
-               (6, 8)
-        )
+    # run_brenda('output/ecoli_kcat.tsv',
+    #            'output/ecoli_kcat_brenda.tsv',
+    #            'Escherichia coli',
+    #            (20, 37),
+    #            (6, 8)
+    #     )
     
     # Test: Generate report
     # df = pd.read_csv('output/ecoli_kcat_brenda.tsv', sep='\t')
