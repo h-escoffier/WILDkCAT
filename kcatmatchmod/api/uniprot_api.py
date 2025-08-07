@@ -5,12 +5,14 @@ from functools import lru_cache
 import logging
 
 
-# ---------------------------------------------
-# Retrieve turnover number (kcat) from UniProt
-# for a given UniProt ID
-# ---------------------------------------------
+# TODO: Manage to find the catalytic enzyme if multiple UniProt IDs are provided
+# TODO: UniProt API seems to have very few kcat values, maybe we should not use it ?
 
 
+# --- UniProt API ---
+
+
+@lru_cache(maxsize=None)
 def get_turnover_number_uniprot(uniprot_id):
     """
     Queries the UniProt REST API to retrieve turnover number values for a given UniProt ID.
@@ -79,43 +81,11 @@ def get_turnover_number_uniprot(uniprot_id):
     if uniprot_df.empty:
         logging.warning(f"No kcat data found for UniProt ID: {uniprot_id}")
         return pd.DataFrame()
-
     return uniprot_df
-
-
-@lru_cache(maxsize=None)
-def cached_get_turnover_number_uniprot(uniprot_id):
-    return get_turnover_number_uniprot(uniprot_id)
-
-
-# ---------------------------------------------
-# Matching functions 
-# ---------------------------------------------
-
-def matching(): 
-    pass 
-
-
-# ---------------------------------------------
-# Find best match
-# ---------------------------------------------
-
-
-def find_best_match():
-    pass
-
-
-# ---------------------------------------------
-# Main functions 
-# ---------------------------------------------
-
-
-def run_uniprot(): 
-    pass 
 
 
 if __name__ == "__main__":
     # Test : Send a request to UniProt API
-    uniprot_id = "P25437"
+    uniprot_id = "Q16774"
     df = get_turnover_number_uniprot(uniprot_id)
     df.to_csv("in_progress/uniprot_test.tsv", sep='\t', index=False)

@@ -10,7 +10,7 @@ from kcatmatchmod.utils.generate_reports import report_extraction
 
 
 # TODO: Check the genes format in KEGG and model.genes and keep only the lines with a correct intersection between KEGG genes and model.genes
-# TODO: I don't know if we should keep the EC codes for which no KEGG genes were found for the organism ?
+# TODO: Column kegg_genes and intersection_genes are currently not used, maybe add this information in the report ? 
 
 
 # --- Load Model ---
