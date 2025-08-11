@@ -7,6 +7,7 @@ from io import StringIO
 from functools import lru_cache
 
 from kcatmatchmod.api.api_utilities import retry_api, safe_requests_get
+from kcatmatchmod.api.brenda_api import get_cofactor
 
 
 # TODO: Integrate safe requests and retry_api decorators in the functions below
@@ -104,6 +105,7 @@ def convert_kegg_to_smiles(kegg_compound_id):
 
 # --- Retrieve Sequences from UniProtID --- 
 
+
 @lru_cache(maxsize=None)
 def convert_uniprot_to_sequence(uniprot_id):
     """
@@ -133,15 +135,20 @@ def convert_uniprot_to_sequence(uniprot_id):
 
 def create_catapro_input_file(kcat_df, output_path):
     """
-    TODO: 
+    Generate CataPro input file and a mapping of substrate KEGG IDs to SMILES.
+
+    Returns:
+        catapro_input_df (pd.DataFrame): DataFrame for CataPro input.
+        substrates_to_smiles (dict): Mapping KEGG ID <-> SMILES (both directions).
     """
     catapro_input = []
+    substrates_to_smiles = {}
 
     for _, row in tqdm(kcat_df.iterrows(), total=len(kcat_df), desc="Generating CataPro input"):
         uniprot = row['uniprot_model']
         ec_code = row['ec_code']
 
-        # If multiple UniProt IDs continue TODO: Find a way to handle this 
+        # If multiple UniProt IDs continue #TODO: Find a way to handle this 
         if len(uniprot.split(';')) > 1:        
             logging.warning(f"Multiple UniProt IDs found for {ec_code}: {uniprot}.")
             continue
@@ -151,38 +158,72 @@ def create_catapro_input_file(kcat_df, output_path):
             continue
         
         smiles_list = []
+        names = row['substrates_name'].split(';')
+        kegg_ids = row['substrates_kegg'].split(';')
         
-        for kegg_compound_id in row['substrates_kegg'].split(';'):
+        # Get the cofactor for the EC code
+        cofactor = get_cofactor(ec_code) 
+
+        for name, kegg_compound_id in zip(names, kegg_ids):
+            if name.lower() in [c.lower() for c in cofactor]:  # Skip the cofactor #TODO: Should we add a warning if no cofactor is found for a reaction?
+                continue
             smiles = convert_kegg_to_smiles(kegg_compound_id)
             if smiles is not None:
-                smiles_list.append(smiles[0]) # If multiple SMILES, take the first one TODO: Handle this case
+                smiles_str = smiles[0]  # If multiple SMILES, take the first one #TODO: Handle this case
+                smiles_list.append(smiles_str)
+                substrates_to_smiles[kegg_compound_id] = smiles_str
         
         if len(smiles_list) > 0:
             for smiles in smiles_list:
                 catapro_input.append({
                     "Enzyme_id": uniprot,
-                    "type": "wild",  # TODO: I think it should be always 'wild' ? 
+                    "type": "wild",
                     "sequence": sequence,
                     "smiles": smiles
                 })
 
     # Generate CataPro input file
     catapro_input_df = pd.DataFrame(catapro_input)
-    catapro_input_df.to_csv(output_path, sep=',', index=True)
+    # Generate reverse mapping from SMILES to KEGG IDs as TSV 
+    substrates_to_smiles_df = pd.DataFrame(list(substrates_to_smiles.items()), columns=['kegg_id', 'smiles'])
 
-    return catapro_input_df
+    return catapro_input_df, substrates_to_smiles_df
 
 
 # --- Integrate CataPro predictions into kcat file ---
 
-def integrate_catapro_predictions(kcat_file_path, catapro_predictions_path, output_path):
-    pass 
+
+def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predictions_df):
+    """
+    TODO: Write the documentation 
+    """
+    # Format the output to match the kcat_df
+    # Convert pred_log10[kcat(s^-1)] to kcat(s^-1)
+    catapro_predictions_df['kcat_s'] = 10 ** catapro_predictions_df['pred_log10[kcat(s^-1)]']
+    catapro_predictions_df['uniprot_model'] = catapro_predictions_df['fasta_id'].str.replace('_wild', '', regex=False) # Extract UniProt ID
+    # Match the SMILES to KEGG IDs using substrates_to_smiles
+    catapro_predictions_df['substrates_kegg'] = catapro_predictions_df['smiles'].map(substrates_to_smiles.set_index('smiles')['kegg_id'])
+    
+    catapro_map = catapro_predictions_df.set_index(['uniprot_model', 'substrates_kegg'])['kcat_s'].to_dict()
+
+    def get_min_pred_kcat(row):
+        uniprot = row['uniprot_model']
+        kegg_ids = str(row['substrates_kegg']).split(';')
+        kcat_values = [
+            catapro_map.get((uniprot, kegg_id))
+            for kegg_id in kegg_ids
+            if (uniprot, kegg_id) in catapro_map
+        ]
+        return min(kcat_values) if kcat_values else None  # If multiple substrates, take the minimum kcat value
+
+    kcat_df['catapro_predicted_kcat_s'] = kcat_df.apply(get_min_pred_kcat, axis=1)
+    return kcat_df
 
 
 # --- Main ---
 
 
-def run_catapro(kcat_file_path, limit_matching_score, output_path, report=True):
+def run_catapro_part1(kcat_file_path, limit_matching_score, output_path, report=True):
     """
     TODO 
     """
@@ -195,12 +236,29 @@ def run_catapro(kcat_file_path, limit_matching_score, output_path, report=True):
     kcat_df = kcat_df[kcat_df['uniprot_model'].notnull() & kcat_df['substrates_kegg'].notnull()]
     
     # Generate CataPro input file
-    catapro_input = create_catapro_input_file(kcat_df, output_path)
+    catapro_input_df, substrates_to_smiles_df = create_catapro_input_file(kcat_df, output_path)
 
-    # Run CataPro predictions
-    # Integrate CataPro predictions into kcat file
-    # Save the output file
-    # Generate report if required
+    # Save the CataPro input file and substrates to SMILES mapping
+    catapro_input_df.to_csv(output_path, sep=',', index=True)
+    substrates_to_smiles_df.to_csv(output_path.replace('.csv', '_substrates_to_smiles.tsv'), sep='\t', index=False)
+
+
+def run_catapro_part2(kcat_file_path, catapro_predictions_path, substrates_to_smiles_path, output_path, report=True):
+    """
+    TODO: Write the documentation
+    """ 
+    kcat_df = pd.read_csv(kcat_file_path, sep='\t')
+    substrates_to_smiles = pd.read_csv(substrates_to_smiles_path, sep='\t')
+    catapro_predictions_df = pd.read_csv(catapro_predictions_path, sep=',')
+    kcat_df = integrate_catapro_predictions(kcat_df, 
+                                            substrates_to_smiles,
+                                            catapro_predictions_df
+                                            )
+    
+    # Save the output as a TSV file
+    kcat_df.to_csv(output_path, sep='\t', index=False)
+    # TODO: Generate report if required
+
 
 
 if __name__ == "__main__":
@@ -210,5 +268,14 @@ if __name__ == "__main__":
     # Test : Retrieve Sequence from UniProt ID
     # print(convert_uniprot_to_sequence("P0A796"))
 
+    # Test : Integrate CataPro predictions into kcat file
+    # kcat_df = pd.read_csv("output/ecoli_kcat_sabio.tsv", sep='\t')
+    # substrates_to_smiles = pd.read_csv('in_progress/ml_test/substrates_to_smiles.tsv', sep='\t')
+    # integrate_catapro_predictions(kcat_df, substrates_to_smiles, "in_progress/ml_test/catapro_output.csv", "in_progress/ml_test/ecoli_kcat_catapro.tsv")
+
     # Test : Main function
-    run_catapro("output/ecoli_kcat_sabio.tsv", 9, "in_progress/catapro_input.csv")
+    run_catapro_part1("output/ecoli_kcat.tsv", 9, "in_progress/ml_test/catapro_input.csv")
+    run_catapro_part2("output/ecoli_kcat_complete.tsv", 
+                      "in_progress/ml_test/catapro_output.csv", 
+                      "in_progress/ml_test/catapro_input_substrates_to_smiles.tsv", 
+                      "output/ecoli_kcat_catapro.tsv")
