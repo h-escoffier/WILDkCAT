@@ -1,345 +1,198 @@
 import logging
 import pandas as pd 
-from rapidfuzz import fuzz, process
+import numpy as np
+
+from kcatmatchmod.utils.temperature import arrhenius_equation
+from kcatmatchmod.utils.organism import closest_org
 
 
-
-# ---------------------------------------------
-# Matching functions - SABIO-RK specific
-# ---------------------------------------------
+# --- Check parameters ---
 
 
-def to_set(s):
-    return set(s.split(';')) if pd.notna(s) else set()
-
-
-def find_rxn_direction(kcat_dict, sabio_df):
+def check_enzyme(candidate, kcat_dict): 
     """
-    Determines the reaction direction in SABIO-RK data by matching substrate and product names.
- 
-    Parameters:
-        kcat_dict (dict): Dictionary containing substrate and product names under 'substrates_name' and 'products_name'.
-        sabio_df (pd.DataFrame): DataFrame containing SABIO-RK entries with 'Substrate' and 'Product' columns.
-
-    Returns:
-        pd.DataFrame: Filtered SABIO-RK DataFrame with matching substrates or products, or empty DataFrame if no match.
+    Checks whether the enzyme in a candidate entry matches the model's enzyme.
+    TODO: Manage to find the catalytic enzyme if multiple UniProt IDs are provided
     """
-    # Convert lists to sets
-    substrates_kcat = to_set(kcat_dict['substrates_name'])
-    products_kcat = to_set(kcat_dict['products_name'])
-
-    # 1. Look for a substrate match
-    sabio_df_substrate = sabio_df.copy()
-    sabio_df_substrate['Substrate_set'] = sabio_df_substrate['Substrate'].apply(to_set)
-    substrate_matches = sabio_df_substrate[
-        sabio_df_substrate['Substrate_set'].apply(lambda s: not substrates_kcat.isdisjoint(s))
-    ]
-    if not substrate_matches.empty:
-        # drop 'Substrate_set' column
-        substrate_matches = substrate_matches.drop(columns=['Substrate_set'])
-        return substrate_matches
-    
-    # 2. If no substrate match, look for a product match
-    sabio_df_product = sabio_df.copy()
-    sabio_df_product['Product_set'] = sabio_df_product['Product'].apply(to_set) 
-    product_matches = sabio_df_product[
-        sabio_df_product['Product_set'].apply(lambda p: not products_kcat.isdisjoint(p))
-    ]
-    if not product_matches.empty:
-        product_matches = product_matches.drop(columns=['Substrate_set', 'Product_set'], errors='ignore')
-        return product_matches
-
-    # 3. If neither substrate nor product matches, check if the opposite direction matches
-    sabio_df_substrate = sabio_df.copy()
-    sabio_df_substrate['Substrate_set'] = sabio_df_substrate['Substrate'].apply(to_set)
-    substrate_matches = sabio_df_substrate[
-        sabio_df_substrate['Substrate_set'].apply(lambda s: not products_kcat.isdisjoint(s))
-    ]
-    if not substrate_matches.empty:
-        return pd.DataFrame()
-    
-    sabio_df_product = sabio_df.copy()
-    sabio_df_product['Product_set'] = sabio_df_product['Product'].apply(to_set)
-    product_matches = sabio_df_product[
-        sabio_df_product['Product_set'].apply(lambda p: not substrates_kcat.isdisjoint(p))
-    ]
-    if not product_matches.empty:
-        return pd.DataFrame()
-
-    # 4. If neither substrate nor product matches, log a warning
-    kegg_rxn_id = sabio_df['KeggReactionID'].iloc[0] if 'KeggReactionID' in sabio_df.columns else 'Unknown'
-    ec_code = sabio_df['ECNumber'].iloc[0] if 'ECNumber' in sabio_df.columns else 'Unknown'
-    logging.warning('%s: No substrate or product matches between the two data sets.' % f"{kegg_rxn_id} - {ec_code}")
-    return pd.DataFrame()
+    if pd.notna(kcat_dict['uniprot_model']):
+        enzyme_model = [e.strip() for e in kcat_dict.get('uniprot_model', '').split(';') if e.strip()]
+        if candidate["UniProtKB_AC"] in enzyme_model:
+            return 0
+    return 2
 
 
-    # sabio_df, matching_score = find_rxn_direction(kcat_dict, sabio_df)
-    # if sabio_df.empty: 
-    #     return (None, matching_score) # No match found in SABIO-RK for the given substrates/products
-    # # Find the best match
-
-
-# ---------------------------------------------
-# Matching substrates
-# ---------------------------------------------
-
-
-
-def exact_match_substrate(substrate_api, substrates_model): 
+def check_organism(candidate, general_criteria): 
     """
-    TODO: 
+    Checks whether the organism in a candidate entry matches the expected organism.
     """
-    substrates = [s.strip() for s in substrates_model.split(';')]
-    query_lower = substrate_api.lower()
-    for substrate in substrates:
-        if substrate.lower() == query_lower:
-            return substrate
-    return None
+    if candidate["Organism"] == general_criteria["Organism"]:
+        return 0
+    return 2
 
 
-def fuzzy_match_substrate(substrate_api, substrates_model, threshold=90):
+def check_variant(candidate):
     """
-    TODO: 
+    Checks whether the enzyme variant in a candidate entry is wildtype or unknown.
     """
-    substrates = [s.strip() for s in substrates_model.split(';')]
-    
-    best_match, score, _ = process.extractOne(substrate_api, substrates, scorer=fuzz.token_sort_ratio)
-    
-    if score >= threshold:
-        return best_match, score
-    return None, score
+    if candidate["EnzymeVariant"] == "wildtype":
+        return 0
+    else:  # Unknown
+        return 1
 
 
-# ---------------------------------------------
-# Check  
-# ---------------------------------------------
-
-
-def check_enzyme(api_output, kcat_dict):
+def check_pH(candidate, general_criteria):
     """
-    TODO: Write the documentation for this function.
+    Checks whether the pH in a candidate entry matches the expected pH.
     """
-    enzyme = kcat_dict['uniprot_model']
-    return api_output[api_output['UniProtKB_AC'] == enzyme]
-
-
-def check_substrate(api_output, kcat_dict, api):
-    """
-    TODO: Write the documentation for this function.
-    """
-    if api == 'sabio_rk':
-        # 1. Try to match using KEGG reaction ID if provided
-        if kcat_dict.get('KEGG_rxn_id'):
-            kegg_rxn_matches = api_output[api_output['KeggReactionID'] == kcat_dict['KEGG_rxn_id']]
-            if not kegg_rxn_matches.empty:
-                result = find_rxn_direction(kcat_dict, kegg_rxn_matches)
-                if not result.empty:
-                    return result
-                
-        # 2. If no match or no KEGG, try to match using substrate names
-        model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
-        
-        def has_substrate_match(row_substrates):
-            api_substrates = [s.strip().lower() for s in row_substrates.split(';') if s.strip()]
-            return any(substrate in api_substrates for substrate in model_substrates)
-        
-        substrate_matches = api_output[api_output['Substrate'].apply(has_substrate_match)]
-        return substrate_matches
-
-    elif api == 'brenda':
-        # No info on KEGG reaction ID in BRENDA, so we only check substrates
-        model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
-        return api_output[api_output['Substrate'].str.lower().isin(model_substrates)]
-    
-    else:
-        raise ValueError(f"Unknown API: {api}. Supported APIs are 'sabio_rk' and 'brenda'.")
-
-
-def check_organism(api_output, general_criteria):
-    """
-    TODO: Write the documentation for this function.
-    """
-    organism = general_criteria["Organism"]
-    return api_output[api_output["Organism"] == organism]
+    ph_min, ph_max = general_criteria["pH"]
+    candidate_ph = candidate.get("pH", None)
+    if candidate_ph is None:
+        return 1 
+    elif ph_min <= candidate_ph <= ph_max:    
+        return 0
+    else:  # Out of range 
+        return 2
     
 
-def check_temp_and_ph(api_output, general_criteria):
+def check_temperature(candidate, general_criteria, api_output): 
     """
-    TODO: Write the documentation for this function.
+    Checks whether the temperature in a candidate entry matches the expected temperature.
+    If the temperature is within the specified range is not met, verify if the Arrhenius equation can be applied.
     """
     temp_min, temp_max = general_criteria["Temperature"]
+    candidate_temp = candidate.get("Temperature", None)
+    if candidate_temp is not None and temp_min <= candidate_temp <= temp_max:
+        return 0, False 
     ph_min, ph_max = general_criteria["pH"]
+    filt = (
+        api_output["pH"].between(ph_min, ph_max)
+        & (api_output["UniProtKB_AC"] == candidate["UniProtKB_AC"])
+        & api_output["Temperature"].notna()
+    )
+    temps_dispo = api_output.loc[filt, "Temperature"].nunique()
+    if temps_dispo >= 2:
+        # Go Arrhenius
+        return 0, True
+    elif candidate_temp is None:
+        return 1, False
+    else:
+        return 2, False
 
-    return api_output[
-        (api_output["Temperature"].between(temp_min, temp_max)) &
-        (api_output["pH"].between(ph_min, ph_max))
-    ]
 
-
-def check_variant(api_output, general_criteria):
+def check_substrate(candidate, kcat_dict):
     """
-    TODO: Write the documentation for this function.
+    Checks whether the substrate in a candidate entry matches the model's substrates.
     """
-    variant = general_criteria["Enzyme Variant"]
-    return api_output[api_output["Enzyme Variant"] == variant]
+    api = candidate['db']
 
-# ---------------------------------------------
-# Matching functions 
-# ---------------------------------------------
-
-
-def match_exact(kcat_dict, api_output, general_criteria):
-    api_output = check_enzyme(api_output, kcat_dict)
-    if api_output.empty:
-        return None, None
-    api_output = check_temp_and_ph(api_output, general_criteria)
-    if api_output.empty:
-        return None, None
-    api_output = check_organism(api_output, general_criteria)
-    if api_output.empty:
-        return None, None
-    api_output = check_substrate(api_output, kcat_dict, api='sabio_rk')
-    if api_output.empty:
-        return None, None
-    return create_kcat_value(api_output), 1
-
-
-
-def match_relax_enzyme(kcat_dict, api_output, general_criteria, api):
-    api_output = check_temp_and_ph(api_output, general_criteria)
-    if api_output.empty:
-        return None, None
-    api_output = check_organism(api_output, general_criteria)
-    if api_output.empty:
-        return None, None
-    api_output = check_substrate(api_output, kcat_dict, api)
-    if api_output.empty:
-        return None, None
-    return create_kcat_value(api_output), 2
-
-
-def match_relax_temp_pH(kcat_dict, api_output, general_criteria, api):
-    api_output = check_organism(api_output, general_criteria)
-    if api_output.empty:
-        return None, None
-    api_output = check_substrate(api_output, kcat_dict, api)
-    if api_output.empty:
-        return None, None
-    return create_kcat_value(api_output), 3
-
-
-def match_relax_organism(kcat_dict, api_output, api):
-    api_output = check_substrate(api_output, kcat_dict, api)
-    if api_output.empty:
-        return None, None
-    return create_kcat_value(api_output), 4
-
-
-def match_relax_substrate(api_output):
-    return create_kcat_value(api_output), 5
-
-
-# ---------------------------------------------
-# Find best match
-# ---------------------------------------------
-
-
-def find_best_match(kcat_dict, api_output, general_criteria, api):
-    """
-    TODO: Write the documentation for this function.
-    Attempt to find the best match in a hierarchical way:
-    1. Perfect match
-    2. Relax enzyme
-    3. Relax pH and temperature
-    4. Relax organism
-    5. Relax substrate
-    999. Should not happen
-    """
-    # 1. Perfect match (only for SABIO-RK)
     if api == 'sabio_rk':
-        kcat, matching_value = match_exact(kcat_dict, api_output, general_criteria)
-        if kcat is not None:
-            return kcat, matching_value
-    # 2. Relax the enzyme
-    kcat, matching_value = match_relax_enzyme(kcat_dict, api_output, general_criteria, api)
-    if kcat is not None:
-        return kcat, matching_value
-    # 3. Relax temperature and pH
-    kcat, matching_value = match_relax_temp_pH(kcat_dict, api_output, general_criteria, api)
-    if kcat is not None:
-        return kcat, matching_value
-    # 4. Relax organism
-    kcat, matching_value = match_relax_organism(kcat_dict, api_output, api)
-    if kcat is not None:
-        return kcat, matching_value
-    # 5. Relax substrate
-    kcat, matching_value = match_relax_substrate(api_output)
-    if kcat is not None:
-        return kcat, matching_value
-    # 6. No match found
-    logging.warning('%s: Matching failed' % (kcat_dict['ec_code'])) # Should not happen
-    return None, 999
+        # 1. Try to match using KEGG reaction ID if provided
+        if kcat_dict['KEGG_rxn_id'] == candidate['KeggReactionID']:
+            # 1.1 Look for a substrate match
+            model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
+            candidate_substrates = [s.strip().lower() for s in candidate['Substrate'].split(';') if s.strip()]
+            if any(substrate in candidate_substrates for substrate in model_substrates):
+                return 0
+            # 1.2 Look for a product match
+            model_products = [p.strip().lower() for p in kcat_dict.get('products_name', '').split(';') if p.strip()]
+            candidate_products = [p.strip().lower() for p in candidate['Product'].split(';') if p.strip()]
+            if any(product in candidate_products for product in model_products):
+                return 0
+        # 2. Match using substrate names if no KEGG
+        model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
+        candidate_substrates = [s.strip().lower() for s in candidate['Substrate'].split(';') if s.strip()]
+        if any(substrate in candidate_substrates for substrate in model_substrates):
+            return 0  
+        return 3
+        
+    elif api == 'brenda':
+        model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
+        candidate_substrates = [s.strip().lower() for s in candidate['Substrate'].split(';') if s.strip()]
+        if any(substrate in candidate_substrates for substrate in model_substrates):
+            return 0  
+        return 3
+    
+    else:
+        logging.error(f"Unknown API in 'db' column: {api}. Supported: 'sabio_rk', 'brenda'.")
+        
+
+# --- Scoring ---
 
 
-# ---------------------------------------------
-# Generate kcat value
-# ---------------------------------------------
-
-
-def create_kcat_value(df, method='mean'):
+def compute_score(kcat_dict, candidate, general_criteria, api_output, best_score):
     """
-    Aggregate kcat values from the DataFrame using the specified method.
+    Compute a score for the candidate based on the Kcat dictionary and general criteria.
+    """
+    score = 0
+    # Check enzyme
+    score += check_enzyme(candidate, kcat_dict)
+    # Check organism
+    score += check_organism(candidate, general_criteria)
+    # Check variant
+    score += check_variant(candidate) 
+    # Check pH
+    score += check_pH(candidate, general_criteria)
+    # Check substrate 
+    score += check_substrate(candidate, kcat_dict)
+    if score > best_score: 
+        return np.inf, False
+    # Check temperature 
+    score_temp, arrhenius = check_temperature(candidate, general_criteria, api_output) 
+    score += score_temp
+    return score, arrhenius
+
+
+# --- Main --- 
+
+
+def find_best_match(kcat_dict, api_output, general_criteria):
+    """
+    Finds the best matching enzyme entry from the provided API output based on: 
+        - Kcat specific criteria: 
+            * Substrate 
+            * Enzyme 
+             
+       - General criteria : 
+           * Organism
+           * Temperature
+           * pH
+
+    This function filters out mutant enzyme variants, orders the remaining entries based on enzyme and organism similarity,
+    and iteratively computes a score for each candidate to identify the best match. If a candidate requires an Arrhenius
+    adjustment, the kcat value is recalculated accordingly.
 
     Parameters:
-        df (pd.DataFrame): DataFrame containing SABIO-RK entries.
-        method (str): Aggregation method: 'mean', 'max', or 'min'.
+        kcat_dict (dict): Dictionary containing enzyme information.
+        api_output (pd.DataFrame): DataFrame containing kcat entries and metadata from an API.
+        general_criteria (dict): Dictionary specifying matching criteria.
 
     Returns:
-        float or None: Aggregated kcat value, or None if no valid values.
+        tuple:
+            best_score (float): The lowest score found, representing the best match.
+            best_candidate (dict or None): Dictionary of the best matching candidate's data, or None if no match is found.
     """
-    # Ensure the column exists and is numeric
-    if 'parameter.startValue' not in df.columns:
-        return None
-    values = pd.to_numeric(df['parameter.startValue'], errors='coerce').dropna()
-    if values.empty:
-        return None
-    if method == 'mean':
-        return values.mean()
-    elif method == 'max':
-        return values.max()
-    elif method == 'min':
-        return values.min()
-    else:
-        raise ValueError("Invalid 'method' parameter. Choose from 'mean', 'max', or 'min'.")
-    
+    # 1. Remove mutant
+    api_output = api_output[api_output["EnzymeVariant"].isin(['wildtype', None])]
 
+    # 2. Order based on the enzyme and organism
+    api_output = closest_org(kcat_dict, api_output)
 
-# if __name__ == "__main__":
-#     # Test : Test the matching function 
-#     kcat_dict = {'Index': 0, 
-#                  'rxn': 'PFK', 'KEGG_rxn_id': None, 
-#                  'ec_code': '2.7.1.11', 
-#                  'direction': 'forward', 
-#                  'substrates_name': 'ATP C10H12N5O13P3;D-Fructose 6-phosphate', 
-#                  'substrates_kegg': 'C00002;C05345', 'products_name': 'ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+', 
-#                  'products_kegg': 'C00008;C00354;C00080', 
-#                  'genes_model': 'b3916', 'uniprot_model': 'P0A796', 
-#                  'kegg_genes': 'b1723;b3916', 'intersection_genes': 'b3916', 
-#                  'kcat': None, 'matching_score': None}
-    
-#     general_criteria = {
-#         "Organism": 'Escherichia coli',
-#         "Temperature": (20, 37),
-#         "pH": (6, 8),
-#         "Enzyme Variant": 'wildtype',
-#     }
-    
-#     # For SABIO-RK 
-#     api_output = pd.read_csv('in_progress/api_output_test/sabio_rk_test.tsv', sep='\t')
-#     kcat, matching_value = find_best_match(kcat_dict, api_output, general_criteria, api='sabio_rk')
-#     print(f"Matched kcat: {kcat}, Matching value: {matching_value}")
+    # 3. Find the best match
+    best_score = np.inf
+    best_candidate = None
 
-#     # For BRENDA
-#     api_output = pd.read_csv('in_progress/api_output_test/brenda_test.tsv', sep='\t')
-#     kcat, matching_value = find_best_match(kcat_dict, api_output, general_criteria, api='brenda')
-#     print(f"Matched kcat: {kcat}, Matching value: {matching_value}")
+    for candidate in api_output.itertuples():
+        candidate_dict = candidate._asdict()
+        # Compute the score for the candidate
+        score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output, best_score)
+        if score < best_score:
+            if arrhenius: 
+                kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
+                candidate_dict['kcat'] = kcat 
+                candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])  
+            best_score = score
+            best_candidate = candidate_dict
+            if score == 0:  # Perfect match found
+                break
+
+    return best_score, best_candidate
