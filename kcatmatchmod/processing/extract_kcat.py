@@ -284,7 +284,18 @@ def create_kcat_output(model, organism_code):
 
 
 def run_extraction(model_path, output_path, organism_code, report=True):
-    """Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report."""
+    """
+    Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.
+    
+    Parameters: 
+        model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
+        output_path (str): Path to the output file (TSV format).
+        organism_code (str): The KEGG organism code used to retrieve organism-specific gene information.
+        report (bool): Whether to generate an HTML report (default: True).
+
+    Returns:
+        None
+    """
     model = read_model(model_path)
     df, report_statistics = create_kcat_output(model, organism_code)
 
