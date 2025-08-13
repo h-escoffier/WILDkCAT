@@ -1,16 +1,10 @@
 import requests
 import logging
 import pandas as pd 
-from tqdm import tqdm
 from io import StringIO
 from functools import lru_cache
 
 from kcatmatchmod.api.api_utilities import retry_api
-from kcatmatchmod.utils.matching import find_best_match
-from kcatmatchmod.utils.generate_reports import report_api
-
-
-# TODO: Implement matching score calculation with a expert of the field
 
 
 # --- Sabio-RK API ---
@@ -44,7 +38,7 @@ def get_turnover_number_sabio(ec_number):
     request = requests.get(base_url, params=query)
     request.raise_for_status()
     if request.text == "no data found":
-        logging.warning('%s: No data found for the query.' % f"{ec_number}")
+        logging.warning('%s: No data found for the query in SABIO-RK.' % f"{ec_number}")
         return pd.DataFrame()  # Return empty DataFrame if no data found
 
     entryIDs = [int(x) for x in request.text.strip().split('\n')]
@@ -72,8 +66,12 @@ def get_turnover_number_sabio(ec_number):
     # Drop unnecessary columns
     df.drop(columns=['EntryID', 'parameter.name', 'parameter.type', 'parameter.associatedSpecies', 
                      'parameter.endValue', 'parameter.standardDeviation'], inplace=True, errors='ignore')
-    # Drop duplicates
-    df.drop_duplicates(inplace=True)
+    # Drop duplicates based on normalized Substrate and Product sets
+    df["Substrate_set"] = df["Substrate"].fillna("").str.split(";").apply(lambda x: tuple(sorted(s.strip() for s in x if s.strip())))
+    df["Product_set"] = df["Product"].fillna("").str.split(";").apply(lambda x: tuple(sorted(s.strip() for s in x if s.strip())))
+    dedup_cols = [col for col in df.columns if col not in ["Substrate", "Product"]]
+    df = df.drop_duplicates(subset=dedup_cols + ["Substrate_set", "Product_set"], keep="first")
+    df = df.drop(columns=["Substrate_set", "Product_set"])
     # Rename columns for consistency
     df.rename(columns={
         'ECNumber': 'ECNumber',
@@ -83,7 +81,7 @@ def get_turnover_number_sabio(ec_number):
         'Product': 'Product',
         'UniProtKB_AC': 'UniProtKB_AC',
         'Organism': 'Organism',
-        'Enzyme Variant': 'Enzyme Variant',
+        'Enzyme Variant': 'EnzymeVariant',
         'Temperature': 'Temperature',
         'pH': 'pH',
         'parameter.startValue': 'value',
@@ -96,5 +94,5 @@ def get_turnover_number_sabio(ec_number):
         
 if __name__ == "__main__":
     # Test : Send a request to SABIO-RK API
-    df = get_turnover_number_sabio(ec_number="2.7.1.11")
+    df = get_turnover_number_sabio(ec_number="1.1.1.42")
     df.to_csv("in_progress/api_output_test/sabio_rk_test.tsv", sep='\t', index=False)

@@ -1,18 +1,66 @@
 import logging
 import pandas as pd 
-from tqdm import tqdm
+from requests import Session
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 from zeep import Client, Settings
+from zeep.transports import Transport
+from zeep.cache import SqliteCache
 from zeep.helpers import serialize_object
 from dotenv import load_dotenv
 from functools import lru_cache
 import hashlib
 import os 
 
-from kcatmatchmod.utils.matching import find_best_match
-from kcatmatchmod.utils.generate_reports import report_api
-
 
 load_dotenv()
+
+
+# --- Setup --- 
+
+
+def create_brenda_client(wsdl_url: str = "https://www.brenda-enzymes.org/soap/brenda_zeep.wsdl") -> Client:
+    """
+    Creates and configures a persistent SOAP client for the BRENDA API.
+
+    Args:
+        wsdl_url (str): URL to the BRENDA WSDL file.
+
+    Returns:
+        zeep.Client: Configured SOAP client.
+    """
+    # Configure retry logic for network resilience
+    session = Session()
+    retry = Retry(total=3, backoff_factor=0.5, status_forcelist=[500, 502, 503, 504])
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+
+    # Set a custom User-Agent (some servers block default Python UA)
+    session.headers.update({"User-Agent": "BRENDA-Client"})
+
+    # Create zeep transport and settings
+    transport = Transport(session=session, cache=SqliteCache())
+    settings = Settings(strict=False)  # Avoids fetching forbidden external schemas
+
+    return Client(wsdl_url, settings=settings, transport=transport)
+
+
+def get_brenda_credentials() -> tuple[str, str]:
+    """
+    Retrieves and hashes BRENDA API credentials from environment variables.
+
+    Returns:
+        tuple[str, str]: (email, hashed_password)
+    """
+    email = os.getenv("BRENDA_EMAIL")
+    password = os.getenv("BRENDA_PASSWORD")
+
+    if not email or not password:
+        raise ValueError("BRENDA_EMAIL and BRENDA_PASSWORD environment variables must be set.")
+
+    hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
+    return email, hashed_password
 
 
 # --- BRENDA API ---
@@ -21,26 +69,23 @@ load_dotenv()
 @lru_cache(maxsize=None)
 def get_turnover_number_brenda(ec_number):
     """
-    Queries the BRENDA SOAP API to retrieve turnover number values for a given enzyme.
+    Queries the BRENDA SOAP API to retrieve turnover number values for a Enzyme Commission (EC) Number.
 
     Parameters:
-        ec_number (str): Enzyme Commission (EC) number (e.g., '1.1.1.1').
+        ec_number (str): EC number (e.g., '1.1.1.1').
 
     Returns:
         pd.DataFrame: A DataFrame containing turnover number entries.
     """
 
-    email = os.getenv("BRENDA_EMAIL")
-    password = os.getenv("BRENDA_PASSWORD")
+    email, hashed_password = get_brenda_credentials()
+    client = create_brenda_client()
 
-    # Call the SOAP API
-    wsdl = "https://www.brenda-enzymes.org/soap/brenda_zeep.wsdl"
-    password = hashlib.sha256(password.encode("utf-8")).hexdigest()
-    settings = Settings(strict=False)
+    # Define the parameters for the SOAP request
 
     parameters_kcat = [
         email,
-        password,
+        hashed_password,
         f'ecNumber*{ec_number}',
         "turnoverNumber*", 
         "turnoverNumberMaximum*", 
@@ -53,7 +98,7 @@ def get_turnover_number_brenda(ec_number):
 
     parameters_org = [
         email,
-        password,
+        hashed_password,
         f'ecNumber*{ec_number}',
         "organism*",
         "sequenceCode*", 
@@ -61,8 +106,6 @@ def get_turnover_number_brenda(ec_number):
         "literature*",
         "textmining*"
     ]
-
-    client = Client(wsdl, settings=settings)
 
     # print(client.service.__getattr__('getTurnoverNumber').__doc__)
     # print(client.service.__getattr__('getOrganism').__doc__)
@@ -75,7 +118,7 @@ def get_turnover_number_brenda(ec_number):
     data_organism = serialize_object(result_organism)
 
     if not data:
-        logging.warning('%s: No data found for the query.' % f"{ec_number}")
+        logging.warning('%s: No data found for the query in BRENDA.' % f"{ec_number}")
         return pd.DataFrame()
 
     # Remove None values (-999)
@@ -109,7 +152,7 @@ def get_turnover_number_brenda(ec_number):
     df['Temperature'] = pd.to_numeric(df['Temperature'], errors='coerce')
     df['pH'] = pd.to_numeric(df['pH'], errors='coerce')
     # Extract enzyme variant from commentary
-    df["Enzyme Variant"] = df["commentary"].apply(get_variant)
+    df["EnzymeVariant"] = df["commentary"].apply(get_variant)
     # Drop unnecessary columns
     df.drop(columns=["literature", "turnoverNumberMaximum", "parameter.endValue", "commentary", "ligandStructureId"], inplace=True, errors='ignore')
     
@@ -125,6 +168,15 @@ def get_turnover_number_brenda(ec_number):
 
 
 def get_variant(text):
+    """
+    Extracts the enzyme variant information from the commentary text.
+    
+    Parameters:
+        text (str): Commentary text from BRENDA API response.
+
+    Returns:
+        str: The extracted enzyme variant information: wildtype, mutant, or None if not found.
+    """
     if text is None or pd.isna(text):
         return None
     text = text.lower()
@@ -137,6 +189,15 @@ def get_variant(text):
 
 @lru_cache(maxsize=None)
 def get_cofactor(ec_number):
+    """
+    Queries the BRENDA SOAP API to retrieve cofactor information for a given Enzyme Commission (EC) number.
+
+    Parameters:
+        ec_number (str): EC number (e.g., '1.1.1.1').
+
+    Returns:
+        pd.DataFrame: A DataFrame containing turnover number entries.
+    """
     email = os.getenv("BRENDA_EMAIL")
     password = os.getenv("BRENDA_PASSWORD")
 
@@ -168,9 +229,9 @@ def get_cofactor(ec_number):
 
 if __name__ == "__main__":
     # Test : Send a request to BRENDA API
-    df = get_turnover_number_brenda(ec_number="2.7.1.11")
+    df = get_turnover_number_brenda(ec_number="1.1.1.42")
     df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
 
     # Test : Identify cofactor
-    # df = get_cofactor("2.7.1.11")
+    # df = get_cofactor("1.1.1.42")
     # df.to_csv("in_progress/api_output_test/brenda_cofactor.tsv", sep='\t', index=False)
