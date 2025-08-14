@@ -7,7 +7,8 @@ from io import StringIO
 from functools import lru_cache
 
 from kcatmatchmod.api.api_utilities import retry_api, safe_requests_get
-from kcatmatchmod.api.brenda_api import get_cofactor
+from kcatmatchmod.api.uniprot_api import get_cofactor
+from kcatmatchmod.api.brenda_api import convert_uniprot_to_sequence
 
 
 # TODO: Integrate safe requests and retry_api decorators in the functions below
@@ -102,33 +103,6 @@ def convert_kegg_to_smiles(kegg_compound_id):
         return None
     return smiles
     
-
-# --- Retrieve Sequences from UniProtID --- 
-
-
-@lru_cache(maxsize=None)
-def convert_uniprot_to_sequence(uniprot_id):
-    """
-    Convert a UniProt accession ID to its corresponding amino acid sequence.
-
-    Parameters:
-        uniprot_id (str): The UniProt accession ID.
-
-    Returns:
-        str: The amino acid sequence, or None if not found.
-    """
-    url = f"https://rest.uniprot.org/uniprotkb/{uniprot_id}.fasta"
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        fasta = response.text
-        lines = fasta.splitlines()
-        sequence = ''.join(lines[1:])  # Skip the header
-        return sequence
-    else:
-        logging.warning('%s: Failed to retrieve sequence for UniProt ID %s' % (uniprot_id))
-        return None
-
 
 # --- Create CataPro input file ---
 

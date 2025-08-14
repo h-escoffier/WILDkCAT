@@ -1,9 +1,9 @@
-import logging
 import os
-import datetime
-import logging
-import base64
 import io
+import base64
+import logging
+import datetime
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -305,46 +305,50 @@ def report_extraction(model, df, report_statistics):
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-
 def report_api(df, api_name):
     """
-    Generate a styled HTML report summarizing the kcat matching results from SABIO-RK/BRENDA,
+    Generate a styled HTML report summarizing the kcat matching results,
     including kcat value distribution and matching score repartition.
 
     Parameters:
-        df (pd.DataFrame): DataFrame containing columns ['kcat', 'matching_score'].
+        df (pd.DataFrame): Must contain ['kcat', 'matching_score', ...].
         api_name (str): Name of the API (e.g., 'SABIO-RK', 'BRENDA').
     """
 
-    # Gather statistics
+    # Ensure numeric kcat values to avoid TypeError on comparisons
+    kcat_values = pd.to_numeric(df['kcat'], errors='coerce').dropna()
+
+    # Only use scores present in the data
+    present_scores = sorted(df['matching_score'].dropna().unique())
+    score_counts = df['matching_score'].value_counts().reindex(present_scores, fill_value=0)
     total = len(df)
-    matched = df['kcat'].notna().sum()
-    match_percent = matched / total * 100 if total > 0 else 0
+    matched = len(kcat_values)
+    match_percent = matched / total * 100 if total else 0
+    score_percent = (score_counts / total * 100).round(2) if total else pd.Series(0, index=present_scores)
 
-    # Ensure all scores 1-5 and 10 are present in the index (even if 0)
-    all_scores = [1, 2, 3, 4, 5, 10]
-    score_counts = df['matching_score'].value_counts().reindex(all_scores, fill_value=0)
-    score_percent = (score_counts / total * 100).round(2)
+    # Distinct colors for each score (up to 12, then cycle)
+    distinct_colors = [
+        "#4E79A7", "#F28E2B", "#E15759", "#76B7B2", "#59A14F",
+        "#EDC948", "#B07AA1", "#FF9DA7", "#9C755F", "#BAB0AC",
+        "#8CD17D", "#B6992D", "#499894", "#D37295", "#FABFD2",
+        "#B2B2B2", "#5F9ED1", "#FFBE7D"
+    ]
+    def score_color(score):
+        idx = present_scores.index(score)
+        return distinct_colors[idx % len(distinct_colors)]
 
-    if api_name.lower() == 'sabio_rk':
-        api = 'SABIO-RK'
-    elif api_name.lower() == 'brenda':
-        api = 'BRENDA'
-    else:
-        api = api_name
-        logging.error(f"Unknown API: {api_name}")
+    generated_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # kcat value stats
-    kcat_values = df['kcat'].dropna()
-
+    # Histogram with stacked bars for scores
     kcat_hist_base64 = ""
     if not kcat_values.empty:
-        # Use log10 bins from 10^-1 to 10^2 (or adapt to data range)
-        min_exp = max(-1, int(np.floor(np.log10(kcat_values[kcat_values > 0].min())))) if (kcat_values > 0).any() else -1
-        max_exp = min(2, int(np.ceil(np.log10(kcat_values.max())))) if (kcat_values > 0).any() else 1
+        min_exp = max(-1, int(np.floor(np.log10(max(1e-6, kcat_values.min())))))
+        max_exp = min(2, int(np.ceil(np.log10(kcat_values.max()))))
         bins = np.logspace(min_exp, max_exp, num=40)
         fig, ax = plt.subplots(figsize=(10, 6))
-        ax.hist(kcat_values, bins=bins, color="#2980b9", alpha=0.85, edgecolor='white')
+        # Stacked histogram by score
+        hist_data = [pd.to_numeric(df[df['matching_score'] == score]['kcat'], errors='coerce').dropna() for score in present_scores]
+        ax.hist(hist_data, bins=bins, stacked=True, color=[score_color(s) for s in present_scores], label=[f"Score {s}" for s in present_scores], edgecolor='white')
         ax.set_xscale('log')
         ax.set_xlabel("kcat", fontsize=14)
         ax.set_ylabel("Count", fontsize=14)
@@ -352,23 +356,21 @@ def report_api(df, api_name):
         ax.set_xlim([10**min_exp / 1.5, 10**max_exp * 1.5])
         ax.set_xticks([10**i for i in range(min_exp, max_exp+1)])
         ax.get_xaxis().set_major_formatter(plt.ScalarFormatter())
+        ax.legend(title="Matching Score", fontsize=12)
         plt.tight_layout()
         buf = io.BytesIO()
         plt.savefig(buf, format='png', bbox_inches='tight')
         plt.close(fig)
         kcat_hist_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
 
-    # Current time
-    generated_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    # Generate HTML content
+    # HTML start
     html = f"""
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{api} kcat Matching Report</title>
+        <title>{api_name} kcat Matching Report</title>
         <style>
             body {{
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -447,7 +449,6 @@ def report_api(df, api_name):
             table tr:nth-child(even) {{
                 background-color: #f2f2f2;
             }}
-            /* Stacked progress bar */
             .progress-stacked {{
                 display: flex;
                 height: 18px;
@@ -468,14 +469,6 @@ def report_api(df, api_name):
                 white-space: nowrap;
                 overflow: hidden;
             }}
-            /* Color palette */
-            .bar-1 {{ background-color: #2980b9; }}  /* Perfect match */
-            .bar-2 {{ background-color: #16a085; }}  /* Relax enzyme */
-            .bar-3 {{ background-color: #f39c12; }}  /* Relax pH & temperature */
-            .bar-4 {{ background-color: #8e44ad; }}  /* Relax organism */
-            .bar-5 {{ background-color: #c0392b; }}  /* Relax substrate */
-            .bar-10 {{ background-color: #ecf0f1; color: #333; }}  /* Not found (light grey) */
-            /* Legend styles */
             .legend {{
                 display: flex;
                 flex-wrap: wrap;
@@ -492,10 +485,7 @@ def report_api(df, api_name):
                 width: 14px;
                 height: 14px;
                 border-radius: 3px;
-            }}
-            ul {{
-                padding-left: 20px;
-                margin-top: 10px;
+                border: 1px solid #aaa;
             }}
             .img-section {{
                 display: flex;
@@ -504,19 +494,6 @@ def report_api(df, api_name):
                 justify-content: center;
                 align-items: flex-start;
                 margin-top: 20px;
-            }}
-            .img-card {{
-                background: #f9fafc;
-                border-radius: 8px;
-                padding: 15px;
-                border: 1px solid #e2e2e2;
-                text-align: center;
-                margin-bottom: 10px;
-            }}
-            .img-card img {{
-                max-width: 350px;
-                display: block;
-                margin: 0 auto 10px auto;
             }}
             footer {{
                 text-align: center;
@@ -530,7 +507,7 @@ def report_api(df, api_name):
     </head>
     <body>
         <header>
-            <h1>{api} kcat Matching Report</h1>
+            <h1>{api_name} kcat Matching Report</h1>
             <p>Generated on {generated_time}</p>
         </header>
 
@@ -554,113 +531,67 @@ def report_api(df, api_name):
                 <div class="progress-stacked">
     """
 
-    # Color and label maps for scores 1-5 and 10
-    color_map = {
-        1: "bar-1",  # Perfect match
-        2: "bar-2",  # Relax enzyme
-        3: "bar-3",  # Relax pH & temperature
-        4: "bar-4",  # Relax organism
-        5: "bar-5",  # Relax substrate
-        10: "bar-10" # Not found (light grey)
-    }
-    label_map = {
-        1: "Perfect match",
-        2: "Relax enzyme",
-        3: "Relax pH & temperature",
-        4: "Relax organism",
-        5: "Relax substrate",
-        10: "Not found"
-    }
-
-    # Add each segment for scores 1-5 and 10
-    for score in all_scores:
+    # Add progress bars only for present scores
+    for score in present_scores:
         percent = score_percent.get(score, 0)
-        bar_class = color_map.get(score, "bar-10")
-        label = label_map.get(score, f"Score {score}")
         if percent > 0:
-            html += f"""
-                    <div class="progress-bar {bar_class}" style="width:{percent}%" title="{label}: {percent:.2f}%"></div>
-            """
+            html += f'<div class="progress-bar" style="width:{percent}%;background:{score_color(score)};" title="Score {score}: {percent:.2f}%"></div>'
 
     html += """
-                </div>
-                <div class="legend">
-    """
-
-    for score in all_scores:
-        bar_class = color_map.get(score, "bar-10")
-        label = label_map.get(score, f"Score {score}")
-        html += f"""
-                    <div class="legend-item">
-                        <div class="legend-color {bar_class}"></div> {label}
-                    </div>
-        """
-
-    html += """
-                </div>
-                <table>
-                    <tr>
-                        <th>Score</th>
-                        <th>Count</th>
-                        <th>Percent</th>
-                    </tr>
-    """
-
-    # Table rows
-    for score in all_scores:
-        count = score_counts[score]
-        percent = score_percent[score]
-        html += f"""
-                    <tr>
-                        <td>{score}</td>
-                        <td>{count}</td>
-                        <td>{percent:.2f}%</td>
-                    </tr>
-        """
-
-    html += """
-                </table>
             </div>
+            <div class="legend">
     """
 
+    # Add legend only for present scores
+    for score in present_scores:
+        html += f'<div class="legend-item"><div class="legend-color" style="background:{score_color(score)};"></div> Score {score}</div>'
+
     html += """
-            <div class="card">
-                <h2>Distribution of kcat values</h2>
-                <div class="img-section">
+            </div>
+            <table>
+                <tr>
+                    <th>Score</th>
+                    <th>Count</th>
+                    <th>Percent</th>
+                </tr>
+    """
+
+    # Table rows only for present scores
+    for score in present_scores:
+        html += f'<tr><td>{score}</td><td>{score_counts[score]}</td><td>{score_percent[score]:.2f}%</td></tr>'
+
+    html += """
+            </table>
+        </div>
+    """
+
+    # Histogram section (stacked by score)
+    html += """
+        <div class="card">
+            <h2>Distribution of kcat values (Stacked by Matching Score)</h2>
+            <div class="img-section">
     """
     if kcat_hist_base64:
-        html += f"""
-        <img src="data:image/png;base64,{kcat_hist_base64}" alt="kcat Distribution">
-    """
-    
+        html += f'<img src="data:image/png;base64,{kcat_hist_base64}" alt="kcat Distribution">'
     html += """
-                </div>
             </div>
+        </div>
     """
 
+    # Metadata section
     html += """
             <div class="card">
-                <h2>Hierarchical Matching Strategy</h2>
-                <p>The algorithm attempts to find the best match in the following order:</p>
-                <ul>
-                    <li>1. Perfect match : EC - Enzyme - Temperature/pH - Organism - Substrate </li>
-                    <li>2. Relax enzyme : EC - Temperature/pH - Organism - Substrate </li>
-                    <li>3. Relax pH and temperature : EC - Organism - Substrate </li>
-                    <li>4. Relax organism : EC - Substrate </li>
-                    <li>5. Relax substrate : EC</li>
-                    <li>10. Not found</li>
-                </ul>
+                <h2>Matching Score Meaning</h2>
+                <p>Matching score ranges from 0 (best match) to 15 (no match).</p>
             </div>
         </div>
 
-        <footer>
-            KcatMetaMod
-        </footer>
+        <footer>KcatMetaMod</footer>
     </body>
     </html>
     """
 
-    # Save to file
+    # Save HTML
     os.makedirs("reports", exist_ok=True)
     report_path = f"reports/{api_name}_report.html"
     with open(report_path, "w", encoding="utf-8") as f:

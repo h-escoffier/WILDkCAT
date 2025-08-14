@@ -1,6 +1,7 @@
 import logging
 import pandas as pd 
 import numpy as np
+from functools import lru_cache
 
 
 def arrhenius_equation(candidate, api_output, general_criteria):
@@ -15,38 +16,6 @@ def arrhenius_equation(candidate, api_output, general_criteria):
     Returns:
         float: Estimated kcat value at the objective temperature, calculated using the Arrhenius equation.
     """
-
-    def find_ea(df, expected_range=(50000, 150000)):
-        """
-        Estimate the activation energy (Ea) using the Arrhenius equation from kcat values at different temperatures.
-
-        Parameters:
-            df (pd.DataFrame): DataFrame with at least 'Temperature' (°C) and 'value' (kcat) columns.
-            expected_range (tuple): Expected range for Ea in J/mol. Default is (50000, 150000).
-
-        Returns:
-            float: Estimated activation energy (Ea) in J/mol. 
-        """
-
-        r = 8.314  # Gas constant in J/(mol*K)
-
-        # Filter out rows with missing values
-        valid = df[['Temperature', 'value']].dropna()
-
-        # Convert temperature to Kelvin
-        temps = valid['Temperature'].values
-        temps_K = temps + 273.15
-        kcats = pd.to_numeric(valid['value'], errors='coerce').values
-
-        x = 1 / temps_K
-        y = np.log(kcats)
-        slope, _ = np.polyfit(x, y, 1)
-        ea = float(-slope * r)
-
-        if not (expected_range[0] <= ea <= expected_range[1]):
-            logging.warning(f"Estimated Ea ({ea:.0f} J/mol) is outside the expected range {expected_range} J/mol.")
-
-        return ea
 
     def calculate_kcat(temp_obj, ea, kcat_ref, temp_ref): 
         """
@@ -65,6 +34,9 @@ def arrhenius_equation(candidate, api_output, general_criteria):
         kcat_obj = kcat_ref * np.exp(ea / r * (1/temp_ref - 1/temp_obj))
         return kcat_obj
 
+    # EC Code 
+    ec_code = candidate.get("ECNumber")
+
     # Objective temperature
     obj_temp = np.mean(general_criteria["Temperature"]) + 273.15
 
@@ -82,7 +54,7 @@ def arrhenius_equation(candidate, api_output, general_criteria):
     api_filtered["Temperature"] = api_filtered["Temperature"] + 273.15
 
     # Estimate the activation energy (Ea)
-    ea = find_ea(api_filtered)
+    ea, _ = calculate_ea(api_filtered)
 
     # Select one kcat for the ref
     kcat_ref = float(api_filtered['value'].iloc[0])
@@ -90,3 +62,40 @@ def arrhenius_equation(candidate, api_output, general_criteria):
         
     kcat = calculate_kcat(obj_temp, ea, kcat_ref, temp_ref)
     return kcat
+
+
+
+def calculate_ea(df):
+    """
+    Estimate the activation energy (Ea) using the Arrhenius equation from kcat values at different temperatures.
+
+    Parameters:
+        df (pd.DataFrame): DataFrame with at least 'Temperature' (°C) and 'value' (kcat) columns.
+        expected_range (tuple): Expected range for Ea in J/mol. Default is (50000, 150000).
+    
+    Returns:
+        float: Estimated activation energy (Ea) in J/mol. 
+    """
+
+    r = 8.314  # Gas constant in J/(mol*K)
+
+    # Filter out rows with missing values
+    valid = df[['Temperature', 'value']].dropna()
+
+    temps_K = valid['Temperature'].values
+    kcats = pd.to_numeric(valid['value'], errors='coerce').values
+
+    x = 1 / temps_K
+    y = np.log(kcats)
+    slope, intercept = np.polyfit(x, y, 1)
+        
+    # R2 
+    y_pred = slope * x + intercept
+    ss_res = np.sum((y - y_pred) ** 2)
+    ss_tot = np.sum((y - np.mean(y)) ** 2)
+    r2 = 1 - ss_res / ss_tot if ss_tot != 0 else np.nan
+        
+    # Activation energy 
+    ea = float(-slope * r)
+
+    return ea, r2 

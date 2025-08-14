@@ -5,7 +5,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 from zeep import Client, Settings
 from zeep.transports import Transport
-from zeep.cache import SqliteCache
+from zeep.cache import SqliteCache, InMemoryCache
 from zeep.helpers import serialize_object
 from dotenv import load_dotenv
 from functools import lru_cache
@@ -23,7 +23,7 @@ def create_brenda_client(wsdl_url: str = "https://www.brenda-enzymes.org/soap/br
     """
     Creates and configures a persistent SOAP client for the BRENDA API.
 
-    Args:
+    Parameters:
         wsdl_url (str): URL to the BRENDA WSDL file.
 
     Returns:
@@ -40,8 +40,8 @@ def create_brenda_client(wsdl_url: str = "https://www.brenda-enzymes.org/soap/br
     session.headers.update({"User-Agent": "BRENDA-Client"})
 
     # Create zeep transport and settings
-    transport = Transport(session=session, cache=SqliteCache())
-    settings = Settings(strict=False)  # Avoids fetching forbidden external schemas
+    transport = Transport(session=session, cache=InMemoryCache())
+    settings = Settings(strict=False, xml_huge_tree=True) 
 
     return Client(wsdl_url, settings=settings, transport=transport)
 
@@ -123,7 +123,10 @@ def get_turnover_number_brenda(ec_number):
 
     # Remove None values (-999)
     data = [entry for entry in data if entry.get('turnoverNumber') is not None and entry.get('turnoverNumber') != '-999']
-    
+    if data == []:
+        logging.warning('%s: No valid data found for the query in BRENDA.' % f"{ec_number}")
+        return pd.DataFrame()
+
     df = pd.DataFrame(data)
     df_org = pd.DataFrame(data_organism)
 
@@ -202,13 +205,12 @@ def get_cofactor(ec_number):
     password = os.getenv("BRENDA_PASSWORD")
 
     # Call the SOAP API
-    wsdl = "https://www.brenda-enzymes.org/soap/brenda_zeep.wsdl"
-    password = hashlib.sha256(password.encode("utf-8")).hexdigest()
-    settings = Settings(strict=False)
+    email, hashed_password = get_brenda_credentials()
+    client = create_brenda_client()
 
     parameters_cofactor = [
         email,
-        password,
+        hashed_password,
         f'ecNumber*{ec_number}',
         "cofactor*", 
         "commentary*", 
@@ -217,7 +219,6 @@ def get_cofactor(ec_number):
         "literature*"
     ]
 
-    client = Client(wsdl, settings=settings)
     result_cofactor = client.service.getCofactor(*parameters_cofactor)
     data = serialize_object(result_cofactor)
     df = pd.DataFrame(data)
@@ -229,7 +230,7 @@ def get_cofactor(ec_number):
 
 if __name__ == "__main__":
     # Test : Send a request to BRENDA API
-    df = get_turnover_number_brenda(ec_number="1.1.1.42")
+    df = get_turnover_number_brenda(ec_number="2.5.1.3")
     df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
 
     # Test : Identify cofactor

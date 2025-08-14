@@ -6,6 +6,7 @@ from kcatmatchmod.api.sabio_rk_api import get_turnover_number_sabio
 from kcatmatchmod.api.brenda_api import get_turnover_number_brenda
 from kcatmatchmod.utils.matching import find_best_match
 from kcatmatchmod.utils.generate_reports import report_api
+import time
 
 
 def get_turnover_number(kcat_dict, database='both'): 
@@ -109,12 +110,17 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
     kcat_df['kcat_db'] = None
 
     # Retrieve kcat values from databases
+    request_count = 0
     for row in tqdm(kcat_df.itertuples(), total=len(kcat_df), desc="Retrieving kcat values"):
         kcat_dict = row._asdict()
-
+        
         # Extract kcat and matching score
         best_match, matching_score = extract_kcat(kcat_dict, general_criteria, database=database)
         kcat_df.loc[row.Index, 'matching_score'] = matching_score
+
+        request_count += 1
+        if request_count % 300 == 0:
+            time.sleep(10)
         
         if best_match is not None:
             # Assign results to the main dataframe
@@ -126,7 +132,8 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
             kcat_df.loc[row.Index, 'kcat_ph'] = best_match['pH']
             kcat_df.loc[row.Index, 'kcat_variant'] = best_match['EnzymeVariant']
             kcat_df.loc[row.Index, 'kcat_db'] = best_match['db']
-    
+            kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
+
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
 
@@ -137,16 +144,16 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     # kcat_dict = {
-    #     'ec_code': '1.1.1.42',
-    #     'uniprot_model': 'P08200',
+    #     'ec_code': '2.7.11.1',
+    #     'uniprot_model': 'YBR097W;YLR240W',
     #     'db': 'brenda',
-    #     'substrates_name': 'Isocitrate;Nicotinamide adenine dinucleotide phosphate', 
+    #     'substrates_name': 'H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP', 
     # }
 
     # general_criteria ={
-    #     'Organism': 'Escherichia coli', 
-    #     'Temperature': (20, 40), 
-    #     'pH': (6.5, 7.5)
+    #     'Organism': 'Saccharomyces cerevisiae', 
+    #     'Temperature': (18, 38), 
+    #     'pH': (4.0, 8.0)
     # }
 
     # output = extract_kcat(kcat_dict, general_criteria, database='brenda')
@@ -154,12 +161,30 @@ if __name__ == "__main__":
 
     # Test : Run the retrieve function
     logging.basicConfig(level=logging.INFO)
+    # run_retrieve(
+    #     kcat_file_path="output/ecoli_kcat.tsv",
+    #     output_path="output/ecoli_kcat_test_brenda.tsv",
+    #     # output_path="output/ecoli_kcat_test_sabio.tsv",
+    #     organism="Escherichia coli",
+    #     temperature_range=(20, 40),
+    #     pH_range=(6.5, 7.5),
+    #     database='brenda', 
+    #     # database='sabio_rk', 
+    #     report=False
+    # ) 
+
     run_retrieve(
-        kcat_file_path="output/ecoli_kcat.tsv",
-        output_path="output/ecoli_kcat_test.tsv",
-        organism="Escherichia coli",
-        temperature_range=(20, 40),
-        pH_range=(6.5, 7.5),
+        kcat_file_path="output/yeast_kcat.tsv",
+        output_path="output/yeast_kcat_test_brenda.tsv",
+        # output_path="output/yeast_kcat_test_sabio.tsv",
+        organism="Saccharomyces cerevisiae",
+        temperature_range=(18, 38),
+        pH_range=(4.0, 8.0),
         database='brenda', 
-        report=False
+        # database='sabio_rk', 
+        report=True
     ) 
+
+    # Test : Generate report
+    # df = pd.read_csv("output/yeast_kcat_test_brenda.tsv", sep='\t')
+    # report_api(df, "brenda")

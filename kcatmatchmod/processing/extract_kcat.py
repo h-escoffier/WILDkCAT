@@ -9,8 +9,7 @@ from kcatmatchmod.api.api_utilities import safe_requests_get
 from kcatmatchmod.utils.generate_reports import report_extraction
 
 
-# TODO: Check the genes format in KEGG and model.genes and keep only the lines with a correct intersection between KEGG genes and model.genes
-# TODO: Column kegg_genes and intersection_genes are currently not used, maybe add this information in the report ? 
+# TODO: Column kegg_genes and intersection_genes are currently not used, maybe add this information in the report ?
 
 
 # --- Load Model ---
@@ -269,6 +268,10 @@ def create_kcat_output(model, organism_code):
     
     logging.info("Total of possible kcat values: %d", len(df))
 
+
+    # Drop kegg_genes and intersection_genes 
+    df = df.drop(columns=["kegg_genes", "intersection_genes"], errors='ignore')
+
     report_statistics = {
         "incomplete_ec_codes": len(set_incomplete_ec_codes),
         "transferred_ec_codes": len(set_transferred_ec_codes),
@@ -308,6 +311,6 @@ def run_extraction(model_path, output_path, organism_code, report=True):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # Test : Main function
-    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
-    # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
+    # run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
     # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')

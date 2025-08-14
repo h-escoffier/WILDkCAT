@@ -2,9 +2,11 @@ import logging
 import pandas as pd 
 import numpy as np
 
-from kcatmatchmod.utils.temperature import arrhenius_equation
+from kcatmatchmod.utils.temperature import arrhenius_equation, calculate_ea
 from kcatmatchmod.utils.organism import closest_org
 
+
+# TODO: Limit the Ea to the same pH 
 
 # --- Check parameters ---
 
@@ -46,35 +48,51 @@ def check_pH(candidate, general_criteria):
     """
     ph_min, ph_max = general_criteria["pH"]
     candidate_ph = candidate.get("pH", None)
-    if candidate_ph is None:
-        return 1 
-    elif ph_min <= candidate_ph <= ph_max:    
+    if ph_min <= candidate_ph <= ph_max:
         return 0
-    else:  # Out of range 
+    elif pd.isna(candidate_ph):
+        return 1
+    else:  # Out of range
         return 2
     
 
-def check_temperature(candidate, general_criteria, api_output): 
+def check_temperature(candidate, general_criteria, api_output, min_r2=0.8, expected_range=(50000, 150000)): 
     """
     Checks whether the temperature in a candidate entry matches the expected temperature.
     If the temperature is within the specified range is not met, verify if the Arrhenius equation can be applied.
     """
     temp_min, temp_max = general_criteria["Temperature"]
     candidate_temp = candidate.get("Temperature", None)
-    if candidate_temp is not None and temp_min <= candidate_temp <= temp_max:
-        return 0, False 
+    if temp_min <= candidate_temp <= temp_max:
+        return 0, False
+
+    # Try to find a correct the kcat value using the Arrhenius equation
     ph_min, ph_max = general_criteria["pH"]
-    filt = (
+    filters = (
         api_output["pH"].between(ph_min, ph_max)
         & (api_output["UniProtKB_AC"] == candidate["UniProtKB_AC"])
         & api_output["Temperature"].notna()
+        & api_output["value"].notna()
     )
-    temps_dispo = api_output.loc[filt, "Temperature"].nunique()
+    temps_dispo = api_output.loc[filters, "Temperature"].nunique()
+    api_filtered = api_output.loc[filters, ["Temperature", "value"]].copy()
+    
+    # Convert temperatures to Kelvin
+    api_filtered["Temperature"] = api_filtered["Temperature"] + 273.15
+
     if temps_dispo >= 2:
-        # Go Arrhenius
-        return 0, True
-    elif candidate_temp is None:
+        print(temps_dispo)
+        print(api_filtered)
+        ea, r2 = calculate_ea(api_filtered)
+        if r2 >= min_r2 and ea > 0:
+            if not (expected_range[0] <= ea <= expected_range[1]):
+                logging.warning(f"{candidate.get('ECNumber')}: Estimated Ea ({ea:.0f} J/mol) is outside the expected range {expected_range} J/mol.")
+            # Go Arrhenius
+            return 0, True
+    
+    if pd.isna(candidate_temp):
         return 1, False
+
     else:
         return 2, False
 
@@ -127,7 +145,8 @@ def compute_score(kcat_dict, candidate, general_criteria, api_output, best_score
     # Check enzyme
     score += check_enzyme(candidate, kcat_dict)
     # Check organism
-    score += check_organism(candidate, general_criteria)
+    if score != 0: 
+        score += check_organism(candidate, general_criteria)
     # Check variant
     score += check_variant(candidate) 
     # Check pH
@@ -173,6 +192,9 @@ def find_best_match(kcat_dict, api_output, general_criteria):
     """
     # 1. Remove mutant
     api_output = api_output[api_output["EnzymeVariant"].isin(['wildtype', None])]
+    
+    if api_output.empty:
+        return 14, None
 
     # 2. Order based on the enzyme and organism
     api_output = closest_org(kcat_dict, api_output)
