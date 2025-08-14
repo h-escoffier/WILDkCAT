@@ -144,10 +144,10 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     # kcat_dict = {
-    #     'ec_code': '2.7.11.1',
-    #     'uniprot_model': 'YBR097W;YLR240W',
+    #     'ec_code': '1.1.1.4',
+    #     'uniprot_model': 'P39714',
     #     'db': 'brenda',
-    #     'substrates_name': 'H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP', 
+    #     'substrates_name': '(R,R)-2,3-butanediol;NAD', 
     # }
 
     # general_criteria ={
@@ -173,18 +173,18 @@ if __name__ == "__main__":
     #     report=False
     # ) 
 
-    run_retrieve(
-        kcat_file_path="output/yeast_kcat.tsv",
-        output_path="output/yeast_kcat_test_brenda.tsv",
-        # output_path="output/yeast_kcat_test_sabio.tsv",
-        organism="Saccharomyces cerevisiae",
-        temperature_range=(18, 38),
-        pH_range=(4.0, 8.0),
-        database='brenda', 
-        # database='sabio_rk', 
-        report=True
-    ) 
+    # run_retrieve(
+    #     kcat_file_path="output/yeast_kcat.tsv",
+    #     output_path="output/yeast_kcat_test_brenda.tsv",
+    #     # output_path="output/yeast_kcat_test_sabio.tsv",
+    #     organism="Saccharomyces cerevisiae",
+    #     temperature_range=(18, 38),
+    #     pH_range=(4.0, 8.0),
+    #     database='brenda', 
+    #     # database='sabio_rk', 
+    #     report=True
+    # ) 
 
     # Test : Generate report
-    # df = pd.read_csv("output/yeast_kcat_test_brenda.tsv", sep='\t')
-    # report_api(df, "brenda")
+    df = pd.read_csv("output/yeast_kcat_test_brenda.tsv", sep='\t')
+    report_api(df, "brenda")

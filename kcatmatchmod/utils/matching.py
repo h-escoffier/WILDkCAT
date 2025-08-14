@@ -6,7 +6,8 @@ from kcatmatchmod.utils.temperature import arrhenius_equation, calculate_ea
 from kcatmatchmod.utils.organism import closest_org
 
 
-# TODO: Limit the Ea to the same pH 
+# TODO: Limit the Ea to the same pH ? 
+
 
 # --- Check parameters ---
 
@@ -81,8 +82,6 @@ def check_temperature(candidate, general_criteria, api_output, min_r2=0.8, expec
     api_filtered["Temperature"] = api_filtered["Temperature"] + 273.15
 
     if temps_dispo >= 2:
-        print(temps_dispo)
-        print(api_filtered)
         ea, r2 = calculate_ea(api_filtered)
         if r2 >= min_r2 and ea > 0:
             if not (expected_range[0] <= ea <= expected_range[1]):
@@ -190,31 +189,46 @@ def find_best_match(kcat_dict, api_output, general_criteria):
             best_score (float): The lowest score found, representing the best match.
             best_candidate (dict or None): Dictionary of the best matching candidate's data, or None if no match is found.
     """
-    # 1. Remove mutant
+
+    # 1. Remove mutant enzymes
     api_output = api_output[api_output["EnzymeVariant"].isin(['wildtype', None])]
-    
     if api_output.empty:
         return 14, None
 
-    # 2. Order based on the enzyme and organism
+    # 2. Calculate enzyme identity percentage
     api_output = closest_org(kcat_dict, api_output)
 
-    # 3. Find the best match
-    best_score = np.inf
-    best_candidate = None
+    # 3. Compute score and adjust kcat if needed
+    scores = []
+    adjusted_kcats = []
 
-    for candidate in api_output.itertuples():
-        candidate_dict = candidate._asdict()
-        # Compute the score for the candidate
-        score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output, best_score)
-        if score < best_score:
-            if arrhenius: 
-                kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
-                candidate_dict['kcat'] = kcat 
-                candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])  
-            best_score = score
-            best_candidate = candidate_dict
-            if score == 0:  # Perfect match found
-                break
+    for _, row in api_output.iterrows():
+        candidate_dict = row.to_dict()
+        score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output, np.inf)
+        if arrhenius:
+            kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
+            candidate_dict['value'] = kcat
+            candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])
+        scores.append(score)
+        adjusted_kcats.append(candidate_dict.get('value', row['value']))
+
+    api_output = api_output.copy()
+    api_output['score'] = scores
+    api_output['adj_kcat'] = adjusted_kcats
+
+    api_output["score"] = pd.to_numeric(api_output["score"], errors="coerce").fillna(13)
+    api_output["id_perc"] = pd.to_numeric(api_output.get("id_perc", np.nan), errors="coerce").fillna(-np.inf)
+    api_output["adj_kcat"] = pd.to_numeric(api_output["adj_kcat"], errors="coerce")
+
+    # 4. Sort: best score, then highest id_perc, then smallest kcat
+    api_output = api_output.sort_values(
+        by=['score', 'id_perc', 'adj_kcat'],
+        ascending=[True, False, True], # Change to [True, False, False] to take the max instead of the min
+        kind='mergesort'  # stable sort for reproducibility
+    )
+
+    # 5. Select best candidate
+    best_candidate = api_output.iloc[0].to_dict()
+    best_score = best_candidate['score']
 
     return best_score, best_candidate

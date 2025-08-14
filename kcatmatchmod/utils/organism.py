@@ -1,10 +1,9 @@
 import pandas as pd
+import numpy as np
 from Bio import Align
 
+
 from kcatmatchmod.api.uniprot_api import convert_uniprot_to_sequence   
-
-
-# TODO: Maybe I should order by organism also ? 
 
 
 def closest_org(kcat_dict, api_output):
@@ -69,14 +68,5 @@ def closest_org(kcat_dict, api_output):
 
     api_output = api_output.copy()
     api_output["id_perc"] = identity_scores
-    
-    # Sort the results
-    api_output = api_output.sort_values(
-        by=["id_perc"],
-        ascending=[False]
-    )
 
     return api_output
-
-
-
