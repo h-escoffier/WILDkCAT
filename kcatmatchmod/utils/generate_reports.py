@@ -598,3 +598,15 @@ def report_api(df, api_name):
         f.write(html)
 
     logging.info(f"HTML report saved to '{report_path}'")
+
+
+def report_catapro_part1(df, report_statistics):
+    pass 
+
+
+def report_catapro_part2(df, report_statistics):
+    pass
+
+
+def report_full(): 
+    pass 
