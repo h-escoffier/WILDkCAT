@@ -23,7 +23,6 @@ def retry_api(max_retries=3, backoff_factor=1.5):
     return decorator
 
 
-@retry_api(max_retries=4, backoff_factor=2)
 def safe_requests_get(url, timeout=10):
     response = requests.get(url, timeout=timeout)
     response.raise_for_status()

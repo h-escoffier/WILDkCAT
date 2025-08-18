@@ -2,17 +2,15 @@ import requests
 import logging
 import pandas as pd 
 from io import StringIO
-from functools import lru_cache
-
-from kcatmatchmod.api.api_utilities import retry_api
+from functools import lru_cache 
+import time
 
 
 # --- Sabio-RK API ---
 
 
 @lru_cache(maxsize=None)
-@retry_api(max_retries=4, backoff_factor=2)
-def get_turnover_number_sabio(ec_number):
+def get_turnover_number_sabio(ec_number, batch_size=100):
     """
     Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.
 
@@ -28,11 +26,8 @@ def get_turnover_number_sabio(ec_number):
     entryIDs = []
 
     # -- Retrieve entryIDs --
-    query_parts = ['Parametertype:"kcat"']
-    if ec_number:
-        query_parts.append(f'ECNumber:"{ec_number}"')
-    query_string = ' AND '.join(query_parts)
-    query = {'format':'txt', 'q':query_string}
+    query_string = f'ECNumber:"{ec_number}"'
+    query = {'format': 'txt', 'q': query_string}
 
     # Make GET request
     request = requests.get(base_url, params=query)
@@ -42,7 +37,6 @@ def get_turnover_number_sabio(ec_number):
         return pd.DataFrame()  # Return empty DataFrame if no data found
 
     entryIDs = [int(x) for x in request.text.strip().split('\n')]
-
     # Retrieve informations matching the entryIDs
     data_field = {'entryIDs[]': entryIDs}
     # Possible fields to retrieve:
@@ -54,8 +48,23 @@ def get_turnover_number_sabio(ec_number):
                                          'Parameter']}
 
     # Make POST request
-    request = requests.post(parameters, params=query, data=data_field)
-    request.raise_for_status()
+    all_frames = []
+    for i in range(0, len(entryIDs), batch_size):
+        batch_ids = entryIDs[i:i+batch_size]
+        data_field = {'entryIDs[]': batch_ids}
+
+        try:
+            resp = requests.post(parameters, params=query, data=data_field)
+            resp.raise_for_status()
+            df_batch = pd.read_csv(StringIO(resp.text), sep='\t')
+            all_frames.append(df_batch)
+        except requests.exceptions.HTTPError as e:
+                logging.error(f"Request failed.")
+
+    if not all_frames:
+        return pd.DataFrame()
+
+    df = pd.concat(all_frames, ignore_index=True)
 
     # Format the response into a DataFrame
     df = pd.read_csv(StringIO(request.text), sep='\t')

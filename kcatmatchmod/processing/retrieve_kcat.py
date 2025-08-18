@@ -31,6 +31,7 @@ def get_turnover_number(kcat_dict, database='both'):
         df_brenda = get_turnover_number_brenda(kcat_dict['ec_code'])
     if database in ('both', 'sabio_rk'):
         df_sabio = get_turnover_number_sabio(kcat_dict['ec_code'])
+        time.sleep(1)  
     if database not in ('both', 'brenda', 'sabio_rk'):
         raise ValueError("Invalid database option. Choose from 'both', 'brenda', or 'sabio_rk'.")
 
@@ -161,22 +162,22 @@ if __name__ == "__main__":
 
     # Test : Run the retrieve function
     logging.basicConfig(level=logging.INFO)
-    # run_retrieve(
-    #     kcat_file_path="output/ecoli_kcat.tsv",
-    #     output_path="output/ecoli_kcat_test_brenda.tsv",
-    #     # output_path="output/ecoli_kcat_test_sabio.tsv",
-    #     organism="Escherichia coli",
-    #     temperature_range=(20, 40),
-    #     pH_range=(6.5, 7.5),
-    #     database='brenda', 
-    #     # database='sabio_rk', 
-    #     report=False
-    # ) 
+    run_retrieve(
+        kcat_file_path="output/ecoli_kcat.tsv",
+        output_path="output/ecoli_kcat_brenda.tsv",
+        # output_path="output/ecoli_kcat_sabio.tsv",
+        organism="Escherichia coli",
+        temperature_range=(20, 40),
+        pH_range=(6.5, 7.5),
+        database='brenda', 
+        # database='sabio_rk', 
+        report=False
+    ) 
 
     # run_retrieve(
     #     kcat_file_path="output/yeast_kcat.tsv",
-    #     output_path="output/yeast_kcat_test_brenda.tsv",
-    #     # output_path="output/yeast_kcat_test_sabio.tsv",
+    #     output_path="output/yeast_kcat_brenda.tsv",
+    #     # output_path="output/yeast_kcat_sabio.tsv",
     #     organism="Saccharomyces cerevisiae",
     #     temperature_range=(18, 38),
     #     pH_range=(4.0, 8.0),
@@ -186,5 +187,5 @@ if __name__ == "__main__":
     # ) 
 
     # Test : Generate report
-    df = pd.read_csv("output/yeast_kcat_test_brenda.tsv", sep='\t')
-    report_api(df, "brenda")
+    # df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
+    # report_api(df, "brenda")

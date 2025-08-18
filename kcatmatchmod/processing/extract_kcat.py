@@ -5,7 +5,7 @@ from tqdm import tqdm
 from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
-from kcatmatchmod.api.api_utilities import safe_requests_get
+from kcatmatchmod.api.api_utilities import safe_requests_get, retry_api
 from kcatmatchmod.utils.generate_reports import report_extraction
 
 
@@ -51,7 +51,8 @@ def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
     - list: List of gene identifiers (KEGG format).
     """
     url = f"https://rest.kegg.jp/link/{organism_code}/enzyme:{ec_code}"
-    response = safe_requests_get(url)
+    safe_get_with_retry = retry_api(max_retries=4, backoff_factor=2)(safe_requests_get)
+    response = safe_get_with_retry(url)
     if not response or response.text == "\n":
         return []
     genes = [
@@ -80,7 +81,8 @@ def is_ec_code_transferred(ec_code):
         - A warning if the EC code has been transferred.
     """
     url = f'https://rest.kegg.jp/list/{ec_code}'
-    response = safe_requests_get(url)
+    safe_get_with_retry = retry_api(max_retries=4, backoff_factor=2)(safe_requests_get)
+    response = safe_get_with_retry(url)
     if not response:
         return None
     if "Transferred to" in response.text:

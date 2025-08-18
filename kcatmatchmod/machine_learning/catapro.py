@@ -1,17 +1,12 @@
-import requests
 import logging
 import pandas as pd 
 from tqdm import tqdm
 import re
-from io import StringIO
 from functools import lru_cache
 
-from kcatmatchmod.api.api_utilities import safe_requests_get
+from kcatmatchmod.api.api_utilities import safe_requests_get, retry_api
 from kcatmatchmod.api.uniprot_api import convert_uniprot_to_sequence
 from kcatmatchmod.api.brenda_api import get_cofactor
-
-
-# TODO: Integrate safe requests and retry_api decorators in the functions below
 
 
 # --- API ---
@@ -28,7 +23,8 @@ def convert_kegg_compound_to_sid(kegg_compound_id):
         str: The PubChem SID if found, otherwise None.
     """
     url = f"https://rest.kegg.jp/conv/pubchem/compound:{kegg_compound_id}"
-    response = safe_requests_get(url)
+    safe_get_with_retry = retry_api(max_retries=2, backoff_factor=2)(safe_requests_get)
+    response = safe_get_with_retry(url)
 
     if response is None:
         return None
@@ -52,7 +48,8 @@ def convert_sid_to_cid(sid):
         int or None: The corresponding PubChem Compound ID (CID), or None if not found.
     """
     url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/substance/sid/{sid}/cids/JSON"
-    response = safe_requests_get(url)
+    safe_get_with_retry = retry_api(max_retries=1, backoff_factor=2)(safe_requests_get)
+    response = safe_get_with_retry(url)
     
     if response is None:
         return None
@@ -77,7 +74,8 @@ def convert_cid_to_smiles(cid):
     """
     url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{cid}/property/smiles/txt"
     try:
-        response = safe_requests_get(url)
+        safe_get_with_retry = retry_api(max_retries=1, backoff_factor=2)(safe_requests_get)
+        response = safe_get_with_retry(url)
 
         if response is None:
             return None
@@ -129,6 +127,9 @@ def create_catapro_input_file(kcat_df):
     catapro_input = []
     substrates_to_smiles = {}
 
+    counter_multiple_uniprot, counter_kegg_no_matching, counter_rxn_covered = 0, 0, 0 
+    counter_cofactor = 0
+
     for _, row in tqdm(kcat_df.iterrows(), total=len(kcat_df), desc="Generating CataPro input"):
         uniprot = row['uniprot_model']
         ec_code = row['ec_code']
@@ -136,11 +137,13 @@ def create_catapro_input_file(kcat_df):
         # If multiple UniProt IDs continue #TODO: Find a way to handle this 
         if len(uniprot.split(';')) > 1:        
             logging.warning(f"Multiple UniProt IDs found for {ec_code}: {uniprot}.")
+            counter_multiple_uniprot += 1
             continue
         
         # If the number of KEGG Compound IDs is not matching the number of names, continue 
         if len([s for s in row['substrates_kegg'].split(';') if s]) != len(row['substrates_name'].split(';')):
             logging.warning(f"Number of KEGG compounds IDs does not match number of names for {ec_code}: {uniprot}.")
+            counter_kegg_no_matching += 1
             continue
 
         sequence = convert_uniprot_to_sequence(uniprot) 
@@ -156,6 +159,7 @@ def create_catapro_input_file(kcat_df):
 
         for name, kegg_compound_id in zip(names, kegg_ids):
             if name.lower() in [c.lower() for c in cofactor]:  # Skip the cofactor #TODO: Should we add a warning if no cofactor is found for a reaction?
+                counter_cofactor += 1
                 continue
             smiles = convert_kegg_to_smiles(kegg_compound_id)
             if smiles is not None:
@@ -171,13 +175,22 @@ def create_catapro_input_file(kcat_df):
                     "sequence": sequence,
                     "smiles": smiles
                 })
+        
+        counter_rxn_covered += 1
 
     # Generate CataPro input file
     catapro_input_df = pd.DataFrame(catapro_input)
     # Generate reverse mapping from SMILES to KEGG IDs as TSV 
     substrates_to_smiles_df = pd.DataFrame(list(substrates_to_smiles.items()), columns=['kegg_id', 'smiles'])
 
-    return catapro_input_df, substrates_to_smiles_df
+    report_statistics = {
+        "rxn_covered": counter_rxn_covered,
+        "cofactor_identified": counter_cofactor,
+        "multiple_uniprot": counter_multiple_uniprot,
+        "kegg_no_matching": counter_kegg_no_matching
+    }
+
+    return catapro_input_df, substrates_to_smiles_df, report_statistics
 
 
 # --- Integrate CataPro predictions into kcat file ---

@@ -16,6 +16,7 @@
 - If multiple enzymes are provided, check if one match. 
 - Identity percentage is not calculated if multiple enzyme are provided.
 - Arrhenius correction is made for all the values in the correct range of pH.
+- If multiple score for the same row, best score, the highest identity percentage and the lower value. 
 
 ### predict_kcat.py
 
@@ -25,3 +26,5 @@
 
 TODO: SABIO-RK 
 TODO: Report CataPro
+TODO: Is it better to have a class instead of the independant functions ? 
+TODO: Maybe Pubchem API should have a specific .py file 
