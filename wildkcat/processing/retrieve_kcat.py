@@ -2,10 +2,10 @@ import logging
 import pandas as pd
 from tqdm import tqdm
 
-from kcatmatchmod.api.sabio_rk_api import get_turnover_number_sabio
-from kcatmatchmod.api.brenda_api import get_turnover_number_brenda
-from kcatmatchmod.utils.matching import find_best_match
-from kcatmatchmod.utils.generate_reports import report_api
+from wildkcat.api.sabio_rk_api import get_turnover_number_sabio
+from wildkcat.api.brenda_api import get_turnover_number_brenda
+from wildkcat.utils.matching import find_best_match
+from wildkcat.utils.generate_reports import report_api
 import time
 
 

@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 from tqdm import tqdm
 
-from kcatmatchmod.machine_learning.catapro import create_catapro_input_file, integrate_catapro_predictions
+from wildkcat.machine_learning.catapro import create_catapro_input_file, integrate_catapro_predictions
 
 # TODO: Generates reports
 

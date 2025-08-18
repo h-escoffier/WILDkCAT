@@ -5,8 +5,8 @@ from tqdm import tqdm
 from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
-from kcatmatchmod.api.api_utilities import safe_requests_get, retry_api
-from kcatmatchmod.utils.generate_reports import report_extraction
+from wildkcat.api.api_utilities import safe_requests_get, retry_api
+from wildkcat.utils.generate_reports import report_extraction
 
 
 # TODO: Column kegg_genes and intersection_genes are currently not used, maybe add this information in the report ?

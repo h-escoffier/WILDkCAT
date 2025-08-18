@@ -3,7 +3,7 @@ import numpy as np
 from Bio import Align
 
 
-from kcatmatchmod.api.uniprot_api import convert_uniprot_to_sequence   
+from wildkcat.api.uniprot_api import convert_uniprot_to_sequence   
 
 
 def closest_org(kcat_dict, api_output):

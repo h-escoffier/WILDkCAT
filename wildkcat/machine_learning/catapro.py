@@ -4,9 +4,9 @@ from tqdm import tqdm
 import re
 from functools import lru_cache
 
-from kcatmatchmod.api.api_utilities import safe_requests_get, retry_api
-from kcatmatchmod.api.uniprot_api import convert_uniprot_to_sequence
-from kcatmatchmod.api.brenda_api import get_cofactor
+from wildkcat.api.api_utilities import safe_requests_get, retry_api
+from wildkcat.api.uniprot_api import convert_uniprot_to_sequence
+from wildkcat.api.brenda_api import get_cofactor
 
 
 # --- API ---

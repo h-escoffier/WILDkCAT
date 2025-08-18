@@ -2,8 +2,8 @@ import logging
 import pandas as pd 
 import numpy as np
 
-from kcatmatchmod.utils.temperature import arrhenius_equation, calculate_ea
-from kcatmatchmod.utils.organism import closest_org
+from wildkcat.utils.temperature import arrhenius_equation, calculate_ea
+from wildkcat.utils.organism import closest_org
 
 
 # TODO: Limit the Ea to the same pH ? 
