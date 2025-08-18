@@ -14,15 +14,15 @@ def get_turnover_number(kcat_dict, database='both'):
     Retrieves turnover number (kcat) data from specified enzyme databases and returns a merged DataFrame.
 
     Parameters: 
-    kcat_dict (dict): Dictionary containing enzyme information.
-    database (str, optional): Specifies which database(s) to query for kcat values. 
-        Options are 'both' (default), 'brenda', or 'sabio_rk'.
+        kcat_dict (dict): Dictionary containing enzyme information.
+        database (str, optional): Specifies which database(s) to query for kcat values. 
+            Options are 'both' (default), 'brenda', or 'sabio_rk'.
 
     Returns: 
-    pd.DataFrame: A DataFrame containing kcat data from the selected database(s), with columns unified across sources.
+        pd.DataFrame: A DataFrame containing kcat data from the selected database(s), with columns unified across sources.
 
     Raises:
-    ValueError: If an invalid database option is provided.
+        ValueError: If an invalid database option is provided.
     """
     df_brenda = pd.DataFrame()
     df_sabio = pd.DataFrame()
@@ -86,7 +86,6 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
             Options are 'both' (default), 'brenda', or 'sabio_rk'.
         report (bool, optional): Whether to generate a report using the retrieved data (default: True).        
     """
-
     # Create a dict with the general criterias
     general_criteria = {
         "Organism": organism,
@@ -171,7 +170,7 @@ if __name__ == "__main__":
         pH_range=(6.5, 7.5),
         database='brenda', 
         # database='sabio_rk', 
-        report=False
+        report=True
     ) 
 
     # run_retrieve(

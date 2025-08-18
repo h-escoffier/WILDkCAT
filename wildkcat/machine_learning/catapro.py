@@ -120,9 +120,12 @@ def create_catapro_input_file(kcat_df):
     """
     Generate CataPro input file and a mapping of substrate KEGG IDs to SMILES.
 
+    Parameters: 
+        kcat_df (pd.DataFrame): Input DataFrame containing kcat information.
+
     Returns:
         catapro_input_df (pd.DataFrame): DataFrame for CataPro input.
-        substrates_to_smiles (dict): Mapping KEGG ID <-> SMILES (both directions).
+        substrates_to_smiles (dict): Mapping KEGG ID <-> SMILES.
     """
     catapro_input = []
     substrates_to_smiles = {}
@@ -134,7 +137,7 @@ def create_catapro_input_file(kcat_df):
         uniprot = row['uniprot_model']
         ec_code = row['ec_code']
 
-        # If multiple UniProt IDs continue #TODO: Find a way to handle this 
+        # TODO: Handle if multiple UniProt IDs
         if len(uniprot.split(';')) > 1:        
             logging.warning(f"Multiple UniProt IDs found for {ec_code}: {uniprot}.")
             counter_multiple_uniprot += 1
@@ -158,12 +161,12 @@ def create_catapro_input_file(kcat_df):
         cofactor = get_cofactor(ec_code) 
 
         for name, kegg_compound_id in zip(names, kegg_ids):
-            if name.lower() in [c.lower() for c in cofactor]:  # Skip the cofactor #TODO: Should we add a warning if no cofactor is found for a reaction?
+            if name.lower() in [c.lower() for c in cofactor]:  # TODO: Should we add a warning if no cofactor is found for a reaction?
                 counter_cofactor += 1
                 continue
             smiles = convert_kegg_to_smiles(kegg_compound_id)
             if smiles is not None:
-                smiles_str = smiles[0]  # If multiple SMILES, take the first one #TODO: Handle this case
+                smiles_str = smiles[0]  # TODO: If multiple SMILES, take the first one ? 
                 smiles_list.append(smiles_str)
                 substrates_to_smiles[kegg_compound_id] = smiles_str
         
@@ -198,9 +201,18 @@ def create_catapro_input_file(kcat_df):
 
 def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predictions_df):
     """
-    TODO: Write the documentation 
+    Integrates Catapro predictions into an kcat file.
+    If multiple values are provided for a single combination of EC, Enzyme, Substrate, the minimum value is taken.
+
+    Parameters:
+        kcat_df (pd.DataFrame): Input DataFrame containing kcat information.
+        substrates_to_smiles (pd.DataFrame): DataFrame mapping KEGG ID <-> SMILES.
+        catapro_predictions_df (pd.DataFrame): DataFrame containing Catapro model predictions
+
+    Returns:
+        pd.DataFrame: The input kcat_df with an additional column 'catapro_predicted_kcat_s' containing
+            the integrated Catapro predicted kcat(s^-1) values.
     """
-    # Format the output to match the kcat_df
     # Convert pred_log10[kcat(s^-1)] to kcat(s^-1)
     catapro_predictions_df['kcat_s'] = 10 ** catapro_predictions_df['pred_log10[kcat(s^-1)]']
     catapro_predictions_df['uniprot_model'] = catapro_predictions_df['fasta_id'].str.replace('_wild', '', regex=False) # Extract UniProt ID

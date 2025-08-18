@@ -20,10 +20,10 @@ def read_model(model_path: str):
     Reads a metabolic model from a given path.
     
     Parameters:
-    - model_path (str): Path to a model file.
+        model_path (str): Path to a model file.
 
     Returns:
-    - model (COBRA.Model): The COBRA model object.
+        model (COBRA.Model): The COBRA model object.
     """
     if model_path.endswith(".json"):
         return load_json_model(model_path)
@@ -41,14 +41,14 @@ def read_model(model_path: str):
 @lru_cache(maxsize=None)
 def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
     """
-        Retrieve genes for a given organism and EC number from KEGG.
+    Retrieve genes for a given organism and EC number from KEGG.
 
     Parameters:
-    - organism_code (str): KEGG organism code (e.g., 'hsa' for human, 'eco' for E. coli).
-    - ec_code (str): EC number (e.g., '1.1.1.1').   
+        organism_code (str): KEGG organism code (e.g., 'hsa' for human, 'eco' for E. coli).
+        ec_code (str): EC number (e.g., '1.1.1.1').
 
     Returns:
-    - list: List of gene identifiers (KEGG format).
+        list: List of gene identifiers (KEGG format).
     """
     url = f"https://rest.kegg.jp/link/{organism_code}/enzyme:{ec_code}"
     safe_get_with_retry = retry_api(max_retries=4, backoff_factor=2)(safe_requests_get)
@@ -78,7 +78,7 @@ def is_ec_code_transferred(ec_code):
             - None if the KEGG API request fails.
 
     Logs:
-        - A warning if the EC code has been transferred.
+        A warning if the EC code has been transferred.
     """
     url = f'https://rest.kegg.jp/list/{ec_code}'
     safe_get_with_retry = retry_api(max_retries=4, backoff_factor=2)(safe_requests_get)
@@ -297,9 +297,6 @@ def run_extraction(model_path, output_path, organism_code, report=True):
         output_path (str): Path to the output file (TSV format).
         organism_code (str): The KEGG organism code used to retrieve organism-specific gene information.
         report (bool): Whether to generate an HTML report (default: True).
-
-    Returns:
-        None
     """
     model = read_model(model_path)
     df, report_statistics = create_kcat_output(model, organism_code)
@@ -314,5 +311,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # Test : Main function
     run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    # run_extraction("model/vibrio_natriegens.json", "output/vibrio_kcat.tsv", 'vna')
     # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
     # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')

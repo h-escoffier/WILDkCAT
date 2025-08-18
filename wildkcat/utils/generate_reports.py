@@ -290,9 +290,7 @@ def report_extraction(model, df, report_statistics):
             </div>
         </div>
 
-        <footer>
-            KcatMetaMod
-        </footer>
+        <footer>WILDkCAT</footer>
     </body>
     </html>
     """
@@ -586,7 +584,7 @@ def report_api(df, api_name):
             </div>
         </div>
 
-        <footer>KcatMetaMod</footer>
+        <footer>WILDkCAT</footer>
     </body>
     </html>
     """
@@ -599,3 +597,187 @@ def report_api(df, api_name):
 
     logging.info(f"HTML report saved to '{report_path}'")
 
+
+def catapro_report_input(catapro_df, report_statistics): 
+    # CataPro Statistics 
+    total_catapro_entries = len(catapro_df)
+
+    # Report Statistics
+    rxn_covered = report_statistics['rxn_covered']
+    cofactors_covered = report_statistics['cofactor_identified']
+    multiple_uniprot = report_statistics['multiple_uniprot']
+    kegg_missing = report_statistics['kegg_no_matching']
+
+    total_rxn = rxn_covered + kegg_missing + multiple_uniprot
+    rxn_coverage = (rxn_covered / total_rxn * 100) if total_rxn > 0 else 0
+
+    # Time
+    generated_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Html report
+    html = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CataPro - Part 1 Report</title>
+        <style>
+            body {{
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f4f6f9;
+                margin: 0;
+                padding: 0;
+                color: #333;
+            }}
+            header {{
+                background: linear-gradient(90deg, #2c3e50, #2980b9);
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }}
+            header h1 {{
+                margin: 0;
+                font-size: 2rem;
+            }}
+            .container {{
+                max-width: 1100px;
+                margin: 30px auto;
+                padding: 20px;
+            }}
+            .card {{
+                background: #fff;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            }}
+            .card h2 {{
+                margin-top: 0;
+                color: #2980b9;
+                border-bottom: 2px solid #e6e6e6;
+                padding-bottom: 10px;
+                font-size: 1.5rem;
+            }}
+            .stats-grid {{
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                margin-top: 15px;
+            }}
+            .stat-box {{
+                background: #f9fafc;
+                border-radius: 8px;
+                padding: 15px;
+                text-align: center;
+                border: 1px solid #e2e2e2;
+            }}
+            table {{
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                font-size: 0.95rem;
+            }}
+            table th, table td {{
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }}
+            table th {{
+                background-color: #2980b9;
+                color: #fff;
+            }}
+            table tr:nth-child(even) {{
+                background-color: #f2f2f2;
+            }}
+            .progress {{
+                background-color: #ddd;
+                border-radius: 10px;
+                overflow: hidden;
+                height: 18px;
+                width: 100%;
+                margin-top: 5px;
+            }}
+            .progress-bar {{
+                background-color: #27ae60;
+                height: 100%;
+                text-align: right;
+                padding-right: 5px;
+                color: white;
+                font-size: 0.8rem;
+                line-height: 18px;
+            }}
+            footer {{
+                text-align: center;
+                font-size: 0.9rem;
+                color: #777;
+                padding: 15px;
+                margin-top: 20px;
+                border-top: 1px solid #ddd;
+            }}
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>CataPro - Part 1 Report</h1>
+            <p>Generated on {generated_time}</p>
+        </header>
+
+        <div class="container">
+            <!-- CataPro Overview -->
+            <div class="card">
+                <h2>Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>{total_rxn}</h3>
+                        <p>Total Kcat values</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>{rxn_covered}</h3>
+                        <p>Matched kcat ({rxn_coverage:.2f}%)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- >CataPro Extraction Table -->
+            <div class="card">
+                <h2>CataPro Extraction Statistics</h2>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Total of entries in CataPro input file</td>
+                        <td>{total_catapro_entries}</td>
+                    </tr>
+                    <tr>
+                        <td>Number of cofactor identified</td>
+                        <td>{cofactors_covered}</td>
+                    </tr>
+                    <tr>
+                        <td>Entries with multiples UniProt IDs</td>
+                        <td>{multiple_uniprot}</td>
+                    </tr>
+                    <tr>
+                        <td>Entries with missing KEGG IDs</td>
+                        <td>{kegg_missing}</td>
+                    </tr>
+                </table>
+            </div>
+        <footer>WILDkCAT</footer>
+    </body>
+    </html>
+    """
+
+    # Save report
+    os.makedirs("reports", exist_ok=True)
+    report_path = "reports/catapro_part1.html"
+    with open(report_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    logging.info(f"HTML report saved to '{report_path}'")
+
+
+def catapro_report_integration(): 
+    pass 
