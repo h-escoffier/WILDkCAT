@@ -128,14 +128,14 @@ if __name__ == "__main__":
     
     # Test : Main function
     logging.basicConfig(level=logging.INFO)
-    run_catapro_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input_2.csv")
+    # run_catapro_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input_2.csv")
     # run_catapro_part2("output/ecoli_kcat_brenda.tsv", 
     #                   "output/machine_learning/ecoli_catapro_output.csv", 
     #                   "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
     #                   8, 
     #                   "output/ecoli_kcat_full.tsv")
     
-    # run_catapro_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
+    run_catapro_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
     # run_catapro_part2("output/yeast_kcat_brenda.tsv", 
     #                   "output/machine_learning/yeast_catapro_output.csv", 
     #                   "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 

@@ -130,18 +130,16 @@ def create_catapro_input_file(kcat_df):
     catapro_input = []
     substrates_to_smiles = {}
 
-    counter_multiple_uniprot, counter_kegg_no_matching, counter_rxn_covered = 0, 0, 0 
-    counter_cofactor = 0
+    counter_no_catalytic, counter_kegg_no_matching, counter_rxn_covered, counter_cofactor = 0, 0, 0, 0
 
     for _, row in tqdm(kcat_df.iterrows(), total=len(kcat_df), desc="Generating CataPro input"):
         uniprot = row['uniprot_model']
         ec_code = row['ec_code']
 
-        # TODO: Handle if multiple UniProt IDs
         if len(uniprot.split(';')) > 1:       
             catalytic_enzyme = identify_catalytic_enzyme(uniprot, ec_code)
             if catalytic_enzyme is None:
-                counter_multiple_uniprot += 1
+                counter_no_catalytic += 1
                 continue
             else: 
                 uniprot = catalytic_enzyme
@@ -172,7 +170,7 @@ def create_catapro_input_file(kcat_df):
                 smiles_str = smiles[0]  # TODO: If multiple SMILES, take the first one ? 
                 smiles_list.append(smiles_str)
                 substrates_to_smiles[kegg_compound_id] = smiles_str
-        
+
         if len(smiles_list) > 0:
             for smiles in smiles_list:
                 catapro_input.append({
@@ -194,7 +192,7 @@ def create_catapro_input_file(kcat_df):
     report_statistics = {
         "rxn_covered": counter_rxn_covered,
         "cofactor_identified": counter_cofactor,
-        "multiple_uniprot": counter_multiple_uniprot,
+        "no_catalytic": counter_no_catalytic,
         "kegg_no_matching": counter_kegg_no_matching
     }
 

@@ -34,7 +34,13 @@ def convert_uniprot_to_sequence(uniprot_id):
 @lru_cache(maxsize=None)
 def catalytic_activity(uniprot_id):
     """
-    TODO: Write the documentation 
+    Retrieves the EC (Enzyme Commission) numbers associated with the catalytic activity of a given UniProt ID.
+
+    Parameters:
+        uniprot_id (str): The UniProt identifier for the protein of interest.
+
+    Returns:
+        list[str] or None: A list of EC numbers if found, otherwise None.
     """
     url = f"https://rest.uniprot.org/uniprotkb/{uniprot_id}?fields=cc_catalytic_activity"
     response = requests.get(url)
@@ -57,7 +63,15 @@ def catalytic_activity(uniprot_id):
 
 def identify_catalytic_enzyme(lst_uniprot_ids, ec):
     """
-    TODO: Write the documentation 
+    Identifies the catalytic enzyme from a list of UniProt IDs for a given EC number.
+
+    Parameters:
+        lst_uniprot_ids (str): A semicolon-separated string of UniProt IDs representing enzyme candidates.
+        ec (str): The Enzyme Commission (EC) number to match against the catalytic activity.
+
+    Returns:
+        str or None: The UniProt ID of the catalytic enzyme if exactly one match is found; 
+                     None if no match or multiple matches are found.
     """ 
     enzymes_model = lst_uniprot_ids.split(';')
     catalytic_enzyme = []
@@ -74,6 +88,7 @@ def identify_catalytic_enzyme(lst_uniprot_ids, ec):
     else:
         catalytic_enzyme = catalytic_enzyme[0]
     return catalytic_enzyme
+
 
 if __name__ == "__main__":
     # Test : Send a request to UniProt API

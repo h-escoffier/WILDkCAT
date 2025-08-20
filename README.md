@@ -2,29 +2,44 @@
   <img src="docs/WILDKCAT.tif" alt="WildKcat Logo"/>
 </p>
 
--------------
+---
 
-### extract_kcat.py 
+# WILDkCAT
 
-- Check if the EC exist 
-- Input for which the genes/enzymes of the reactions are not supported by KEGG are kept. 
-- Input for which no enzymes are provided by the model are kept. 
+**WILDkCAT** is a set of scripts designed to extract, retrieve, and predict enzyme turnover numbers (**kcat**) for genome-scale metabolic models.   
 
+---
 
-### retrieve_kcat.py 
+## Scripts Overview
 
-- If multiple enzymes are provided, check if one match. 
-- Identity percentage is not calculated if multiple enzyme are provided.
-- Arrhenius correction is made for all the values in the correct range of pH.
-- If multiple score for the same row, best score, the highest identity percentage and the lower value. 
+### `extract_kcat.py`
+- Verifies whether the reaction EC number exists.  
+- Retains inputs where reaction-associated genes/enzymes are not supported by KEGG.  
+- Retains inputs where no enzymes are provided by the model.  
 
-### predict_kcat.py
+---
 
-- Pass if there is multiple enzyme 
-- Pass if there is missing KEGG compounds IDs 
+### `retrieve_kcat.py`
+- If multiple enzymes are provided, searches UniProt for catalytic activity.  
+- When multiple enzymes are found, computes identity percentages relative to the identified catalytic enzyme.  
+- Applies Arrhenius correction to values within the appropriate pH range.  
+- For rows with multiple scores, selects:
+  - The best score  
+  - The highest identity percentage  
+  - The lowest kcat value  
 
+---
 
-TODO: SABIO-RK 
-TODO: Report CataPro
-TODO: Is it better to have a class instead of the independant functions ? 
-TODO: Maybe Pubchem API should have a specific .py file 
+### `predict_kcat.py`
+- If multiple enzymes are provided, searches UniProt for catalytic activity.  
+- Skips entries missing KEGG compound IDs.  
+
+---
+
+## TODO
+- [ ] Fix **SABIO-RK** 
+- [ ] Add **CataPro** report.  
+- [ ] Consider **class-based** structure rather than independent functions ? 
+- [ ] Move **PubChem API** queries to a dedicated module ? 
+
+---

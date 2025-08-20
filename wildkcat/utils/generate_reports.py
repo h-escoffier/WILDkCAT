@@ -611,10 +611,10 @@ def catapro_report_input(catapro_df, report_statistics):
     # Report Statistics
     rxn_covered = report_statistics['rxn_covered']
     cofactors_covered = report_statistics['cofactor_identified']
-    multiple_uniprot = report_statistics['multiple_uniprot']
+    no_catalytic = report_statistics['no_catalytic']
     kegg_missing = report_statistics['kegg_no_matching']
 
-    total_rxn = rxn_covered + kegg_missing + multiple_uniprot
+    total_rxn = rxn_covered + kegg_missing + no_catalytic
     rxn_coverage = (rxn_covered / total_rxn * 100) if total_rxn > 0 else 0
 
     # Time
@@ -763,8 +763,8 @@ def catapro_report_input(catapro_df, report_statistics):
                         <td>{cofactors_covered}</td>
                     </tr>
                     <tr>
-                        <td>Entries with multiples UniProt IDs</td>
-                        <td>{multiple_uniprot}</td>
+                        <td>Entries with no catalytic activity identified</td>
+                        <td>{no_catalytic}</td>
                     </tr>
                     <tr>
                         <td>Entries with missing KEGG IDs</td>
