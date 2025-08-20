@@ -6,6 +6,7 @@ from wildkcat.utils.temperature import arrhenius_equation, calculate_ea
 from wildkcat.utils.organism import closest_org
 
 
+
 # TODO: Limit the Ea to the same pH ? 
 
 
@@ -15,11 +16,10 @@ from wildkcat.utils.organism import closest_org
 def check_enzyme(candidate, kcat_dict): 
     """
     Checks whether the enzyme in a candidate entry matches the model's enzyme.
-    TODO: Manage to find the catalytic enzyme if multiple UniProt IDs are provided
+    Identifies the catalytic enzyme using UniProt API.
     """
-    if pd.notna(kcat_dict['uniprot_model']):
-        enzyme_model = [e.strip() for e in kcat_dict.get('uniprot_model', '').split(';') if e.strip()]
-        if candidate["UniProtKB_AC"] in enzyme_model:
+    if pd.notna(kcat_dict['catalytic_enzyme']):
+        if candidate["UniProtKB_AC"] == kcat_dict['catalytic_enzyme']:
             return 0
     return 2
 
@@ -217,7 +217,7 @@ def find_best_match(kcat_dict, api_output, general_criteria):
     api_output['adj_kcat'] = adjusted_kcats
 
     api_output["score"] = pd.to_numeric(api_output["score"], errors="coerce").fillna(13)
-    api_output["id_perc"] = pd.to_numeric(api_output.get("id_perc", np.nan), errors="coerce").fillna(-np.inf)
+    api_output["id_perc"] = pd.to_numeric(api_output.get("id_perc", np.nan), errors="coerce").fillna(-1).round(2)
     api_output["adj_kcat"] = pd.to_numeric(api_output["adj_kcat"], errors="coerce")
 
     # 4. Sort: best score, then highest id_perc, then smallest kcat
@@ -229,6 +229,7 @@ def find_best_match(kcat_dict, api_output, general_criteria):
 
     # 5. Select best candidate
     best_candidate = api_output.iloc[0].to_dict()
+    best_candidate['catalytic_enzyme'] = kcat_dict.get('catalytic_enzyme')
     best_score = best_candidate['score']
 
     return best_score, best_candidate

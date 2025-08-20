@@ -310,7 +310,6 @@ def run_extraction(model_path, output_path, organism_code, report=True):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # Test : Main function
-    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
-    # run_extraction("model/vibrio_natriegens.json", "output/vibrio_kcat.tsv", 'vna')
-    # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
+    # run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
     # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')

@@ -34,8 +34,8 @@ def closest_org(kcat_dict, api_output):
         matches = [a == b for a, b in zip(seq_ref, seq_db)]
         return (100 * sum(matches)) / len(seq_ref)
 
-    ref_uniprot_id = kcat_dict.get('uniprot_model')
-    if pd.isna(ref_uniprot_id) or ';' in str(ref_uniprot_id):
+    ref_uniprot_id = kcat_dict.get('catalytic_enzyme')
+    if pd.isna(ref_uniprot_id):
         api_output = api_output.copy()
         api_output["id_perc"] = None
         return api_output

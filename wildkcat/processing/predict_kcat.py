@@ -7,6 +7,7 @@ from wildkcat.utils.generate_reports import catapro_report_input, catapro_report
 
 
 # TODO: Generates report
+# TODO: Add a warning if there is the same SMILE for multiple KEGG IDs
 
 
 # --- Format ---
@@ -86,7 +87,7 @@ def run_catapro_part1(kcat_file_path, limit_matching_score, output_path, report=
         catapro_report_input(catapro_input_df, report_statistics)
 
 
-def run_catapro_part2(kcat_file_path, catapro_predictions_path, substrates_to_smiles_path, output_path, limit_matching_score=8, report=True):
+def run_catapro_part2(kcat_file_path, catapro_predictions_path, substrates_to_smiles_path, limit_matching_score, output_path, report=True):
     """
     TODO: Write the documentation
     """ 
@@ -127,10 +128,16 @@ if __name__ == "__main__":
     
     # Test : Main function
     logging.basicConfig(level=logging.INFO)
-    # run_catapro_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input.csv")
-    # run_catapro_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
-    run_catapro_part2("output/ecoli_kcat_brenda.tsv", 
-                      "output/machine_learning/ecoli_catapro_output.csv", 
-                      "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
-                      "output/ecoli_kcat_full.tsv")
+    run_catapro_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input_2.csv")
+    # run_catapro_part2("output/ecoli_kcat_brenda.tsv", 
+    #                   "output/machine_learning/ecoli_catapro_output.csv", 
+    #                   "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
+    #                   8, 
+    #                   "output/ecoli_kcat_full.tsv")
     
+    # run_catapro_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
+    # run_catapro_part2("output/yeast_kcat_brenda.tsv", 
+    #                   "output/machine_learning/yeast_catapro_output.csv", 
+    #                   "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 
+    #                   8, 
+    #                   "output/yeast_kcat_full.tsv")

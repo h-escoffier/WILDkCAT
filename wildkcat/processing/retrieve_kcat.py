@@ -1,15 +1,18 @@
 import logging
 import pandas as pd
 from tqdm import tqdm
+from functools import lru_cache 
+import time
 
 from wildkcat.api.sabio_rk_api import get_turnover_number_sabio
 from wildkcat.api.brenda_api import get_turnover_number_brenda
+from wildkcat.api.uniprot_api import identify_catalytic_enzyme
 from wildkcat.utils.matching import find_best_match
 from wildkcat.utils.generate_reports import report_api
-import time
 
 
-def get_turnover_number(kcat_dict, database='both'): 
+@lru_cache(maxsize=None)
+def get_turnover_number(ec_code, database='both'): 
     """
     Retrieves turnover number (kcat) data from specified enzyme databases and returns a merged DataFrame.
 
@@ -28,9 +31,9 @@ def get_turnover_number(kcat_dict, database='both'):
     df_sabio = pd.DataFrame()
 
     if database in ('both', 'brenda'):
-        df_brenda = get_turnover_number_brenda(kcat_dict['ec_code'])
+        df_brenda = get_turnover_number_brenda(ec_code)
     if database in ('both', 'sabio_rk'):
-        df_sabio = get_turnover_number_sabio(kcat_dict['ec_code'])
+        df_sabio = get_turnover_number_sabio(ec_code)
         time.sleep(1)  
     if database not in ('both', 'brenda', 'sabio_rk'):
         raise ValueError("Invalid database option. Choose from 'both', 'brenda', or 'sabio_rk'.")
@@ -64,9 +67,17 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
             - best_candidate (dict or None): The best matching kcat entry, or None if no match is found.
             - best_score (int or float): The score of the best candidate, or 15 if no match is found in the database.
     """
-    api_output = get_turnover_number(kcat_dict, database)
+    api_output = get_turnover_number(kcat_dict['ec_code'], database)
     if api_output.empty: 
         return None, 15
+    # If multiple enzymes are found, prioritize based on the identified catalytic enzyme
+    if pd.notna(kcat_dict['uniprot_model']):
+        if ';' in kcat_dict['uniprot_model']:
+            catalytic_enzyme = identify_catalytic_enzyme(kcat_dict['uniprot_model'], kcat_dict['ec_code'])
+            kcat_dict['catalytic_enzyme'] = catalytic_enzyme
+        else:  # Only one enzyme
+            kcat_dict['catalytic_enzyme'] = kcat_dict['uniprot_model']
+            
     best_score, best_candidate = find_best_match(kcat_dict, api_output, general_criteria)
     return best_candidate, best_score
 
@@ -101,6 +112,7 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
     kcat_df['matching_score'] = None
 
     # Add data of the retrieve kcat values
+    kcat_df['catalytic_enzyme'] = None
     kcat_df['kcat_substrate'] = None
     kcat_df['kcat_organism'] = None
     kcat_df['kcat_enzyme'] = None
@@ -125,6 +137,7 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
         if best_match is not None:
             # Assign results to the main dataframe
             kcat_df.loc[row.Index, 'kcat'] = best_match['value']
+            kcat_df.loc[row.Index, 'catalytic_enzyme'] = best_match['catalytic_enzyme']
             kcat_df.loc[row.Index, 'kcat_substrate'] = best_match['Substrate']
             kcat_df.loc[row.Index, 'kcat_organism'] = best_match['Organism']
             kcat_df.loc[row.Index, 'kcat_enzyme'] = best_match['UniProtKB_AC']
@@ -144,16 +157,15 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     # kcat_dict = {
-    #     'ec_code': '1.1.1.4',
-    #     'uniprot_model': 'P39714',
-    #     'db': 'brenda',
-    #     'substrates_name': '(R,R)-2,3-butanediol;NAD', 
+    #     'ec_code': '1.8.1.4',
+    #     'uniprot_model': 'P06959;P0A9P0;P0AFG8',
+    #     'substrates_name': 'Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate', 
     # }
 
     # general_criteria ={
-    #     'Organism': 'Saccharomyces cerevisiae', 
-    #     'Temperature': (18, 38), 
-    #     'pH': (4.0, 8.0)
+    #     'Organism': 'Escherichia coli', 
+    #     'Temperature': (20, 40), 
+    #     'pH': (6.5, 7.5)
     # }
 
     # output = extract_kcat(kcat_dict, general_criteria, database='brenda')

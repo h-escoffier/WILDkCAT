@@ -1,5 +1,7 @@
 import requests
+import logging
 from functools import lru_cache
+
 
 
 # --- UniProt API ---
@@ -29,8 +31,56 @@ def convert_uniprot_to_sequence(uniprot_id):
         return None
 
 
+@lru_cache(maxsize=None)
+def catalytic_activity(uniprot_id):
+    """
+    TODO: Write the documentation 
+    """
+    url = f"https://rest.uniprot.org/uniprotkb/{uniprot_id}?fields=cc_catalytic_activity"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        ec_numbers = []
+        for comment in data.get('comments', []):
+            if comment.get('commentType') == 'CATALYTIC ACTIVITY':
+                reaction = comment.get('reaction', {})
+                ec_number = reaction.get('ecNumber')
+                if ec_number:
+                    ec_numbers.append(ec_number)
+        if len(ec_numbers) != 0:
+            return ec_numbers
+    else:
+        # logging.warning(f"No catalytic activity found for UniProt ID {uniprot_id}")
+        return None
+
+
+def identify_catalytic_enzyme(lst_uniprot_ids, ec):
+    """
+    TODO: Write the documentation 
+    """ 
+    enzymes_model = lst_uniprot_ids.split(';')
+    catalytic_enzyme = []
+    for enzyme in enzymes_model:
+        if catalytic_activity(enzyme):
+            if ec in catalytic_activity(enzyme):
+                catalytic_enzyme.append(enzyme)
+    if catalytic_enzyme == []:
+        logging.warning(f"{ec}: No catalytic enzyme found for the complex {lst_uniprot_ids}.")
+        catalytic_enzyme = None 
+    elif len(catalytic_enzyme) > 1:
+        logging.warning(f"{ec}: Multiple catalytic enzymes found for the complex {lst_uniprot_ids}.")
+        catalytic_enzyme = None
+    else:
+        catalytic_enzyme = catalytic_enzyme[0]
+    return catalytic_enzyme
+
 if __name__ == "__main__":
     # Test : Send a request to UniProt API
-    uniprot_id = "Q16774"
-    seq = convert_uniprot_to_sequence(uniprot_id)
-    print(seq)
+    # uniprot_id = "Q16774"
+    # seq = convert_uniprot_to_sequence(uniprot_id)
+    # print(seq)
+
+    # Test : Check if catalytic activity is retrieved
+    response = catalytic_activity("P06959")
+    print(response)

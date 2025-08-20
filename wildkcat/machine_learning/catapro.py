@@ -5,7 +5,7 @@ import re
 from functools import lru_cache
 
 from wildkcat.api.api_utilities import safe_requests_get, retry_api
-from wildkcat.api.uniprot_api import convert_uniprot_to_sequence
+from wildkcat.api.uniprot_api import convert_uniprot_to_sequence, identify_catalytic_enzyme
 from wildkcat.api.brenda_api import get_cofactor
 
 
@@ -138,11 +138,14 @@ def create_catapro_input_file(kcat_df):
         ec_code = row['ec_code']
 
         # TODO: Handle if multiple UniProt IDs
-        if len(uniprot.split(';')) > 1:        
-            logging.warning(f"Multiple UniProt IDs found for {ec_code}: {uniprot}.")
-            counter_multiple_uniprot += 1
-            continue
-        
+        if len(uniprot.split(';')) > 1:       
+            catalytic_enzyme = identify_catalytic_enzyme(uniprot, ec_code)
+            if catalytic_enzyme is None:
+                counter_multiple_uniprot += 1
+                continue
+            else: 
+                uniprot = catalytic_enzyme
+                
         # If the number of KEGG Compound IDs is not matching the number of names, continue 
         if len([s for s in row['substrates_kegg'].split(';') if s]) != len(row['substrates_name'].split(';')):
             logging.warning(f"Number of KEGG compounds IDs does not match number of names for {ec_code}: {uniprot}.")
@@ -183,7 +186,9 @@ def create_catapro_input_file(kcat_df):
 
     # Generate CataPro input file
     catapro_input_df = pd.DataFrame(catapro_input)
-    # Generate reverse mapping from SMILES to KEGG IDs as TSV 
+    # Remove duplicates
+    catapro_input_df = catapro_input_df.drop_duplicates().reset_index(drop=True)
+    # Generate reverse mapping from SMILES to KEGG IDs as TSV
     substrates_to_smiles_df = pd.DataFrame(list(substrates_to_smiles.items()), columns=['kegg_id', 'smiles'])
 
     report_statistics = {
@@ -216,8 +221,14 @@ def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predict
     # Convert pred_log10[kcat(s^-1)] to kcat(s^-1)
     catapro_predictions_df['kcat_s'] = 10 ** catapro_predictions_df['pred_log10[kcat(s^-1)]']
     catapro_predictions_df['uniprot_model'] = catapro_predictions_df['fasta_id'].str.replace('_wild', '', regex=False) # Extract UniProt ID
+    
     # Match the SMILES to KEGG IDs using substrates_to_smiles
-    catapro_predictions_df['substrates_kegg'] = catapro_predictions_df['smiles'].map(substrates_to_smiles.set_index('smiles')['kegg_id'])
+    # If multiple KEGG IDs are found for a single SMILES, they are concatenated
+    smiles_to_kegg = (
+        substrates_to_smiles.groupby('smiles')['kegg_id']
+        .apply(lambda x: ';'.join(sorted(set(x))))
+    )
+    catapro_predictions_df['substrates_kegg'] = catapro_predictions_df['smiles'].map(smiles_to_kegg)
     
     catapro_map = catapro_predictions_df.set_index(['uniprot_model', 'substrates_kegg'])['kcat_s'].to_dict()
 

@@ -3,14 +3,13 @@ import logging
 import pandas as pd 
 from io import StringIO
 from functools import lru_cache 
-import time
 
 
 # --- Sabio-RK API ---
 
 
 @lru_cache(maxsize=None)
-def get_turnover_number_sabio(ec_number, batch_size=100):
+def get_turnover_number_sabio(ec_number):
     """
     Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.
 

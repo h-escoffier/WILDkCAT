@@ -310,8 +310,14 @@ def report_api(df, api_name):
 
     Parameters:
         df (pd.DataFrame): Must contain ['kcat', 'matching_score', ...].
-        api_name (str): Name of the API (e.g., 'SABIO-RK', 'BRENDA').
+        api_name (str): Name of the API (e.g., 'brenda', 'sabio_rk').
     """
+    if api_name == 'brenda':
+        api_name = 'Brenda'
+    elif api_name == 'sabio_rk':
+        api_name = 'Sabio-RK'
+    else:  # Both
+        api_name = 'Brenda and Sabio-RK'
 
     # Ensure numeric kcat values to avoid TypeError on comparisons
     kcat_values = pd.to_numeric(df['kcat'], errors='coerce').dropna()
@@ -340,8 +346,8 @@ def report_api(df, api_name):
     # Histogram with stacked bars for scores
     kcat_hist_base64 = ""
     if not kcat_values.empty:
-        min_exp = max(-1, int(np.floor(np.log10(max(1e-6, kcat_values.min())))))
-        max_exp = min(2, int(np.ceil(np.log10(kcat_values.max()))))
+        min_exp = int(np.floor(np.log10(max(1e-6, kcat_values.min()))))
+        max_exp = int(np.ceil(np.log10(kcat_values.max())))
         bins = np.logspace(min_exp, max_exp, num=40)
         fig, ax = plt.subplots(figsize=(10, 6))
         # Stacked histogram by score
@@ -591,7 +597,7 @@ def report_api(df, api_name):
 
     # Save HTML
     os.makedirs("reports", exist_ok=True)
-    report_path = f"reports/{api_name}_report.html"
+    report_path = f"reports/{api_name.lower()}_report.html"
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
 
@@ -735,7 +741,7 @@ def catapro_report_input(catapro_df, report_statistics):
                     </div>
                     <div class="stat-box">
                         <h3>{rxn_covered}</h3>
-                        <p>Matched kcat ({rxn_coverage:.2f}%)</p>
+                        <p>kcat to be predicted ({rxn_coverage:.2f}%)</p>
                     </div>
                 </div>
             </div>
@@ -766,6 +772,7 @@ def catapro_report_input(catapro_df, report_statistics):
                     </tr>
                 </table>
             </div>
+            
         <footer>WILDkCAT</footer>
     </body>
     </html>
