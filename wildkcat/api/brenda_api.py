@@ -201,9 +201,6 @@ def get_cofactor(ec_number):
     Returns:
         pd.DataFrame: A DataFrame containing turnover number entries.
     """
-    email = os.getenv("BRENDA_EMAIL")
-    password = os.getenv("BRENDA_PASSWORD")
-
     # Call the SOAP API
     email, hashed_password = get_brenda_credentials()
     client = create_brenda_client()

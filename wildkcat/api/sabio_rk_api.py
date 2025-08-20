@@ -26,9 +26,8 @@ def get_turnover_number_sabio(ec_number, batch_size=100):
     entryIDs = []
 
     # -- Retrieve entryIDs --
-    query_string = f'ECNumber:"{ec_number}"'
-    query = {'format': 'txt', 'q': query_string}
-
+    query = {'format': 'txt', 'q': f'Parametertype:"kcat" AND ECNumber:"{ec_number}"'}
+    
     # Make GET request
     request = requests.get(base_url, params=query)
     request.raise_for_status()
@@ -48,23 +47,8 @@ def get_turnover_number_sabio(ec_number, batch_size=100):
                                          'Parameter']}
 
     # Make POST request
-    all_frames = []
-    for i in range(0, len(entryIDs), batch_size):
-        batch_ids = entryIDs[i:i+batch_size]
-        data_field = {'entryIDs[]': batch_ids}
-
-        try:
-            resp = requests.post(parameters, params=query, data=data_field)
-            resp.raise_for_status()
-            df_batch = pd.read_csv(StringIO(resp.text), sep='\t')
-            all_frames.append(df_batch)
-        except requests.exceptions.HTTPError as e:
-                logging.error(f"Request failed.")
-
-    if not all_frames:
-        return pd.DataFrame()
-
-    df = pd.concat(all_frames, ignore_index=True)
+    request = requests.post(parameters, params=query, data=data_field)
+    request.raise_for_status()
 
     # Format the response into a DataFrame
     df = pd.read_csv(StringIO(request.text), sep='\t')
