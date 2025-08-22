@@ -84,7 +84,7 @@ def identify_catalytic_enzyme(lst_uniprot_ids, ec):
         catalytic_enzyme = None 
     elif len(catalytic_enzyme) > 1:
         logging.warning(f"{ec}: Multiple catalytic enzymes found for the complex {lst_uniprot_ids}.")
-        catalytic_enzyme = None
+        catalytic_enzyme = ';'.join(catalytic_enzyme)
     else:
         catalytic_enzyme = catalytic_enzyme[0]
     return catalytic_enzyme

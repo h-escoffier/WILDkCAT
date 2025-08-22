@@ -6,6 +6,8 @@ import datetime
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import LogFormatter
+from io import BytesIO
 
 
 def report_extraction(model, df, report_statistics):
@@ -94,7 +96,7 @@ def report_extraction(model, df, report_statistics):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Kcat Extraction Report</title>
+        <title>Extract kcat Report</title>
         <style>
             body {{
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -193,7 +195,7 @@ def report_extraction(model, df, report_statistics):
     </head>
     <body>
         <header>
-            <h1>Kcat Extraction Report</h1>
+            <h1>Extract k<sub>cat</sub> Report</h1>
             <p>Generated on {generated_time}</p>
         </header>
 
@@ -221,9 +223,9 @@ def report_extraction(model, df, report_statistics):
                 </div>
             </div>
 
-            <!-- Kcat Extraction Table -->
+            <!-- kcat Extraction Table -->
             <div class="card">
-                <h2>Kcat Extraction Statistics</h2>
+                <h2>k<sub>cat</sub> Extraction Statistics</h2>
                 <table>
                     <tr>
                         <th>Metric</th>
@@ -277,7 +279,7 @@ def report_extraction(model, df, report_statistics):
                         <td>{nb_reactions_dropped}</td>
                     </tr>
                     <tr>
-                        <td>Number of kcat values dropped due to inconsistent EC codes</td>
+                        <td>Number of k<sub>cat</sub> values dropped due to inconsistent EC codes</td>
                         <td>{nb_lines_dropped}</td>
                     </tr>
                 </table>
@@ -297,28 +299,20 @@ def report_extraction(model, df, report_statistics):
 
     # Save report
     os.makedirs("reports", exist_ok=True)
-    report_path = "reports/kcat_summary.html"
+    report_path = "reports/extract_kcat_report.html"
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_api(df, api_name):
+def report_retrieval(df):
     """
     Generate a styled HTML report summarizing the kcat matching results,
     including kcat value distribution and matching score repartition.
 
     Parameters:
         df (pd.DataFrame): Must contain ['kcat', 'matching_score', ...].
-        api_name (str): Name of the API (e.g., 'brenda', 'sabio_rk').
     """
-    if api_name == 'brenda':
-        api_name = 'Brenda'
-    elif api_name == 'sabio_rk':
-        api_name = 'Sabio-RK'
-    else:  # Both
-        api_name = 'Brenda and Sabio-RK'
-
     # Ensure numeric kcat values to avoid TypeError on comparisons
     kcat_values = pd.to_numeric(df['kcat'], errors='coerce').dropna()
 
@@ -331,12 +325,28 @@ def report_api(df, api_name):
     score_percent = (score_counts / total * 100).round(2) if total else pd.Series(0, index=present_scores)
 
     # Distinct colors for each score (up to 12, then cycle)
+    # Gradient colors from green (best score) to red (worst score)
     distinct_colors = [
-        "#4E79A7", "#F28E2B", "#E15759", "#76B7B2", "#59A14F",
-        "#EDC948", "#B07AA1", "#FF9DA7", "#9C755F", "#BAB0AC",
-        "#8CD17D", "#B6992D", "#499894", "#D37295", "#FABFD2",
-        "#B2B2B2", "#5F9ED1", "#FFBE7D"
+        "#27ae60",
+        "#43b76e",
+        "#60c07c",
+        "#7cc98a",
+        "#98d298",
+        "#b5dbb6",
+        "#d1e4c4",
+        "#f1e9b6",
+        "#f7d97c",
+        "#f9c74f",
+        "#f8961e",
+        "#f3722c",
+        "#e67e22",
+        "#e74c3c",
+        "#c0392b",
+        "#a93226",
+        "#922b21",
+        "#7b241c"
     ]
+
     def score_color(score):
         idx = present_scores.index(score)
         return distinct_colors[idx % len(distinct_colors)]
@@ -358,7 +368,6 @@ def report_api(df, api_name):
         ax.set_ylabel("Count", fontsize=14)
         ax.tick_params(axis='both', labelsize=12)
         ax.set_xlim([10**min_exp / 1.5, 10**max_exp * 1.5])
-        ax.set_xticks([10**i for i in range(min_exp, max_exp+1)])
         ax.get_xaxis().set_major_formatter(plt.ScalarFormatter())
         ax.legend(title="Matching Score", fontsize=12)
         plt.tight_layout()
@@ -374,7 +383,7 @@ def report_api(df, api_name):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{api_name} kcat Matching Report</title>
+        <title>Retrieve kcat Report</title>
         <style>
             body {{
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -511,7 +520,7 @@ def report_api(df, api_name):
     </head>
     <body>
         <header>
-            <h1>{api_name} kcat Matching Report</h1>
+            <h1>Retrieve k<sub>cat</sub> Report</h1>
             <p>Generated on {generated_time}</p>
         </header>
 
@@ -525,7 +534,7 @@ def report_api(df, api_name):
                     </div>
                     <div class="stat-box">
                         <h3>{matched}</h3>
-                        <p>Matched kcat ({match_percent:.2f}%)</p>
+                        <p>Matched k<sub>cat</sub> ({match_percent:.2f}%)</p>
                     </div>
                 </div>
             </div>
@@ -572,11 +581,11 @@ def report_api(df, api_name):
     # Histogram section (stacked by score)
     html += """
         <div class="card">
-            <h2>Distribution of kcat values (Stacked by Matching Score)</h2>
+            <h2>Distribution of k<sub>cat</sub> values (Stacked by Matching Score)</h2>
             <div class="img-section">
     """
     if kcat_hist_base64:
-        html += f'<img src="data:image/png;base64,{kcat_hist_base64}" alt="kcat Distribution">'
+        html += f'<img src="data:image/png;base64,{kcat_hist_base64}" alt="k<sub>cat</sub> Distribution">'
     html += """
             </div>
         </div>
@@ -585,8 +594,74 @@ def report_api(df, api_name):
     # Metadata section
     html += """
             <div class="card">
-                <h2>Matching Score Meaning</h2>
-                <p>Matching score ranges from 0 (best match) to 15 (no match).</p>
+                <h2>Matching Score</h2>
+                <p>
+                    The matching score evaluates how well a candidate k<sub>cat</sub> entry fits the query enzyme and conditions. 
+                    A lower score indicates a better match (0 = best possible, 15 = no match).
+                </p>
+                <h3>Scoring process:</h3>
+                <ul>
+                    <li><b>Catalytic enzyme:</b> Check if the reported enzyme matches the expected catalytic enzyme(s).</li>
+                    <li><b>Organism:</b> Penalize mismatches between the source organism and the target organism.</li>
+                    <li><b>Enzyme variant:</b> Exclude or penalize mutant/engineered variants (wildtype preferred).</li>
+                    <li><b>pH:</b> Check whether the reported pH is consistent with the desired experimental range.</li>
+                    <li><b>Substrate:</b> Verify substrate compatibility with the catalytic reaction.</li>
+                    <li><b>Temperature:</b> Penalize deviations from the target temperature; 
+                        if possible, adjust kcat values using the Arrhenius equation.</li>
+                </ul>
+
+                <h3>Score breakdown (default penalties):</h3>
+                <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; text-align: left;">
+                    <tr>
+                        <th>Criterion</th>
+                        <th>Penalty</th>
+                    </tr>
+                    <tr>
+                        <td>Substrate mismatch</td>
+                        <td>+3</td>
+                    </tr>
+                    <tr>
+                        <td>Catalytic enzyme mismatch</td>
+                        <td>+2</td>
+                    </tr>
+                    <tr>
+                        <td>Organism mismatch</td>
+                        <td>+2</td>
+                    </tr>
+                    <tr>
+                        <td>pH unknown</td>
+                        <td>+1</td>
+                    </tr>
+                    <tr>
+                        <td>pH out of range</td>
+                        <td>+2</td>
+                    </tr>
+                    <tr>
+                        <td>Temperature unknown</td>
+                        <td>+1</td>
+                    </tr>
+                    <tr>
+                        <td>Temperature out of range</td>
+                        <td>+2</td>
+                    </tr>
+                    <tr>
+                        <td>Enzyme variant unknown</td>
+                        <td>+1</td>
+                    </tr>
+                </table>
+
+                <p>
+                    Candidates are then ranked by:
+                    <ol>
+                        <li>Lowest total score</li>
+                        <li>Highest sequence identity percentage to the target enzyme</li>
+                        <li>Adjusted k<sub>cat</sub> value (favoring the smallest value by default)</li>
+                    </ol>
+                </p>
+                <p>
+                    The best candidate is the one with the lowest score after these checks. 
+                    If multiple candidates tie on score, sequence identity and k<sub>cat</sub> values break the tie.
+                </p>
             </div>
         </div>
 
@@ -597,14 +672,14 @@ def report_api(df, api_name):
 
     # Save HTML
     os.makedirs("reports", exist_ok=True)
-    report_path = f"reports/{api_name.lower()}_report.html"
+    report_path = f"reports/retrieve_kcat_report.html"
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
 
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def catapro_report_input(catapro_df, report_statistics): 
+def report_prediction_input(catapro_df, report_statistics): 
     # CataPro Statistics 
     total_catapro_entries = len(catapro_df)
 
@@ -627,7 +702,7 @@ def catapro_report_input(catapro_df, report_statistics):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CataPro - Part 1 Report</title>
+        <title>Predict kcat Report - Part 1</title>
         <style>
             body {{
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -726,7 +801,7 @@ def catapro_report_input(catapro_df, report_statistics):
     </head>
     <body>
         <header>
-            <h1>CataPro - Part 1 Report</h1>
+            <h1>Predict k<sub>cat</sub> Report - Part 1</h1>
             <p>Generated on {generated_time}</p>
         </header>
 
@@ -737,18 +812,18 @@ def catapro_report_input(catapro_df, report_statistics):
                 <div class="stats-grid">
                     <div class="stat-box">
                         <h3>{total_rxn}</h3>
-                        <p>Total Kcat values</p>
+                        <p>Total k<sub>cat</sub> values</p>
                     </div>
                     <div class="stat-box">
                         <h3>{rxn_covered}</h3>
-                        <p>kcat to be predicted ({rxn_coverage:.2f}%)</p>
+                        <p>k<sub>cat</sub> to be predicted ({rxn_coverage:.2f}%)</p>
                     </div>
                 </div>
             </div>
 
-            <!-- >CataPro Extraction Table -->
+            <!-- Prediction kcat Table -->
             <div class="card">
-                <h2>CataPro Extraction Statistics</h2>
+                <h2>k<sub>cat</sub> Prediction Statistics</h2>
                 <table>
                     <tr>
                         <th>Metric</th>
@@ -780,11 +855,234 @@ def catapro_report_input(catapro_df, report_statistics):
 
     # Save report
     os.makedirs("reports", exist_ok=True)
-    report_path = "reports/catapro_part1.html"
+    report_path = "reports/prediction_kcat_report.html"
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def catapro_report_integration(): 
-    pass 
+def report_final(final_df):
+    """
+    Generate a full HTML report summarizing predicted vs. source kcat values.
+    """
+
+    df = final_df.copy()
+    df["kcat_db"] = df["kcat_db"].fillna("Unknown")
+    generated_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    # Utility to convert matplotlib figures to base64 <img>
+    def fig_to_base64(fig):
+        buf = BytesIO()
+        fig.savefig(buf, format="png", bbox_inches="tight")
+        buf.seek(0)
+        encoded = base64.b64encode(buf.read()).decode("utf-8")
+        plt.close(fig)
+        return f'<div class="plot-container"><img src="data:image/png;base64,{encoded}"></div>'
+
+    # === 1. Distribution plots ===
+    def plot_kcat_distribution(column_name, title):
+        df[column_name] = pd.to_numeric(df[column_name], errors='coerce')
+        kcat_values = df[column_name].dropna()
+
+        total = len(df)
+        matched = len(kcat_values)
+        match_percent = matched / total * 100 if total else 0
+
+        if not kcat_values.empty:
+            min_exp = int(np.floor(np.log10(max(1e-6, kcat_values.min()))))
+            max_exp = int(np.ceil(np.log10(kcat_values.max())))
+            bins = np.logspace(min_exp, max_exp, num=40)
+
+            fig, ax = plt.subplots(figsize=(8, 5))
+            ax.hist(kcat_values, bins=bins, color="steelblue",
+                    edgecolor="white", linewidth=0.7)
+
+            ax.set_xscale("log")
+            ax.set_xlim([10**min_exp / 1.5, 10**max_exp * 1.5])
+            ax.xaxis.set_major_formatter(LogFormatter(10))
+
+            ax.set_xlabel("kcat (s⁻¹)", fontsize=12)
+            ax.set_ylabel("Count", fontsize=12)
+            ax.set_title(f"{title} (n={matched}, {match_percent:.1f}%)", fontsize=13)
+
+            return fig_to_base64(fig), matched, match_percent
+        return "<p>No valid values available for plotting.</p>", 0, 0
+
+    img_source, n_source, pct_source = plot_kcat_distribution(
+        'kcat_source', "Experimental kcat distribution"
+    )
+    img_pred, n_pred, pct_pred = plot_kcat_distribution(
+        'catapro_predicted_kcat_s', "Predicted kcat distribution"
+    )
+
+    # === 2. Difference boxplot ===
+    if "kcat_source" in df.columns and "catapro_predicted_kcat_s" in df.columns:
+        df["kcat_diff"] = df["catapro_predicted_kcat_s"] - df["kcat_source"]
+        fig, ax = plt.subplots(figsize=(8, 5))
+        df.boxplot(column="kcat_diff", by="matching_score", grid=False,
+                   boxprops=dict(color="skyblue"), medianprops=dict(color="black"), ax=ax)
+        ax.set_yscale("symlog")
+        ax.set_ylabel("Difference (Predicted - Source kcat, s⁻¹)")
+        ax.set_xlabel("Matching Score")
+        ax.set_title("Difference of retrieved vs predicted kcat")
+        plt.suptitle("")
+        ax.axhline(0, color="red", linestyle="--", linewidth=1)
+        img_diff = fig_to_base64(fig)
+    else:
+        img_diff = "<p>Required columns missing for difference plot.</p>"
+
+    # === 3. Single segmented DB coverage bar ===
+    db_counts = df["kcat_db"].fillna("Unknown").value_counts()
+    total_db = db_counts.sum()
+
+    # Improved color palette for better distinction and accessibility
+    # Only 4 cases: brenda, sabio_rk, catapro, or None
+    colors = {
+    "brenda": "#3498db",      # Blue
+    "sabio_rk": "#e67e22",    # Orange
+    "catapro": "#2ecc71",     # Green
+    "Unknown": "#7f8c8d"      # Gray (for None or unknown)
+    }
+
+    db_colors = {db: colors.get(db, "#7f8c8d") for db in db_counts.index}
+
+    progress_segments = ""
+    legend_items = ""
+    for db, count in db_counts.items():
+        percent = count / total_db * 100
+        progress_segments += f"""
+            <div class="progress-segment" style="width:{percent:.1f}%; background-color:{db_colors[db]};"
+                 title="{db}: {percent:.1f}%"></div>
+        """
+        legend_items += f"""
+            <span style="display:inline-block; margin-right:10px;">
+                <span style="display:inline-block; width:15px; height:15px; background:{db_colors[db]}; margin-right:5px;"></span>
+                {db} ({percent:.1f}%)
+            </span>
+        """
+
+    progress_bar = f"""
+        <div class="progress-multi">
+            {progress_segments}
+        </div>
+        <div style="margin-top:10px;">{legend_items}</div>
+    """
+
+    # === 4. HTML layout with explanations ===
+    html = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>WILDkCAT Report</title>
+        <style>
+            body {{
+                font-family: 'Segoe UI', Tahoma, sans-serif;
+                background-color: #f4f6f9;
+                margin: 0;
+                padding: 0;
+                color: #333;
+                line-height: 1.6;
+            }}
+            header {{
+                background: linear-gradient(90deg, #2c3e50, #2980b9);
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }}
+            .container {{
+                max-width: 1000px;
+                margin: 20px auto;
+                padding: 20px;
+            }}
+            .card {{
+                background: #fff;
+                border-radius: 10px;
+                padding: 20px;
+                margin-bottom: 20px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }}
+            .card h2 {{
+                color: #2980b9;
+                margin-top: 0;
+            }}
+            .plot-container {{
+                text-align: center;
+                margin: 20px 0;
+            }}
+            .plot-container img {{
+                max-width: 90%;
+                border-radius: 6px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            }}
+            .progress-multi {{
+                display: flex;
+                width: 100%;
+                height: 25px;
+                border-radius: 12px;
+                overflow: hidden;
+                border: 1px solid #ccc;
+            }}
+            .progress-segment {{
+                height: 100%;
+            }}
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>WILDkCAT Report</h1>
+            <p>Generated on {generated_time}</p>
+        </header>
+        <div class="container">
+            <div class="card">
+                <h2>Introduction</h2>
+                <p>
+                    Lorem Ipsum
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Experimental k<sub>cat</sub> Distribution</h2>
+                {img_source}
+                <p>
+                    Lorem Ipsum
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Predicted k<sub>cat</sub> Distribution</h2>
+                {img_pred}
+                <p>
+                    Lorem Ipsum
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Difference Analysis</h2>
+                {img_diff}
+                <p>
+                    Lorem Ipsum
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Coverage</h2>
+                <p>
+                    Lorem Ipsum
+                </p>
+                {progress_bar}
+            </div>
+        </div>
+
+    <footer>WILDkCAT</footer>
+    </body>
+    </html>
+    """
+
+    os.makedirs("reports", exist_ok=True)
+    report_path = "reports/general_report.html"
+    with open(report_path, "w", encoding="utf-8") as f:
+        f.write(html)
+
+    logging.info(f"HTML report saved to '{report_path}'")
+    return report_path

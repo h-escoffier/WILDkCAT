@@ -1,3 +1,4 @@
+import re 
 import logging
 import pandas as pd 
 import numpy as np
@@ -6,20 +7,49 @@ from wildkcat.utils.temperature import arrhenius_equation, calculate_ea
 from wildkcat.utils.organism import closest_org
 
 
+# TODO: Limit the Ea to the same pH 
 
-# TODO: Limit the Ea to the same pH ? 
+
+# --- Utils --- 
+
+def _norm_name(s: str) -> str:
+    """Normalize substrates names"""
+    if s is None:
+        return ""
+    s = s.strip().lower()
+    # Remove prefixes (d-, l-, d -, l -)
+    s = re.sub(r'\b[dl]\s*-\s*', '', s)
+    # unify hyphens/spaces
+    s = s.replace('-', ' ')
+    # compress spaces
+    s = re.sub(r'\s+', ' ', s)
+    return s
+
+def _to_set(x) -> set:
+    """Transform a string 'a; b; c' into a normalized set."""
+    if x is None or (isinstance(x, float) and pd.isna(x)):
+        return set()
+    if isinstance(x, str):
+        parts = [p for p in (t.strip() for t in x.split(';')) if p]
+    else:
+        parts = list(x)
+    return { _norm_name(p) for p in parts if p }
+
+def _any_intersection(a, b) -> bool:
+    return len(_to_set(a) & _to_set(b)) > 0
 
 
 # --- Check parameters ---
 
 
-def check_enzyme(candidate, kcat_dict): 
+def check_catalytic_enzyme(candidate, kcat_dict): 
     """
     Checks whether the enzyme in a candidate entry matches the model's enzyme.
     Identifies the catalytic enzyme using UniProt API.
     """
     if pd.notna(kcat_dict['catalytic_enzyme']):
-        if candidate["UniProtKB_AC"] == kcat_dict['catalytic_enzyme']:
+        catalytic_enzymes = str(kcat_dict['catalytic_enzyme']).split(";")
+        if candidate["UniProtKB_AC"] in catalytic_enzymes:
             return 0
     return 2
 
@@ -62,22 +92,34 @@ def check_temperature(candidate, general_criteria, api_output, min_r2=0.8, expec
     Checks whether the temperature in a candidate entry matches the expected temperature.
     If the temperature is within the specified range is not met, verify if the Arrhenius equation can be applied.
     """
+
     temp_min, temp_max = general_criteria["Temperature"]
-    candidate_temp = candidate.get("Temperature", None)
+    candidate_temp = candidate.get("Temperature")
+    
     if temp_min <= candidate_temp <= temp_max:
         return 0, False
 
     # Try to find a correct the kcat value using the Arrhenius equation
     ph_min, ph_max = general_criteria["pH"]
+    
+    # Base filters
     filters = (
         api_output["pH"].between(ph_min, ph_max)
         & (api_output["UniProtKB_AC"] == candidate["UniProtKB_AC"])
         & api_output["Temperature"].notna()
         & api_output["value"].notna()
     )
+    
+    valid_idx = api_output.apply(
+        lambda row: check_substrate(row.to_dict(), None, candidate) == 0,
+        axis=1
+        )
+    
+    filters = filters & valid_idx
+
     temps_dispo = api_output.loc[filters, "Temperature"].nunique()
     api_filtered = api_output.loc[filters, ["Temperature", "value"]].copy()
-    
+
     # Convert temperatures to Kelvin
     api_filtered["Temperature"] = api_filtered["Temperature"] + 273.15
 
@@ -96,53 +138,57 @@ def check_temperature(candidate, general_criteria, api_output, min_r2=0.8, expec
         return 2, False
 
 
-def check_substrate(candidate, kcat_dict):
+def check_substrate(entry, kcat_dict=None, candidate=None):
     """
     Checks whether the substrate in a candidate entry matches the model's substrates.
     """
-    api = candidate['db']
+    api = entry.get("db", candidate.get("db") if candidate else None)
 
-    if api == 'sabio_rk':
-        # 1. Try to match using KEGG reaction ID if provided
-        if kcat_dict['KEGG_rxn_id'] == candidate['KeggReactionID']:
-            # 1.1 Look for a substrate match
-            model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
-            candidate_substrates = [s.strip().lower() for s in candidate['Substrate'].split(';') if s.strip()]
-            if any(substrate in candidate_substrates for substrate in model_substrates):
+    # Normalisation des champs
+    entry_subs = entry.get("Substrate", "")
+    entry_prods = entry.get("Product", "")
+    entry_kegg = entry.get("KeggReactionID")
+
+    cand_subs = candidate.get("Substrate", "") if candidate else ""
+    cand_prods = candidate.get("Product", "") if candidate else ""
+    cand_kegg = candidate.get("KeggReactionID") if candidate else ""
+
+    model_subs = (kcat_dict or {}).get("substrates_name", "")
+    model_prods = (kcat_dict or {}).get("products_name", "")
+    model_kegg = (kcat_dict or {}).get("KEGG_rxn_id")
+
+    # --- logique identique à avant ---
+    if api == "sabio_rk":
+        if model_kegg and entry_kegg and _norm_name(model_kegg) == _norm_name(entry_kegg):
+            if _any_intersection(entry_subs, model_subs) or _any_intersection(entry_prods, model_prods):
                 return 0
-            # 1.2 Look for a product match
-            model_products = [p.strip().lower() for p in kcat_dict.get('products_name', '').split(';') if p.strip()]
-            candidate_products = [p.strip().lower() for p in candidate['Product'].split(';') if p.strip()]
-            if any(product in candidate_products for product in model_products):
+        if cand_kegg and entry_kegg and _norm_name(cand_kegg) == _norm_name(entry_kegg):
+            if _any_intersection(entry_subs, cand_subs) or _any_intersection(entry_prods, cand_prods):
                 return 0
-        # 2. Match using substrate names if no KEGG
-        model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
-        candidate_substrates = [s.strip().lower() for s in candidate['Substrate'].split(';') if s.strip()]
-        if any(substrate in candidate_substrates for substrate in model_substrates):
-            return 0  
+        base_subs = model_subs or cand_subs
+        if _any_intersection(entry_subs, base_subs):
+            return 0
         return 3
-        
-    elif api == 'brenda':
-        model_substrates = [s.strip().lower() for s in kcat_dict.get('substrates_name', '').split(';') if s.strip()]
-        candidate_substrates = [s.strip().lower() for s in candidate['Substrate'].split(';') if s.strip()]
-        if any(substrate in candidate_substrates for substrate in model_substrates):
-            return 0  
+
+    elif api == "brenda":
+        base_subs = model_subs or cand_subs
+        if _any_intersection(entry_subs, base_subs):
+            return 0
         return 3
-    
-    else:
-        logging.error(f"Unknown API in 'db' column: {api}. Supported: 'sabio_rk', 'brenda'.")
-        
+
+    return 3
+
 
 # --- Scoring ---
 
 
-def compute_score(kcat_dict, candidate, general_criteria, api_output, best_score):
+def compute_score(kcat_dict, candidate, general_criteria, api_output):
     """
     Compute a score for the candidate based on the Kcat dictionary and general criteria.
     """
     score = 0
-    # Check enzyme
-    score += check_enzyme(candidate, kcat_dict)
+    # Check catalytic enzyme
+    score += check_catalytic_enzyme(candidate, kcat_dict)
     # Check organism
     if score != 0: 
         score += check_organism(candidate, general_criteria)
@@ -152,11 +198,9 @@ def compute_score(kcat_dict, candidate, general_criteria, api_output, best_score
     score += check_pH(candidate, general_criteria)
     # Check substrate 
     score += check_substrate(candidate, kcat_dict)
-    if score > best_score: 
-        return np.inf, False
     # Check temperature 
-    score_temp, arrhenius = check_temperature(candidate, general_criteria, api_output) 
-    score += score_temp
+    temperature_penalty, arrhenius = check_temperature(candidate, general_criteria, api_output) 
+    score += temperature_penalty
     return score, arrhenius
 
 
@@ -168,8 +212,8 @@ def find_best_match(kcat_dict, api_output, general_criteria):
     Finds the best matching enzyme entry from the provided API output based on: 
         - Kcat specific criteria: 
             * Substrate 
-            * Enzyme 
-             
+            * Catalytic enzyme(s)
+
        - General criteria : 
            * Organism
            * Temperature
@@ -204,7 +248,7 @@ def find_best_match(kcat_dict, api_output, general_criteria):
 
     for _, row in api_output.iterrows():
         candidate_dict = row.to_dict()
-        score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output, np.inf)
+        score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output)
         if arrhenius:
             kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
             candidate_dict['value'] = kcat

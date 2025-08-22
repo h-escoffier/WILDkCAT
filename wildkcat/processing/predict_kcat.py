@@ -3,11 +3,11 @@ import pandas as pd
 import numpy as np
 
 from wildkcat.machine_learning.catapro import create_catapro_input_file, integrate_catapro_predictions
-from wildkcat.utils.generate_reports import catapro_report_input, catapro_report_integration
+from wildkcat.utils.generate_reports import report_prediction_input, report_final
 
 
 # TODO: Generates report
-# TODO: Add a warning if there is the same SMILE for multiple KEGG IDs
+# TODO: Add a warning if there is the same SMILE for multiple KEGG IDs ? 
 
 
 # --- Format ---
@@ -15,7 +15,14 @@ from wildkcat.utils.generate_reports import catapro_report_input, catapro_report
 
 def format_output(kcat_df, limit_matching_score):
     """
-    TODO: Write the documentation 
+    Formats the kcat DataFrame by selecting and rounding kcat values based on matching score and prediction availability.
+
+    Parameters:
+        kcat_df (pandas.DataFrame) : Input DataFrame containing kcat-related columns and prediction results.
+        limit_matching_score (float) : Threshold for the matching score to determine whether to use predicted kcat values.
+
+    Returns: 
+        pandas.DataFrame : Formatted DataFrame with selected and rounded kcat values, reordered columns, and updated source information.
     """
     kcat_df = kcat_df.rename(columns={"kcat": "kcat_source", "kcat_db": "kcat_source_db"})
 
@@ -56,7 +63,7 @@ def format_output(kcat_df, limit_matching_score):
 # --- Main ---
 
 
-def run_catapro_part1(kcat_file_path, limit_matching_score, output_path, report=True):
+def run_prediction_part1(kcat_file_path, limit_matching_score, output_path, report=True):
     """
     Processes kcat data file to generate input files for CataPro prediction.
     Optionally, it can produce a summary report of the processed data.
@@ -84,12 +91,21 @@ def run_catapro_part1(kcat_file_path, limit_matching_score, output_path, report=
     logging.info(f"Output saved to '{output_path}'")
 
     if report:
-        catapro_report_input(catapro_input_df, report_statistics)
+        report_prediction_input(catapro_input_df, report_statistics)
 
 
-def run_catapro_part2(kcat_file_path, catapro_predictions_path, substrates_to_smiles_path, limit_matching_score, output_path, report=True):
+def run_prediction_part2(kcat_file_path, catapro_predictions_path, substrates_to_smiles_path, limit_matching_score, output_path, report=True):
     """
-    TODO: Write the documentation
+    Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
+    mapping substrates to SMILES, formatting the output, and optionally generating a report.
+    
+    Parameters:
+        kcat_file_path (str): Path to the input kcat TSV file.
+        catapro_predictions_path (str): Path to the Catapro predictions CSV file.
+        substrates_to_smiles_path (str): Path to the TSV file mapping substrates to SMILES.
+        limit_matching_score (float): Threshold for taking predictions over retrieved values.
+        output_path (str): Path to save the formatted output TSV file.
+        report (bool, optional): If True, generates a report (default: True). 
     """ 
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
     substrates_to_smiles = pd.read_csv(substrates_to_smiles_path, sep='\t')
@@ -105,8 +121,7 @@ def run_catapro_part2(kcat_file_path, catapro_predictions_path, substrates_to_sm
     logging.info(f"Output saved to '{output_path}'")
 
     if report:
-        pass # TODO: Implement report generation
-
+        report_final(kcat_df)
 
 
 if __name__ == "__main__":
@@ -128,16 +143,20 @@ if __name__ == "__main__":
     
     # Test : Main function
     logging.basicConfig(level=logging.INFO)
-    # run_catapro_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input_2.csv")
-    # run_catapro_part2("output/ecoli_kcat_brenda.tsv", 
-    #                   "output/machine_learning/ecoli_catapro_output.csv", 
-    #                   "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
-    #                   8, 
-    #                   "output/ecoli_kcat_full.tsv")
+    # run_prediction_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input_2.csv")
+    # run_prediction_part2("output/ecoli_kcat_brenda.tsv", 
+    #                      "output/machine_learning/ecoli_catapro_output.csv", 
+    #                      "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
+    #                      8, 
+    #                      "output/ecoli_kcat_full.tsv")
     
-    run_catapro_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
-    # run_catapro_part2("output/yeast_kcat_brenda.tsv", 
-    #                   "output/machine_learning/yeast_catapro_output.csv", 
-    #                   "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 
-    #                   8, 
-    #                   "output/yeast_kcat_full.tsv")
+    # run_prediction_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
+    # run_prediction_part2("output/yeast_kcat_brenda.tsv", 
+    #                      "output/machine_learning/yeast_catapro_output.csv", 
+    #                      "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 
+    #                      8, 
+    #                      "output/yeast_kcat_full.tsv")
+
+    # Test : Generate report
+    kcat_df = pd.read_csv("output/ecoli_kcat_full.tsv", sep='\t')
+    report_final(kcat_df)

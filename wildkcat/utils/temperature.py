@@ -34,9 +34,6 @@ def arrhenius_equation(candidate, api_output, general_criteria):
         kcat_obj = kcat_ref * np.exp(ea / r * (1/temp_ref - 1/temp_obj))
         return kcat_obj
 
-    # EC Code 
-    ec_code = candidate.get("ECNumber")
-
     # Objective temperature
     obj_temp = np.mean(general_criteria["Temperature"]) + 273.15
 

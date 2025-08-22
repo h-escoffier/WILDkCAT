@@ -9,6 +9,8 @@ from wildkcat.api.uniprot_api import convert_uniprot_to_sequence, identify_catal
 from wildkcat.api.brenda_api import get_cofactor
 
 
+# TODO: Add a list of cofactors 
+
 # --- API ---
 
 
@@ -138,7 +140,7 @@ def create_catapro_input_file(kcat_df):
 
         if len(uniprot.split(';')) > 1:       
             catalytic_enzyme = identify_catalytic_enzyme(uniprot, ec_code)
-            if catalytic_enzyme is None:
+            if catalytic_enzyme is None or (";" in str(catalytic_enzyme)):
                 counter_no_catalytic += 1
                 continue
             else: 
@@ -162,7 +164,7 @@ def create_catapro_input_file(kcat_df):
         cofactor = get_cofactor(ec_code) 
 
         for name, kegg_compound_id in zip(names, kegg_ids):
-            if name.lower() in [c.lower() for c in cofactor]:  # TODO: Should we add a warning if no cofactor is found for a reaction?
+            if name.lower() in [c.lower() for c in cofactor]:  # TODO: Should we add a warning if no cofactor is found for a reaction? 
                 counter_cofactor += 1
                 continue
             smiles = convert_kegg_to_smiles(kegg_compound_id)

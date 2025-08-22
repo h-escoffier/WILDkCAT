@@ -8,7 +8,8 @@ from wildkcat.api.sabio_rk_api import get_turnover_number_sabio
 from wildkcat.api.brenda_api import get_turnover_number_brenda
 from wildkcat.api.uniprot_api import identify_catalytic_enzyme
 from wildkcat.utils.matching import find_best_match
-from wildkcat.utils.generate_reports import report_api
+from wildkcat.utils.generate_reports import report_retrieval
+from wildkcat.utils.manage_warnings import DedupFilter
 
 
 @lru_cache(maxsize=None)
@@ -82,7 +83,7 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     return best_candidate, best_score
 
 
-def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_range, database= 'both', report=True):
+def run_retrieval(kcat_file_path, output_path, organism, temperature_range, pH_range, database= 'both', report=True):
     """
     Retrieves closests kcat values from specified databases for entries in a kcat file, applies filtering criteria, 
     and saves the results to an output file.
@@ -145,47 +146,51 @@ def run_retrieve(kcat_file_path, output_path, organism, temperature_range, pH_ra
             kcat_df.loc[row.Index, 'kcat_ph'] = best_match['pH']
             kcat_df.loc[row.Index, 'kcat_variant'] = best_match['EnzymeVariant']
             kcat_df.loc[row.Index, 'kcat_db'] = best_match['db']
-            kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
+            if best_match.get('id_perc') != -1:
+                kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
 
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
 
     if report:
-        report_api(kcat_df, 'brenda')
+        report_retrieval(kcat_df)
 
 
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     # kcat_dict = {
-    #     'ec_code': '1.8.1.4',
-    #     'uniprot_model': 'P06959;P0A9P0;P0AFG8',
-    #     'substrates_name': 'Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate', 
+    #     'ec_code': '2.3.1.23',
+    #     'uniprot_model': 'Q06510',
+    #     'substrates_name': 'cardiolipin (1-16:1, 2-16:1, 3-16:1, 4-18:1);1-acylglycerophosphocholine (18:1)', 
     # }
 
     # general_criteria ={
-    #     'Organism': 'Escherichia coli', 
-    #     'Temperature': (20, 40), 
-    #     'pH': (6.5, 7.5)
+    #     'Organism': 'Saccharomyces cerevisiae', 
+    #     'Temperature': (18, 38), 
+    #     'pH': (4.0, 8.0)
     # }
 
     # output = extract_kcat(kcat_dict, general_criteria, database='brenda')
     # print(output)
 
     # Test : Run the retrieve function
+    
     logging.basicConfig(level=logging.INFO)
-    run_retrieve(
-        kcat_file_path="output/ecoli_kcat.tsv",
-        output_path="output/ecoli_kcat_brenda.tsv",
-        # output_path="output/ecoli_kcat_sabio.tsv",
-        organism="Escherichia coli",
-        temperature_range=(20, 40),
-        pH_range=(6.5, 7.5),
-        database='brenda', 
-        # database='sabio_rk', 
-        report=True
-    ) 
+    logging.getLogger().addFilter(DedupFilter())
 
-    # run_retrieve(
+    # run_retrieval(
+    #     kcat_file_path="output/ecoli_kcat.tsv",
+    #     output_path="output/ecoli_kcat_brenda.tsv",
+    #     # output_path="output/ecoli_kcat_sabio.tsv",
+    #     organism="Escherichia coli",
+    #     temperature_range=(20, 40),
+    #     pH_range=(6.5, 7.5),
+    #     database='brenda', 
+    #     # database='sabio_rk', 
+    #     report=True
+    # ) 
+
+    # run_retrieval(
     #     kcat_file_path="output/yeast_kcat.tsv",
     #     output_path="output/yeast_kcat_brenda.tsv",
     #     # output_path="output/yeast_kcat_sabio.tsv",
@@ -198,5 +203,5 @@ if __name__ == "__main__":
     # ) 
 
     # Test : Generate report
-    # df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
-    # report_api(df, "brenda")
+    df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
+    report_retrieval(df)

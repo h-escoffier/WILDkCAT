@@ -21,6 +21,7 @@
 
 ### `retrieve_kcat.py`
 - If multiple enzymes are provided, searches UniProt for catalytic activity.  
+- If multiple catalytic enzymes are identified, store all.
 - When multiple enzymes are found, computes identity percentages relative to the identified catalytic enzyme.  
 - Applies Arrhenius correction to values within the appropriate pH range.  
 - For rows with multiple scores, selects:
@@ -38,7 +39,6 @@
 
 ## TODO
 - [ ] Fix **SABIO-RK** 
-- [ ] Add **CataPro** report.  
 - [ ] Consider **class-based** structure rather than independent functions ? 
 - [ ] Move **PubChem API** queries to a dedicated module ? 
 
