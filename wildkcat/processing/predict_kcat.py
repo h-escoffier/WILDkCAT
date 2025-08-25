@@ -6,8 +6,7 @@ from wildkcat.machine_learning.catapro import create_catapro_input_file, integra
 from wildkcat.utils.generate_reports import report_prediction_input, report_final
 
 
-# TODO: Generates report
-# TODO: Add a warning if there is the same SMILE for multiple KEGG IDs ? 
+# TODO: Add a warning if there is the same SMILE for multiple KEGG IDs ?
 
 
 # --- Format ---
@@ -51,7 +50,7 @@ def format_output(kcat_df, limit_matching_score):
     kcat_df = kcat_df[[
         "rxn", "KEGG_rxn_id", "ec_code", "direction", 
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
-        "genes_model", "uniprot_model", "kegg_genes", "intersection_genes", 
+        "genes_model", "uniprot_model", # "kegg_genes", "intersection_genes", 
         "kcat", "kcat_source", "catapro_predicted_kcat_s", 
         "kcat_source_db", "kcat_db", "matching_score",
         "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
@@ -151,12 +150,12 @@ if __name__ == "__main__":
     #                      "output/ecoli_kcat_full.tsv")
     
     # run_prediction_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
-    # run_prediction_part2("output/yeast_kcat_brenda.tsv", 
-    #                      "output/machine_learning/yeast_catapro_output.csv", 
-    #                      "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 
-    #                      8, 
-    #                      "output/yeast_kcat_full.tsv")
+    run_prediction_part2("output/yeast_kcat_brenda.tsv", 
+                         "output/machine_learning/yeast_catapro_output.csv", 
+                         "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 
+                         8, 
+                         "output/yeast_kcat_full.tsv")
 
     # Test : Generate report
-    kcat_df = pd.read_csv("output/ecoli_kcat_full.tsv", sep='\t')
+    kcat_df = pd.read_csv("output/yeast_kcat_full.tsv", sep='\t')
     report_final(kcat_df)

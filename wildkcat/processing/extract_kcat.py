@@ -9,7 +9,7 @@ from wildkcat.api.api_utilities import safe_requests_get, retry_api
 from wildkcat.utils.generate_reports import report_extraction
 
 
-# TODO: Column kegg_genes and intersection_genes are currently not used, maybe add this information in the report ?
+# TODO: Column kegg_genes and intersection_genes are currently not used.
 
 
 # --- Load Model ---

@@ -271,6 +271,8 @@ def find_best_match(kcat_dict, api_output, general_criteria):
         kind='mergesort'  # stable sort for reproducibility
     )
 
+    print(api_output)
+    
     # 5. Select best candidate
     best_candidate = api_output.iloc[0].to_dict()
     best_candidate['catalytic_enzyme'] = kcat_dict.get('catalytic_enzyme')

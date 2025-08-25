@@ -187,7 +187,7 @@ if __name__ == "__main__":
     #     pH_range=(6.5, 7.5),
     #     database='brenda', 
     #     # database='sabio_rk', 
-    #     report=True
+    #     report=False
     # ) 
 
     # run_retrieval(
@@ -204,4 +204,5 @@ if __name__ == "__main__":
 
     # Test : Generate report
     df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
+    # df = pd.read_csv("output/ecoli_kcat_brenda.tsv", sep='\t')
     report_retrieval(df)

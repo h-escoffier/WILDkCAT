@@ -1,25 +1,25 @@
 rxn	KEGG_rxn_id	ec_code	direction	substrates_name	substrates_kegg	products_name	products_kegg	genes_model	uniprot_model
-r_0001	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YDL174C;YEL039C	P32891;P00045
-r_0001	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YDL174C;YJR048W	P32891;P00044
+r_0001	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YDL174C;YEL039C	P00045;P32891
+r_0001	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YDL174C;YJR048W	P00044;P32891
 r_0001	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YEL039C;YEL071W	P39976;P00045
 r_0001	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YEL071W;YJR048W	P39976;P00044
 r_0002	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YDL178W;YEL039C	P46681;P00045
 r_0002	R00197	1.1.2.4	forward	(R)-lactate;ferricytochrome c	C00256;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YDL178W;YJR048W	P46681;P00044
 r_0003	R02946	1.1.1.4	forward	(R,R)-2,3-butanediol;NAD	C03044;C00003	(R)-acetoin;H+;NADH	C00810;C00080;C00004	YAL060W	P39714
 r_0003	R02946	1.1.1.4	reverse	(R)-acetoin;H+;NADH	C00810;C00080;C00004	(R,R)-2,3-butanediol;NAD	C03044;C00003	YAL060W	P39714
-r_0004	R00196	1.1.2.3	forward	(S)-lactate;ferricytochrome c	C00186;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YEL039C;YML054C	P00045;P00175
-r_0004	R00196	1.1.2.3	forward	(S)-lactate;ferricytochrome c	C00186;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YJR048W;YML054C	P00044;P00175
+r_0004	R00196	1.1.2.3	forward	(S)-lactate;ferricytochrome c	C00186;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YEL039C;YML054C	P00175;P00045
+r_0004	R00196	1.1.2.3	forward	(S)-lactate;ferricytochrome c	C00186;C00125	ferrocytochrome c;pyruvate	C00126;C00022	YJR048W;YML054C	P00175;P00044
 r_0005	R03118	2.4.1.34	forward	UDP-D-glucose	C00029	(1->3)-beta-D-glucan;H+;UDP	C00965;C00080;C00015	YPR165W;YLR342W	P38631;P06780
 r_0005	R03118	2.4.1.34	forward	UDP-D-glucose	C00029	(1->3)-beta-D-glucan;H+;UDP	C00965;C00080;C00015	YPR165W;YGR032W	P40989;P06780
-r_0005	R03118	2.4.1.34	forward	UDP-D-glucose	C00029	(1->3)-beta-D-glucan;H+;UDP	C00965;C00080;C00015	YPR165W;YMR306W	P06780;Q04952
+r_0005	R03118	2.4.1.34	forward	UDP-D-glucose	C00029	(1->3)-beta-D-glucan;H+;UDP	C00965;C00080;C00015	YPR165W;YMR306W	Q04952;P06780
 r_0007	R04640	5.3.1.16	forward	1-(5-phospho-D-ribosyl)-5-[(5-phospho-D-ribosylamino)methylideneamino]imidazole-4-carboxamide	C04896	5-[(5-phospho-1-deoxy-D-ribulos-1-ylamino)methylideneamino]-1-(5-phospho-D-ribosyl)imidazole-4-carboxamide	C04916	YIL020C	P40545
 r_0012	R00707	1.2.1.88	forward	1-pyrroline-5-carboxylate;H2O;NAD	C04322;C00001;C00003	H+;L-glutamate;NADH	C00080;C00025;C00004	YHR037W	P07275
-r_0013		1.13.11.54	forward	5-(methylsulfanyl)-2,3-dioxopentyl phosphate;H2O	C15650;C00001	4-methylthio-2-oxobutanoate;formate;H+;phosphate	C01180;C00058;C00080;C00009	YEL038W;YMR009W	Q03677;P32626
-r_0013		3.1.3.77	forward	5-(methylsulfanyl)-2,3-dioxopentyl phosphate;H2O	C15650;C00001	4-methylthio-2-oxobutanoate;formate;H+;phosphate	C01180;C00058;C00080;C00009	YEL038W;YMR009W	Q03677;P32626
+r_0013		1.13.11.54	forward	5-(methylsulfanyl)-2,3-dioxopentyl phosphate;H2O	C15650;C00001	4-methylthio-2-oxobutanoate;formate;H+;phosphate	C01180;C00058;C00080;C00009	YEL038W;YMR009W	P32626;Q03677
+r_0013		3.1.3.77	forward	5-(methylsulfanyl)-2,3-dioxopentyl phosphate;H2O	C15650;C00001	4-methylthio-2-oxobutanoate;formate;H+;phosphate	C01180;C00058;C00080;C00009	YEL038W;YMR009W	P32626;Q03677
 r_0014	R09377	3.5.4.26	forward	2,5-diamino-6-(5-phosphono)ribitylamino-4(3H)-pyrimidinone;H+;H2O	C18910;C00080;C00001	5-amino-6-(5-phosphoribitylamino)uracil;ammonium	C04454;C01342	YOL066C	Q12362
 r_0014	R09377	5.4.99.28	forward	2,5-diamino-6-(5-phosphono)ribitylamino-4(3H)-pyrimidinone;H+;H2O	C18910;C00080;C00001	5-amino-6-(5-phosphoribitylamino)uracil;ammonium	C04454;C01342	YOL066C	Q12362
 r_0015	R09376	1.1.1.302	forward	2,5-diamino-4-hydroxy-6-(5-phosphoribosylamino)pyrimidine;H+;NADPH	C01304;C00080;C00005	2,5-diamino-6-(5-phosphono)ribitylamino-4(3H)-pyrimidinone;NADP(+)	C18910;C00006	YBR153W	P33312
-r_0016	R08648	2.2.1.6	forward	2-oxobutanoate;H+;pyruvate	C00109;C00080;C00022	(S)-2-acetyl-2-hydroxybutanoate;carbon dioxide	C06006;C00011	YCL009C;YMR108W	P07342;P25605
+r_0016	R08648	2.2.1.6	forward	2-oxobutanoate;H+;pyruvate	C00109;C00080;C00022	(S)-2-acetyl-2-hydroxybutanoate;carbon dioxide	C06006;C00011	YCL009C;YMR108W	P25605;P07342
 r_0016	R08648	2.2.1.6	forward	2-oxobutanoate;H+;pyruvate	C00109;C00080;C00022	(S)-2-acetyl-2-hydroxybutanoate;carbon dioxide	C06006;C00011	YMR108W	P07342
 r_0017	R03503	2.5.1.15	forward	2-amino-6-(hydroxymethyl)-7,8-dihydropteridin-4-ol;ATP	C01300;C00002	(2-amino-4-hydroxy-7,8-dihydropteridin-6-yl)methyl trihydrogen diphosphate;AMP;H+	C04807;C00020;C00080	YNL256W	P53848
 r_0017	R03503	2.7.6.3	forward	2-amino-6-(hydroxymethyl)-7,8-dihydropteridin-4-ol;ATP	C01300;C00002	(2-amino-4-hydroxy-7,8-dihydropteridin-6-yl)methyl trihydrogen diphosphate;AMP;H+	C04807;C00020;C00080	YNL256W	P53848
@@ -45,12 +45,12 @@ r_0018	R01939	2.6.1.7	reverse	2-oxoglutarate;L-2-aminoadipate	C00026;C00956	2-ox
 r_0019	R02472	1.1.1.169	forward	2-dehydropantoate;H+;NADPH	C00966;C00080;C00005	(R)-pantoate;NADP(+)	C00522;C00006	YHR063C	P38787
 r_0020	R01826	2.5.1.54	forward	D-erythrose 4-phosphate;H2O;phosphoenolpyruvate	C00279;C00001;C00074	7-phospho-2-dehydro-3-deoxy-D-arabino-heptonic acid;phosphate	C04691;C00009	YDR035W	P14843
 r_0020	R01826	2.5.1.54	forward	D-erythrose 4-phosphate;H2O;phosphoenolpyruvate	C00279;C00001;C00074	7-phospho-2-dehydro-3-deoxy-D-arabino-heptonic acid;phosphate	C04691;C00009	YBR249C	P32449
-r_0021	R04983	2.1.1.114	forward	2-hexaprenyl-6-methoxy-1,4-benzoquinone;S-adenosyl-L-methionine	C05803;C00019	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-homocysteine	C05804;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0021	R04983	2.1.1.201	forward	2-hexaprenyl-6-methoxy-1,4-benzoquinone;S-adenosyl-L-methionine	C05803;C00019	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-homocysteine	C05804;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0021	R04983	2.1.1.64	forward	2-hexaprenyl-6-methoxy-1,4-benzoquinone;S-adenosyl-L-methionine	C05803;C00019	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-homocysteine	C05804;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0022	R04982	2.1.1.114	forward	2-hexaprenyl-6-methoxyphenol;oxygen	C05802;C00007	2-hexaprenyl-6-methoxy-1,4-benzoquinone;H2O	C05803;C00001	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0022	R04982	2.1.1.201	forward	2-hexaprenyl-6-methoxyphenol;oxygen	C05802;C00007	2-hexaprenyl-6-methoxy-1,4-benzoquinone;H2O	C05803;C00001	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0022	R04982	2.1.1.64	forward	2-hexaprenyl-6-methoxyphenol;oxygen	C05802;C00007	2-hexaprenyl-6-methoxy-1,4-benzoquinone;H2O	C05803;C00001	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
+r_0021	R04983	2.1.1.114	forward	2-hexaprenyl-6-methoxy-1,4-benzoquinone;S-adenosyl-L-methionine	C05803;C00019	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-homocysteine	C05804;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0021	R04983	2.1.1.201	forward	2-hexaprenyl-6-methoxy-1,4-benzoquinone;S-adenosyl-L-methionine	C05803;C00019	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-homocysteine	C05804;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0021	R04983	2.1.1.64	forward	2-hexaprenyl-6-methoxy-1,4-benzoquinone;S-adenosyl-L-methionine	C05803;C00019	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-homocysteine	C05804;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0022	R04982	2.1.1.114	forward	2-hexaprenyl-6-methoxyphenol;oxygen	C05802;C00007	2-hexaprenyl-6-methoxy-1,4-benzoquinone;H2O	C05803;C00001	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0022	R04982	2.1.1.201	forward	2-hexaprenyl-6-methoxyphenol;oxygen	C05802;C00007	2-hexaprenyl-6-methoxy-1,4-benzoquinone;H2O	C05803;C00001	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0022	R04982	2.1.1.64	forward	2-hexaprenyl-6-methoxyphenol;oxygen	C05802;C00007	2-hexaprenyl-6-methoxy-1,4-benzoquinone;H2O	C05803;C00001	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
 r_0023	R03968	4.2.1.33	forward	2-isopropylmaleic acid;H2O	C02631;C00001	2-isopropylmalate	C02504	YGL009C	P07264
 r_0023	R03968	4.2.1.33	reverse	2-isopropylmalate	C02504	2-isopropylmaleic acid;H2O	C02631;C00001	YGL009C	P07264
 r_0024	R01213	2.3.3.13	forward	3-methyl-2-oxobutanoate;acetyl-CoA;H2O	C00141;C00024;C00001	2-isopropylmalate;coenzyme A;H+	C02504;C00010;C00080	YNL104C	P06208
@@ -130,7 +130,7 @@ r_0074		2.7.4.21	forward	4-diphospho-1D-myo-inositol pentakisphosphate;ATP;H+	C1
 r_0075	R01402	2.4.2.28	forward	5'-S-methyl-5'-thioadenosine;phosphate	C00170;C00009	adenine;S-methyl-5-thio-alpha-D-ribose 1-phosphate	C00147;C04188	YLR017W	Q07938
 r_0077	R01126	3.1.3.99	forward	H2O;IMP	C00001;C00130	inosine;phosphate	C00294;C00009	YOR155C	Q99312
 r_0079	R04463	6.3.5.3	forward	5'-phosphoribosyl-N-formylglycineamide;ATP;H2O;L-glutamine	C04376;C00002;C00001;C00064	5'-phosphoribosyl-N-formylglycineamidine;ADP;H+;L-glutamate;phosphate	C04640;C00008;C00080;C00025;C00009	YGR061C	P38972
-r_0080	R01224	1.5.1.20	forward	5,10-methylenetetrahydrofolate;H+;NADPH	C00143;C00080;C00005	5-methyltetrahydrofolate;NADP(+)	C00440;C00006	YGL125W;YPL023C	P53128;P46151
+r_0080	R01224	1.5.1.20	forward	5,10-methylenetetrahydrofolate;H+;NADPH	C00143;C00080;C00005	5-methyltetrahydrofolate;NADP(+)	C00440;C00006	YGL125W;YPL023C	P46151;P53128
 r_0080	R01224	1.5.1.20	forward	5,10-methylenetetrahydrofolate;H+;NADPH	C00143;C00080;C00005	5-methyltetrahydrofolate;NADP(+)	C00440;C00006	YGL125W	P53128
 r_0081	R00830	2.3.1.37	forward	H+;L-glycine;succinyl-CoA	C00080;C00037;C00091	5-aminolevulinate;carbon dioxide;coenzyme A	C00430;C00011;C00010	YDR232W	P09950
 r_0082	R05779	3.6.1.52	forward	5-diphospho-1D-myo-inositol pentakisphosphate;H2O	C11526;C00001	H+;myo-inositol hexakisphosphate;phosphate	C00080;C01204;C00009	YOR163W	Q99321
@@ -169,7 +169,7 @@ r_0095		4.1.1.74	forward	acetaldehyde	C00084	(R)-acetoin	C00810	YGR087C	P26263
 r_0095		4.1.1.74	forward	acetaldehyde	C00084	(R)-acetoin	C00810	YLR044C	P06169
 r_0095		4.1.1.74	forward	acetaldehyde	C00084	(R)-acetoin	C00810	YLR134W	P16467
 r_0096		1.1.1.86	forward	2-acetyllactic acid;H+;NADPH	C00900;C00080;C00005	(R)-2,3-dihydroxy-3-methylbutanoate;NADP(+)	C04272;C00006	YLR355C	P06168
-r_0097	R00006	2.2.1.6	forward	H+;pyruvate	C00080;C00022	2-acetyllactic acid;carbon dioxide	C00900;C00011	YCL009C;YMR108W	P07342;P25605
+r_0097	R00006	2.2.1.6	forward	H+;pyruvate	C00080;C00022	2-acetyllactic acid;carbon dioxide	C00900;C00011	YCL009C;YMR108W	P25605;P07342
 r_0097	R00006	2.2.1.6	forward	H+;pyruvate	C00080;C00022	2-acetyllactic acid;carbon dioxide	C00900;C00011	YMR108W	P07342
 r_0100		2.3.1.16	forward	3-oxooctadecanoyl-CoA;coenzyme A	C16216;C00010	acetyl-CoA;palmitoyl-CoA	C00024;C00154	YIL160C	P27796
 r_0101		2.3.1.16	forward	3-oxohexacosanoyl-CoA;coenzyme A	;C00010	acetyl-CoA;tetracosanoyl-CoA	C00024;C16529	YIL160C	P27796
@@ -181,7 +181,7 @@ r_0106	R03778	2.3.1.16	forward	3-oxodecanoyl-CoA;coenzyme A	C05265;C00010	acetyl
 r_0107	R04742	2.3.1.16	forward	3-oxolauroyl-CoA;coenzyme A	C05263;C00010	acetyl-CoA;decanoyl-CoA	C00024;C05274	YIL160C	P27796
 r_0108	R00742	6.3.4.14	forward	acetyl-CoA;ATP;bicarbonate	C00024;C00002;C00288	ADP;H+;malonyl-CoA;phosphate	C00008;C00080;C00083;C00009	YMR207C	P32874
 r_0108	R00742	6.4.1.2	forward	acetyl-CoA;ATP;bicarbonate	C00024;C00002;C00288	ADP;H+;malonyl-CoA;phosphate	C00008;C00080;C00083;C00009	YMR207C	P32874
-r_0109	R00742	6.3.4.14	forward	acetyl-CoA;ATP;bicarbonate	C00024;C00002;C00288	ADP;H+;malonyl-CoA;phosphate	C00008;C00080;C00083;C00009	YDL141W;YNR016C	P48445;Q00955
+r_0109	R00742	6.3.4.14	forward	acetyl-CoA;ATP;bicarbonate	C00024;C00002;C00288	ADP;H+;malonyl-CoA;phosphate	C00008;C00080;C00083;C00009	YDL141W;YNR016C	Q00955;P48445
 r_0111	R00227	3.1.2.1	forward	acetyl-CoA;H2O	C00024;C00001	acetate;coenzyme A;H+	C00033;C00010;C00080	YBL015W	P32316
 r_0112	R00235	6.2.1.1	forward	acetate;ATP;coenzyme A	C00033;C00002;C00010	acetyl-CoA;AMP;diphosphate	C00024;C00020;C00013	YAL054C	Q01574
 r_0112	R00235	6.2.1.1	forward	acetate;ATP;coenzyme A	C00033;C00002;C00010	acetyl-CoA;AMP;diphosphate	C00024;C00020;C00013	YLR153C	P52910
@@ -333,10 +333,10 @@ r_0191	R00005	6.3.4.6	forward	H+;H2O;urea-1-carboxylic acid	C00080;C00001;C01010
 r_0193	R00010	3.2.1.28	forward	H2O;trehalose	C00001;C01083	D-glucose	C00031	YPR026W	P48016
 r_0193	R00010	3.2.1.28	forward	H2O;trehalose	C00001;C01083	D-glucose	C00031	YBR001C	P35172
 r_0194	R00010	3.2.1.28	forward	H2O;trehalose	C00001;C01083	D-glucose	C00031	YDR001C	P32356
-r_0195	R00836	2.4.1.15	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YML100W	P38427;P31688;Q00764
-r_0195	R00836	2.4.1.15	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YMR261C	P31688;Q00764;P38426
-r_0195	R00836	3.1.3.12	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YML100W	P38427;P31688;Q00764
-r_0195	R00836	3.1.3.12	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YMR261C	P31688;Q00764;P38426
+r_0195	R00836	2.4.1.15	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YML100W	P31688;P38427;Q00764
+r_0195	R00836	2.4.1.15	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YMR261C	P31688;P38426;Q00764
+r_0195	R00836	3.1.3.12	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YML100W	P31688;P38427;Q00764
+r_0195	R00836	3.1.3.12	forward	D-glucose 6-phosphate;UDP-D-glucose	C00092;C00029	alpha,alpha-trehalose 6-phosphate;H+;UDP	C00689;C00080;C00015	YBR126C;YDR074W;YMR261C	P31688;P38426;Q00764
 r_0198	R00028	3.2.1.10	forward	H2O;maltose	C00001;C00208	D-glucose	C00031	YBR299W	P38158
 r_0198	R00028	3.2.1.10	forward	H2O;maltose	C00001;C00208	D-glucose	C00031	YGR287C	P53051
 r_0198	R00028	3.2.1.10	forward	H2O;maltose	C00001;C00208	D-glucose	C00031	YGR292W	P53341
@@ -382,8 +382,8 @@ r_0222	R00126	2.7.7.53	forward	ADP;ATP;H+	C00008;C00002;C00080	P(1),P(4)-bis(5'-
 r_0223		2.7.7.53	forward	ADP;GTP;H+	C00008;C00044;C00080	P1-(5'-adenosyl),P4-(5'-guanosyl) tetraphosphate;phosphate	;C00009	YCL050C	P16550
 r_0224		2.7.7.53	forward	GDP;GTP;H+	C00035;C00044;C00080	P(1),P(4)-bis(5'-guanosyl) tetraphosphate;phosphate	C01261;C00009	YCL050C	P16550
 r_0225	R01071	2.4.2.17	forward	ATP;PRPP	C00002;C00119	5-phosphoribosyl-ATP;diphosphate	C02739;C00013	YER055C	P00498
-r_0227	R00086	3.6.1.5	forward	ATP;H2O	C00002;C00001	ADP;H+;phosphate	C00008;C00080;C00009	YCR024C-A;YEL017C-A;YGL008C	P05030;P40975;P32903
-r_0227	R00086	3.6.1.5	forward	ATP;H2O	C00002;C00001	ADP;H+;phosphate	C00008;C00080;C00009	YCR024C-A;YEL017C-A;YPL036W	P19657;P40975;P32903
+r_0227	R00086	3.6.1.5	forward	ATP;H2O	C00002;C00001	ADP;H+;phosphate	C00008;C00080;C00009	YCR024C-A;YEL017C-A;YGL008C	P05030;P32903;P40975
+r_0227	R00086	3.6.1.5	forward	ATP;H2O	C00002;C00001	ADP;H+;phosphate	C00008;C00080;C00009	YCR024C-A;YEL017C-A;YPL036W	P19657;P32903;P40975
 r_0227	R00086	3.6.1.5	forward	ATP;H2O	C00002;C00001	ADP;H+;phosphate	C00008;C00080;C00009	YER005W	P40009
 r_0228	R04502	2.4.1.142	forward	GDP-alpha-D-mannose;N,N'-diacetylchitobiosyldiphosphodolichol	C00096;C04537	beta-D-mannosyldiacetylchitobiosyldiphosphodolichol;GDP;H+	C05860;C00035;C00080	YBR110W	P16661
 r_0229		2.8.1.6	forward	dethiobiotin;polysulphur	C01909;C00087	biotin;H+	C00120;C00080	YGR286C	P32451
@@ -400,7 +400,7 @@ r_0236	R07495	1.1.1.270	forward	3-dehydro-4-methylzymosterol;H+;NADPH	C15816;C00
 r_0237		1.1.1.270	forward	H+;NADPH;zymosterol intermediate 2	C00080;C00005;	NADP(+);zymosterol	C00006;C05437	YLR100W	Q12452
 r_0242		1.14.19.20	forward	episterol;H+;NADPH;oxygen	C15777;C00080;C00005;C00007	ergosta-5,7,24(28)-trien-3beta-ol;H2O;NADP(+)	C15780;C00001;C00006	YLR056W	P32353
 r_0244	R05641	1.3.1.71	forward	ergosta-5,7,22,24(28)-tetraen-3beta-ol;H+;NADPH	C05440;C00080;C00005	ergosterol;NADP(+)	C01694;C00006	YGL012W	P25340
-r_0249	R07273	2.5.1.58	forward	4-hydroxybenzoate;nonaprenyl diphosphate	C00156;C04145	diphosphate;nonaprenyl 4-hydroxybenzoate	C00013;C03885	YDL090C;YKL019W	P29703;P22007
+r_0249	R07273	2.5.1.58	forward	4-hydroxybenzoate;nonaprenyl diphosphate	C00156;C04145	diphosphate;nonaprenyl 4-hydroxybenzoate	C00013;C03885	YDL090C;YKL019W	P22007;P29703
 r_0250	R00575	2.1.3.2	forward	ATP;bicarbonate;H2O;L-glutamine	C00002;C00288;C00001;C00064	ADP;carbamoyl phosphate;H+;L-glutamate;phosphate	C00008;C00169;C00080;C00025;C00009	YJL130C	P07259
 r_0250	R00575	2.1.3.2	forward	ATP;bicarbonate;H2O;L-glutamine	C00002;C00288;C00001;C00064	ADP;carbamoyl phosphate;H+;L-glutamate;phosphate	C00008;C00169;C00080;C00025;C00009	YJR109C;YOR303W	P07258;P03965
 r_0250	R00575	6.3.5.5	forward	ATP;bicarbonate;H2O;L-glutamine	C00002;C00288;C00001;C00064	ADP;carbamoyl phosphate;H+;L-glutamate;phosphate	C00008;C00169;C00080;C00025;C00009	YJL130C	P07259
@@ -411,10 +411,10 @@ r_0253	R02396	2.3.1.7	forward	(R)-carnitine;acetyl-CoA	C00318;C00024	coenzyme A;
 r_0254	R02396	2.3.1.7	forward	coenzyme A;O-acetylcarnitine	C00010;C02571	(R)-carnitine;acetyl-CoA	C00318;C00024	YML042W	P32796
 r_0255	R00009	1.11.1.6	forward	hydrogen peroxide	C00027	H2O;oxygen	C00001;C00007	YGR088W	P06115
 r_0256	R00009	1.11.1.6	forward	hydrogen peroxide	C00027	H2O;oxygen	C00001;C00007	YDR256C	P15202
-r_0263		2.3.1.24	forward	sphinganine;tetracosanoyl-CoA	C00836;C16529	ceramide-1 (C24);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;Q03579;P38703
-r_0264	R06517	2.3.1.24	forward	hexacosanoyl-CoA;sphinganine	;C00836	ceramide-1 (C26);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;Q03579;P38703
-r_0265		2.3.1.24	forward	phytosphingosine;tetracosanoyl-CoA	C12144;C16529	ceramide-2 (C24);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;Q03579;P38703
-r_0266	R06527	2.3.1.24	forward	hexacosanoyl-CoA;phytosphingosine	;C12144	ceramide-2 (C26);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;Q03579;P38703
+r_0263		2.3.1.24	forward	sphinganine;tetracosanoyl-CoA	C00836;C16529	ceramide-1 (C24);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;P38703;Q03579
+r_0264	R06517	2.3.1.24	forward	hexacosanoyl-CoA;sphinganine	;C00836	ceramide-1 (C26);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;P38703;Q03579
+r_0265		2.3.1.24	forward	phytosphingosine;tetracosanoyl-CoA	C12144;C16529	ceramide-2 (C24);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;P38703;Q03579
+r_0266	R06527	2.3.1.24	forward	hexacosanoyl-CoA;phytosphingosine	;C12144	ceramide-2 (C26);coenzyme A;H+	;C00010;C00080	YKL008C;YHL003C;YMR298W	P28496;P38703;Q03579
 r_0271	R02333	3.5.1.41	forward	chitin;H2O	C00461;C00001	acetate;chitosan;H+	C00033;C00734;C00080	YLR307W	Q06702
 r_0271	R02333	3.5.1.41	forward	chitin;H2O	C00461;C00001	acetate;chitosan;H+	C00033;C00734;C00080	YLR308W	Q06703
 r_0272	R02335	2.4.1.16	forward	UDP-N-acetyl-alpha-D-glucosamine	C00043	chitin;H+;UDP	C00461;C00080;C00015	YBR023C	P29465
@@ -486,7 +486,7 @@ r_0312	R00897	2.5.1.49	forward	hydrogen sulfide;O-acetyl-L-serine	C00283;C00979	
 r_0313	R03650	6.1.1.16	forward	ATP;L-cysteine;tRNA(Cys)	C00002;C00097;C01639	AMP;Cys-tRNA(Cys);diphosphate	C00020;C03125;C00013	YNL247W	P53852
 r_0314	R01878	3.5.4.5	forward	cytidine;H+;H2O	C00475;C00080;C00001	ammonium;uridine	C01342;C00299	YLR245C	Q06549
 r_0315	R00517	2.7.1.48	forward	cytidine;GTP	C00475;C00044	CMP;GDP;H+	C00055;C00035;C00080	YNR012W	P27515
-r_0317	R05640	1.6.2.4	forward	H+;lanosterol;NADPH;oxygen	C00080;C01724;C00005;C00007	4,4-dimethyl-5alpha-cholesta-8,14,24-trien-3beta-ol;formate;H2O;NADP(+)	C11455;C00058;C00001;C00006	YHR007C;YHR042W	P10614;P16603
+r_0317	R05640	1.6.2.4	forward	H+;lanosterol;NADPH;oxygen	C00080;C01724;C00005;C00007	4,4-dimethyl-5alpha-cholesta-8,14,24-trien-3beta-ol;formate;H2O;NADP(+)	C11455;C00058;C00001;C00006	YHR007C;YHR042W	P16603;P10614
 r_0318	R00974	3.5.4.1	forward	cytosine;H+;H2O	C00380;C00080;C00001	ammonium;uracil	C01342;C00106	YPR062W	Q12178
 r_0319	R02715	1.1.3.37	forward	D-arabinono-1,4-lactone;oxygen	C00652;C00007	dehydro-D-arabinono-1,4-lactone;H+;hydrogen peroxide	C06316;C00080;C00027	YML086C	P54783
 r_0320	R01574	1.1.1.116	forward	D-arabinose;NAD	C00216;C00003	D-arabinono-1,4-lactone;H+;NADH	C00652;C00080;C00004	YMR041C	Q04212
@@ -536,7 +536,7 @@ r_0358		2.7.4.21	forward	ATP;H+;myo-inositol 1,3,4,5,6-pentakisphosphate;phospha
 r_0359	R04481	2.1.1.314	forward	2-(3-amino-3-carboxypropyl)-L-histidine;S-adenosyl-L-methionine	C04441;C00019	2-[3-carboxy-3-(methylammonio)propyl]-L-histidine;H+;S-adenosyl-L-homocysteine	C04692;C00080;C00021	YLR172C	P32469
 r_0360	R01018	2.7.1.108	forward	CTP;dolichol;H+	C00063;C00381;C00080	CDP;dolichyl phosphate	C00112;C00110	YMR013C	P20048
 r_0361	R01009	2.4.1.83	forward	dolichyl phosphate;GDP-alpha-D-mannose	C00110;C00096	dolichyl D-mannosyl phosphate;GDP;H+	C03862;C00035;C00080	YPR183W	P14020
-r_0362		2.4.1.109	forward	dolichyl D-mannosyl phosphate	C03862	dolichyl phosphate;mannan	C00110;C00464	YAL023C;YDL095W	P31382;P33775
+r_0362		2.4.1.109	forward	dolichyl D-mannosyl phosphate	C03862	dolichyl phosphate;mannan	C00110;C00464	YAL023C;YDL095W	P33775;P31382
 r_0362		2.4.1.109	forward	dolichyl D-mannosyl phosphate	C03862	dolichyl phosphate;mannan	C00110;C00464	YDL093W	P52867
 r_0362		2.4.1.109	forward	dolichyl D-mannosyl phosphate	C03862	dolichyl phosphate;mannan	C00110;C00464	YJR143C	P46971
 r_0362		2.4.1.109	forward	dolichyl D-mannosyl phosphate	C03862	dolichyl phosphate;mannan	C00110;C00464	YOR321W	P47190
@@ -581,8 +581,8 @@ r_0410		6.2.1.3	forward	ATP;coenzyme A;octanoate	C00002;C00010;C06423	AMP;diphos
 r_0410		6.2.1.3	reverse	AMP;diphosphate;octanoyl-CoA	C00020;C00013;C01944	ATP;coenzyme A;octanoate	C00002;C00010;C06423	YER015W	P39518
 r_0412		6.2.1.3	forward	ATP;coenzyme A;myristate	C00002;C00010;C06424	AMP;diphosphate;myristoyl-CoA	C00020;C00013;C02593	YER015W	P39518
 r_0412		6.2.1.3	reverse	AMP;diphosphate;myristoyl-CoA	C00020;C00013;C02593	ATP;coenzyme A;myristate	C00002;C00010;C06424	YER015W	P39518
-r_0437	R00017	1.11.1.5	forward	ferrocytochrome c;hydrogen peroxide	C00126;C00027	ferricytochrome c;H2O	C00125;C00001	YEL039C;YKR066C	P00045;P00431
-r_0437	R00017	1.11.1.5	forward	ferrocytochrome c;hydrogen peroxide	C00126;C00027	ferricytochrome c;H2O	C00125;C00001	YJR048W;YKR066C	P00044;P00431
+r_0437	R00017	1.11.1.5	forward	ferrocytochrome c;hydrogen peroxide	C00126;C00027	ferricytochrome c;H2O	C00125;C00001	YEL039C;YKR066C	P00431;P00045
+r_0437	R00017	1.11.1.5	forward	ferrocytochrome c;hydrogen peroxide	C00126;C00027	ferricytochrome c;H2O	C00125;C00001	YJR048W;YKR066C	P00431;P00044
 r_0440	R00161	2.7.7.2	forward	ATP;FMN;H+	C00002;C00061;C00080	diphosphate;FAD	C00013;C00016	YDL045C	P38913
 r_0441	R05705	1.5.1.39	forward	FMN;H+;NADH	C00061;C00080;C00004	FMNH2;NAD	C01847;C00003	YLR011W	Q07923
 r_0442	R05706	1.5.1.39	forward	FMN;H+;NADPH	C00061;C00080;C00005	FMNH2;NADP(+)	C01847;C00006	YLR011W	Q07923
@@ -633,10 +633,10 @@ r_0478	R03652	6.1.1.18	forward	ATP;L-glutamine;tRNA(Gln)	C00002;C00064;C01640	AM
 r_0479	R05578	6.1.1.17	forward	ATP;L-glutamate;tRNA(Glu)	C00002;C00025;C01641	AMP;diphosphate;Glu-tRNA(Glu)	C00020;C00013;C02987	YGL245W	P46655
 r_0480	R05578	6.1.1.17	forward	ATP;L-glutamate;tRNA(Glu)	C00002;C00025;C01641	AMP;diphosphate;Glu-tRNA(Glu)	C00020;C00013;C02987	YOL033W	P48525
 r_0481	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YCL035C;YPL091W	P41921;P25373
-r_0481	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YDR098C;YPL091W	P41921;Q03835
-r_0481	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YDR513W;YPL091W	P17695;P41921
+r_0481	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YDR098C;YPL091W	Q03835;P41921
+r_0481	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YDR513W;YPL091W	P41921;P17695
 r_0481	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YER174C;YPL091W	P41921;P32642
-r_0482	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YPL059W;YPL091W	P41921;Q02784
+r_0482	R00115	1.8.1.7	forward	glutathione disulfide;H+;NADPH	C00127;C00080;C00005	glutathione;NADP(+)	C00051;C00006	YPL059W;YPL091W	Q02784;P41921
 r_0483	R00274	1.11.1.9	forward	glutathione;hydrogen peroxide	C00051;C00027	glutathione disulfide;H2O	C00127;C00001	YNL229C	P23202
 r_0483	R00274	1.11.1.9	forward	glutathione;hydrogen peroxide	C00051;C00027	glutathione disulfide;H2O	C00127;C00001	YBR244W	P38143
 r_0483	R00274	1.11.1.9	forward	glutathione;hydrogen peroxide	C00051;C00027	glutathione disulfide;H2O	C00127;C00001	YCL035C	P25373
@@ -659,44 +659,44 @@ r_0491	R00842	1.1.1.8	forward	dihydroxyacetone phosphate;H+;NADH	C00111;C00080;C
 r_0491	R00842	1.1.1.8	forward	dihydroxyacetone phosphate;H+;NADH	C00111;C00080;C00004	glycerol 3-phosphate;NAD	C00093;C00003	YOL059W	P41911
 r_0497	R01030	3.1.4.46	forward	H2O;sn-glycero-3-phosphocholine	C00001;C00670	choline;glycerol 3-phosphate;H+	C00114;C00093;C00080	YPL110C	Q02979
 r_0499	R04325	2.1.2.2	forward	10-formyl-THF;5-phospho-ribosyl-glycineamide	C00234;C03838	5'-phosphoribosyl-N-formylglycineamide;H+;THF	C04376;C00080;C00101	YDR408C	P04161
-r_0501		1.4.4.2	forward	L-glycine;NAD;THF	C00037;C00003;C00101	5,10-methylenetetrahydrofolate;ammonium;carbon dioxide;NADH	C00143;C01342;C00011;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0501		1.8.1.4	forward	L-glycine;NAD;THF	C00037;C00003;C00101	5,10-methylenetetrahydrofolate;ammonium;carbon dioxide;NADH	C00143;C01342;C00011;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0501		2.1.2.10	forward	L-glycine;NAD;THF	C00037;C00003;C00101	5,10-methylenetetrahydrofolate;ammonium;carbon dioxide;NADH	C00143;C01342;C00011;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
+r_0501		1.4.4.2	forward	L-glycine;NAD;THF	C00037;C00003;C00101	5,10-methylenetetrahydrofolate;ammonium;carbon dioxide;NADH	C00143;C01342;C00011;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0501		1.8.1.4	forward	L-glycine;NAD;THF	C00037;C00003;C00101	5,10-methylenetetrahydrofolate;ammonium;carbon dioxide;NADH	C00143;C01342;C00011;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0501		2.1.2.10	forward	L-glycine;NAD;THF	C00037;C00003;C00101	5,10-methylenetetrahydrofolate;ammonium;carbon dioxide;NADH	C00143;C01342;C00011;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
 r_0502	R00945	2.1.2.1	forward	L-serine;THF	C00065;C00101	5,10-methylenetetrahydrofolate;H2O;L-glycine	C00143;C00001;C00037	YLR058C	P37291
 r_0502	R00945	2.1.2.1	reverse	5,10-methylenetetrahydrofolate;H2O;L-glycine	C00143;C00001;C00037	L-serine;THF	C00065;C00101	YLR058C	P37291
 r_0503	R00945	2.1.2.1	forward	L-serine;THF	C00065;C00101	5,10-methylenetetrahydrofolate;H2O;L-glycine	C00143;C00001;C00037	YBR263W	P37292
 r_0503	R00945	2.1.2.1	reverse	5,10-methylenetetrahydrofolate;H2O;L-glycine	C00143;C00001;C00037	L-serine;THF	C00065;C00101	YBR263W	P37292
-r_0504		1.4.4.2	forward	H+;L-glycine;lipoamide	C00080;C00037;C00248	carbon dioxide;S(8)-aminomethyldihydrolipoamide	C00011;	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0504		1.8.1.4	forward	H+;L-glycine;lipoamide	C00080;C00037;C00248	carbon dioxide;S(8)-aminomethyldihydrolipoamide	C00011;	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0504		2.1.2.10	forward	H+;L-glycine;lipoamide	C00080;C00037;C00248	carbon dioxide;S(8)-aminomethyldihydrolipoamide	C00011;	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0505	R01698	1.2.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0505	R01698	1.2.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0505	R01698	1.4.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0505	R01698	1.4.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0505	R01698	1.8.1.4	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0505	R01698	1.8.1.4	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0505	R01698	2.1.2.10	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0505	R01698	2.1.2.10	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0505	R01698	2.3.1.61	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0505	R01698	2.3.1.61	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0506	R03425	1.4.4.2	forward	L-glycine;lipoylprotein	C00037;C02051	carbon dioxide;S(8)-aminomethyldihydrolipoylprotein	C00011;C01242	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0506	R03425	1.8.1.4	forward	L-glycine;lipoylprotein	C00037;C02051	carbon dioxide;S(8)-aminomethyldihydrolipoylprotein	C00011;C01242	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0506	R03425	2.1.2.10	forward	L-glycine;lipoylprotein	C00037;C02051	carbon dioxide;S(8)-aminomethyldihydrolipoylprotein	C00011;C01242	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0507	R04125	1.4.4.2	forward	H+;S(8)-aminomethyldihydrolipoylprotein;THF	C00080;C01242;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoylprotein	C00143;C01342;C02972	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0507	R04125	1.8.1.4	forward	H+;S(8)-aminomethyldihydrolipoylprotein;THF	C00080;C01242;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoylprotein	C00143;C01342;C02972	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0507	R04125	2.1.2.10	forward	H+;S(8)-aminomethyldihydrolipoylprotein;THF	C00080;C01242;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoylprotein	C00143;C01342;C02972	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0508	R03815	1.4.4.2	forward	dihydrolipoylprotein;NAD	C02972;C00003	H+;lipoylprotein;NADH	C00080;C02051;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0508	R03815	1.8.1.4	forward	dihydrolipoylprotein;NAD	C02972;C00003	H+;lipoylprotein;NADH	C00080;C02051;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0508	R03815	2.1.2.10	forward	dihydrolipoylprotein;NAD	C02972;C00003	H+;lipoylprotein;NADH	C00080;C02051;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0509		1.4.4.2	forward	S(8)-aminomethyldihydrolipoamide;THF	;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoamide	C00143;C01342;C00579	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0509		1.8.1.4	forward	S(8)-aminomethyldihydrolipoamide;THF	;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoamide	C00143;C01342;C00579	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0509		2.1.2.10	forward	S(8)-aminomethyldihydrolipoamide;THF	;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoamide	C00143;C01342;C00579	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_0510		2.4.1.11	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YJL137C	P47011;P23337
-r_0510		2.4.1.11	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YKR058W	P36143;P23337
+r_0504		1.4.4.2	forward	H+;L-glycine;lipoamide	C00080;C00037;C00248	carbon dioxide;S(8)-aminomethyldihydrolipoamide	C00011;	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0504		1.8.1.4	forward	H+;L-glycine;lipoamide	C00080;C00037;C00248	carbon dioxide;S(8)-aminomethyldihydrolipoamide	C00011;	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0504		2.1.2.10	forward	H+;L-glycine;lipoamide	C00080;C00037;C00248	carbon dioxide;S(8)-aminomethyldihydrolipoamide	C00011;	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0505	R01698	1.2.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0505	R01698	1.2.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0505	R01698	1.4.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0505	R01698	1.4.4.2	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0505	R01698	1.8.1.4	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0505	R01698	1.8.1.4	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0505	R01698	2.1.2.10	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0505	R01698	2.1.2.10	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0505	R01698	2.3.1.61	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0505	R01698	2.3.1.61	forward	dihydrolipoamide;NAD	C00579;C00003	H+;lipoamide;NADH	C00080;C00248;C00004	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0506	R03425	1.4.4.2	forward	L-glycine;lipoylprotein	C00037;C02051	carbon dioxide;S(8)-aminomethyldihydrolipoylprotein	C00011;C01242	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0506	R03425	1.8.1.4	forward	L-glycine;lipoylprotein	C00037;C02051	carbon dioxide;S(8)-aminomethyldihydrolipoylprotein	C00011;C01242	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0506	R03425	2.1.2.10	forward	L-glycine;lipoylprotein	C00037;C02051	carbon dioxide;S(8)-aminomethyldihydrolipoylprotein	C00011;C01242	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0507	R04125	1.4.4.2	forward	H+;S(8)-aminomethyldihydrolipoylprotein;THF	C00080;C01242;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoylprotein	C00143;C01342;C02972	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0507	R04125	1.8.1.4	forward	H+;S(8)-aminomethyldihydrolipoylprotein;THF	C00080;C01242;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoylprotein	C00143;C01342;C02972	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0507	R04125	2.1.2.10	forward	H+;S(8)-aminomethyldihydrolipoylprotein;THF	C00080;C01242;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoylprotein	C00143;C01342;C02972	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0508	R03815	1.4.4.2	forward	dihydrolipoylprotein;NAD	C02972;C00003	H+;lipoylprotein;NADH	C00080;C02051;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0508	R03815	1.8.1.4	forward	dihydrolipoylprotein;NAD	C02972;C00003	H+;lipoylprotein;NADH	C00080;C02051;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0508	R03815	2.1.2.10	forward	dihydrolipoylprotein;NAD	C02972;C00003	H+;lipoylprotein;NADH	C00080;C02051;C00004	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0509		1.4.4.2	forward	S(8)-aminomethyldihydrolipoamide;THF	;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoamide	C00143;C01342;C00579	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0509		1.8.1.4	forward	S(8)-aminomethyldihydrolipoamide;THF	;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoamide	C00143;C01342;C00579	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0509		2.1.2.10	forward	S(8)-aminomethyldihydrolipoamide;THF	;C00101	5,10-methylenetetrahydrofolate;ammonium;dihydrolipoamide	C00143;C01342;C00579	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_0510		2.4.1.11	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YJL137C	P23337;P47011
+r_0510		2.4.1.11	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YKR058W	P23337;P36143
 r_0510		2.4.1.11	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YJL137C;YLR258W	P47011;P27472
 r_0510		2.4.1.11	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YKR058W;YLR258W	P36143;P27472
-r_0510		2.4.1.186	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YJL137C	P47011;P23337
-r_0510		2.4.1.186	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YKR058W	P36143;P23337
+r_0510		2.4.1.186	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YJL137C	P23337;P47011
+r_0510		2.4.1.186	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YFR015C;YKR058W	P23337;P36143
 r_0510		2.4.1.186	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YJL137C;YLR258W	P47011;P27472
 r_0510		2.4.1.186	forward	UDP-D-glucose	C00029	glycogen;H+;UDP	C00182;C00080;C00015	YKR058W;YLR258W	P36143;P27472
 r_0511		2.4.1.1	forward	glycogen;phosphate	C00182;C00009	D-glucose 1-phosphate	C00103	YPR160W	P06738
@@ -714,9 +714,9 @@ r_0529		2.7.4.8	forward	dATP;GMP	C00131;C00144	dADP;GDP	C00206;C00035	YDR454C	P1
 r_0529		2.7.4.8	reverse	dADP;GDP	C00206;C00035	dATP;GMP	C00131;C00144	YDR454C	P15454
 r_0530		1.18.1.6	forward	heme o;NADH;oxygen	C15672;C00004;C00007	H2O;heme a;NAD	C00001;C15670;C00003	YER141W	P40086
 r_0530		1.18.1.6	forward	heme o;NADH;oxygen	C15672;C00004;C00007	H2O;heme a;NAD	C00001;C15670;C00003	YDR376W;YPL252C	Q12184;P48360
-r_0532		2.1.1.114	forward	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-methionine	C05805;C00080;C00019	S-adenosyl-L-homocysteine;ubiquinol-6	C00021;C00390	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0532		2.1.1.201	forward	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-methionine	C05805;C00080;C00019	S-adenosyl-L-homocysteine;ubiquinol-6	C00021;C00390	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0532		2.1.1.64	forward	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-methionine	C05805;C00080;C00019	S-adenosyl-L-homocysteine;ubiquinol-6	C00021;C00390	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
+r_0532		2.1.1.114	forward	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-methionine	C05805;C00080;C00019	S-adenosyl-L-homocysteine;ubiquinol-6	C00021;C00390	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0532		2.1.1.201	forward	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-methionine	C05805;C00080;C00019	S-adenosyl-L-homocysteine;ubiquinol-6	C00021;C00390	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0532		2.1.1.64	forward	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H+;S-adenosyl-L-methionine	C05805;C00080;C00019	S-adenosyl-L-homocysteine;ubiquinol-6	C00021;C00390	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
 r_0533	R00760	2.7.1.1	forward	ATP;D-fructose	C00002;C00095	ADP;D-fructose 6-phosphate;H+	C00008;C00085;C00080	YLR446W	Q06204
 r_0533	R00760	2.7.1.1	forward	ATP;D-fructose	C00002;C00095	ADP;D-fructose 6-phosphate;H+	C00008;C00085;C00080	YFR053C	P04806
 r_0533	R00760	2.7.1.1	forward	ATP;D-fructose	C00002;C00095	ADP;D-fructose 6-phosphate;H+	C00008;C00085;C00080	YGL253W	P04807
@@ -798,7 +798,7 @@ r_0572	R10953	2.7.1.151	forward	1D-myo-inositol 1,3,4,5-tetrakisphosphate;ATP	C0
 r_0573	R05801	2.7.1.151	forward	1D-myo-inositol 1,4,5,6-tetrakisphosphate;ATP	C11555;C00002	ADP;H+;myo-inositol 1,3,4,5,6-pentakisphosphate	C00008;C00080;C01284	YDR173C	P07250
 r_0574	R05800	2.7.1.151	forward	1D-myo-inositol 1,4,5-trisphosphate;ATP	C01245;C00002	1D-myo-inositol 1,4,5,6-tetrakisphosphate;ADP;H+	C11555;C00008;C00080	YDR173C	P07250
 r_0575	R03433	2.7.1.151	forward	1D-myo-inositol 1,4,5-trisphosphate;ATP	C01245;C00002	1D-myo-inositol 1,3,4,5-tetrakisphosphate;ADP;H+	C01272;C00008;C00080	YDR173C	P07250
-r_0658	R00709	1.1.1.41	forward	isocitrate;NAD	C00311;C00003	2-oxoglutarate;carbon dioxide;NADH	C00026;C00011;C00004	YNL037C;YOR136W	P28834;P28241
+r_0658	R00709	1.1.1.41	forward	isocitrate;NAD	C00311;C00003	2-oxoglutarate;carbon dioxide;NADH	C00026;C00011;C00004	YNL037C;YOR136W	P28241;P28834
 r_0659	R00267	1.1.1.42	forward	isocitrate;NADP(+)	C00311;C00006	2-oxoglutarate;carbon dioxide;NADPH	C00026;C00011;C00005	YLR174W	P41939
 r_0659	R00267	1.1.1.42	reverse	2-oxoglutarate;carbon dioxide;NADPH	C00026;C00011;C00005	isocitrate;NADP(+)	C00311;C00006	YLR174W	P41939
 r_0661	R00267	1.1.1.42	forward	isocitrate;NADP(+)	C00311;C00006	2-oxoglutarate;carbon dioxide;NADPH	C00026;C00011;C00005	YNL009W	P53982
@@ -826,9 +826,9 @@ r_0674	R00258	2.6.1.2	reverse	L-glutamate;pyruvate	C00025;C00022	2-oxoglutarate;
 r_0675	R06171	4.1.2.48	forward	L-allothreonine	C05519	acetaldehyde;L-glycine	C00084;C00037	YEL046C	P37303
 r_0676	R10851	1.1.1.381	forward	L-allothreonine;NADP(+)	C05519;C00006	H+;L-2-amino-3-oxobutanoate;NADPH	C00080;C03508;C00005	YMR226C	Q05016
 r_0676	R10851	1.1.1.381	reverse	H+;L-2-amino-3-oxobutanoate;NADPH	C00080;C03508;C00005	L-allothreonine;NADP(+)	C05519;C00006	YMR226C	Q05016
-r_0678		1.2.1.31	forward	ATP;H+;L-2-aminoadipate;NADPH	C00002;C00080;C00956;C00005	AMP;diphosphate;L-allysine;NADP(+)	C00020;C00013;C04076;C00006	YBR115C;YGL154C	P50113;P07702
-r_0678		1.2.1.95	forward	ATP;H+;L-2-aminoadipate;NADPH	C00002;C00080;C00956;C00005	AMP;diphosphate;L-allysine;NADP(+)	C00020;C00013;C04076;C00006	YBR115C;YGL154C	P50113;P07702
-r_0678		2.7.8.7	forward	ATP;H+;L-2-aminoadipate;NADPH	C00002;C00080;C00956;C00005	AMP;diphosphate;L-allysine;NADP(+)	C00020;C00013;C04076;C00006	YBR115C;YGL154C	P50113;P07702
+r_0678		1.2.1.31	forward	ATP;H+;L-2-aminoadipate;NADPH	C00002;C00080;C00956;C00005	AMP;diphosphate;L-allysine;NADP(+)	C00020;C00013;C04076;C00006	YBR115C;YGL154C	P07702;P50113
+r_0678		1.2.1.95	forward	ATP;H+;L-2-aminoadipate;NADPH	C00002;C00080;C00956;C00005	AMP;diphosphate;L-allysine;NADP(+)	C00020;C00013;C04076;C00006	YBR115C;YGL154C	P07702;P50113
+r_0678		2.7.8.7	forward	ATP;H+;L-2-aminoadipate;NADPH	C00002;C00080;C00956;C00005	AMP;diphosphate;L-allysine;NADP(+)	C00020;C00013;C04076;C00006	YBR115C;YGL154C	P07702;P50113
 r_0679	R00485	3.5.1.1	forward	H2O;L-asparagine	C00001;C00152	ammonium;L-aspartate	C01342;C00049	YDR321W	P38986
 r_0680	R00485	3.5.1.1	forward	H2O;L-asparagine	C00001;C00152	ammonium;L-aspartate	C01342;C00049	YLR155C	P0CZ17
 r_0680	R00485	3.5.1.1	forward	H2O;L-asparagine	C00001;C00152	ammonium;L-aspartate	C01342;C00049	YLR157C	P0CX77
@@ -1007,18 +1007,18 @@ r_0820	R01870	2.4.2.10	reverse	orotate;PRPP	C00295;C00119	diphosphate;orotidine 
 r_0820	R01870	2.4.2.10	forward	diphosphate;orotidine 5'-(dihydrogen phosphate)	C00013;C01103	orotate;PRPP	C00295;C00119	YMR271C	P30402
 r_0820	R01870	2.4.2.10	reverse	orotate;PRPP	C00295;C00119	diphosphate;orotidine 5'-(dihydrogen phosphate)	C00013;C01103	YMR271C	P30402
 r_0821	R00965	4.1.1.23	forward	H+;orotidine 5'-(dihydrogen phosphate)	C00080;C01103	carbon dioxide;UMP	C00011;C00105	YEL021W	P03962
-r_0831	R02570	1.2.4.2	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W;YFR049W	P20967;P19262;P09624;P19955
-r_0831	R02570	1.2.4.2	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0831	R02570	1.8.1.4	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W;YFR049W	P20967;P19262;P09624;P19955
-r_0831	R02570	1.8.1.4	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0831	R02570	2.3.1.61	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W;YFR049W	P20967;P19262;P09624;P19955
-r_0831	R02570	2.3.1.61	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0832	R01700	1.2.4.2	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W;YFR049W	P20967;P19262;P09624;P19955
-r_0832	R01700	1.2.4.2	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0832	R01700	1.8.1.4	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W;YFR049W	P20967;P19262;P09624;P19955
-r_0832	R01700	1.8.1.4	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
-r_0832	R01700	2.3.1.61	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W;YFR049W	P20967;P19262;P09624;P19955
-r_0832	R01700	2.3.1.61	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W	P20967;P19262;P09624
+r_0831	R02570	1.2.4.2	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W;YFR049W	P19955;P09624;P19262;P20967
+r_0831	R02570	1.2.4.2	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0831	R02570	1.8.1.4	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W;YFR049W	P19955;P09624;P19262;P20967
+r_0831	R02570	1.8.1.4	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0831	R02570	2.3.1.61	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W;YFR049W	P19955;P09624;P19262;P20967
+r_0831	R02570	2.3.1.61	forward	coenzyme A;S(8)-succinyldihydrolipoamide	C00010;C01169	dihydrolipoamide;succinyl-CoA	C00579;C00091	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0832	R01700	1.2.4.2	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W;YFR049W	P19955;P09624;P19262;P20967
+r_0832	R01700	1.2.4.2	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0832	R01700	1.8.1.4	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W;YFR049W	P19955;P09624;P19262;P20967
+r_0832	R01700	1.8.1.4	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
+r_0832	R01700	2.3.1.61	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W;YFR049W	P19955;P09624;P19262;P20967
+r_0832	R01700	2.3.1.61	forward	2-oxoglutarate;H+;lipoamide	C00026;C00080;C00248	carbon dioxide;S(8)-succinyldihydrolipoamide	C00011;C01169	YDR148C;YFL018C;YIL125W	P09624;P19262;P20967
 r_0841	R03035	2.7.7.3	forward	ATP;H+;pantetheine 4'-phosphate	C00002;C00080;C01134	3'-dephospho-CoA;diphosphate	C00882;C00013	YGR277C	P53332
 r_0842	R03018	2.7.1.33	forward	(R)-pantothenate;ATP	C00864;C00002	(R)-4'-phosphopantothenic acid;ADP;H+	C03492;C00008;C00080	YDR531W	Q04430
 r_0843	R02473	6.3.2.1	forward	(R)-pantoate;ATP;beta-alanine	C00522;C00002;C00099	(R)-pantothenate;AMP;diphosphate;H+	C00864;C00020;C00013;C00080	YIL145C	P40459
@@ -1073,7 +1073,7 @@ r_0903	R04509	2.7.4.7	forward	4-amino-2-methyl-5-phosphomethylpyrimidine;ATP	C04
 r_0903	R04509	2.7.4.7	forward	4-amino-2-methyl-5-phosphomethylpyrimidine;ATP	C04556;C00002	4-amino-2-methyl-5-diphosphomethylpyrimidine;ADP	C04752;C00008	YPR121W	Q06490
 r_0904	R03245	2.7.4.2	forward	(R)-5-phosphomevalonic acid;ATP	C01107;C00002	(R)-5-diphosphomevalonic acid;ADP	C01143;C00008	YMR220W	P24521
 r_0905	R04231	6.3.2.5	forward	(R)-4'-phosphopantothenic acid;CTP;L-cysteine	C03492;C00063;C00097	CMP;diphosphate;H+;N-[(R)-4-phosphonopantothenoyl]-L-cysteine	C00055;C00013;C00080;C04352	YIL083C	P40506
-r_0906	R03269	4.1.1.36	forward	H+;N-[(R)-4-phosphonopantothenoyl]-L-cysteine	C00080;C04352	carbon dioxide;pantetheine 4'-phosphate	C00011;C01134	YKL088W;YKR072C;YOR054C	P36024;P36076;Q08438
+r_0906	R03269	4.1.1.36	forward	H+;N-[(R)-4-phosphonopantothenoyl]-L-cysteine	C00080;C04352	carbon dioxide;pantetheine 4'-phosphate	C00011;C01134	YKL088W;YKR072C;YOR054C	Q08438;P36076;P36024
 r_0907		5.4.2.2	forward	alpha-D-ribose 1-phosphate(2-)	C00620	ribose-5-phosphate	C03736	YKL127W	P33401
 r_0907		5.4.2.2	reverse	ribose-5-phosphate	C03736	alpha-D-ribose 1-phosphate(2-)	C00620	YKL127W	P33401
 r_0907		5.4.2.2	forward	alpha-D-ribose 1-phosphate(2-)	C00620	ribose-5-phosphate	C03736	YMR105C	P37012
@@ -1106,8 +1106,8 @@ r_0913	R03509	5.3.1.24	forward	N-(5-phospho-beta-D-ribosyl)anthranilate	C04302	1
 r_0914	R04144	6.3.3.1	forward	5-phosphoribosylamine;ATP;L-glycine	C03090;C00002;C00037	5-phospho-ribosyl-glycineamide;ADP;H+;phosphate	C03838;C00008;C00080;C00009	YGL234W	P07244
 r_0914	R04144	6.3.4.13	forward	5-phosphoribosylamine;ATP;L-glycine	C03090;C00002;C00037	5-phospho-ribosyl-glycineamide;ADP;H+;phosphate	C03838;C00008;C00080;C00009	YGL234W	P07244
 r_0915	R01072	2.4.2.14	forward	H2O;L-glutamine;PRPP	C00001;C00064;C00119	5-phosphoribosylamine;diphosphate;L-glutamate	C03090;C00013;C00025	YMR300C	P04046
-r_0916		2.7.6.1	forward	ATP;ribose-5-phosphate	C00002;C03736	AMP;H+;PRPP	C00020;C00080;C00119	YKL181W;YER099C	P32895;P38620
-r_0916		2.7.6.1	forward	ATP;ribose-5-phosphate	C00002;C03736	AMP;H+;PRPP	C00020;C00080;C00119	YKL181W;YHL011C	P32895;P38689
+r_0916		2.7.6.1	forward	ATP;ribose-5-phosphate	C00002;C03736	AMP;H+;PRPP	C00020;C00080;C00119	YKL181W;YER099C	P38620;P32895
+r_0916		2.7.6.1	forward	ATP;ribose-5-phosphate	C00002;C03736	AMP;H+;PRPP	C00020;C00080;C00119	YKL181W;YHL011C	P38689;P32895
 r_0916		2.7.6.1	forward	ATP;ribose-5-phosphate	C00002;C03736	AMP;H+;PRPP	C00020;C00080;C00119	YKL181W;YBL068W	P38063;P32895
 r_0916		2.7.6.1	forward	ATP;ribose-5-phosphate	C00002;C03736	AMP;H+;PRPP	C00020;C00080;C00119	YER099C;YOL061W	Q12265;P38620
 r_0916		2.7.6.1	forward	ATP;ribose-5-phosphate	C00002;C03736	AMP;H+;PRPP	C00020;C00080;C00119	YBL068W;YOL061W	P38063;Q12265
@@ -1155,14 +1155,14 @@ r_0960		4.1.1.43	forward	acetaldehyde;H+;pyruvate	C00084;C00080;C00022	(R)-aceto
 r_0960		4.1.1.74	forward	acetaldehyde;H+;pyruvate	C00084;C00080;C00022	(R)-acetoin;carbon dioxide	C00810;C00011	YGR087C	P26263
 r_0960		4.1.1.74	forward	acetaldehyde;H+;pyruvate	C00084;C00080;C00022	(R)-acetoin;carbon dioxide	C00810;C00011	YLR044C	P06169
 r_0960		4.1.1.74	forward	acetaldehyde;H+;pyruvate	C00084;C00080;C00022	(R)-acetoin;carbon dioxide	C00810;C00011	YLR134W	P16467
-r_0961	R00209	1.2.4.1	forward	coenzyme A;NAD;pyruvate	C00010;C00003;C00022	acetyl-CoA;carbon dioxide;NADH	C00024;C00011;C00004	YBR221C;YER178W;YFL018C;YGR193C;YNL071W	P16387;P16451;P32473;P09624;P12695
-r_0961	R00209	1.8.1.4	forward	coenzyme A;NAD;pyruvate	C00010;C00003;C00022	acetyl-CoA;carbon dioxide;NADH	C00024;C00011;C00004	YBR221C;YER178W;YFL018C;YGR193C;YNL071W	P16387;P16451;P32473;P09624;P12695
-r_0961	R00209	2.3.1.12	forward	coenzyme A;NAD;pyruvate	C00010;C00003;C00022	acetyl-CoA;carbon dioxide;NADH	C00024;C00011;C00004	YBR221C;YER178W;YFL018C;YGR193C;YNL071W	P16387;P16451;P32473;P09624;P12695
+r_0961	R00209	1.2.4.1	forward	coenzyme A;NAD;pyruvate	C00010;C00003;C00022	acetyl-CoA;carbon dioxide;NADH	C00024;C00011;C00004	YBR221C;YER178W;YFL018C;YGR193C;YNL071W	P16387;P32473;P16451;P09624;P12695
+r_0961	R00209	1.8.1.4	forward	coenzyme A;NAD;pyruvate	C00010;C00003;C00022	acetyl-CoA;carbon dioxide;NADH	C00024;C00011;C00004	YBR221C;YER178W;YFL018C;YGR193C;YNL071W	P16387;P32473;P16451;P09624;P12695
+r_0961	R00209	2.3.1.12	forward	coenzyme A;NAD;pyruvate	C00010;C00003;C00022	acetyl-CoA;carbon dioxide;NADH	C00024;C00011;C00004	YBR221C;YER178W;YFL018C;YGR193C;YNL071W	P16387;P32473;P16451;P09624;P12695
 r_0962	R00200	2.7.1.40	forward	ADP;H+;phosphoenolpyruvate	C00008;C00080;C00074	ATP;pyruvate	C00002;C00022	YAL038W	P00549
 r_0962	R00200	2.7.1.40	forward	ADP;H+;phosphoenolpyruvate	C00008;C00080;C00074	ATP;pyruvate	C00002;C00022	YOR347C	P52489
-r_0963		2.1.1.114	forward	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;NADH;oxygen	C05804;C00080;C00004;C00007	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H2O;NAD	C05805;C00001;C00003	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0963		2.1.1.201	forward	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;NADH;oxygen	C05804;C00080;C00004;C00007	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H2O;NAD	C05805;C00001;C00003	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0963		2.1.1.64	forward	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;NADH;oxygen	C05804;C00080;C00004;C00007	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H2O;NAD	C05805;C00001;C00003	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
+r_0963		2.1.1.114	forward	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;NADH;oxygen	C05804;C00080;C00004;C00007	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H2O;NAD	C05805;C00001;C00003	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0963		2.1.1.201	forward	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;NADH;oxygen	C05804;C00080;C00004;C00007	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H2O;NAD	C05805;C00001;C00003	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0963		2.1.1.64	forward	2-hexaprenyl-6-methoxy-3-methyl-1,4-benzoquinone;H+;NADH;oxygen	C05804;C00080;C00004;C00007	2-hexaprenyl-5-hydroxy-6-methoxy-3-methyl-1,4-benzoquinone;H2O;NAD	C05805;C00001;C00003	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
 r_0965	R00549	2.7.1.26	forward	ATP;riboflavin	C00002;C00255	ADP;FMN;H+	C00008;C00061;C00080	YDR236C	Q03778
 r_0967	R04457	2.5.1.78	forward	2-hydroxy-3-oxobutyl phosphate;5-amino-6-(D-ribitylamino)uracil	C15556;C04732	6,7-dimethyl-8-(1-D-ribityl)lumazine;H+;H2O;phosphate	C04332;C00080;C00001;C00009	YOL143C	P50861
 r_0968	R00066	2.5.1.9	forward	6,7-dimethyl-8-(1-D-ribityl)lumazine;H+	C04332;C00080	5-amino-6-(D-ribitylamino)uracil;riboflavin	C04732;C00255	YBR256C	P38145
@@ -1185,16 +1185,16 @@ r_0983	R02324	2.7.1.173	forward	ATP;nicotinamide riboside	C00002;C03150	ADP;H+;N
 r_0983	R02324	2.7.1.22	forward	ATP;nicotinamide riboside	C00002;C03150	ADP;H+;NMN	C00008;C00080;C00455	YNL129W	P53915
 r_0984	R01529	5.1.3.1	forward	D-ribulose 5-phosphate	C00199	D-xylulose 5-phosphate	C00231	YJL121C	P46969
 r_0984	R01529	5.1.3.1	reverse	D-xylulose 5-phosphate	C00231	D-ribulose 5-phosphate	C00199	YJL121C	P46969
-r_0985	R04711	2.1.1.114	forward	3-hexaprenyl-4,5-dihydroxybenzoic acid;S-adenosyl-L-methionine	C05200;C00019	3-hexaprenyl-4-hydroxy-5-methoxybenzoic acid;H+;S-adenosyl-L-homocysteine	C05313;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0985	R04711	2.1.1.201	forward	3-hexaprenyl-4,5-dihydroxybenzoic acid;S-adenosyl-L-methionine	C05200;C00019	3-hexaprenyl-4-hydroxy-5-methoxybenzoic acid;H+;S-adenosyl-L-homocysteine	C05313;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
-r_0985	R04711	2.1.1.64	forward	3-hexaprenyl-4,5-dihydroxybenzoic acid;S-adenosyl-L-methionine	C05200;C00019	3-hexaprenyl-4-hydroxy-5-methoxybenzoic acid;H+;S-adenosyl-L-homocysteine	C05313;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P27680;O13525;P53318;Q05779;P49017;P41735
+r_0985	R04711	2.1.1.114	forward	3-hexaprenyl-4,5-dihydroxybenzoic acid;S-adenosyl-L-methionine	C05200;C00019	3-hexaprenyl-4-hydroxy-5-methoxybenzoic acid;H+;S-adenosyl-L-homocysteine	C05313;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0985	R04711	2.1.1.201	forward	3-hexaprenyl-4,5-dihydroxybenzoic acid;S-adenosyl-L-methionine	C05200;C00019	3-hexaprenyl-4-hydroxy-5-methoxybenzoic acid;H+;S-adenosyl-L-homocysteine	C05313;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
+r_0985	R04711	2.1.1.64	forward	3-hexaprenyl-4,5-dihydroxybenzoic acid;S-adenosyl-L-methionine	C05200;C00019	3-hexaprenyl-4-hydroxy-5-methoxybenzoic acid;H+;S-adenosyl-L-homocysteine	C05313;C00080;C00021	YDR204W;YGR255C;YLR201C;YML110C;YOL096C;YOR125C	P41735;O13525;P49017;P27680;Q05779;P53318
 r_0986	R04427	2.1.1.41	forward	S-adenosyl-L-methionine;zymosterol	C00019;C05437	fecosterol;H+;S-adenosyl-L-homocysteine	C04525;C00080;C00021	YML008C	P25087
 r_0987	R00527	3.1.2.12	forward	H2O;S-formylglutathione	C00001;C01031	formate;glutathione;H+	C00058;C00051;C00080	YJL068C	P40363
 r_0988	R00715	1.5.1.7	forward	H2O;L-saccharopine;NAD	C00001;C00449;C00003	2-oxoglutarate;H+;L-lysine;NADH	C00026;C00080;C00047;C00004	YIR034C	P38998
 r_0989	R02315	1.5.1.10	forward	H+;L-allysine;L-glutamate;NADPH	C00080;C04076;C00025;C00005	H2O;L-saccharopine;NADP(+)	C00001;C00449;C00006	YNR050C	P38999
 r_0990	R01829	4.1.2.13	forward	sedoheptulose 1,7-bisphosphate	C00447	D-erythrose 4-phosphate;dihydroxyacetone phosphate	C00279;C00111	YKL060C	P14540
 r_0990	R01829	4.1.2.13	reverse	D-erythrose 4-phosphate;dihydroxyacetone phosphate	C00279;C00111	sedoheptulose 1,7-bisphosphate	C00447	YKL060C	P14540
-r_0993	R01281	2.3.1.50	forward	H+;L-serine;palmitoyl-CoA	C00080;C00065;C00154	3-ketosphinganine;carbon dioxide;coenzyme A	C02934;C00011;C00010	YMR296C;YKL212W;YDR062W;YGR038W;YLR350W;YBR058C-A	P40970;P32368;Q3E790;P25045;Q06144;P53224
+r_0993	R01281	2.3.1.50	forward	H+;L-serine;palmitoyl-CoA	C00080;C00065;C00154	3-ketosphinganine;carbon dioxide;coenzyme A	C02934;C00011;C00010	YMR296C;YKL212W;YDR062W;YGR038W;YLR350W;YBR058C-A	P40970;P25045;P53224;P32368;Q06144;Q3E790
 r_0995	R03662	6.1.1.11	forward	ATP;L-serine;tRNA(Ser)	C00002;C00065;C01650	AMP;diphosphate;Ser-tRNA(Ser)	C00020;C00013;C02553	YDR023W	P07284
 r_0995	R03662	6.1.1.11	forward	ATP;L-serine;tRNA(Ser)	C00002;C00065;C01650	AMP;diphosphate;Ser-tRNA(Ser)	C00020;C00013;C02553	YHR011W	P38705
 r_0996	R02413	1.1.1.25	forward	3-dehydroshikimate;H+;NADPH	C02637;C00080;C00005	NADP(+);shikimate	C00006;C00493	YDR127W	P08566
@@ -1223,21 +1223,21 @@ r_1007	R02976	2.7.1.91	forward	ATP;sphinganine	C00002;C00836	ADP;H+;sphinganine 
 r_1010		1.14.14.17	forward	H+;NADH;oxygen;squalene	C00080;C00004;C00007;C00751	(S)-2,3-epoxysqualene;H2O;NAD	C01054;C00001;C00003	YGR175C	P32476
 r_1011	R02874	1.14.14.17	forward	H+;NADPH;oxygen;squalene	C00080;C00005;C00007;C00751	(S)-2,3-epoxysqualene;H2O;NADP(+)	C01054;C00001;C00006	YGR175C	P32476
 r_1012	R06223	2.5.1.21	forward	farnesyl diphosphate;H+;NADPH	C00448;C00080;C00005	diphosphate;NADP(+);squalene	C00013;C00006;C00751	YHR190W	P29704
-r_1021		1.3.5.1	forward	succinate;ubiquinone-6	C00042;C17568	fumarate;ubiquinol-6	C00122;C00390	YDR178W;YJL045W;YKL141W;YLL041C	P33421;P21801;P37298;P47052
-r_1021		1.3.5.1	reverse	fumarate;ubiquinol-6	C00122;C00390	succinate;ubiquinone-6	C00042;C17568	YDR178W;YJL045W;YKL141W;YLL041C	P33421;P21801;P37298;P47052
-r_1021		1.3.5.1	forward	succinate;ubiquinone-6	C00042;C17568	fumarate;ubiquinol-6	C00122;C00390	YDR178W;YKL141W;YKL148C;YLL041C	P33421;P21801;P37298;Q00711
-r_1021		1.3.5.1	reverse	fumarate;ubiquinol-6	C00122;C00390	succinate;ubiquinone-6	C00042;C17568	YDR178W;YKL141W;YKL148C;YLL041C	P33421;P21801;P37298;Q00711
-r_1021		1.3.5.1	forward	succinate;ubiquinone-6	C00042;C17568	fumarate;ubiquinol-6	C00122;C00390	YLR164W;YJL045W;YKL141W;YLL041C	P33421;P21801;Q06236;P47052
-r_1021		1.3.5.1	reverse	fumarate;ubiquinol-6	C00122;C00390	succinate;ubiquinone-6	C00042;C17568	YLR164W;YJL045W;YKL141W;YLL041C	P33421;P21801;Q06236;P47052
+r_1021		1.3.5.1	forward	succinate;ubiquinone-6	C00042;C17568	fumarate;ubiquinol-6	C00122;C00390	YDR178W;YJL045W;YKL141W;YLL041C	P33421;P47052;P37298;P21801
+r_1021		1.3.5.1	reverse	fumarate;ubiquinol-6	C00122;C00390	succinate;ubiquinone-6	C00042;C17568	YDR178W;YJL045W;YKL141W;YLL041C	P33421;P47052;P37298;P21801
+r_1021		1.3.5.1	forward	succinate;ubiquinone-6	C00042;C17568	fumarate;ubiquinol-6	C00122;C00390	YDR178W;YKL141W;YKL148C;YLL041C	Q00711;P33421;P37298;P21801
+r_1021		1.3.5.1	reverse	fumarate;ubiquinol-6	C00122;C00390	succinate;ubiquinone-6	C00042;C17568	YDR178W;YKL141W;YKL148C;YLL041C	Q00711;P33421;P37298;P21801
+r_1021		1.3.5.1	forward	succinate;ubiquinone-6	C00042;C17568	fumarate;ubiquinol-6	C00122;C00390	YLR164W;YJL045W;YKL141W;YLL041C	P33421;P47052;Q06236;P21801
+r_1021		1.3.5.1	reverse	fumarate;ubiquinol-6	C00122;C00390	succinate;ubiquinone-6	C00042;C17568	YLR164W;YJL045W;YKL141W;YLL041C	P33421;P47052;Q06236;P21801
 r_1022	R00405	6.2.1.5	forward	ADP;phosphate;succinyl-CoA	C00008;C00009;C00091	ATP;coenzyme A;succinate	C00002;C00010;C00042	YGR244C;YOR142W	P53598;P53312
 r_1023	R00714	1.2.1.16	forward	H2O;NADP(+);succinic semialdehyde	C00001;C00006;C00232	H+;NADPH;succinate	C00080;C00005;C00042	YBR006W	P38067
 r_1024	R00801	3.2.1.26	forward	H2O;sucrose	C00001;C00089	D-fructose;D-glucose	C00095;C00031	YIL162W	P00724
 r_1025	R00529	2.7.7.4	forward	ATP;H+;sulphate	C00002;C00080;C00059	5'-adenylyl sulfate;diphosphate	C00224;C00013	YJR010W	P08536
 r_1026	R00530	2.7.7.5	forward	5'-adenylyl sulfate;phosphate	C00224;C00009	ADP;H+;sulphate	C00008;C00080;C00059	YCL050C	P16550
-r_1027	R00858	1.8.1.2	forward	H+;NADPH;sulphite	C00080;C00005;C11481	H2O;hydrogen sulfide;NADP(+)	C00001;C00283;C00006	YFR030W;YJR137C	P39692;P47169
-r_1030	R02300	1.4.4.2	forward	5,10-methenyl-THF;H2O	C00445;C00001	5-formyltetrahydrofolic acid;H+	C03479;C00080	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_1030	R02300	1.8.1.4	forward	5,10-methenyl-THF;H2O	C00445;C00001	5-formyltetrahydrofolic acid;H+	C03479;C00080	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
-r_1030	R02300	2.1.2.10	forward	5,10-methenyl-THF;H2O	C00445;C00001	5-formyltetrahydrofolic acid;H+	C03479;C00080	YAL044C;YDR019C;YFL018C;YMR189W	P49095;P09624;P39726;P48015
+r_1027	R00858	1.8.1.2	forward	H+;NADPH;sulphite	C00080;C00005;C11481	H2O;hydrogen sulfide;NADP(+)	C00001;C00283;C00006	YFR030W;YJR137C	P47169;P39692
+r_1030	R02300	1.4.4.2	forward	5,10-methenyl-THF;H2O	C00445;C00001	5-formyltetrahydrofolic acid;H+	C03479;C00080	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_1030	R02300	1.8.1.4	forward	5,10-methenyl-THF;H2O	C00445;C00001	5-formyltetrahydrofolic acid;H+	C03479;C00080	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
+r_1030	R02300	2.1.2.10	forward	5,10-methenyl-THF;H2O	C00445;C00001	5-formyltetrahydrofolic acid;H+	C03479;C00080	YAL044C;YDR019C;YFL018C;YMR189W	P48015;P49095;P39726;P09624
 r_1031	R00942	6.3.2.17	forward	ATP;L-glutamate;THF	C00002;C00025;C00101	5,6,7,8-tetrahydrofolyl-L-glutamic acid;ADP;H+;phosphate	C09332;C00008;C00080;C00009	YKL132C	P36001
 r_1031	R00942	6.3.2.17	reverse	5,6,7,8-tetrahydrofolyl-L-glutamic acid;ADP;H+;phosphate	C09332;C00008;C00080;C00009	ATP;L-glutamate;THF	C00002;C00025;C00101	YKL132C	P36001
 r_1031	R00942	6.3.2.17	forward	ATP;L-glutamate;THF	C00002;C00025;C00101	5,6,7,8-tetrahydrofolyl-L-glutamic acid;ADP;H+;phosphate	C09332;C00008;C00080;C00009	YOR241W	Q08645
@@ -1248,13 +1248,13 @@ r_1034	R00619	2.7.6.2	forward	ATP;thiamine	C00002;C00378	AMP;H+;TDP	C00020;C0008
 r_1035	R00616	2.7.6.2	forward	ATP;TDP	C00002;C00068	ADP;thiamine(1+) triphosphate(4-)	C00008;C03028	YOR143C	P35202
 r_1036	R03223	2.5.1.3	forward	4-amino-2-methyl-5-diphosphomethylpyrimidine;4-methyl-5-(2-phosphonooxyethyl)thiazole;H+	C04752;C04327;C00080	diphosphate;TMP	C00013;C01081	YPL214C	P41835
 r_1036	R03223	2.7.1.50	forward	4-amino-2-methyl-5-diphosphomethylpyrimidine;4-methyl-5-(2-phosphonooxyethyl)thiazole;H+	C04752;C04327;C00080	diphosphate;TMP	C00013;C01081	YPL214C	P41835
-r_1038	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YDR353W;YGR209C	P29509;P22803
-r_1038	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YDR353W;YLR043C	P22217;P29509
+r_1038	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YDR353W;YGR209C	P22803;P29509
+r_1038	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YDR353W;YLR043C	P29509;P22217
 r_1038	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YDR353W	P29509
 r_1039	R02016	1.8.1.7	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YCR083W;YHR106W	P38816;P25372
-r_1039	R02016	1.8.1.7	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YCR083W;YPL091W	P41921;P25372
+r_1039	R02016	1.8.1.7	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YCR083W;YPL091W	P25372;P41921
 r_1039	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YCR083W;YHR106W	P38816;P25372
-r_1039	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YCR083W;YPL091W	P41921;P25372
+r_1039	R02016	1.8.1.9	forward	NADPH;TRX1 disulphide	C00005;C00343	NADP(+);TRX1	C00006;C00342	YCR083W;YPL091W	P25372;P41921
 r_1040	R00751	4.1.2.48	forward	L-threonine	C00188	acetaldehyde;L-glycine	C00084;C00037	YEL046C	P37303
 r_1041	R01466	4.2.3.1	forward	H2O;O-phospho-L-homoserine	C00001;C01102	L-threonine;phosphate	C00188;C00009	YCR053W	P16120
 r_1042	R03663	6.1.1.3	forward	ATP;L-threonine;tRNA(Thr)	C00002;C00188;C01651	AMP;diphosphate;Thr-tRNA(Thr)	C00020;C00013;C02992	YIL078W	P04801
@@ -1273,10 +1273,10 @@ r_1050		2.2.1.1	forward	D-erythrose 4-phosphate;D-xylulose 5-phosphate	C00279;C0
 r_1050		2.2.1.1	reverse	D-fructose 6-phosphate;glyceraldehyde 3-phosphate	C00085;C00661	D-erythrose 4-phosphate;D-xylulose 5-phosphate	C00279;C00231	YBR117C	P33315
 r_1050		2.2.1.1	forward	D-erythrose 4-phosphate;D-xylulose 5-phosphate	C00279;C00231	D-fructose 6-phosphate;glyceraldehyde 3-phosphate	C00085;C00661	YPR074C	P23254
 r_1050		2.2.1.1	reverse	D-fructose 6-phosphate;glyceraldehyde 3-phosphate	C00085;C00661	D-erythrose 4-phosphate;D-xylulose 5-phosphate	C00279;C00231	YPR074C	P23254
-r_1051	R02778	2.4.1.15	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YML100W	P38427;P31688;Q00764
-r_1051	R02778	2.4.1.15	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YMR261C	P31688;Q00764;P38426
-r_1051	R02778	3.1.3.12	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YML100W	P38427;P31688;Q00764
-r_1051	R02778	3.1.3.12	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YMR261C	P31688;Q00764;P38426
+r_1051	R02778	2.4.1.15	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YML100W	P31688;P38427;Q00764
+r_1051	R02778	2.4.1.15	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YMR261C	P31688;P38426;Q00764
+r_1051	R02778	3.1.3.12	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YML100W	P31688;P38427;Q00764
+r_1051	R02778	3.1.3.12	forward	alpha,alpha-trehalose 6-phosphate;H2O	C00689;C00001	phosphate;trehalose	C00009;C01083	YBR126C;YDR074W;YMR261C	P31688;P38426;Q00764
 r_1054	R01015	5.3.1.1	forward	dihydroxyacetone phosphate	C00111	glyceraldehyde 3-phosphate	C00661	YDR050C	P00942
 r_1054	R01015	5.3.1.1	reverse	glyceraldehyde 3-phosphate	C00661	dihydroxyacetone phosphate	C00111	YDR050C	P00942
 r_1055		4.2.1.20	forward	1-C-(indol-3-yl)glycerol 3-phosphate;L-serine	C03506;C00065	glyceraldehyde 3-phosphate;H2O;L-tryptophan	C00661;C00001;C00078	YGL026C	P00931
@@ -2566,14 +2566,14 @@ r_2826		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	
 r_2827		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:1, 2-18:1)	C00008;	YJL100W	P42951
 r_2827		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:1, 2-18:1)	C00008;	YLR305C	P37297
 r_2828		2.7.1.67	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:0, 2-16:1)	C00008;	YJL100W	P42951
-r_2836		2.7.1.67	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:0, 2-16:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
-r_2837		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:1, 2-16:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
-r_2838		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:0, 2-16:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
-r_2839		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:1, 2-16:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
-r_2840		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:0, 2-18:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
-r_2841		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:1, 2-18:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
-r_2842		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:0, 2-18:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
-r_2843		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:1, 2-18:1)	C00008;	YDR373W;YNL267W	P39104;Q06389
+r_2836		2.7.1.67	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:0, 2-16:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
+r_2837		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:1, 2-16:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
+r_2838		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:0, 2-16:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
+r_2839		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:1, 2-16:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
+r_2840		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:0, 2-18:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
+r_2841		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:1, 2-18:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
+r_2842		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:0, 2-18:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
+r_2843		2.7.1.67	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:1, 2-18:1)	C00008;	YDR373W;YNL267W	Q06389;P39104
 r_2844		2.7.1.67	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:0, 2-16:1)	C00008;	YNL267W	P39104
 r_2845		2.7.1.67	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:1, 2-16:1)	C00008;	YNL267W	P39104
 r_2846		2.7.1.67	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:0, 2-16:1)	C00008;	YNL267W	P39104
@@ -2583,53 +2583,53 @@ r_2849		2.7.1.67	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	
 r_2850		2.7.1.67	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:0, 2-18:1)	C00008;	YNL267W	P39104
 r_2851		2.7.1.67	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:1, 2-18:1)	C00008;	YNL267W	P39104
 r_2852		2.7.1.137	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2852		2.7.1.137	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2852		2.7.1.137	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2852		2.7.1.137	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2852		2.7.1.137	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2852		2.7.11.1	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2852		2.7.11.1	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2852		2.7.11.1	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2852		2.7.11.1	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2852		2.7.11.1	forward	H+;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-16:1);ATP	C00080;;C00002	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2853		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2853		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2853		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2853		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2853		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2853		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2853		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2853		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2853		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2853		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2854		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2854		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2854		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2854		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2854		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2854		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2854		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2854		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2854		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2854		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2855		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2855		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2855		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2855		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2855		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2855		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2855		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2855		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2855		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2855		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-16:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-16:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2856		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2856		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2856		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2856		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2856		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2856		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2856		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2856		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2856		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2856		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:0, 2-18:1)	C00080;C00002;C13888	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2857		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2857		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2857		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2857		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2857		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2857		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2857		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2857		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2857		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2857		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-16:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-16:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2858		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2858		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2858		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2858		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2858		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2858		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2858		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2858		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2858		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2858		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:0, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:0, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2859		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2859		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2859		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2859		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2859		2.7.1.137	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2859		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W	P22219;P22543
-r_2859		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	Q02948;P22219;Q05919;P22543
-r_2859		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	Q05789;P38270;P22219;P22543;Q02948
+r_2859		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YPL120W;YLR360W	P22219;P22543;Q02948;Q05919
+r_2859		2.7.11.1	forward	H+;ATP;1-phosphatidyl-1D-myo-inositol (1-18:1, 2-18:1)	C00080;C00002;	ADP;1-phosphatidyl-1D-myo-inositol 3-phosphate (1-18:1, 2-18:1)	C00008;	YBR097W;YLR240W;YBR128C;YPL120W;YLR211C	P38270;P22543;Q05789;P22219;Q02948
 r_2860		2.7.1.68	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:0, 2-16:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4,5-bisphosphate (1-16:0, 2-16:1)	C00008;	YDR208W	P38994
 r_2861		2.7.1.68	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-16:1, 2-16:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4,5-bisphosphate (1-16:1, 2-16:1)	C00008;	YDR208W	P38994
 r_2862		2.7.1.68	forward	ATP;H+;1-phosphatidyl-1D-myo-inositol 4-phosphate (1-18:0, 2-16:1)	C00002;C00080;	ADP;1-phosphatidyl-1D-myo-inositol 4,5-bisphosphate (1-18:0, 2-16:1)	C00008;	YDR208W	P38994
@@ -3520,8 +3520,8 @@ r_4232	R01737	2.7.1.12	forward	ATP;D-gluconate	C00002;C00257	6-phospho-D-glucona
 r_4232	R01737	2.7.1.12	reverse	6-phospho-D-gluconate;ADP;H+	C00345;C00008;C00080	ATP;D-gluconate	C00002;C00257	YDR248C	Q03786
 r_4233	R04496	2.1.1.100	forward	S-adenosyl-L-methionine;Protein C-terminal S-farnesyl-L-cysteine	C00019;C04506	S-adenosyl-L-homocysteine;Protein C-terminal S-farnesyl-L-cysteine methyl ester	C00021;C04748	YDR410C	P32584
 r_4233	R04496	2.1.1.100	reverse	S-adenosyl-L-homocysteine;Protein C-terminal S-farnesyl-L-cysteine methyl ester	C00021;C04748	S-adenosyl-L-methionine;Protein C-terminal S-farnesyl-L-cysteine	C00019;C04506	YDR410C	P32584
-r_4234	R05916	2.4.1.198	forward	UDP-N-acetyl-alpha-D-glucosamine;1-phosphatidyl-1D-myo-inositol	C00043;C01194	H+;UDP;G00143	C00080;C00015;	YDR437W;YGR216C;YNL038W;YPL076W;YPL175W;YPL096C-A	P32363;P53306;P46961;Q04082;P62651;P53961
-r_4234	R05916	2.4.1.198	reverse	H+;UDP;G00143	C00080;C00015;	UDP-N-acetyl-alpha-D-glucosamine;1-phosphatidyl-1D-myo-inositol	C00043;C01194	YDR437W;YGR216C;YNL038W;YPL076W;YPL175W;YPL096C-A	P32363;P53306;P46961;Q04082;P62651;P53961
+r_4234	R05916	2.4.1.198	forward	UDP-N-acetyl-alpha-D-glucosamine;1-phosphatidyl-1D-myo-inositol	C00043;C01194	H+;UDP;G00143	C00080;C00015;	YDR437W;YGR216C;YNL038W;YPL076W;YPL175W;YPL096C-A	P53961;P32363;P46961;Q04082;P62651;P53306
+r_4234	R05916	2.4.1.198	reverse	H+;UDP;G00143	C00080;C00015;	UDP-N-acetyl-alpha-D-glucosamine;1-phosphatidyl-1D-myo-inositol	C00043;C01194	YDR437W;YGR216C;YNL038W;YPL076W;YPL175W;YPL096C-A	P53961;P32363;P46961;Q04082;P62651;P53306
 r_4236	R09796	4.2.1.130	forward	(R)-lactate;H+	C00256;C00080	H2O;methylglyoxal	C00001;C00546	YDR533C	Q04432
 r_4236	R09796	4.2.1.130	reverse	H2O;methylglyoxal	C00001;C00546	(R)-lactate;H+	C00256;C00080	YDR533C	Q04432
 r_4236	R09796	4.2.1.130	forward	(R)-lactate;H+	C00256;C00080	H2O;methylglyoxal	C00001;C00546	YMR322C	Q04902
