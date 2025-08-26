@@ -4,6 +4,7 @@ import numpy as np
 
 from wildkcat.machine_learning.catapro import create_catapro_input_file, integrate_catapro_predictions
 from wildkcat.utils.generate_reports import report_prediction_input, report_final
+from wildkcat.utils.manage_warnings import DedupFilter
 
 
 # TODO: Add a warning if there is the same SMILE for multiple KEGG IDs ?
@@ -79,7 +80,9 @@ def run_prediction_part1(kcat_file_path, limit_matching_score, output_path, repo
     # Subset rows with no values or matching score above the limit
     kcat_df = kcat_df[(kcat_df['matching_score'] >= limit_matching_score) | (kcat_df['matching_score'].isnull())]
     # Drop rows with no UniProt ID or no substrates_kegg
+    before_duplicates_filter = len(kcat_df) - 1 
     kcat_df = kcat_df[kcat_df['uniprot_model'].notnull() & kcat_df['substrates_kegg'].notnull()]
+    nb_missing_enzymes = before_duplicates_filter - len(kcat_df)
     
     # Generate CataPro input file
     catapro_input_df, substrates_to_smiles_df, report_statistics = create_catapro_input_file(kcat_df)
@@ -88,6 +91,9 @@ def run_prediction_part1(kcat_file_path, limit_matching_score, output_path, repo
     catapro_input_df.to_csv(output_path, sep=',', index=True)
     substrates_to_smiles_df.to_csv(output_path.replace('.csv', '_substrates_to_smiles.tsv'), sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
+
+    # Add statistics 
+    report_statistics["missing_enzymes"] = nb_missing_enzymes
 
     if report:
         report_prediction_input(catapro_input_df, report_statistics)
@@ -119,9 +125,6 @@ def run_prediction_part2(kcat_file_path, catapro_predictions_path, substrates_to
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
 
-    if report:
-        report_final(kcat_df)
-
 
 if __name__ == "__main__":
     # Test : Retrieve SMILES from KEGG ID
@@ -129,33 +132,21 @@ if __name__ == "__main__":
 
     # Test : Retrieve Sequence from UniProt ID
     # print(convert_uniprot_to_sequence("P0A796"))
-
-    # Test : Integrate CataPro predictions into kcat file
-    # kcat_df = pd.read_csv("output/ecoli_kcat_sabio.tsv", sep='\t')
-    # substrates_to_smiles = pd.read_csv('in_progress/ml_test/substrates_to_smiles.tsv', sep='\t')
-    # integrate_catapro_predictions(kcat_df, substrates_to_smiles, "in_progress/ml_test/catapro_output.csv", "in_progress/ml_test/ecoli_kcat_catapro.tsv")
-
-    # Test : Format output
-    # kcat_df = pd.read_csv("output/ecoli_kcat_full.tsv", sep='\t')
-    # df = format_output(kcat_df, limit_matching_score=8)
-    # df.to_csv('in_progress/ecoli_kcat_final.tsv', sep='\t', index=False)
     
     # Test : Main function
     logging.basicConfig(level=logging.INFO)
-    # run_prediction_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input_2.csv")
-    # run_prediction_part2("output/ecoli_kcat_brenda.tsv", 
-    #                      "output/machine_learning/ecoli_catapro_output.csv", 
-    #                      "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
-    #                      8, 
-    #                      "output/ecoli_kcat_full.tsv")
+    logging.getLogger().addFilter(DedupFilter())
+
+    # run_prediction_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input.csv")
+    run_prediction_part2("output/ecoli_kcat_brenda.tsv", 
+                         "output/machine_learning/ecoli_catapro_output.csv", 
+                         "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
+                         8, 
+                         "output/ecoli_kcat_full.tsv")
     
     # run_prediction_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
-    run_prediction_part2("output/yeast_kcat_brenda.tsv", 
-                         "output/machine_learning/yeast_catapro_output.csv", 
-                         "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 
-                         8, 
-                         "output/yeast_kcat_full.tsv")
-
-    # Test : Generate report
-    kcat_df = pd.read_csv("output/yeast_kcat_full.tsv", sep='\t')
-    report_final(kcat_df)
+    # run_prediction_part2("output/yeast_kcat_brenda.tsv", 
+    #                      "output/machine_learning/yeast_catapro_output.csv", 
+    #                      "output/machine_learning/yeast_catapro_input_substrates_to_smiles.tsv", 
+    #                      8, 
+    #                      "output/yeast_kcat_full.tsv")

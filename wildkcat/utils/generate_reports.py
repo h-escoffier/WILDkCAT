@@ -42,8 +42,11 @@ def report_extraction(model, df, report_statistics):
     nb_ec_codes_incomplete = report_statistics.get('incomplete_ec_codes', 0)
     nb_reactions_dropped = report_statistics.get('nb_of_reactions_due_to_unconsistent_ec', 0)
     nb_lines_dropped = report_statistics.get('nb_of_lines_dropped_due_to_unconsistent_ec', 0)
+    nb_reactions_reel = nb_reactions + nb_reactions_dropped
 
     rxn_coverage = 100.0 * nb_reactions / nb_model_reactions if nb_model_reactions else 0
+    rxn_coverage_reel = 100.0 * nb_reactions_reel / nb_model_reactions if nb_model_reactions else 0
+
     percent_ec_retrieved = 100.0 * nb_ec_codes / nb_model_ec_codes if nb_model_ec_codes else 0
 
     # Pie Chart
@@ -134,7 +137,16 @@ def report_extraction(model, df, report_statistics):
                         </td>
                     </tr>
                     <tr>
-                        <td>EC codes found in KEGG</td>
+                        <td>Reactions with EC info retrieved</td>
+                        <td>{nb_reactions_reel} ({rxn_coverage_reel:.1f}%)</td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar-table" style="width:{rxn_coverage_reel}%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EC codes retrieved in KEGG</td>
                         <td>{nb_ec_codes} ({percent_ec_retrieved:.1f}%)</td>
                         <td>
                             <div class="progress">
@@ -143,7 +155,7 @@ def report_extraction(model, df, report_statistics):
                         </td>
                     </tr>
                     <tr>
-                        <td>Total rows in output</td>
+                        <td>Total rows in output (Rxn - EC - Enzyme - Substrate)</td>
                         <td>{len(df)}</td>
                         <td>-</td>
                     </tr>
@@ -454,15 +466,17 @@ def report_retrieval(df):
 
 def report_prediction_input(catapro_df, report_statistics): 
     # CataPro Statistics 
-    total_catapro_entries = len(catapro_df)
+    total_catapro_entries = len(catapro_df) - 1
 
     # Report Statistics
     rxn_covered = report_statistics['rxn_covered']
     cofactors_covered = report_statistics['cofactor_identified']
     no_catalytic = report_statistics['no_catalytic']
     kegg_missing = report_statistics['kegg_no_matching']
+    duplicates = report_statistics['duplicates_enzyme_substrates']
+    missing_enzyme = report_statistics['missing_enzymes']
 
-    total_rxn = rxn_covered + kegg_missing + no_catalytic
+    total_rxn = rxn_covered + no_catalytic + kegg_missing + missing_enzyme
     rxn_coverage = (rxn_covered / total_rxn * 100) if total_rxn > 0 else 0
 
     # Time
@@ -519,18 +533,60 @@ def report_prediction_input(catapro_df, report_statistics):
                         <td>Number of cofactor identified</td>
                         <td>{cofactors_covered}</td>
                     </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Issues in k<sub>cat</sub> Predictions</h2>
+                <table>
                     <tr>
-                        <td>Entries with no catalytic activity identified</td>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Entries with no catalytic enzyme identified</td>
                         <td>{no_catalytic}</td>
                     </tr>
                     <tr>
                         <td>Entries with missing KEGG IDs</td>
                         <td>{kegg_missing}</td>
                     </tr>
+                    <tr>
+                        <td>Entries with missing enzyme information</td>
+                        <td>{missing_enzyme}</td>
+                    </tr>
                 </table>
             </div>
-            
-        <footer>WILDkCAT</footer>
+
+            <div class="card">
+                <h2>Duplicates</h2>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Number of duplicates</td>
+                        <td>{duplicates}</td>
+                    </tr>
+                </table>
+                <p>
+                    Duplicates occur when multiple reactions share the same enzyme-substrate combination. 
+                    A high number of duplicates may result from multiple enzyme complexes sharing the same catalytic enzyme.
+                </p>
+            </div>
+
+            <!-- Prediction Instructions -->
+            <div class="card">
+                <h2>Running k<sub>cat</sub> Predictions with CataPro</h2>
+                <p>
+                    This report provides the input needed to run the CataPro machine learning model 
+                    (<a href="https://github.com/zchwang/CataPro" target="_blank">CataPro repository</a>). 
+                    Follow the instructions in the repository to set up the environment and generate k<sub>cat</sub> predictions.
+                </p>
+            </div>
+
+    <footer>WILDkCAT</footer>
     {report_shader()}
     </body>
     </html>
@@ -544,10 +600,15 @@ def report_prediction_input(catapro_df, report_statistics):
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_final(final_df):
+def report_final(model, final_df):
     """
     Generate a full HTML report summarizing predicted vs. source kcat values.
     """
+    # Model information 
+    nb_model_reactions = len(model.reactions)
+    nb_model_metabolites = len(model.metabolites)
+    nb_model_genes = len(model.genes)
+
 
     df = final_df.copy()
     df["kcat_db"] = df["kcat_db"].fillna("Unknown")
@@ -562,7 +623,7 @@ def report_final(final_df):
         plt.close(fig)
         return f'<div class="plot-container"><img src="data:image/png;base64,{encoded}"></div>'
 
-    # === 1. Distribution plots ===
+    # Distribution plots
     def plot_kcat_distribution_stacked(column_name, title):
         # Ensure numeric kcat
         df[column_name] = pd.to_numeric(df[column_name], errors='coerce')
@@ -645,7 +706,7 @@ def report_final(final_df):
         'kcat', "kcat distribution"
     )
 
-    # === 2. Difference boxplot ===
+    # Difference boxplot
     if "kcat_source" in df.columns and "catapro_predicted_kcat_s" in df.columns:
         df["kcat_diff"] = df["catapro_predicted_kcat_s"] - df["kcat_source"]
         fig, ax = plt.subplots(figsize=(8, 5))
@@ -661,20 +722,20 @@ def report_final(final_df):
     else:
         img_diff = "<p>Required columns missing for difference plot.</p>"
 
-    # === 3. Single segmented DB coverage bar ===
+    # DB coverage bar
     db_counts = df["kcat_db"].fillna("Unknown").value_counts()
     total_db = db_counts.sum()
 
-    # Improved color palette for better distinction and accessibility
-    # Only 4 cases: brenda, sabio_rk, catapro, or None
+    # Improved colors for better distinction
     colors = {
-    "brenda": "#3498db",      # Blue
-    "sabio_rk": "#e67e22",    # Orange
-    "catapro": "#2ecc71",     # Green
-    "Unknown": "#7f8c8d"      # Gray (for None or unknown)
+        "brenda": "#1f77b4",      # blue
+        "sabio_rk": "#ff7f0e",    # orange
+        "catapro": "#2ca02c",     # green
+        "Unknown": "#7f7f7f"      # gray
     }
 
-    db_colors = {db: colors.get(db, "#7f8c8d") for db in db_counts.index}
+    # Ensure all dbs get a color
+    db_colors = {db: colors.get(db, "#7f7f7f") for db in db_counts.index}
 
     progress_segments = ""
     legend_items = ""
@@ -682,23 +743,38 @@ def report_final(final_df):
         percent = count / total_db * 100
         progress_segments += f"""
             <div class="progress-segment" style="width:{percent:.1f}%; background-color:{db_colors[db]};"
-                 title="{db}: {percent:.1f}%"></div>
+                title="{db.capitalize()}: {percent:.1f}%"></div>
         """
         legend_items += f"""
-            <span style="display:inline-block; margin-right:10px;">
-                <span style="display:inline-block; width:15px; height:15px; background:{db_colors[db]}; margin-right:5px;"></span>
-                {db} ({percent:.1f}%)
+            <span style="display:flex; align-items:center; margin-right:15px; margin-bottom:5px;">
+                <span style="display:flex; align-items:center; width:16px; height:16px; 
+                            background:{db_colors[db]}; border:1px solid #000; margin-right:5px;"></span>
+                {db.capitalize()} ({percent:.1f}%)
             </span>
         """
 
     progress_bar = f"""
-        <div class="progress-multi">
+        <div class="progress-multi" style="height: 18px; margin-bottom:18px; display:flex;">
             {progress_segments}
         </div>
-        <div style="margin-top:10px;">{legend_items}</div>
+        <div style="margin-top:10px; display:flex; justify-content:center; flex-wrap: wrap;">{legend_items}</div>
     """
 
-    # === 4. HTML layout with explanations ===
+    # Final statistics 
+    grouped = df.groupby("rxn")
+
+    # reactions with at least one kcat
+    rxns_with_kcat = grouped["kcat"].apply(lambda x: x.notna().any())
+    nb_rxn = grouped.ngroups
+    nb_rxn_with_kcat = rxns_with_kcat.sum()
+    coverage = nb_rxn_with_kcat / nb_rxn
+
+    kcat_values = df["kcat"].dropna()
+    total = len(df)
+    matched = len(kcat_values)
+    match_percent = matched / total
+
+    # HTML
     html = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -715,14 +791,85 @@ def report_final(final_df):
                 <p>Generated on {generated_time}</p>
             </div>
         </header>
+
         <div class="container">
             <div class="card">
                 <h2>Introduction</h2>
-                <p>
-                    Lorem Ipsum
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    This report provides a summary of the performance of k<sub>cat</sub> value extraction, retrieval, and prediction for the specified metabolic model. 
+                    It presents statistics on k<sub>cat</sub> values successfully retrieved, whether experimental or predicted.
+                </p>
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    The output file, containing the full list of k<sub>cat</sub> values associated with each reaction, are available as a tab-separated file (TSV) at the default output path: <code>output/model_name_kcat_full</code>.
                 </p>
             </div>
 
+            <div class="card">
+                <h2>Model Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>{model.id}</h3>
+                        <p>Model ID</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>{nb_model_reactions}</h3>
+                        <p>Reactions</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>{nb_model_metabolites}</h3>
+                        <p>Metabolites</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>{nb_model_genes}</h3>
+                        <p>Genes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="padding:20px; margin-bottom:20px;">
+                <h2 style="margin-bottom:10px;">Coverage</h2>
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    The coverage section reports the number of k<sub>cat</sub> values retrieved for the model and the number of reactions that have at least one 
+                    associated k<sub>cat</sub> value, whether experimental or predicted. This provides a measure of how extensively the model’s reactions are 
+                    annotated with kinetic data.
+                </p>
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    Higher coverage indicates that a larger fraction of reactions are constrained by k<sub>cat</sub> values, 
+                    improving the accuracy and reliability of enzyme-constrained simulations.
+                </p>
+
+                <!-- Global coverage progress bar -->
+                {progress_bar}        
+
+                <!-- Detailed stats -->
+                <table class="table" style="width:100%; border-spacing:0; border-collapse: collapse;">
+                    <tbody>
+                        <tr>
+                            <td style="padding:8px 12px;">Reactions with at least one kcat values</td>
+                            <td style="padding:8px 12px;">{nb_rxn_with_kcat} ({coverage:.1%})</td>
+                            <td style="width:40%;">
+                                <div class="progress" style="height:18px;">
+                                    <div class="progress-bar-table" 
+                                        style="width:{coverage:.1%}; background-color:#4caf50;">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px 12px;">k<sub>cat</sub> values retrieved </td>
+                            <td style="padding:8px 12px;">{matched} ({match_percent:.1%})</td>
+                            <td style="width:40%;">
+                                <div class="progress" style="height:18px;">
+                                    <div class="progress-bar-table" 
+                                        style="width:{match_percent:.1%}; background-color:#4caf50;">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
             <div class="card">
                 <h2>k<sub>cat</sub> Distribution</h2>
                 <div class="img-section">
@@ -761,14 +908,6 @@ def report_final(final_df):
                 <p>
                     Lorem Ipsum
                 </p>
-            </div>
-
-            <div class="card">
-                <h2>Coverage</h2>
-                <p>
-                    Lorem Ipsum
-                </p>
-                {progress_bar}
             </div>
         </div>
 

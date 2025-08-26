@@ -159,6 +159,11 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
 
     # --- logique identique à avant ---
     if api == "sabio_rk":
+        
+        entry_kegg = None if pd.isna(entry_kegg) else entry_kegg
+        model_kegg = None if pd.isna(model_kegg) else model_kegg
+        cand_kegg  = None if pd.isna(cand_kegg) else cand_kegg
+        
         if model_kegg and entry_kegg and _norm_name(model_kegg) == _norm_name(entry_kegg):
             if _any_intersection(entry_subs, model_subs) or _any_intersection(entry_prods, model_prods):
                 return 0
@@ -270,8 +275,6 @@ def find_best_match(kcat_dict, api_output, general_criteria):
         ascending=[True, False, True], # Change to [True, False, False] to take the max instead of the min
         kind='mergesort'  # stable sort for reproducibility
     )
-
-    print(api_output)
     
     # 5. Select best candidate
     best_candidate = api_output.iloc[0].to_dict()

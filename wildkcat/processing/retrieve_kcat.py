@@ -178,17 +178,18 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     logging.getLogger().addFilter(DedupFilter())
 
-    # run_retrieval(
-    #     kcat_file_path="output/ecoli_kcat.tsv",
-    #     output_path="output/ecoli_kcat_brenda.tsv",
-    #     # output_path="output/ecoli_kcat_sabio.tsv",
-    #     organism="Escherichia coli",
-    #     temperature_range=(20, 40),
-    #     pH_range=(6.5, 7.5),
-    #     database='brenda', 
-    #     # database='sabio_rk', 
-    #     report=False
-    # ) 
+    run_retrieval(
+        kcat_file_path="output/ecoli_kcat.tsv",
+        output_path="output/ecoli_kcat_both.tsv",
+        # output_path="output/ecoli_kcat_sabio.tsv",
+        organism="Escherichia coli",
+        temperature_range=(20, 40),
+        pH_range=(6.5, 7.5),
+        database='both', 
+        # database='brenda', 
+        # database='sabio_rk', 
+        report=False
+    ) 
 
     # run_retrieval(
     #     kcat_file_path="output/yeast_kcat.tsv",

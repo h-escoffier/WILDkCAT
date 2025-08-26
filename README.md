@@ -37,6 +37,7 @@
 - [ ] catapro.py: Uniprot quieries can be send as batches
 - [ ] sabio_rk_api.py: Fix **SABIO-RK** 
 - [ ] catapro.py: Move **PubChem API** queries to a dedicated module ? 
+- [ ] predict_kcat.py : Integrate **TurNuP** kcat prediction 
 - [ ] generate_reports.py - general_report(): Add the coverage of the reactions with kcat values in the model
 
 ---

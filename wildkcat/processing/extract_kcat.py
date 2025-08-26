@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 from tqdm import tqdm
 from functools import lru_cache
+
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 from wildkcat.api.api_utilities import safe_requests_get, retry_api
@@ -310,6 +311,6 @@ def run_extraction(model_path, output_path, organism_code, report=True):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # Test : Main function
-    # run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
-    run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
+    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
+    # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
     # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')

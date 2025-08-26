@@ -198,17 +198,120 @@
             <canvas id="shader-canvas"></canvas>
             <div class="overlay">
                 <h1>WILDkCAT Report</h1>
-                <p>Generated on 2025-08-25 11:13:34</p>
+                <p>Generated on 2025-08-26 11:35:57</p>
             </div>
         </header>
+
         <div class="container">
             <div class="card">
                 <h2>Introduction</h2>
-                <p>
-                    Lorem Ipsum
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    This report provides a summary of the performance of k<sub>cat</sub> value extraction, retrieval, and prediction for the specified metabolic model. 
+                    It presents statistics on k<sub>cat</sub> values successfully retrieved, whether experimental or predicted.
+                </p>
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    The output file, containing the full list of k<sub>cat</sub> values associated with each reaction, are available as a tab-separated file (TSV) at the default output path: <code>output/model_name_kcat_full</code>.
                 </p>
             </div>
 
+            <div class="card">
+                <h2>Model Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>yeastGEM_v9__46__0__46__2</h3>
+                        <p>Model ID</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>4131</h3>
+                        <p>Reactions</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>2806</h3>
+                        <p>Metabolites</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>1161</h3>
+                        <p>Genes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="padding:20px; margin-bottom:20px;">
+                <h2 style="margin-bottom:10px;">Coverage</h2>
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    The coverage section reports the number of k<sub>cat</sub> values retrieved for the model and the number of reactions that have at least one 
+                    associated k<sub>cat</sub> value, whether experimental or predicted. This provides a measure of how extensively the model’s reactions are 
+                    annotated with kinetic data.
+                </p>
+                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                    Higher coverage indicates that a larger fraction of reactions are constrained by k<sub>cat</sub> values, 
+                    improving the accuracy and reliability of enzyme-constrained simulations.
+                </p>
+
+                <!-- Global coverage progress bar -->
+                
+        <div class="progress-multi" style="height: 18px; margin-bottom:18px; display:flex;">
+            
+            <div class="progress-segment" style="width:59.0%; background-color:#1f77b4;"
+                title="Brenda: 59.0%"></div>
+        
+            <div class="progress-segment" style="width:22.2%; background-color:#2ca02c;"
+                title="Catapro: 22.2%"></div>
+        
+            <div class="progress-segment" style="width:18.8%; background-color:#7f7f7f;"
+                title="Unknown: 18.8%"></div>
+        
+        </div>
+        <div style="margin-top:10px; display:flex; justify-content:center; flex-wrap: wrap;">
+            <span style="display:flex; align-items:center; margin-right:15px; margin-bottom:5px;">
+                <span style="display:flex; align-items:center; width:16px; height:16px; 
+                            background:#1f77b4; border:1px solid #000; margin-right:5px;"></span>
+                Brenda (59.0%)
+            </span>
+        
+            <span style="display:flex; align-items:center; margin-right:15px; margin-bottom:5px;">
+                <span style="display:flex; align-items:center; width:16px; height:16px; 
+                            background:#2ca02c; border:1px solid #000; margin-right:5px;"></span>
+                Catapro (22.2%)
+            </span>
+        
+            <span style="display:flex; align-items:center; margin-right:15px; margin-bottom:5px;">
+                <span style="display:flex; align-items:center; width:16px; height:16px; 
+                            background:#7f7f7f; border:1px solid #000; margin-right:5px;"></span>
+                Unknown (18.8%)
+            </span>
+        </div>
+            
+
+                <!-- Detailed stats -->
+                <table class="table" style="width:100%; border-spacing:0; border-collapse: collapse;">
+                    <tbody>
+                        <tr>
+                            <td style="padding:8px 12px;">Reactions with at least one kcat values</td>
+                            <td style="padding:8px 12px;">1616 (84.4%)</td>
+                            <td style="width:40%;">
+                                <div class="progress" style="height:18px;">
+                                    <div class="progress-bar-table" 
+                                        style="width:84.4%; background-color:#4caf50;">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px 12px;">k<sub>cat</sub> values retrieved </td>
+                            <td style="padding:8px 12px;">3200 (81.2%)</td>
+                            <td style="width:40%;">
+                                <div class="progress" style="height:18px;">
+                                    <div class="progress-bar-table" 
+                                        style="width:81.2%; background-color:#4caf50;">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
             <div class="card">
                 <h2>k<sub>cat</sub> Distribution</h2>
                 <div class="img-section">
@@ -247,43 +350,6 @@
                 <p>
                     Lorem Ipsum
                 </p>
-            </div>
-
-            <div class="card">
-                <h2>Coverage</h2>
-                <p>
-                    Lorem Ipsum
-                </p>
-                
-        <div class="progress-multi">
-            
-            <div class="progress-segment" style="width:59.0%; background-color:#3498db;"
-                 title="brenda: 59.0%"></div>
-        
-            <div class="progress-segment" style="width:22.2%; background-color:#2ecc71;"
-                 title="catapro: 22.2%"></div>
-        
-            <div class="progress-segment" style="width:18.8%; background-color:#7f8c8d;"
-                 title="Unknown: 18.8%"></div>
-        
-        </div>
-        <div style="margin-top:10px;">
-            <span style="display:inline-block; margin-right:10px;">
-                <span style="display:inline-block; width:15px; height:15px; background:#3498db; margin-right:5px;"></span>
-                brenda (59.0%)
-            </span>
-        
-            <span style="display:inline-block; margin-right:10px;">
-                <span style="display:inline-block; width:15px; height:15px; background:#2ecc71; margin-right:5px;"></span>
-                catapro (22.2%)
-            </span>
-        
-            <span style="display:inline-block; margin-right:10px;">
-                <span style="display:inline-block; width:15px; height:15px; background:#7f8c8d; margin-right:5px;"></span>
-                Unknown (18.8%)
-            </span>
-        </div>
-    
             </div>
         </div>
 

@@ -11,6 +11,7 @@ from wildkcat.api.brenda_api import get_cofactor
 
 # TODO: Add a list of cofactors 
 
+
 # --- API ---
 
 
@@ -133,7 +134,6 @@ def create_catapro_input_file(kcat_df):
     substrates_to_smiles = {}
 
     counter_no_catalytic, counter_kegg_no_matching, counter_rxn_covered, counter_cofactor = 0, 0, 0, 0
-
     for _, row in tqdm(kcat_df.iterrows(), total=len(kcat_df), desc="Generating CataPro input"):
         uniprot = row['uniprot_model']
         ec_code = row['ec_code']
@@ -187,7 +187,9 @@ def create_catapro_input_file(kcat_df):
     # Generate CataPro input file
     catapro_input_df = pd.DataFrame(catapro_input)
     # Remove duplicates
+    before_duplicates_filter = len(catapro_input_df)
     catapro_input_df = catapro_input_df.drop_duplicates().reset_index(drop=True)
+    nb_lines_dropped = before_duplicates_filter - len(catapro_input_df)
     # Generate reverse mapping from SMILES to KEGG IDs as TSV
     substrates_to_smiles_df = pd.DataFrame(list(substrates_to_smiles.items()), columns=['kegg_id', 'smiles'])
 
@@ -195,7 +197,8 @@ def create_catapro_input_file(kcat_df):
         "rxn_covered": counter_rxn_covered,
         "cofactor_identified": counter_cofactor,
         "no_catalytic": counter_no_catalytic,
-        "kegg_no_matching": counter_kegg_no_matching
+        "kegg_no_matching": counter_kegg_no_matching,
+        "duplicates_enzyme_substrates": nb_lines_dropped,
     }
 
     return catapro_input_df, substrates_to_smiles_df, report_statistics
