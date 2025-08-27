@@ -10,9 +10,6 @@ from wildkcat.api.api_utilities import safe_requests_get, retry_api
 from wildkcat.utils.generate_reports import report_extraction
 
 
-# TODO: Column kegg_genes and intersection_genes are currently not used.
-
-
 # --- Load Model ---
 
 
@@ -37,31 +34,6 @@ def read_model(model_path: str):
 
 
 # --- KEGG API --- 
-
-
-@lru_cache(maxsize=None)
-def get_kegg_genes_by_ec(organism_code: str, ec_code: str):
-    """
-    Retrieve genes for a given organism and EC number from KEGG.
-
-    Parameters:
-        organism_code (str): KEGG organism code (e.g., 'hsa' for human, 'eco' for E. coli).
-        ec_code (str): EC number (e.g., '1.1.1.1').
-
-    Returns:
-        list: List of gene identifiers (KEGG format).
-    """
-    url = f"https://rest.kegg.jp/link/{organism_code}/enzyme:{ec_code}"
-    safe_get_with_retry = retry_api(max_retries=4, backoff_factor=2)(safe_requests_get)
-    response = safe_get_with_retry(url)
-    if not response or response.text == "\n":
-        return []
-    genes = [
-        line.split("\t")[1][len(organism_code) + 1:]
-        for line in response.text.strip().split("\n")
-        if line.split("\t")[1].startswith(f"{organism_code}:")
-    ]
-    return genes
 
 
 @lru_cache(maxsize=None)
@@ -146,23 +118,22 @@ def split_metabolites(metabolites):
     return names, kegg_ids
 
 
-def create_kcat_output(model, organism_code):
+def create_kcat_output(model):
     """
     Generates a DataFrame summarizing kcat-related information for each reaction in a metabolic model.
-    For each reaction, the function extracts KEGG reaction IDs, EC codes, substrates, products, gene-protein-reaction (GPR) associations, UniProt IDs
-    and cross-references with KEGG genes. It processes both forward and reverse directions for reversible reactions. 
-    The resulting DataFrame contains one row per unique combination of EC code, substrates, products, direction and gene group.
+    For each reaction, the function extracts KEGG reaction IDs, EC codes, substrates, products, gene-protein-reaction (GPR) associations and UniProt IDs.
+    It processes both forward and reverse directions for reversible reactions. 
+    The resulting DataFrame contains one row per unique combination of EC code, substrates, products (direction) and gene group.
 
     Parameters: 
         model (cobra.Model) : A metabolic model. 
-        organism_code (str) : The KEGG organism code used to retrieve organism-specific gene information.
 
     Returns:
         df (pandas.DataFrame) : A DataFrame with columns including reaction ID, KEGG reaction ID, EC code, direction, substrate/product names and KEGG IDs, model genes, UniProt IDs, KEGG genes, and intersection genes.
         report_statistics (dict) : A dictionary with statistics for the report, including the number of incomplete/incorrect EC codes and EC for which kcat values were transferred.
     """
     rows = []
-    set_incomplete_ec_codes, set_transferred_ec_codes, set_no_genes_ec_codes = set(), set(), set()
+    set_incomplete_ec_codes, set_transferred_ec_codes = set(), set()
     ec_pattern = re.compile(r"^\d+\.\d+\.\d+\.\d+$")
     
     for rxn in tqdm(model.reactions, desc=f"Processing {model.id} reactions"):
@@ -188,23 +159,19 @@ def create_kcat_output(model, organism_code):
                 prod_keggs.append(kegg if kegg else "")
         gpr_groups = parse_gpr(rxn.gene_reaction_rule)
         for ec in ec_codes:
+
             if not ec_pattern.match(ec):
                 if ec not in set_incomplete_ec_codes:
                     set_incomplete_ec_codes.add(ec)
                     logging.warning(f"EC code '{ec}' is not in the correct format, skipping.")
                 continue
-            kegg_genes = get_kegg_genes_by_ec(organism_code, ec)
-            if not kegg_genes:
-                is_transferred = is_ec_code_transferred(ec)
-                if is_transferred:
-                    if ec not in set_transferred_ec_codes:
-                        set_transferred_ec_codes.add(ec)
-                else: 
-                    # No genes found for this organism 
-                    if ec not in set_no_genes_ec_codes:
-                        set_no_genes_ec_codes.add(ec)
-                    # logging.warning(f"No KEGG genes found for EC code '{ec}' in organism '{organism_code}'.")
-                kegg_genes = []
+            
+            is_transferred = is_ec_code_transferred(ec)
+            if is_transferred or is_transferred == None:
+                if ec not in set_transferred_ec_codes:
+                    set_transferred_ec_codes.add(ec)
+                    # No continue to be able to identify the number of rxn, kcat dropped due to inconsistency
+            
             if not gpr_groups:
                 for direction, sn, sk, pn, pk in [
                     ("forward", subs_names, subs_keggs, prod_names, prod_keggs),
@@ -221,10 +188,9 @@ def create_kcat_output(model, organism_code):
                         "products_kegg": ";".join(pk),
                         "genes_model": "",
                         "uniprot_model": "",
-                        "kegg_genes": ";".join(kegg_genes),
-                        "intersection_genes": ""
                     })
                 continue
+
             for genes_group in gpr_groups:
                 genes_group = [g.strip() for g in genes_group if g.strip()]
                 uniprot_ids = []
@@ -239,7 +205,6 @@ def create_kcat_output(model, organism_code):
                     except KeyError:
                         continue
                 uniprot_ids = list(set(uniprot_ids))
-                intersection = list(set(genes_group) & set(kegg_genes))
                 for direction, sn, sk, pn, pk in [
                     ("forward", subs_names, subs_keggs, prod_names, prod_keggs),
                     ("reverse", prod_names, prod_keggs, subs_names, subs_keggs)
@@ -254,15 +219,14 @@ def create_kcat_output(model, organism_code):
                         "products_name": ";".join(pn),
                         "products_kegg": ";".join(pk),
                         "genes_model": ";".join(genes_group),
-                        "uniprot_model": ";".join(uniprot_ids),
-                        "kegg_genes": ";".join(kegg_genes),
-                        "intersection_genes": ";".join(intersection) if intersection else ""
+                        "uniprot_model": ";".join(uniprot_ids)
                     })
 
     # Create output 
     df = pd.DataFrame(rows).drop_duplicates(
         subset=["ec_code", "genes_model", "substrates_name", "products_name", "direction"]
     )
+
     before_ec_filter = len(df)
     before_nb_reactions = df['rxn'].nunique()
     df = df[~df["ec_code"].isin(set_transferred_ec_codes)]
@@ -271,14 +235,9 @@ def create_kcat_output(model, organism_code):
     
     logging.info("Total of possible kcat values: %d", len(df))
 
-
-    # Drop kegg_genes and intersection_genes 
-    df = df.drop(columns=["kegg_genes", "intersection_genes"], errors='ignore')
-
     report_statistics = {
         "incomplete_ec_codes": len(set_incomplete_ec_codes),
         "transferred_ec_codes": len(set_transferred_ec_codes),
-        "no_genes_ec_codes": len(set_no_genes_ec_codes),
         "nb_of_reactions_due_to_unconsistent_ec": nb_rxns_dropped,
         "nb_of_lines_dropped_due_to_unconsistent_ec": nb_lines_dropped
     }
@@ -289,18 +248,17 @@ def create_kcat_output(model, organism_code):
 # --- Main ---
 
 
-def run_extraction(model_path, output_path, organism_code, report=True):
+def run_extraction(model_path, output_path, report=True):
     """
     Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.
     
     Parameters: 
         model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
         output_path (str): Path to the output file (TSV format).
-        organism_code (str): The KEGG organism code used to retrieve organism-specific gene information.
         report (bool): Whether to generate an HTML report (default: True).
     """
     model = read_model(model_path)
-    df, report_statistics = create_kcat_output(model, organism_code)
+    df, report_statistics = create_kcat_output(model)
 
     df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
