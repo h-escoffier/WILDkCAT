@@ -1,7 +1,0 @@
-ECNumber	Substrate	UniProtKB_AC	Organism	Enzyme Variant	Temperature	pH	value	unit	db	KeggReactionID	Reaction	Product
-1.1.1.42	isocitrate	P08200	Escherichia coli	wildtype	25.0	7.5	51.8		brenda			
-1.1.1.42	NADP+;Isocitrate	P08200	Escherichia coli	wildtype	40.0	7.5	467.0	s^(-1)	sabio_rk	R00267	NADP+ + Isocitrate = CO2 + NADPH + 2-Oxoglutarate + H+	NADPH;CO2;2-Oxoglutarate;H+
-1.1.1.42	Isocitrate;NADP+	P08200	Escherichia coli	wildtype	21.0	7.5	80.5	s^(-1)	sabio_rk	R00267	NADP+ + Isocitrate = CO2 + NADPH + 2-Oxoglutarate + H+	NADPH;2-Oxoglutarate;CO2;H+
-1.1.1.42	NADP+;Isocitrate	P08200	Escherichia coli	wildtype	21.0	7.3	80.5	s^(-1)	sabio_rk	R00267	NADP+ + Isocitrate = CO2 + NADPH + 2-Oxoglutarate + H+	NADPH;CO2;2-Oxoglutarate;H+
-1.1.1.42	NADP+;Isocitrate	P08200	Escherichia coli	wildtype	40.0	8.0	106.3	s^(-1)	sabio_rk	R00267	NADP+ + Isocitrate = CO2 + NADPH + 2-Oxoglutarate + H+	NADPH;CO2;H+;2-Oxoglutarate
-1.1.1.42	Isocitrate;NADP+	P08200	Escherichia coli	wildtype	40.0	8.0	88.1	s^(-1)	sabio_rk	R00267	NADP+ + Isocitrate = CO2 + NADPH + 2-Oxoglutarate + H+	H+;2-Oxoglutarate;NADPH;CO2
