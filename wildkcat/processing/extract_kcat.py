@@ -252,8 +252,8 @@ def run_extraction(model_path: str,
                    report: bool = True) -> None:
     """
     Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.
-    
-    Parameters: 
+
+    Parameters:
         model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
         output_path (str): Path to the output file (TSV format).
         report (bool, optional): Whether to generate an HTML report (default: True).
