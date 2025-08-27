@@ -10,11 +10,12 @@ authors = [
 ]
 description = "Extract, Retrieve and Predict kcat values for a metabolic model to run enzyme constrained metabolic pipelines."
 readme = "README.md"
-requires-python = ">=3.0"
+requires-python = ">=3.11.1"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Natural Language :: English"
 ]
 
 [project.urls]
