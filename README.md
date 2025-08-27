@@ -4,6 +4,19 @@
 
 ---
 
+## Installation
+
+1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/).
+
+2. Download `environment.yml` to your project folder.
+
+3. Create and activate the environment:
+
+```bash
+conda env create -f environment.yml
+conda activate wildkcat-env
+```
+
 ## Scripts Overview
 
 ### `extract_kcat.py`
@@ -37,6 +50,6 @@
 - [ ] sabio_rk_api.py: Fix **SABIO-RK** 
 - [ ] catapro.py: Move **PubChem API** queries to a dedicated module ? 
 - [ ] predict_kcat.py : Integrate **TurNuP** kcat prediction 
-- [*] generate_reports.py - general_report(): Add the coverage of the reactions with kcat values in the model
+- [ ] generate_reports.py - general_report(): Add the coverage of the reactions with kcat values in the model
 
 ---

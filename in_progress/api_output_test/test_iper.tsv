@@ -1,0 +1,64 @@
+Organism	pH	Temperature	UniProtKB_AC	db	EnzymeVariant	ECNumber	Substrate	value	id_perc
+Escherichia coli	7.5	25.0	P08200	brenda	wildtype	1.1.1.42	isocitrate	51.8	100.0
+Escherichia coli	8.0	40.0	P08200	brenda		1.1.1.42	isocitrate	106.4	100.0
+Haloferax volcanii	8.0	30.0	Q8X277	brenda	wildtype	1.1.1.42	DL-isocitrate	0.0023	44.71403812824957
+Archaeoglobus fulgidus	8.0	60.0	O29610	brenda		1.1.1.42	isocitrate	255	43.75
+Microcystis aeruginosa	7.5	37.0	A8YGS2	brenda		1.1.1.42	DL-isocitrate	10.92	42.35668789808917
+Microcystis aeruginosa	7.5	50.0	A8YGS2	brenda		1.1.1.42	DL-isocitrate	10.29	42.35668789808917
+Microcystis aeruginosa	7.5	37.0	A8YGS2	brenda		1.1.1.42	DL-isocitrate	43.21	42.35668789808917
+Microcystis aeruginosa	7.5	50.0	A8YGS2	brenda		1.1.1.42	DL-isocitrate	43.21	42.35668789808917
+Arabidopsis thaliana	7.5	25.0	Q9SRZ6	brenda	wildtype	1.1.1.42	isocitrate	4.93	25.72298325722983
+Mycobacterium tuberculosis	7.5		P9WKL1	brenda		1.1.1.42	isocitrate	33	25.1896813353566
+Desulfotalea psychrophila		5.0	Q6AQ66	brenda		1.1.1.42	isocitrate	4.5	24.127465857359635
+Desulfotalea psychrophila		25.0	Q6AQ66	brenda		1.1.1.42	isocitrate	31.4	24.127465857359635
+Homo sapiens	7.8	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	40	24.06576980568012
+Homo sapiens	8.0	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	39.2	24.06576980568012
+Homo sapiens	7.2	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	39	24.06576980568012
+Homo sapiens	6.8	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	27.5	24.06576980568012
+Homo sapiens	8.0	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	38.3	24.06576980568012
+Homo sapiens	7.5	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	40.4	24.06576980568012
+Homo sapiens	7.5	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	37.6	24.06576980568012
+Homo sapiens	6.2	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	1.6	24.06576980568012
+Homo sapiens	7.5	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	85	24.06576980568012
+Homo sapiens	7.2	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	35.5	24.06576980568012
+Homo sapiens	7.8	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	35.4	24.06576980568012
+Homo sapiens	7.5	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	0.019	24.06576980568012
+Homo sapiens	7.0	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	32	24.06576980568012
+Homo sapiens	7.0	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	31.7	24.06576980568012
+Homo sapiens	7.8	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	1.87	24.06576980568012
+Homo sapiens	6.5	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	23	24.06576980568012
+Homo sapiens	6.5	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	23.1	24.06576980568012
+Homo sapiens	6.5	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.2	24.06576980568012
+Homo sapiens	6.8	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.3	24.06576980568012
+Homo sapiens	7.2	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.4	24.06576980568012
+Homo sapiens	6.2	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.5	24.06576980568012
+Homo sapiens	7.5	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.6	24.06576980568012
+Homo sapiens	7.5	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.8	24.06576980568012
+Homo sapiens	7.0	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.8	24.06576980568012
+Homo sapiens	7.2	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	3.87	24.06576980568012
+Homo sapiens	6.5	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	4.1	24.06576980568012
+Homo sapiens	7.0	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	4.1	24.06576980568012
+Homo sapiens	6.8	37.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	4.9	24.06576980568012
+Homo sapiens	7.5	21.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	11	24.06576980568012
+Homo sapiens	7.5	21.0	O75874	brenda	wildtype	1.1.1.42	2-oxoglutarate	0.017	24.06576980568012
+Homo sapiens	6.2	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	20.2	24.06576980568012
+Homo sapiens	6.2	37.0	O75874	brenda	wildtype	1.1.1.42	isocitrate	20	24.06576980568012
+Homo sapiens	8.0	37.0	P48735	brenda	wildtype	1.1.1.42	isocitrate	15.5	23.823109843081312
+Mus musculus	7.4	25.0	P54071	brenda	wildtype	1.1.1.42	isocitrate	5.6	23.295454545454547
+Mycobacterium tuberculosis	7.5	25.0		brenda		1.1.1.42	DL-isocitrate	1.9	
+Mycobacterium tuberculosis	7.5	25.0		brenda		1.1.1.42	DL-isocitrate	3.8	
+Microcystis aeruginosa	7.5	50.0		brenda		1.1.1.42	DL-isocitrate	10.29	
+Microcystis aeruginosa	7.5	37.0		brenda		1.1.1.42	DL-isocitrate	10.92	
+Mycobacterium tuberculosis	7.5	25.0		brenda		1.1.1.42	DL-isocitrate	19.6	
+Acinetobacter baumannii	8.0	25.0		brenda	wildtype	1.1.1.42	isocitrate	33.4	
+Acinetobacter baumannii	8.0	25.0	V5VCI0	brenda	wildtype	1.1.1.42	isocitrate	33.4	
+Microcystis aeruginosa	7.5	50.0		brenda		1.1.1.42	DL-isocitrate	43.21	
+Microcystis aeruginosa	7.5	37.0		brenda		1.1.1.42	DL-isocitrate	43.21	
+Acinetobacter baumannii	8.0	25.0		brenda	wildtype	1.1.1.42	isocitrate	50.4	
+Acinetobacter baumannii	8.0	25.0	V5VCI0	brenda	wildtype	1.1.1.42	isocitrate	50.4	
+Sus scrofa				brenda		1.1.1.42	isocitrate	58.3	
+Colwellia maris	8.0	20.0		brenda	wildtype	1.1.1.42	isocitrate	69.88	
+Leishmania mexicana	7.4	37.0		brenda		1.1.1.42	DL-isocitrate	83.03	
+Psychromonas marina	8.0	20.0		brenda		1.1.1.42	isocitrate	102.98	
+Pseudomonas psychrophila	8.0	20.0		brenda	wildtype	1.1.1.42	isocitrate	136.85	
+Plasmodium falciparum	8.0	30.0		brenda		1.1.1.42	D-isocitrate	138	

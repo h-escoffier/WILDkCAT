@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kcat Extraction Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1b0033 0%, #090019 100%);
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            text-shadow: 0 0 3px #ff00ff;
+        }
+        header {
+            background: linear-gradient(90deg, #ff005e, #00eaff);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px #ff00ff;
+            border-bottom: 2px solid #00eaff;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 6px #00eaff, 0 0 12px #ff00ff;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ff00ff;
+            box-shadow: 0 0 15px #00eaff;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: #00eaff;
+            border-bottom: 2px solid #ff00ff;
+            padding-bottom: 10px;
+            font-size: 1.8rem;
+            text-shadow: 0 0 6px #ff00ff;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .stat-box {
+            background: rgba(255, 0, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #00eaff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+        .stat-box h3 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: #ffeb3b; /* neon yellow */
+            text-shadow: 0 0 6px #ff00ff;
+        }
+        .stat-box p {
+            margin: 5px 0 0;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+        table th, table td {
+            border: 1px solid #ff00ff;
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            background-color: #00eaff;
+            color: #090019;
+            text-shadow: none;
+        }
+        table tr:nth-child(even) {
+            background-color: rgba(255, 0, 255, 0.1);
+        }
+        .progress {
+            background-color: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 18px;
+            width: 100%;
+            margin-top: 5px;
+            border: 1px solid #ff00ff;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #ff005e, #00eaff);
+            height: 100%;
+            text-align: right;
+            padding-right: 5px;
+            color: #fff;
+            font-size: 0.8rem;
+            line-height: 18px;
+            text-shadow: 0 0 3px #000;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #ff00ff;
+            padding: 15px;
+            margin-top: 20px;
+            border-top: 1px solid #00eaff;
+            text-shadow: 0 0 3px #00eaff;
+        }
+    </style>
+    </head>
+    <body>
+        <header>
+            <h1>Kcat Extraction Report</h1>
+            <p>Generated on 2025-08-01 16:26:48</p>
+        </header>
+
+        <div class="container">
+            <div class="card">
+                <h2>Model Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>e_coli_core</h3>
+                        <p>Model ID</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>95</h3>
+                        <p>Reactions</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>72</h3>
+                        <p>Metabolites</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>137</h3>
+                        <p>Genes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Kcat Extraction Statistics</h2>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                        <th>Visualization</th>
+                    </tr>
+                    <tr>
+                        <td>Reactions with EC info</td>
+                        <td>47 (49.5%)</td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar" style="width:49.473684210526315%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EC codes found in KEGG</td>
+                        <td>54 (100%)</td>
+                        <td>
+                            <div class="progress">
+                                <div class="progress-bar" style="width:100%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EC codes not found (transferred)</td>
+                        <td>65</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Unique KEGG reaction IDs</td>
+                        <td>41</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Total rows in output</td>
+                        <td>159</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            Report generated automatically.
+        </footer>
+    </body>
+    </html>
+    
