@@ -3,7 +3,7 @@ import typer
 from wildkcat import run_extraction, run_retrieval, run_prediction_part1, run_prediction_part2, generate_summary_report
 
 
-app = typer.Typer(help="WildKcat CLI - run extraction, retrieval, prediction, and reporting separately.")
+app = typer.Typer(help="WILDkCAT CLI - Extract, Retrieve and Predict kcat values for a metabolic model.")
 
 
 @app.command()

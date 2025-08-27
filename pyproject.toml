@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "WILDkCAT"
+version = "0.0.1"
+authors = [
+  { name="Hugues Escoffier", email="hugues.escoffier@gmail.com" },
+]
+description = "Extract, Retrieve and Predict kcat values for a metabolic model to run enzyme constrained metabolic pipelines."
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/h-escoffier/WILDkCAT"
+Issues = "https://github.com/h-escoffier/WILDkCAT"
