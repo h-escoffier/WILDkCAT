@@ -6,9 +6,14 @@ from ..processing.extract_kcat import read_model
 from ..utils.generate_reports import report_final
 
 
-def generate_summary_report(model_path, kcat_file_path):
+def generate_summary_report(model_path: str,
+                            kcat_file_path: str) -> None:
     """
-    TODO: Write the documentation 
+    Generate a HTML report summarizing the kcat extraction, retrieval and prediction for a given model. 
+
+    Parameters:
+        model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
+        kcat_file_path (str): Path to the final kcat TSV file.
     """
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
     model = read_model(model_path)

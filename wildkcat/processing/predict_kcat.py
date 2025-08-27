@@ -64,8 +64,8 @@ def format_output(kcat_df, limit_matching_score):
 
 
 def run_prediction_part1(kcat_file_path: str, 
-                         limit_matching_score: int, 
                          output_path: str, 
+                         limit_matching_score: int, 
                          report: bool = True) -> None:
     """
     Processes kcat data file to generate input files for CataPro prediction.
@@ -73,8 +73,8 @@ def run_prediction_part1(kcat_file_path: str,
 
     Parameters:
         kcat_file_path (str): Path to the input kcat data file.
-        limit_matching_score (int): Threshold for filtering entries based on matching score.
         output_path (str): Path to save the generated CataPro input CSV file.
+        limit_matching_score (int): Threshold for filtering entries based on matching score.
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
     # Add a deduplication filter to the logger
@@ -108,8 +108,8 @@ def run_prediction_part1(kcat_file_path: str,
 def run_prediction_part2(kcat_file_path: str, 
                          catapro_predictions_path: str, 
                          substrates_to_smiles_path: str, 
-                         limit_matching_score: int, 
-                         output_path: str) -> None:
+                         output_path: str,
+                         limit_matching_score: int) -> None:
     """
     Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
     mapping substrates to SMILES, formatting the output, and optionally generating a report.
@@ -118,8 +118,8 @@ def run_prediction_part2(kcat_file_path: str,
         kcat_file_path (str): Path to the input kcat TSV file.
         catapro_predictions_path (str): Path to the Catapro predictions CSV file.
         substrates_to_smiles_path (str): Path to the TSV file mapping substrates to SMILES.
-        limit_matching_score (float): Threshold for taking predictions over retrieved values.
         output_path (str): Path to save the formatted output TSV file.
+        limit_matching_score (float): Threshold for taking predictions over retrieved values.
         report (bool, optional): If True, generates a report (default: True). 
     """ 
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
