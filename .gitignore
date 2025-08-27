@@ -19,6 +19,12 @@ tempCodeRunnerFile.python
 *.ipynb
 .env
 
+# Ignore all the files not needed for the packaging 
+model/* 
+output/* 
+reports/*
+
+
 # Ignore non functional approaches 
 non_functional_approaches
 

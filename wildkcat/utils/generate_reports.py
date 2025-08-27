@@ -42,10 +42,8 @@ def report_extraction(model, df, report_statistics):
     nb_ec_codes_incomplete = report_statistics.get('incomplete_ec_codes', 0)
     nb_reactions_dropped = report_statistics.get('nb_of_reactions_due_to_unconsistent_ec', 0)
     nb_lines_dropped = report_statistics.get('nb_of_lines_dropped_due_to_unconsistent_ec', 0)
-    nb_reactions_reel = nb_reactions + nb_reactions_dropped
 
     rxn_coverage = 100.0 * nb_reactions / nb_model_reactions if nb_model_reactions else 0
-    rxn_coverage_reel = 100.0 * nb_reactions_reel / nb_model_reactions if nb_model_reactions else 0
 
     percent_ec_retrieved = 100.0 * nb_ec_codes / nb_model_ec_codes if nb_model_ec_codes else 0
 
@@ -133,15 +131,6 @@ def report_extraction(model, df, report_statistics):
                         <td>
                             <div class="progress">
                                 <div class="progress-bar-table" style="width:{rxn_coverage}%;"></div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Reactions with EC info retrieved</td>
-                        <td>{nb_reactions_reel} ({rxn_coverage_reel:.1f}%)</td>
-                        <td>
-                            <div class="progress">
-                                <div class="progress-bar-table" style="width:{rxn_coverage_reel}%;"></div>
                             </div>
                         </td>
                     </tr>
@@ -722,20 +711,18 @@ def report_final(model, final_df):
     else:
         img_diff = "<p>Required columns missing for difference plot.</p>"
 
-    # DB coverage bar
+    # Coverage
     db_counts = df["kcat_db"].fillna("Unknown").value_counts()
     total_db = db_counts.sum()
 
-    # Improved colors for better distinction
     colors = {
         "brenda": "#1f77b4",      # blue
         "sabio_rk": "#ff7f0e",    # orange
         "catapro": "#2ca02c",     # green
-        "Unknown": "#7f7f7f"      # gray
+        "Unknown": "#ddd"      # gray
     }
 
-    # Ensure all dbs get a color
-    db_colors = {db: colors.get(db, "#7f7f7f") for db in db_counts.index}
+    db_colors = {db: colors.get(db, "#ddd") for db in db_counts.index}
 
     progress_segments = ""
     legend_items = ""
@@ -760,14 +747,13 @@ def report_final(model, final_df):
         <div style="margin-top:10px; display:flex; justify-content:center; flex-wrap: wrap;">{legend_items}</div>
     """
 
-    # Final statistics 
+    # Statistics 
     grouped = df.groupby("rxn")
-
-    # reactions with at least one kcat
     rxns_with_kcat = grouped["kcat"].apply(lambda x: x.notna().any())
     nb_rxn = grouped.ngroups
     nb_rxn_with_kcat = rxns_with_kcat.sum()
     coverage = nb_rxn_with_kcat / nb_rxn
+    coverage_total = nb_rxn_with_kcat / nb_model_reactions
 
     kcat_values = df["kcat"].dropna()
     total = len(df)
@@ -828,6 +814,8 @@ def report_final(model, final_df):
 
             <div class="card" style="padding:20px; margin-bottom:20px;">
                 <h2 style="margin-bottom:10px;">Coverage</h2>
+                
+                <!-- Explanation -->
                 <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
                     The coverage section reports the number of k<sub>cat</sub> values retrieved for the model and the number of reactions that have at least one 
                     associated k<sub>cat</sub> value, whether experimental or predicted. This provides a measure of how extensively the model’s reactions are 
@@ -845,12 +833,23 @@ def report_final(model, final_df):
                 <table class="table" style="width:100%; border-spacing:0; border-collapse: collapse;">
                     <tbody>
                         <tr>
-                            <td style="padding:8px 12px;">Reactions with at least one kcat values</td>
+                            <td style="padding:8px 12px;">Reactions with EC information with at least one kcat values</td>
                             <td style="padding:8px 12px;">{nb_rxn_with_kcat} ({coverage:.1%})</td>
                             <td style="width:40%;">
                                 <div class="progress" style="height:18px;">
                                     <div class="progress-bar-table" 
                                         style="width:{coverage:.1%}; background-color:#4caf50;">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px 12px;">Reactions in the model with at least one kcat values</td>
+                            <td style="padding:8px 12px;">{nb_rxn_with_kcat} ({coverage_total:.1%})</td>
+                            <td style="width:40%;">
+                                <div class="progress" style="height:18px;">
+                                    <div class="progress-bar-table" 
+                                        style="width:{coverage_total:.1%}; background-color:#4caf50;">
                                     </div>
                                 </div>
                             </td>

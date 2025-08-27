@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 from wildkcat.machine_learning.catapro import create_catapro_input_file, integrate_catapro_predictions
-from wildkcat.utils.generate_reports import report_prediction_input, report_final
+from wildkcat.utils.generate_reports import report_prediction_input
 from wildkcat.utils.manage_warnings import DedupFilter
 
 
