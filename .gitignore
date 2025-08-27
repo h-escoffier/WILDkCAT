@@ -20,9 +20,9 @@ tempCodeRunnerFile.python
 .env
 
 # Ignore all the files not needed for the packaging 
-model/* 
-output/* 
-reports/*
+model
+output
+reports
 
 
 # Ignore non functional approaches 

@@ -59,7 +59,7 @@ def report_extraction(model, df, report_statistics):
     fig = px.pie(
         names=list(pie_data.keys()),
         values=list(pie_data.values()),
-        color_discrete_sequence=["#2ecc71", "#e67e22", "#c0392b"]
+        color_discrete_sequence=["#55bb55", "#ee9944", "#cc4455"]
     )
     fig.update_traces(textinfo="percent+label", textfont_size=16)
     fig.update_layout(
@@ -716,9 +716,9 @@ def report_final(model, final_df):
     total_db = db_counts.sum()
 
     colors = {
-        "brenda": "#1f77b4",      # blue
-        "sabio_rk": "#ff7f0e",    # orange
-        "catapro": "#2ca02c",     # green
+        "brenda": "#55bb55",      # blue
+        "sabio_rk": "#2277cc",    # orange
+        "catapro": "#eedd00",     # green
         "Unknown": "#ddd"      # gray
     }
 

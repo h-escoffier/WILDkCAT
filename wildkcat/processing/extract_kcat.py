@@ -3,11 +3,10 @@ import logging
 import pandas as pd
 from tqdm import tqdm
 from functools import lru_cache
-
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
-from wildkcat.api.api_utilities import safe_requests_get, retry_api
-from wildkcat.utils.generate_reports import report_extraction
+from ..api.api_utilities import safe_requests_get, retry_api
+from ..utils.generate_reports import report_extraction
 
 
 # --- Load Model ---
@@ -248,14 +247,16 @@ def create_kcat_output(model):
 # --- Main ---
 
 
-def run_extraction(model_path, output_path, report=True):
+def run_extraction(model_path: str, 
+                   output_path: str, 
+                   report: bool = True) -> None:
     """
     Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.
     
     Parameters: 
         model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
         output_path (str): Path to the output file (TSV format).
-        report (bool): Whether to generate an HTML report (default: True).
+        report (bool, optional): Whether to generate an HTML report (default: True).
     """
     model = read_model(model_path)
     df, report_statistics = create_kcat_output(model)
@@ -269,6 +270,6 @@ def run_extraction(model_path, output_path, report=True):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # Test : Main function
-    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv", 'eco')
-    # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv", 'sce')
-    # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv", 'hsa')
+    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv")
+    # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv")
+    # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv")

@@ -2,9 +2,9 @@ import logging
 import pandas as pd
 import numpy as np
 
-from wildkcat.machine_learning.catapro import create_catapro_input_file, integrate_catapro_predictions
-from wildkcat.utils.generate_reports import report_prediction_input
-from wildkcat.utils.manage_warnings import DedupFilter
+from ..machine_learning.catapro import create_catapro_input_file, integrate_catapro_predictions
+from ..utils.generate_reports import report_prediction_input
+from ..utils.manage_warnings import DedupFilter
 
 
 # TODO: Add a warning if there is the same SMILE for multiple KEGG IDs ?
@@ -51,7 +51,7 @@ def format_output(kcat_df, limit_matching_score):
     kcat_df = kcat_df[[
         "rxn", "KEGG_rxn_id", "ec_code", "direction", 
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
-        "genes_model", "uniprot_model", # "kegg_genes", "intersection_genes", 
+        "genes_model", "uniprot_model",
         "kcat", "kcat_source", "catapro_predicted_kcat_s", 
         "kcat_source_db", "kcat_db", "matching_score",
         "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
@@ -63,7 +63,10 @@ def format_output(kcat_df, limit_matching_score):
 # --- Main ---
 
 
-def run_prediction_part1(kcat_file_path, limit_matching_score, output_path, report=True):
+def run_prediction_part1(kcat_file_path: str, 
+                         limit_matching_score: int, 
+                         output_path: str, 
+                         report: bool = True) -> None:
     """
     Processes kcat data file to generate input files for CataPro prediction.
     Optionally, it can produce a summary report of the processed data.
@@ -74,6 +77,9 @@ def run_prediction_part1(kcat_file_path, limit_matching_score, output_path, repo
         output_path (str): Path to save the generated CataPro input CSV file.
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
+    # Add a deduplication filter to the logger
+    logging.getLogger().addFilter(DedupFilter())
+
     # Read the kcat file
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
 
@@ -99,7 +105,11 @@ def run_prediction_part1(kcat_file_path, limit_matching_score, output_path, repo
         report_prediction_input(catapro_input_df, report_statistics)
 
 
-def run_prediction_part2(kcat_file_path, catapro_predictions_path, substrates_to_smiles_path, limit_matching_score, output_path, report=True):
+def run_prediction_part2(kcat_file_path: str, 
+                         catapro_predictions_path: str, 
+                         substrates_to_smiles_path: str, 
+                         limit_matching_score: int, 
+                         output_path: str) -> None:
     """
     Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
     mapping substrates to SMILES, formatting the output, and optionally generating a report.

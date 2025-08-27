@@ -1,15 +1,16 @@
+import time
 import logging
 import pandas as pd
 from tqdm import tqdm
 from functools import lru_cache 
-import time
 
-from wildkcat.api.sabio_rk_api import get_turnover_number_sabio
-from wildkcat.api.brenda_api import get_turnover_number_brenda
-from wildkcat.api.uniprot_api import identify_catalytic_enzyme
-from wildkcat.utils.matching import find_best_match
-from wildkcat.utils.generate_reports import report_retrieval
-from wildkcat.utils.manage_warnings import DedupFilter
+from ..api.sabio_rk_api import get_turnover_number_sabio
+from ..api.brenda_api import get_turnover_number_brenda
+from ..api.uniprot_api import identify_catalytic_enzyme
+
+from ..utils.matching import find_best_match
+from ..utils.generate_reports import report_retrieval
+from ..utils.manage_warnings import DedupFilter
 
 
 @lru_cache(maxsize=None)
@@ -83,7 +84,13 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     return best_candidate, best_score
 
 
-def run_retrieval(kcat_file_path, output_path, organism, temperature_range, pH_range, database= 'both', report=True):
+def run_retrieval(kcat_file_path: str,
+                  output_path: str,
+                  organism: str,
+                  temperature_range: tuple,
+                  pH_range: tuple,
+                  database: str = 'both',
+                  report: bool = True) -> None:
     """
     Retrieves closests kcat values from specified databases for entries in a kcat file, applies filtering criteria, 
     and saves the results to an output file.
@@ -92,12 +99,15 @@ def run_retrieval(kcat_file_path, output_path, organism, temperature_range, pH_r
         kcat_file_path (str): Path to the input kcat file.
         output_path (str): Path to save the output file with retrieved kcat values.
         organism (str): Organism name.
-        temperature_range (tuple or list): Acceptable temperature range for filtering (min, max).
-        pH_range (tuple or list): Acceptable pH range for filtering (min, max).
+        temperature_range (tuple): Acceptable temperature range for filtering (min, max).
+        pH_range (tuple): Acceptable pH range for filtering (min, max).
         database (str, optional): Specifies which database(s) to query for kcat values. 
             Options are 'both' (default), 'brenda', or 'sabio_rk'.
-        report (bool, optional): Whether to generate a report using the retrieved data (default: True).        
+        report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).        
     """
+    # Add a deduplication filter to the logger
+    logging.getLogger().addFilter(DedupFilter())
+
     # Create a dict with the general criterias
     general_criteria = {
         "Organism": organism,
@@ -174,9 +184,6 @@ if __name__ == "__main__":
     # print(output)
 
     # Test : Run the retrieve function
-    
-    logging.basicConfig(level=logging.INFO)
-    logging.getLogger().addFilter(DedupFilter())
 
     run_retrieval(
         kcat_file_path="output/ecoli_kcat.tsv",
