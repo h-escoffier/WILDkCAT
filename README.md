@@ -6,9 +6,14 @@
 
 ## Installation
 
-1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/).
+1. Clone the repository:
 
-2. Download `environment.yml` to your project folder.
+```bash
+git clone https://github.com/h-escoffier/WILDkCAT.git
+cd WILDkCAT
+```
+
+2. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/).
 
 3. Create and activate the environment:
 
