@@ -225,10 +225,10 @@ def get_cofactor(ec_number):
     return cofactor
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # Test : Send a request to BRENDA API
-    df = get_turnover_number_brenda(ec_number="2.5.1.3")
-    df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
+    # df = get_turnover_number_brenda(ec_number="2.5.1.3")
+    # df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
 
     # Test : Identify cofactor
     # df = get_cofactor("1.1.1.42")

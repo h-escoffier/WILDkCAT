@@ -249,14 +249,14 @@ def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predict
     return kcat_df
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # Test : Retrieve SMILES from KEGG ID
-    print(convert_kegg_to_smiles("C00008"))
+    # print(convert_kegg_to_smiles("C00008"))
 
     # Test : Retrieve Sequence from UniProt ID
-    print(convert_uniprot_to_sequence("P0A796"))
+    # print(convert_uniprot_to_sequence("P0A796"))
 
     # Test : Integrate CataPro predictions into kcat file
-    kcat_df = pd.read_csv("output/ecoli_kcat_sabio.tsv", sep='\t')
-    substrates_to_smiles = pd.read_csv('in_progress/ml_test/substrates_to_smiles.tsv', sep='\t')
-    integrate_catapro_predictions(kcat_df, substrates_to_smiles, "in_progress/ml_test/catapro_output.csv", "in_progress/ml_test/ecoli_kcat_catapro.tsv")
+    # kcat_df = pd.read_csv("output/ecoli_kcat_sabio.tsv", sep='\t')
+    # substrates_to_smiles = pd.read_csv('in_progress/ml_test/substrates_to_smiles.tsv', sep='\t')
+    # integrate_catapro_predictions(kcat_df, substrates_to_smiles, "in_progress/ml_test/catapro_output.csv", "in_progress/ml_test/ecoli_kcat_catapro.tsv")

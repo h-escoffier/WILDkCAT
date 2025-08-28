@@ -162,7 +162,7 @@ def create_kcat_output(model):
             if not ec_pattern.match(ec):
                 if ec not in set_incomplete_ec_codes:
                     set_incomplete_ec_codes.add(ec)
-                    logging.warning(f"EC code '{ec}' is not in the correct format, skipping.")
+                    logging.warning(f"EC code {ec} is not in the correct format, skipping.")
                 continue
             
             is_transferred = is_ec_code_transferred(ec)
@@ -265,11 +265,3 @@ def run_extraction(model_path: str,
     logging.info(f"Output saved to '{output_path}'")
     if report:
         report_extraction(model, df, report_statistics)
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    # Test : Main function
-    run_extraction("model/e_coli_core.json", "output/ecoli_kcat.tsv")
-    # run_extraction("model/yeast-GEM.xml", "output/yeast_kcat.tsv")
-    # run_extraction("model/Human-GEM.xml", "output/human_gem_kcat.tsv")

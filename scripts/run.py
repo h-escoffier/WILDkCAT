@@ -1,6 +1,9 @@
 import typer
-
+from dotenv import load_dotenv
 from wildkcat import run_extraction, run_retrieval, run_prediction_part1, run_prediction_part2, generate_summary_report
+
+
+load_dotenv()
 
 
 app = typer.Typer(help="WILDkCAT CLI - Extract, Retrieve and Predict kcat values for a metabolic model.")
@@ -33,7 +36,7 @@ def retrieval(
     output_path: str,
     organism: str,
     temperature_range: tuple[float, float],
-    pH_range: tuple[float, float],
+    ph_range: tuple[float, float],
     database: str = 'both',
     report: bool = True
 ):
@@ -51,7 +54,7 @@ def retrieval(
 
         temperature_range (tuple): Acceptable temperature range for filtering (min, max).
 
-        pH_range (tuple): Acceptable pH range for filtering (min, max).
+        ph_range (tuple): Acceptable pH range for filtering (min, max).
 
         database (str, optional): Specifies which database(s) to query for kcat values. Options are 'both' (default), 'brenda', or 'sabio_rk'.
 
@@ -62,7 +65,7 @@ def retrieval(
         output_path=output_path,
         organism=organism,
         temperature_range=temperature_range,
-        pH_range=pH_range,
+        pH_range=ph_range,
         database=database,
         report=report
     )

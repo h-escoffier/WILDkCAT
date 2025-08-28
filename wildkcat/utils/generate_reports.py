@@ -454,6 +454,9 @@ def report_retrieval(df):
 
 
 def report_prediction_input(catapro_df, report_statistics): 
+    
+    # TODO: Show the number of rows without any enzymes
+
     # CataPro Statistics 
     total_catapro_entries = len(catapro_df) - 1
 

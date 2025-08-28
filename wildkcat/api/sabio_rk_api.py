@@ -84,7 +84,7 @@ def get_turnover_number_sabio(ec_number):
     return df
 
         
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # Test : Send a request to SABIO-RK API
-    df = get_turnover_number_sabio(ec_number="1.1.1.42")
-    df.to_csv("in_progress/api_output_test/sabio_rk_test.tsv", sep='\t', index=False)
+    # df = get_turnover_number_sabio(ec_number="1.1.1.42")
+    # df.to_csv("in_progress/api_output_test/sabio_rk_test.tsv", sep='\t', index=False)

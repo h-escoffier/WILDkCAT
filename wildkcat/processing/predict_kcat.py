@@ -136,7 +136,7 @@ def run_prediction_part2(kcat_file_path: str,
     logging.info(f"Output saved to '{output_path}'")
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # Test : Retrieve SMILES from KEGG ID
     # print(convert_kegg_to_smiles("C00008"))
 
@@ -144,15 +144,13 @@ if __name__ == "__main__":
     # print(convert_uniprot_to_sequence("P0A796"))
     
     # Test : Main function
-    logging.basicConfig(level=logging.INFO)
-    logging.getLogger().addFilter(DedupFilter())
 
     # run_prediction_part1("output/ecoli_kcat_brenda.tsv", -1, "output/machine_learning/ecoli_catapro_input.csv")
-    run_prediction_part2("output/ecoli_kcat_brenda.tsv", 
-                         "output/machine_learning/ecoli_catapro_output.csv", 
-                         "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
-                         8, 
-                         "output/ecoli_kcat_full.tsv")
+    # run_prediction_part2("output/ecoli_kcat_brenda.tsv", 
+    #                      "output/machine_learning/ecoli_catapro_output.csv", 
+    #                      "output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
+    #                      8, 
+    #                      "output/ecoli_kcat_full.tsv")
     
     # run_prediction_part1("output/yeast_kcat_brenda.tsv", -1, "output/machine_learning/yeast_catapro_input.csv")
     # run_prediction_part2("output/yeast_kcat_brenda.tsv", 

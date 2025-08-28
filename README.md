@@ -17,6 +17,21 @@ conda env create -f environment.yml
 conda activate wildkcat-env
 ```
 
+4. Provide your **BRENDA login credentials** to query the BRENDA enzyme database.  
+
+Create a file named `.env` in the root of your project with the following content:
+
+```bash
+BRENDA_EMAIL=your_registered_email@example.com
+BRENDA_PASSWORD=your_password
+```
+
+* Replace the placeholders with the credentials from the account you created on the [BRENDA website](https://www.brenda-enzymes.org).
+* Make sure this file is not shared publicly (e.g., add .env to your .gitignore) since it contains sensitive information.
+* The scripts will automatically read these environment variables to authenticate and retrieve kcat values.
+
+---
+
 ## Scripts Overview
 
 ### `extract_kcat.py`

@@ -90,12 +90,12 @@ def identify_catalytic_enzyme(lst_uniprot_ids, ec):
     return catalytic_enzyme
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # Test : Send a request to UniProt API
     # uniprot_id = "Q16774"
     # seq = convert_uniprot_to_sequence(uniprot_id)
     # print(seq)
 
     # Test : Check if catalytic activity is retrieved
-    response = catalytic_activity("P06959")
-    print(response)
+    # response = catalytic_activity("P06959")
+    # print(response)
