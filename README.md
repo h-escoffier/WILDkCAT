@@ -22,11 +22,12 @@ conda env create -f environment.yml
 conda activate wildkcat-env
 ```
 
-4. Provide your **BRENDA login credentials** to query the BRENDA enzyme database.  
+4. Provide your **BRENDA login credentials** and **Entrez API email adress** to query the BRENDA enzyme database and NCBI database.
 
 Create a file named `.env` in the root of your project with the following content:
 
 ```bash
+ENTREZ_EMAIL=your_registered_email@example.com
 BRENDA_EMAIL=your_registered_email@example.com
 BRENDA_PASSWORD=your_password
 ```

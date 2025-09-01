@@ -21,3 +21,9 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/h-escoffier/WILDkCAT"
 Issues = "https://github.com/h-escoffier/WILDkCAT"
+
+[tool.hatch.build]
+exclude = [
+  "example",
+  "reports"
+]
