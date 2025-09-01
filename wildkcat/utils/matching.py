@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from wildkcat.utils.temperature import arrhenius_equation, calculate_ea
-from wildkcat.utils.organism import closest_org
+from wildkcat.utils.organism import closest_enz, closest_taxonomy
 
 
 # TODO: Limit the Ea to the same pH 
@@ -244,8 +244,9 @@ def find_best_match(kcat_dict, api_output, general_criteria):
     if api_output.empty:
         return 14, None
 
-    # 2. Calculate enzyme identity percentage
-    api_output = closest_org(kcat_dict, api_output)
+    # 2. Calculate enzyme identity percentage and taxonomy score
+    api_output = closest_enz(kcat_dict, api_output)
+    api_output = closest_taxonomy(general_criteria, api_output)
 
     # 3. Compute score and adjust kcat if needed
     scores = []
@@ -271,11 +272,11 @@ def find_best_match(kcat_dict, api_output, general_criteria):
 
     # 4. Sort: best score, then highest id_perc, then smallest kcat
     api_output = api_output.sort_values(
-        by=['score', 'id_perc', 'adj_kcat'],
-        ascending=[True, False, True], # Change to [True, False, False] to take the max instead of the min
+        by=['score', 'id_perc', 'organism_score', 'adj_kcat'],
+        ascending=[True, False, True, True], # Change to [True, False, True, False] to take the max instead of the min
         kind='mergesort'  # stable sort for reproducibility
     )
-    
+
     # 5. Select best candidate
     best_candidate = api_output.iloc[0].to_dict()
     best_candidate['catalytic_enzyme'] = kcat_dict.get('catalytic_enzyme')

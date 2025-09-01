@@ -7,7 +7,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
-import seaborn as sns
 from matplotlib.ticker import LogFormatter
 from io import BytesIO
 
@@ -145,7 +144,7 @@ def report_extraction(model, df, report_statistics):
                     </tr>
                     <tr>
                         <td>Total rows in output (Rxn - EC - Enzyme - Substrate)</td>
-                        <td>{len(df)}</td>
+                        <td>{len(df) - 1}</td>
                         <td>-</td>
                     </tr>
                 </table>
@@ -213,7 +212,7 @@ def report_retrieval(df):
     # Only use scores present in the data
     present_scores = sorted(df['matching_score'].dropna().unique())
     score_counts = df['matching_score'].value_counts().reindex(present_scores, fill_value=0)
-    total = len(df)
+    total = len(df) - 1
     matched = len(kcat_values)
     match_percent = matched / total * 100 if total else 0
     score_percent = (score_counts / total * 100).round(2) if total else pd.Series(0, index=present_scores)
@@ -616,12 +615,12 @@ def report_final(model, final_df):
         return f'<div class="plot-container"><img src="data:image/png;base64,{encoded}"></div>'
 
     # Distribution plots
-    def plot_kcat_distribution_stacked(column_name, title):
+    def plot_kcat_distribution_stacked(column_name, title, source):
         # Ensure numeric kcat
         df[column_name] = pd.to_numeric(df[column_name], errors='coerce')
 
         # Drop NaNs for both columns
-        valid_df = df.dropna(subset=[column_name, "kcat_db"])
+        valid_df = df.dropna(subset=[column_name, source])
         kcat_values = valid_df[column_name]
 
         total = len(df)
@@ -635,11 +634,18 @@ def report_final(model, final_df):
             bins = np.logspace(min_exp, max_exp, num=40)
 
             # Prepare data for stacked histogram
-            sources = valid_df["kcat_db"].unique()
-            grouped_values = [valid_df.loc[valid_df["kcat_db"] == src, column_name] for src in sources]
+            sources = valid_df[source].unique()
+            grouped_values = [valid_df.loc[valid_df[source] == src, column_name] for src in sources]
 
             # Colors from seaborn palette
-            colors = sns.color_palette("tab10", len(sources))
+            # Fixed color mapping
+            color_map = {
+                "brenda": "#55bb55",   # green
+                "sabio_rk": "#2277cc", # blue
+                "catapro": "#eedd00",  # yellow
+                "Unknown": "#dddddd"   # gray
+            }
+            colors = [color_map.get(src, "#999999") for src in sources]  # fallback gray
 
             # Plot
             fig, ax = plt.subplots(figsize=(10, 6))
@@ -674,7 +680,7 @@ def report_final(model, final_df):
             bins = np.logspace(min_exp, max_exp, num=40)
 
             fig, ax = plt.subplots(figsize=(10, 6))
-            ax.hist(kcat_values, bins=bins, color="steelblue",
+            ax.hist(kcat_values, bins=bins, color="#2277cc",
                     edgecolor="white", linewidth=0.7)
 
             ax.set_xscale("log")
@@ -688,14 +694,14 @@ def report_final(model, final_df):
             return fig_to_base64(fig)
         return "<p>No valid values available for plotting.</p>"
 
-    img_source = plot_kcat_distribution(
-        'kcat_source', "Experimental kcat distribution"
+    img_source = plot_kcat_distribution_stacked(
+        'kcat_source', "Experimental kcat distribution", "kcat_source_db"
     )
     img_pred = plot_kcat_distribution(
         'catapro_predicted_kcat_s', "Predicted kcat distribution"
     )
     img_final = plot_kcat_distribution_stacked(
-        'kcat', "kcat distribution"
+        'kcat', "kcat distribution", "kcat_db"
     )
 
     # Difference boxplot
@@ -703,13 +709,13 @@ def report_final(model, final_df):
         df["kcat_diff"] = df["catapro_predicted_kcat_s"] - df["kcat_source"]
         fig, ax = plt.subplots(figsize=(8, 5))
         df.boxplot(column="kcat_diff", by="matching_score", grid=False,
-                   boxprops=dict(color="skyblue"), medianprops=dict(color="black"), ax=ax)
+                   boxprops=dict(color="#2277cc"), medianprops=dict(color="black"), ax=ax)
         ax.set_yscale("symlog")
         ax.set_ylabel("Difference (Predicted - Source kcat, s⁻¹)")
         ax.set_xlabel("Matching Score")
         ax.set_title("Difference of retrieved vs predicted kcat")
         plt.suptitle("")
-        ax.axhline(0, color="red", linestyle="--", linewidth=1)
+        ax.axhline(0, color="#cc4455", linestyle="--", linewidth=1)
         img_diff = fig_to_base64(fig)
     else:
         img_diff = "<p>Required columns missing for difference plot.</p>"

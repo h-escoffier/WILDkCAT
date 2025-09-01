@@ -1,7 +1,5 @@
-import logging
 import pandas as pd 
 import numpy as np
-from functools import lru_cache
 
 
 def arrhenius_equation(candidate, api_output, general_criteria):

@@ -168,35 +168,36 @@ def run_retrieval(kcat_file_path: str,
 
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
-    # kcat_dict = {
-    #     'ec_code': '2.3.1.23',
-    #     'uniprot_model': 'Q06510',
-    #     'substrates_name': 'cardiolipin (1-16:1, 2-16:1, 3-16:1, 4-18:1);1-acylglycerophosphocholine (18:1)', 
-    # }
+    kcat_dict = {
+        'ec_code': '1.1.1.1',
+        'KEGG_rxn_id': 'R00754',
+        'uniprot_model': 'P00330',
+        'substrates_name': 'H+;NADH;propanal', 
+    }
 
-    # general_criteria ={
-    #     'Organism': 'Saccharomyces cerevisiae', 
-    #     'Temperature': (18, 38), 
-    #     'pH': (4.0, 8.0)
-    # }
+    general_criteria ={
+        'Organism': 'Saccharomyces cerevisiae', 
+        'Temperature': (18, 38), 
+        'pH': (4.0, 8.0)
+    }
 
-    # output = extract_kcat(kcat_dict, general_criteria, database='brenda')
-    # print(output)
+    output = extract_kcat(kcat_dict, general_criteria, database='both')
+    print(output)
 
     # Test : Run the retrieve function
 
-    run_retrieval(
-        kcat_file_path="output/ecoli_kcat.tsv",
-        output_path="output/ecoli_kcat_both.tsv",
-        # output_path="output/ecoli_kcat_sabio.tsv",
-        organism="Escherichia coli",
-        temperature_range=(20, 40),
-        pH_range=(6.5, 7.5),
-        database='both', 
-        # database='brenda', 
-        # database='sabio_rk', 
-        report=False
-    ) 
+    # run_retrieval(
+    #     kcat_file_path="output/ecoli_kcat.tsv",
+    #     output_path="output/ecoli_kcat_both.tsv",
+    #     # output_path="output/ecoli_kcat_sabio.tsv",
+    #     organism="Escherichia coli",
+    #     temperature_range=(20, 40),
+    #     pH_range=(6.5, 7.5),
+    #     database='both', 
+    #     # database='brenda', 
+    #     # database='sabio_rk', 
+    #     report=False
+    # ) 
 
     # run_retrieval(
     #     kcat_file_path="output/yeast_kcat.tsv",
@@ -211,6 +212,6 @@ if __name__ == "__main__":
     # ) 
 
     # Test : Generate report
-    df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
-    # df = pd.read_csv("output/ecoli_kcat_brenda.tsv", sep='\t')
-    report_retrieval(df)
+    # df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
+    # # df = pd.read_csv("output/ecoli_kcat_brenda.tsv", sep='\t')
+    # report_retrieval(df)
