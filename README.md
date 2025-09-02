@@ -25,9 +25,9 @@ BRENDA_PASSWORD=your_password
 ```
 
 > [!IMPORTANT] 
-> Replace the placeholders with the credentials from the account you created on the [BRENDA website](https://www.brenda-enzymes.org).
-> Ensure this file is **not shared publicly** (e.g., add .env to your .gitignore) since it contains sensitive information.
-> The scripts will automatically read these environment variables to authenticate and retrieve kcat values.
+> * Replace the placeholders with the credentials from the account you created on the [BRENDA website](https://www.brenda-enzymes.org).
+> * Ensure this file is **not shared publicly** (e.g., add .env to your .gitignore) since it contains sensitive information.
+> * The scripts will automatically read these environment variables to authenticate and retrieve kcat values.
 
 ---
 
