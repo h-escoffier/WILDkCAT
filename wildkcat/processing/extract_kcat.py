@@ -6,8 +6,11 @@ from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 from ..api.api_utilities import safe_requests_get, retry_api
+from ..utils.manage_warnings import log_warning
 from ..utils.generate_reports import report_extraction
 
+
+logger = log_warning('warnings_retrieval.log')
 
 # --- Load Model ---
 
@@ -58,7 +61,7 @@ def is_ec_code_transferred(ec_code):
     if not response:
         return None
     if "Transferred to" in response.text:
-        logging.warning(f"EC code {ec_code} transferred to {response.text.split('Transferred to', 1)[1].lower().strip()}")
+        logger.warning(f"EC code {ec_code} transferred to {response.text.split('Transferred to', 1)[1].lower().strip()}")
         return True
     return False
 
@@ -162,7 +165,7 @@ def create_kcat_output(model):
             if not ec_pattern.match(ec):
                 if ec not in set_incomplete_ec_codes:
                     set_incomplete_ec_codes.add(ec)
-                    logging.warning(f"EC code {ec} is not in the correct format, skipping.")
+                    logger.warning(f"EC code {ec} is not in the correct format")
                 continue
             
             is_transferred = is_ec_code_transferred(ec)

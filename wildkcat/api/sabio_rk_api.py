@@ -1,8 +1,9 @@
 import requests
-import logging
 import pandas as pd 
 from io import StringIO
 from functools import lru_cache 
+
+from ..utils.manage_warnings import logger_retrieval as logger
 
 
 # --- Sabio-RK API ---
@@ -31,7 +32,7 @@ def get_turnover_number_sabio(ec_number):
     request = requests.get(base_url, params=query)
     request.raise_for_status()
     if request.text == "no data found":
-        logging.warning('%s: No data found for the query in SABIO-RK.' % f"{ec_number}")
+        logger.warning('%s: No data found for the query in SABIO-RK.' % f"{ec_number}")
         return pd.DataFrame()  # Return empty DataFrame if no data found
 
     entryIDs = [int(x) for x in request.text.strip().split('\n')]

@@ -1,0 +1,5 @@
+site_name: WILDkCAT Documentation
+
+theme:
+  name: material
+  custom_dir: overrides

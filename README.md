@@ -1,5 +1,7 @@
 # WILDkCAT
 
+[![pypi](https://img.shields.io/pypi/v/wildkcat.svg)](https://pypi.org/project/wildkcat/) [![stable documentation](https://img.shields.io/badge/docs-stable-blue)]()
+
 **WILDkCAT** is a set of scripts designed to extract, retrieve, and predict enzyme turnover numbers (**kcat**) for genome-scale metabolic models.   
 
 ---
@@ -55,7 +57,7 @@ wildkcat wildkcat extraction \
 wildkcat retrieval \
     path/to/kcat_data.tsv \
     path/to/kcat_retrieved.tsv \
-    "Organism name" \
+    'Organism name' \
     20 30 \  # Temperature range
     6.5 8.5 \  # pH range
 

@@ -10,7 +10,6 @@ from ..api.uniprot_api import identify_catalytic_enzyme
 
 from ..utils.matching import find_best_match
 from ..utils.generate_reports import report_retrieval
-from ..utils.manage_warnings import DedupFilter
 
 
 @lru_cache(maxsize=None)
@@ -105,9 +104,6 @@ def run_retrieval(kcat_file_path: str,
             Options are 'both' (default), 'brenda', or 'sabio_rk'.
         report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).        
     """
-    # Add a deduplication filter to the logger
-    logging.getLogger().addFilter(DedupFilter())
-
     # Create a dict with the general criterias
     general_criteria = {
         "Organism": organism,
