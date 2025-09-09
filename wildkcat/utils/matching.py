@@ -244,13 +244,9 @@ def find_best_match(kcat_dict, api_output, general_criteria):
     if api_output.empty:
         return 14, None
 
-    # 2. Calculate enzyme identity percentage and taxonomy score
-    api_output = closest_enz(kcat_dict, api_output)
-    api_output = closest_taxonomy(general_criteria, api_output)
-
-    # 3. Compute score and adjust kcat if needed
+    # 2. Compute score and adjust kcat if needed
     scores = []
-    adjusted_kcats = []
+    adjusted_kcats, adjusted_temps = [], []
 
     for _, row in api_output.iterrows():
         candidate_dict = row.to_dict()
@@ -261,24 +257,46 @@ def find_best_match(kcat_dict, api_output, general_criteria):
             candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])
         scores.append(score)
         adjusted_kcats.append(candidate_dict.get('value', row['value']))
+        adjusted_temps.append(candidate_dict.get('Temperature', row['Temperature']))
 
     api_output = api_output.copy()
     api_output['score'] = scores
     api_output['adj_kcat'] = adjusted_kcats
+    api_output['adj_temp'] = adjusted_temps
 
     api_output["score"] = pd.to_numeric(api_output["score"], errors="coerce").fillna(13)
-    api_output["id_perc"] = pd.to_numeric(api_output.get("id_perc", np.nan), errors="coerce").fillna(-1).round(2)
     api_output["adj_kcat"] = pd.to_numeric(api_output["adj_kcat"], errors="coerce")
 
-    # 4. Sort: best score, then highest id_perc, then smallest kcat
-    api_output = api_output.sort_values(
-        by=['score', 'id_perc', 'organism_score', 'adj_kcat'],
-        ascending=[True, False, True, True], # Change to [True, False, True, False] to take the max instead of the min
-        kind='mergesort'  # stable sort for reproducibility
-    )
+    # Initialize columns for tie-breaking
+    api_output['id_perc'] = -1
+    api_output['organism_score'] = np.inf
+
+    # 3. Keep only best-score candidates
+    min_score = api_output['score'].min()
+    tied = api_output[api_output['score'] == min_score]
+
+    # 4. Tie-breaking
+    if len(tied) > 1:
+        # Tie-break with enzyme identity
+        tied = closest_enz(kcat_dict, tied)
+        if not tied['id_perc'].isna().all():
+            max_id = tied['id_perc'].max()
+            tied = tied[tied['id_perc'] == max_id]
+
+    if len(tied) > 1:
+        # Tie-break with taxonomy
+        tied = closest_taxonomy(general_criteria, tied)
+        if not tied['organism_score'].isna().all():
+            min_tax = tied['organism_score'].min()
+            tied = tied[tied['organism_score'] == min_tax]
+
+    if len(tied) > 1:
+        # Tie-break with lowest kcat
+        min_kcat = tied['adj_kcat'].min()
+        tied = tied[tied['adj_kcat'] == min_kcat]
 
     # 5. Select best candidate
-    best_candidate = api_output.iloc[0].to_dict()
+    best_candidate = tied.iloc[0].to_dict()
     best_candidate['catalytic_enzyme'] = kcat_dict.get('catalytic_enzyme')
     best_score = best_candidate['score']
 

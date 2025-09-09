@@ -10,23 +10,17 @@ __pycache__/
 tempCodeRunnerFile.py
 tempCodeRunnerFile.python
 
-
 # Ignore Test related files 
 *.egg-info/
 .pytest_cache/
 
 # Ignore personal files 
+model/Human-GEM.xml
+model/yeast-GEM.xml 
+output
+warnings
+non_functional_approaches
+in_progress
 *.ipynb
 .env
 
-# Ignore all the files not needed for the packaging 
-model
-output
-
-
-# Ignore non functional approaches 
-non_functional_approaches
-
-# Ignore data files (Too large to include in the repo)
-data
-in_progress

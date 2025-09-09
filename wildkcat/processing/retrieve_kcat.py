@@ -1,5 +1,6 @@
 import time
 import logging
+import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from functools import lru_cache 
@@ -143,17 +144,19 @@ def run_retrieval(kcat_file_path: str,
         
         if best_match is not None:
             # Assign results to the main dataframe
-            kcat_df.loc[row.Index, 'kcat'] = best_match['value']
+            kcat_df.loc[row.Index, 'kcat'] = best_match['adj_kcat']
             kcat_df.loc[row.Index, 'catalytic_enzyme'] = best_match['catalytic_enzyme']
             kcat_df.loc[row.Index, 'kcat_substrate'] = best_match['Substrate']
             kcat_df.loc[row.Index, 'kcat_organism'] = best_match['Organism']
             kcat_df.loc[row.Index, 'kcat_enzyme'] = best_match['UniProtKB_AC']
-            kcat_df.loc[row.Index, 'kcat_temperature'] = best_match['Temperature']
+            kcat_df.loc[row.Index, 'kcat_temperature'] = best_match['adj_temp']
             kcat_df.loc[row.Index, 'kcat_ph'] = best_match['pH']
             kcat_df.loc[row.Index, 'kcat_variant'] = best_match['EnzymeVariant']
             kcat_df.loc[row.Index, 'kcat_db'] = best_match['db']
             if best_match.get('id_perc') != -1:
                 kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
+            if best_match.get('organism_score') != np.inf:
+                kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
 
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")

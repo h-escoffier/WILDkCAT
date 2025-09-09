@@ -6,11 +6,9 @@ from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 from ..api.api_utilities import safe_requests_get, retry_api
-from ..utils.manage_warnings import log_warning
+from ..utils.manage_warnings import logger_extraction as logger 
 from ..utils.generate_reports import report_extraction
 
-
-logger = log_warning('warnings_retrieval.log')
 
 # --- Load Model ---
 
