@@ -1,5 +1,48 @@
 site_name: WILDkCAT Documentation
 
-theme:
+theme: 
   name: material
-  custom_dir: overrides
+  features:
+    - navigation.expand
+    - navigation.tabs
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+    - content.code.fold
+    - toc.integrate
+    - header.autohide
+    - admonition
+  icon:
+    admonition:
+      warning: fontawesome/solid/triangle-exclamation
+      note: fontawesome/solid/note-sticky
+      tip: fontawesome/solid/bullhorn
+      danger: fontawesome/solid/skull
+
+
+plugins: 
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+              show_root_heading: true
+              show_root_toc_entry: false
+              heading_level: 3
+
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+
+nav: 
+  - Home: index.md
+  - Installation: installation.md
+  - Explanation: explanation.md
+  - Tutorials: tutorials.md
+  - Reference: reference.md
+

@@ -49,7 +49,7 @@ Example Workflow:
 
 ```bash
 # Extract kcat data
-wildkcat wildkcat extraction \
+wildkcat extraction \
     path/to/my_model.json \
     path/to/kcat_data.tsv
 

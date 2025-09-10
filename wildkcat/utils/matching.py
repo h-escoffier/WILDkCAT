@@ -1,6 +1,7 @@
 import re 
 import pandas as pd 
 import numpy as np
+from typing import Optional, Tuple, Dict, Any
 
 from ..utils.temperature import arrhenius_equation, calculate_ea
 from ..utils.organism import closest_enz, closest_taxonomy
@@ -8,6 +9,7 @@ from ..utils.manage_warnings import logger_retrieval as logger
 
 
 # TODO: Limit the Ea to the same pH ? 
+# TODO: Tie computation could be speed up by computing only if there is different enzyme or organism
 
 
 # --- Utils --- 
@@ -212,17 +214,16 @@ def compute_score(kcat_dict, candidate, general_criteria, api_output):
 # --- Main --- 
 
 
-def find_best_match(kcat_dict, api_output, general_criteria):
+def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Optional[Dict[str, Any]]]:
     """
     Finds the best matching enzyme entry from the provided API output based on: 
         - Kcat specific criteria: 
             * Substrate 
             * Catalytic enzyme(s)
-
-       - General criteria : 
-           * Organism
-           * Temperature
-           * pH
+        - General criteria : 
+            * Organism
+            * Temperature
+            * pH
 
     This function filters out mutant enzyme variants, orders the remaining entries based on enzyme and organism similarity,
     and iteratively computes a score for each candidate to identify the best match. If a candidate requires an Arrhenius

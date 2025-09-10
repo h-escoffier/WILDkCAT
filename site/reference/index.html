@@ -1,0 +1,2475 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../tutorials/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Reference - WILDkCAT Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.0.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M256%200c14.7%200%2028.2%208.1%2035.2%2021l216%20400c6.7%2012.4%206.4%2027.4-.8%2039.5S486.1%20480%20472%20480H40c-14.1%200-27.1-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9%2020.5-21%2035.2-21m0%20168c-13.3%200-24%2010.7-24%2024v112c0%2013.3%2010.7%2024%2024%2024s24-10.7%2024-24V192c0-13.3-10.7-24-24-24m26.7%20216a26.7%2026.7%200%201%200-53.3%200%2026.7%2026.7%200%201%200%2053.3%200%22/%3E%3C/svg%3E');--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.0.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M64%20480c-35.3%200-64-28.7-64-64V96c0-35.3%2028.7-64%2064-64h320c35.3%200%2064%2028.7%2064%2064v213.5c0%2017-6.7%2033.3-18.7%2045.3L322.7%20461.3c-12%2012-28.3%2018.7-45.3%2018.7zm325.5-176H296c-13.3%200-24%2010.7-24%2024v93.5z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.0.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M461.2%2018.9C472.7%2024%20480%2035.4%20480%2048v416c0%2012.6-7.3%2024-18.8%2029.1s-24.8%203.2-34.3-5.1l-46.6-40.7c-43.6-38.1-98.7-60.3-156.4-63V480c0%2017.7-14.3%2032-32%2032h-32c-17.7%200-32-14.3-32-32v-96C57.3%20384%200%20326.7%200%20256s57.3-128%20128-128h84.5c61.8-.2%20121.4-22.7%20167.9-63.3L427%2024c9.4-8.3%2022.9-10.2%2034.3-5.1zM224%20320v.2c70.3%202.7%20137.8%2028.5%20192%2073.4V118.3c-54.2%2044.9-121.7%2070.7-192%2073.4z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.0.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20fill%3D%22currentColor%22%20d%3D%22M416%20427.4c58.5-44%2096-111.6%2096-187.4C512%20107.5%20397.4%200%20256%200S0%20107.5%200%20240c0%2075.8%2037.5%20143.4%2096%20187.4V464c0%2026.5%2021.5%2048%2048%2048h32v-40c0-13.3%2010.7-24%2024-24s24%2010.7%2024%2024v40h64v-40c0-13.3%2010.7-24%2024-24s24%2010.7%2024%2024v40h32c26.5%200%2048-21.5%2048-48zM96%20256a64%2064%200%201%201%20128%200%2064%2064%200%201%201-128%200m256-64a64%2064%200%201%201%200%20128%2064%2064%200%201%201%200-128%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#main-functions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="WILDkCAT Documentation" class="md-header__button md-logo" aria-label="WILDkCAT Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            WILDkCAT Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../explanation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Explanation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tutorials/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorials
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Reference
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="WILDkCAT Documentation" class="md-nav__button md-logo" aria-label="WILDkCAT Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    WILDkCAT Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../explanation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Explanation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extraction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extraction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.processing.extract_kcat.run_extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      run_extraction
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieval
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Retrieval">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.processing.retrieve_kcat.run_retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      run_retrieval
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prediction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prediction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.processing.predict_kcat.run_prediction_part1" class="md-nav__link">
+    <span class="md-ellipsis">
+      run_prediction_part1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.processing.predict_kcat.run_prediction_part2" class="md-nav__link">
+    <span class="md-ellipsis">
+      run_prediction_part2
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary report
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Summary report">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.processing.summary.generate_summary_report" class="md-nav__link">
+    <span class="md-ellipsis">
+      generate_summary_report
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matching-process-and-scoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Matching process and scoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Matching process and scoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      matching
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="matching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.check_catalytic_enzyme" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_catalytic_enzyme
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.check_organism" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_organism
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.check_pH" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_pH
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.check_substrate" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_substrate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.check_temperature" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_temperature
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.check_variant" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_variant
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.compute_score" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute_score
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wildkcat.utils.matching.find_best_match" class="md-nav__link">
+    <span class="md-ellipsis">
+      find_best_match
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="main-functions">Main functions</h1>
+<p>The <code>wildkcat</code> package is organized into modules: </p>
+<ol>
+<li>
+<p><strong>Extraction</strong> : Extraction of <em>kcat</em> values from the provided model</p>
+</li>
+<li>
+<p><strong>Retrieval</strong> : Retrieval of <em>kcat</em> values using curated databases (BRENDA and SABIO-RK)</p>
+</li>
+<li>
+<p><strong>Prediction</strong> : Prediction of missing and low confidence <em>kcat</em> values using ML-based CataPro model</p>
+</li>
+<li>
+<p><strong>Summary</strong> : Generates an HTML report summarizing the percentage and quality of kcat values identified for the model, along with their data sources.</p>
+</li>
+</ol>
+<hr />
+<h2 id="extraction">Extraction</h2>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="wildkcat.processing.extract_kcat.run_extraction" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">extract_kcat</span><span class="o">.</span><span class="n">run_extraction</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>model_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the metabolic model file (JSON, MATLAB, or SBML format).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>output_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the output file (TSV format).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>report</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to generate an HTML report (default: True).</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/processing/extract_kcat.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_extraction</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                   <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                   <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).</span>
+<span class="sd">        output_path (str): Path to the output file (TSV format).</span>
+<span class="sd">        report (bool, optional): Whether to generate an HTML report (default: True).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">read_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span> <span class="o">=</span> <span class="n">create_kcat_output</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report_extraction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><hr />
+<h2 id="retrieval">Retrieval</h2>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="wildkcat.processing.retrieve_kcat.run_retrieval" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">retrieve_kcat</span><span class="o">.</span><span class="n">run_retrieval</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">organism</span><span class="p">,</span> <span class="n">temperature_range</span><span class="p">,</span> <span class="n">pH_range</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Retrieves closests kcat values from specified databases for entries in a kcat file, applies filtering criteria, 
+and saves the results to an output file.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>kcat_file_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the input kcat file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>output_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to save the output file with retrieved kcat values.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>organism</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Organism name.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>temperature_range</code>
+            </td>
+            <td>
+                  <code><span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Acceptable temperature range for filtering (min, max).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>pH_range</code>
+            </td>
+            <td>
+                  <code><span title="tuple">tuple</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Acceptable pH range for filtering (min, max).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>database</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Specifies which database(s) to query for kcat values. 
+Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;both&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>report</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to generate an HTML report using the retrieved data (default: True).</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/processing/retrieve_kcat.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">temperature_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+                  <span class="n">pH_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+                  <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span>
+                  <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves closests kcat values from specified databases for entries in a kcat file, applies filtering criteria, </span>
+<span class="sd">    and saves the results to an output file.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        kcat_file_path (str): Path to the input kcat file.</span>
+<span class="sd">        output_path (str): Path to save the output file with retrieved kcat values.</span>
+<span class="sd">        organism (str): Organism name.</span>
+<span class="sd">        temperature_range (tuple): Acceptable temperature range for filtering (min, max).</span>
+<span class="sd">        pH_range (tuple): Acceptable pH range for filtering (min, max).</span>
+<span class="sd">        database (str, optional): Specifies which database(s) to query for kcat values. </span>
+<span class="sd">            Options are &#39;both&#39; (default), &#39;brenda&#39;, or &#39;sabio_rk&#39;.</span>
+<span class="sd">        report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a dict with the general criterias</span>
+    <span class="n">general_criteria</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Organism&quot;</span><span class="p">:</span> <span class="n">organism</span><span class="p">,</span>
+        <span class="s2">&quot;Temperature&quot;</span><span class="p">:</span> <span class="n">temperature_range</span><span class="p">,</span>
+        <span class="s2">&quot;pH&quot;</span><span class="p">:</span> <span class="n">pH_range</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Read the kcat file</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Initialize new columns</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Add data of the retrieve kcat values</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat_substrate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat_organism&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat_enzyme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat_temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat_ph&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat_variant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;kcat_db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Retrieve kcat values from databases</span>
+    <span class="n">request_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">kcat_df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Retrieving kcat values&quot;</span><span class="p">):</span>
+        <span class="n">kcat_dict</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
+
+        <span class="c1"># Extract kcat and matching score</span>
+        <span class="n">best_match</span><span class="p">,</span> <span class="n">matching_score</span> <span class="o">=</span> <span class="n">extract_kcat</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
+        <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matching_score</span>
+
+        <span class="n">request_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">request_count</span> <span class="o">%</span> <span class="mi">300</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">best_match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Assign results to the main dataframe</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;adj_kcat&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_substrate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;Substrate&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;Organism&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_enzyme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;UniProtKB_AC&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;adj_temp&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_ph&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;pH&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_variant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;EnzymeVariant&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">best_match</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id_perc&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_id_percent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">best_match</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;organism_score&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+                <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
+
+    <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report_retrieval</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><hr />
+<h2 id="prediction">Prediction</h2>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="wildkcat.processing.predict_kcat.run_prediction_part1" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part1</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Processes kcat data file to generate input files for CataPro prediction.
+Optionally, it can produce a summary report of the processed data.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>kcat_file_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the input kcat data file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>output_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to save the generated CataPro input CSV file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>limit_matching_score</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Threshold for filtering entries based on matching score.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>report</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to generate a report using the retrieved data (default: True).</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/processing/predict_kcat.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part1</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                         <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                         <span class="n">limit_matching_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                         <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processes kcat data file to generate input files for CataPro prediction.</span>
+<span class="sd">    Optionally, it can produce a summary report of the processed data.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        kcat_file_path (str): Path to the input kcat data file.</span>
+<span class="sd">        output_path (str): Path to save the generated CataPro input CSV file.</span>
+<span class="sd">        limit_matching_score (int): Threshold for filtering entries based on matching score.</span>
+<span class="sd">        report (bool, optional): Whether to generate a report using the retrieved data (default: True). </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Add a deduplication filter to the logger</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">DedupFilter</span><span class="p">())</span>
+
+    <span class="c1"># Read the kcat file</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Subset rows with no values or matching score above the limit</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">limit_matching_score</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">())]</span>
+    <span class="c1"># Drop rows with no UniProt ID or no substrates_kegg</span>
+    <span class="n">before_duplicates_filter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> 
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;uniprot_model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+    <span class="n">nb_missing_enzymes</span> <span class="o">=</span> <span class="n">before_duplicates_filter</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
+
+    <span class="c1"># Generate CataPro input file</span>
+    <span class="n">catapro_input_df</span><span class="p">,</span> <span class="n">substrates_to_smiles_df</span><span class="p">,</span> <span class="n">report_statistics</span> <span class="o">=</span> <span class="n">create_catapro_input_file</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
+
+    <span class="c1"># Save the CataPro input file and substrates to SMILES mapping</span>
+    <span class="n">catapro_input_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">substrates_to_smiles_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;_substrates_to_smiles.tsv&#39;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add statistics </span>
+    <span class="n">report_statistics</span><span class="p">[</span><span class="s2">&quot;missing_enzymes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nb_missing_enzymes</span>
+
+    <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
+        <span class="n">report_prediction_input</span><span class="p">(</span><span class="n">catapro_input_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="wildkcat.processing.predict_kcat.run_prediction_part2" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part2</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">catapro_predictions_path</span><span class="p">,</span> <span class="n">substrates_to_smiles_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
+mapping substrates to SMILES, formatting the output, and optionally generating a report.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>kcat_file_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the input kcat TSV file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>catapro_predictions_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the Catapro predictions CSV file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>substrates_to_smiles_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the TSV file mapping substrates to SMILES.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>output_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to save the formatted output TSV file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>limit_matching_score</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Threshold for taking predictions over retrieved values.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/processing/predict_kcat.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part2</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                         <span class="n">catapro_predictions_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                         <span class="n">substrates_to_smiles_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                         <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                         <span class="n">limit_matching_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,</span>
+<span class="sd">    mapping substrates to SMILES, formatting the output, and optionally generating a report.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        kcat_file_path (str): Path to the input kcat TSV file.</span>
+<span class="sd">        catapro_predictions_path (str): Path to the Catapro predictions CSV file.</span>
+<span class="sd">        substrates_to_smiles_path (str): Path to the TSV file mapping substrates to SMILES.</span>
+<span class="sd">        output_path (str): Path to save the formatted output TSV file.</span>
+<span class="sd">        limit_matching_score (float): Threshold for taking predictions over retrieved values.</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">substrates_to_smiles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">substrates_to_smiles_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">catapro_predictions_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">catapro_predictions_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">integrate_catapro_predictions</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> 
+                                            <span class="n">substrates_to_smiles</span><span class="p">,</span>
+                                            <span class="n">catapro_predictions_df</span>
+                                            <span class="p">)</span>
+
+    <span class="c1"># Save the output as a TSV file</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">format_output</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">)</span>
+    <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><hr />
+<h2 id="summary-report">Summary report</h2>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="wildkcat.processing.summary.generate_summary_report" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">generate_summary_report</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">kcat_file_path</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Generate a HTML report summarizing the kcat extraction, retrieval and prediction for a given model. </p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>model_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the metabolic model file (JSON, MATLAB, or SBML format).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kcat_file_path</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the final kcat TSV file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/processing/summary.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_summary_report</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                            <span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a HTML report summarizing the kcat extraction, retrieval and prediction for a given model. </span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).</span>
+<span class="sd">        kcat_file_path (str): Path to the final kcat TSV file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">read_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+    <span class="n">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kcat_df</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><hr />
+<h2 id="matching-process-and-scoring">Matching process and scoring</h2>
+<p>The matching process is designed to select the most appropriate <em>kcat</em> value when multiple candidates are available.<br />
+Each candidate is first assigned a score based on several criteria, such as:  </p>
+<ul>
+<li><strong>kcat specific criteria:</strong><ul>
+<li>Substrate</li>
+<li>Catalytic enzyme(s)</li>
+</ul>
+</li>
+<li><strong>General criteria:</strong><ul>
+<li>Organism</li>
+<li>Temperature</li>
+<li>pH</li>
+</ul>
+</li>
+</ul>
+<p>If two or more candidates receive the same score, tie-breaking rules are applied in the following order:  </p>
+<ol>
+<li><strong>Enzyme sequence identity</strong> – the value associated with the most similar protein sequence is preferred.  </li>
+<li><strong>Organism proximity</strong> – preference is given to <em>kcat</em> values measured in organisms closest to the target species.  </li>
+<li><strong>Minimal <em>kcat</em> value</strong> – if ambiguity remains, the smallest <em>kcat</em> value is chosen. </li>
+</ol>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h3 id="wildkcat.utils.matching" class="doc doc-heading">
+            <code>wildkcat.utils.matching</code>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.check_catalytic_enzyme" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_catalytic_enzyme</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks whether the enzyme in a candidate entry matches the model's enzyme.
+Identifies the catalytic enzyme using UniProt API.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_catalytic_enzyme</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether the enzyme in a candidate entry matches the model&#39;s enzyme.</span>
+<span class="sd">    Identifies the catalytic enzyme using UniProt API.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">[</span><span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">]):</span>
+        <span class="n">catalytic_enzymes</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">[</span><span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">candidate</span><span class="p">[</span><span class="s2">&quot;UniProtKB_AC&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">catalytic_enzymes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="mi">2</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.check_organism" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_organism</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks whether the organism in a candidate entry matches the expected organism.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_organism</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether the organism in a candidate entry matches the expected organism.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">candidate</span><span class="p">[</span><span class="s2">&quot;Organism&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">general_criteria</span><span class="p">[</span><span class="s2">&quot;Organism&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="mi">2</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.check_pH" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_pH</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks whether the pH in a candidate entry matches the expected pH.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_pH</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether the pH in a candidate entry matches the expected pH.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ph_min</span><span class="p">,</span> <span class="n">ph_max</span> <span class="o">=</span> <span class="n">general_criteria</span><span class="p">[</span><span class="s2">&quot;pH&quot;</span><span class="p">]</span>
+    <span class="n">candidate_ph</span> <span class="o">=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pH&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ph_min</span> <span class="o">&lt;=</span> <span class="n">candidate_ph</span> <span class="o">&lt;=</span> <span class="n">ph_max</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">candidate_ph</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Out of range</span>
+        <span class="k">return</span> <span class="mi">2</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.check_substrate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_substrate</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">candidate</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks whether the substrate in a candidate entry matches the model's substrates.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_substrate</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">candidate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether the substrate in a candidate entry matches the model&#39;s substrates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">api</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;db&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">candidate</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># Normalisation des champs</span>
+    <span class="n">entry_subs</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Substrate&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">entry_prods</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Product&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">entry_kegg</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;KeggReactionID&quot;</span><span class="p">)</span>
+
+    <span class="n">cand_subs</span> <span class="o">=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Substrate&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">candidate</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">cand_prods</span> <span class="o">=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Product&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">candidate</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">cand_kegg</span> <span class="o">=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;KeggReactionID&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">candidate</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">model_subs</span> <span class="o">=</span> <span class="p">(</span><span class="n">kcat_dict</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;substrates_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">model_prods</span> <span class="o">=</span> <span class="p">(</span><span class="n">kcat_dict</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;products_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">model_kegg</span> <span class="o">=</span> <span class="p">(</span><span class="n">kcat_dict</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;KEGG_rxn_id&quot;</span><span class="p">)</span>
+
+    <span class="c1"># --- logique identique à avant ---</span>
+    <span class="k">if</span> <span class="n">api</span> <span class="o">==</span> <span class="s2">&quot;sabio_rk&quot;</span><span class="p">:</span>
+
+        <span class="n">entry_kegg</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">entry_kegg</span><span class="p">)</span> <span class="k">else</span> <span class="n">entry_kegg</span>
+        <span class="n">model_kegg</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">model_kegg</span><span class="p">)</span> <span class="k">else</span> <span class="n">model_kegg</span>
+        <span class="n">cand_kegg</span>  <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">cand_kegg</span><span class="p">)</span> <span class="k">else</span> <span class="n">cand_kegg</span>
+
+        <span class="k">if</span> <span class="n">model_kegg</span> <span class="ow">and</span> <span class="n">entry_kegg</span> <span class="ow">and</span> <span class="n">_norm_name</span><span class="p">(</span><span class="n">model_kegg</span><span class="p">)</span> <span class="o">==</span> <span class="n">_norm_name</span><span class="p">(</span><span class="n">entry_kegg</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">_any_intersection</span><span class="p">(</span><span class="n">entry_subs</span><span class="p">,</span> <span class="n">model_subs</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_any_intersection</span><span class="p">(</span><span class="n">entry_prods</span><span class="p">,</span> <span class="n">model_prods</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">cand_kegg</span> <span class="ow">and</span> <span class="n">entry_kegg</span> <span class="ow">and</span> <span class="n">_norm_name</span><span class="p">(</span><span class="n">cand_kegg</span><span class="p">)</span> <span class="o">==</span> <span class="n">_norm_name</span><span class="p">(</span><span class="n">entry_kegg</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">_any_intersection</span><span class="p">(</span><span class="n">entry_subs</span><span class="p">,</span> <span class="n">cand_subs</span><span class="p">)</span> <span class="ow">or</span> <span class="n">_any_intersection</span><span class="p">(</span><span class="n">entry_prods</span><span class="p">,</span> <span class="n">cand_prods</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">base_subs</span> <span class="o">=</span> <span class="n">model_subs</span> <span class="ow">or</span> <span class="n">cand_subs</span>
+        <span class="k">if</span> <span class="n">_any_intersection</span><span class="p">(</span><span class="n">entry_subs</span><span class="p">,</span> <span class="n">base_subs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="mi">3</span>
+
+    <span class="k">elif</span> <span class="n">api</span> <span class="o">==</span> <span class="s2">&quot;brenda&quot;</span><span class="p">:</span>
+        <span class="n">base_subs</span> <span class="o">=</span> <span class="n">model_subs</span> <span class="ow">or</span> <span class="n">cand_subs</span>
+        <span class="k">if</span> <span class="n">_any_intersection</span><span class="p">(</span><span class="n">entry_subs</span><span class="p">,</span> <span class="n">base_subs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="mi">3</span>
+
+    <span class="k">return</span> <span class="mi">3</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.check_temperature" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_temperature</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">min_r2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">expected_range</span><span class="o">=</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">150000</span><span class="p">))</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks whether the temperature in a candidate entry matches the expected temperature.
+If the temperature is within the specified range is not met, verify if the Arrhenius equation can be applied.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_temperature</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">min_r2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">expected_range</span><span class="o">=</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">150000</span><span class="p">)):</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether the temperature in a candidate entry matches the expected temperature.</span>
+<span class="sd">    If the temperature is within the specified range is not met, verify if the Arrhenius equation can be applied.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp_min</span><span class="p">,</span> <span class="n">temp_max</span> <span class="o">=</span> <span class="n">general_criteria</span><span class="p">[</span><span class="s2">&quot;Temperature&quot;</span><span class="p">]</span>
+    <span class="n">candidate_temp</span> <span class="o">=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Temperature&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">temp_min</span> <span class="o">&lt;=</span> <span class="n">candidate_temp</span> <span class="o">&lt;=</span> <span class="n">temp_max</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span>
+
+    <span class="c1"># Try to find a correct the kcat value using the Arrhenius equation</span>
+    <span class="n">ph_min</span><span class="p">,</span> <span class="n">ph_max</span> <span class="o">=</span> <span class="n">general_criteria</span><span class="p">[</span><span class="s2">&quot;pH&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Base filters</span>
+    <span class="n">filters</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;pH&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">ph_min</span><span class="p">,</span> <span class="n">ph_max</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;UniProtKB_AC&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">candidate</span><span class="p">[</span><span class="s2">&quot;UniProtKB_AC&quot;</span><span class="p">])</span>
+        <span class="o">&amp;</span> <span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;Temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+        <span class="o">&amp;</span> <span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">valid_idx</span> <span class="o">=</span> <span class="n">api_output</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">check_substrate</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+
+    <span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span> <span class="o">&amp;</span> <span class="n">valid_idx</span>
+
+    <span class="n">temps_dispo</span> <span class="o">=</span> <span class="n">api_output</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">filters</span><span class="p">,</span> <span class="s2">&quot;Temperature&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+    <span class="n">api_filtered</span> <span class="o">=</span> <span class="n">api_output</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">filters</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Convert temperatures to Kelvin</span>
+    <span class="n">api_filtered</span><span class="p">[</span><span class="s2">&quot;Temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_filtered</span><span class="p">[</span><span class="s2">&quot;Temperature&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">273.15</span>
+
+    <span class="k">if</span> <span class="n">temps_dispo</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">ea</span><span class="p">,</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">calculate_ea</span><span class="p">(</span><span class="n">api_filtered</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r2</span> <span class="o">&gt;=</span> <span class="n">min_r2</span> <span class="ow">and</span> <span class="n">ea</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">expected_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">ea</span> <span class="o">&lt;=</span> <span class="n">expected_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ECNumber&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">: Estimated Ea (</span><span class="si">{</span><span class="n">ea</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> J/mol) is outside the expected range </span><span class="si">{</span><span class="n">expected_range</span><span class="si">}</span><span class="s2"> J/mol.&quot;</span><span class="p">)</span>
+            <span class="c1"># Go Arrhenius</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">candidate_temp</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">False</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.check_variant" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">check_variant</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Checks whether the enzyme variant in a candidate entry is wildtype or unknown.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_variant</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether the enzyme variant in a candidate entry is wildtype or unknown.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">candidate</span><span class="p">[</span><span class="s2">&quot;EnzymeVariant&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;wildtype&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Unknown</span>
+        <span class="k">return</span> <span class="mi">1</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.compute_score" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">compute_score</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute a score for the candidate based on the Kcat dictionary and general criteria.</p>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_score</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute a score for the candidate based on the Kcat dictionary and general criteria.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Check catalytic enzyme</span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">check_catalytic_enzyme</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">)</span>
+    <span class="c1"># Check organism</span>
+    <span class="k">if</span> <span class="n">score</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="n">score</span> <span class="o">+=</span> <span class="n">check_organism</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span>
+    <span class="c1"># Check variant</span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">check_variant</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span> 
+    <span class="c1"># Check pH</span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">check_pH</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span>
+    <span class="c1"># Check substrate </span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">check_substrate</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">)</span>
+    <span class="c1"># Check temperature </span>
+    <span class="n">temperature_penalty</span><span class="p">,</span> <span class="n">arrhenius</span> <span class="o">=</span> <span class="n">check_temperature</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">)</span> 
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">temperature_penalty</span>
+    <span class="k">return</span> <span class="n">score</span><span class="p">,</span> <span class="n">arrhenius</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="wildkcat.utils.matching.find_best_match" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">find_best_match</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+
+
+<details class="finds-the-best-matching-enzyme-entry-from-the-provided-api-output-based-on" open>
+  <summary>Finds the best matching enzyme entry from the provided API output based on</summary>
+  <ul>
+<li>Kcat specific criteria: <ul>
+<li>Substrate </li>
+<li>Catalytic enzyme(s)</li>
+</ul>
+</li>
+<li>General criteria : <ul>
+<li>Organism</li>
+<li>Temperature</li>
+<li>pH</li>
+</ul>
+</li>
+</ul>
+</details>        <p>This function filters out mutant enzyme variants, orders the remaining entries based on enzyme and organism similarity,
+and iteratively computes a score for each candidate to identify the best match. If a candidate requires an Arrhenius
+adjustment, the kcat value is recalculated accordingly.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>kcat_dict</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary containing enzyme information.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>api_output</code>
+            </td>
+            <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>DataFrame containing kcat entries and metadata from an API.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>general_criteria</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary specifying matching criteria.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+<th>Name</th>          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+<td><code>tuple</code></td>            <td>
+                  <code><span title="typing.Tuple">Tuple</span>[<span title="float">float</span>, <span title="typing.Optional">Optional</span>[<span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>best_score (float): The lowest score found, representing the best match.
+best_candidate (dict or None): Dictionary of the best matching candidate's data, or None if no match is found.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">find_best_match</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the best matching enzyme entry from the provided API output based on: </span>
+<span class="sd">        - Kcat specific criteria: </span>
+<span class="sd">            * Substrate </span>
+<span class="sd">            * Catalytic enzyme(s)</span>
+<span class="sd">        - General criteria : </span>
+<span class="sd">            * Organism</span>
+<span class="sd">            * Temperature</span>
+<span class="sd">            * pH</span>
+
+<span class="sd">    This function filters out mutant enzyme variants, orders the remaining entries based on enzyme and organism similarity,</span>
+<span class="sd">    and iteratively computes a score for each candidate to identify the best match. If a candidate requires an Arrhenius</span>
+<span class="sd">    adjustment, the kcat value is recalculated accordingly.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        kcat_dict (dict): Dictionary containing enzyme information.</span>
+<span class="sd">        api_output (pd.DataFrame): DataFrame containing kcat entries and metadata from an API.</span>
+<span class="sd">        general_criteria (dict): Dictionary specifying matching criteria.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple:</span>
+<span class="sd">            best_score (float): The lowest score found, representing the best match.</span>
+<span class="sd">            best_candidate (dict or None): Dictionary of the best matching candidate&#39;s data, or None if no match is found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># 1. Remove mutant enzymes</span>
+    <span class="n">api_output</span> <span class="o">=</span> <span class="n">api_output</span><span class="p">[</span><span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;EnzymeVariant&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;wildtype&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">])]</span>
+    <span class="k">if</span> <span class="n">api_output</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">14</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="c1"># 2. Compute score and adjust kcat if needed</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">adjusted_kcats</span><span class="p">,</span> <span class="n">adjusted_temps</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">api_output</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">candidate_dict</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">score</span><span class="p">,</span> <span class="n">arrhenius</span> <span class="o">=</span> <span class="n">compute_score</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">candidate_dict</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">arrhenius</span><span class="p">:</span>
+            <span class="n">kcat</span> <span class="o">=</span> <span class="n">arrhenius_equation</span><span class="p">(</span><span class="n">candidate_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span>
+            <span class="n">candidate_dict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kcat</span>
+            <span class="n">candidate_dict</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">[</span><span class="s2">&quot;Temperature&quot;</span><span class="p">])</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+        <span class="n">adjusted_kcats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]))</span>
+        <span class="n">adjusted_temps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Temperature&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]))</span>
+
+    <span class="n">api_output</span> <span class="o">=</span> <span class="n">api_output</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">api_output</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scores</span>
+    <span class="n">api_output</span><span class="p">[</span><span class="s1">&#39;adj_kcat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusted_kcats</span>
+    <span class="n">api_output</span><span class="p">[</span><span class="s1">&#39;adj_temp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusted_temps</span>
+
+    <span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+    <span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;adj_kcat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;adj_kcat&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Initialize columns for tie-breaking</span>
+    <span class="n">api_output</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">api_output</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="c1"># 3. Keep only best-score candidates</span>
+    <span class="n">min_score</span> <span class="o">=</span> <span class="n">api_output</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">tied</span> <span class="o">=</span> <span class="n">api_output</span><span class="p">[</span><span class="n">api_output</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">min_score</span><span class="p">]</span>
+
+    <span class="c1"># 4. Tie-breaking</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tied</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Tie-break with enzyme identity</span>
+        <span class="n">tied</span> <span class="o">=</span> <span class="n">closest_enz</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">tied</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tied</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">max_id</span> <span class="o">=</span> <span class="n">tied</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="n">tied</span> <span class="o">=</span> <span class="n">tied</span><span class="p">[</span><span class="n">tied</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">max_id</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tied</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Tie-break with taxonomy</span>
+        <span class="n">tied</span> <span class="o">=</span> <span class="n">closest_taxonomy</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">,</span> <span class="n">tied</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tied</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">min_tax</span> <span class="o">=</span> <span class="n">tied</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">tied</span> <span class="o">=</span> <span class="n">tied</span><span class="p">[</span><span class="n">tied</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">min_tax</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tied</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Tie-break with lowest kcat</span>
+        <span class="n">min_kcat</span> <span class="o">=</span> <span class="n">tied</span><span class="p">[</span><span class="s1">&#39;adj_kcat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">tied</span> <span class="o">=</span> <span class="n">tied</span><span class="p">[</span><span class="n">tied</span><span class="p">[</span><span class="s1">&#39;adj_kcat&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">min_kcat</span><span class="p">]</span>
+
+    <span class="c1"># 5. Select best candidate</span>
+    <span class="n">best_candidate</span> <span class="o">=</span> <span class="n">tied</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kcat_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">)</span>
+    <span class="n">best_score</span> <span class="o">=</span> <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">best_score</span><span class="p">,</span> <span class="n">best_candidate</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><p>heading_level: 3</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy", "content.code.fold", "toc.integrate", "header.autohide", "admonition"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

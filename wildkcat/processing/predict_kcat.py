@@ -120,7 +120,6 @@ def run_prediction_part2(kcat_file_path: str,
         substrates_to_smiles_path (str): Path to the TSV file mapping substrates to SMILES.
         output_path (str): Path to save the formatted output TSV file.
         limit_matching_score (float): Threshold for taking predictions over retrieved values.
-        report (bool, optional): If True, generates a report (default: True). 
     """ 
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
     substrates_to_smiles = pd.read_csv(substrates_to_smiles_path, sep='\t')
