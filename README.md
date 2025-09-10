@@ -1,6 +1,6 @@
 # WILDkCAT
 
-[![pypi](https://img.shields.io/pypi/v/wildkcat.svg)](https://pypi.org/project/wildkcat/) [![stable documentation](https://img.shields.io/badge/docs-stable-blue)]()
+[![pypi](https://img.shields.io/pypi/v/wildkcat.svg)](https://pypi.org/project/wildkcat/) [![stable documentation](https://img.shields.io/badge/docs-stable-blue)](https://h-escoffier.github.io/WILDkCAT/)
 
 **WILDkCAT** is a set of scripts designed to extract, retrieve, and predict enzyme turnover numbers (**kcat**) for genome-scale metabolic models.   
 
