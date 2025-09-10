@@ -24,3 +24,9 @@ in_progress
 *.ipynb
 .env
 
+# Ignore documentation build files
+site
+docs 
+
+
+
