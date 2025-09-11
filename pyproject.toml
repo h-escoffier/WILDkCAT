@@ -11,7 +11,7 @@ authors = [
 description = "Extract, Retrieve and Predict kcat values for a metabolic model to run enzyme constrained metabolic pipelines."
 readme = "README.md"
 requires-python = ">=3.11.1"
-.
+
 dependencies = [
     "pandas>=2.0",
     "numpy>=2.0",
