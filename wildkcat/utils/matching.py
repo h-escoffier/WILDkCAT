@@ -12,6 +12,99 @@ from ..utils.manage_warnings import logger_retrieval as logger
 # TODO: Tie computation could be speed up by computing only if there is different enzyme or organism
 
 
+# --- Main --- 
+
+
+def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Optional[Dict[str, Any]]]:
+    """
+    Finds the best matching enzyme entry from the provided API output based on: 
+        - Kcat specific criteria: 
+            * Substrate 
+            * Catalytic enzyme(s)
+        - General criteria : 
+            * Organism
+            * Temperature
+            * pH
+
+    This function filters out mutant enzyme variants, orders the remaining entries based on enzyme and organism similarity,
+    and iteratively computes a score for each candidate to identify the best match. If a candidate requires an Arrhenius
+    adjustment, the kcat value is recalculated accordingly.
+
+    Parameters:
+        kcat_dict (dict): Dictionary containing enzyme information.
+        api_output (pd.DataFrame): DataFrame containing kcat entries and metadata from an API.
+        general_criteria (dict): Dictionary specifying matching criteria.
+
+    Returns:
+        tuple:
+            best_score (float): The lowest score found, representing the best match.
+            best_candidate (dict or None): Dictionary of the best matching candidate's data, or None if no match is found.
+    """
+
+    # 1. Remove mutant enzymes
+    api_output = api_output[api_output["EnzymeVariant"].isin(['wildtype', None])]
+    if api_output.empty:
+        return 14, None
+
+    # 2. Compute score and adjust kcat if needed
+    scores = []
+    adjusted_kcats, adjusted_temps = [], []
+
+    for _, row in api_output.iterrows():
+        candidate_dict = row.to_dict()
+        score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output)
+        if arrhenius:
+            kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
+            candidate_dict['value'] = kcat
+            candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])
+        scores.append(score)
+        adjusted_kcats.append(candidate_dict.get('value', row['value']))
+        adjusted_temps.append(candidate_dict.get('Temperature', row['Temperature']))
+
+    api_output = api_output.copy()
+    api_output['score'] = scores
+    api_output['adj_kcat'] = adjusted_kcats
+    api_output['adj_temp'] = adjusted_temps
+
+    api_output["score"] = pd.to_numeric(api_output["score"], errors="coerce").fillna(13)
+    api_output["adj_kcat"] = pd.to_numeric(api_output["adj_kcat"], errors="coerce")
+
+    # Initialize columns for tie-breaking
+    api_output['id_perc'] = -1
+    api_output['organism_score'] = np.inf
+
+    # 3. Keep only best-score candidates
+    min_score = api_output['score'].min()
+    tied = api_output[api_output['score'] == min_score]
+
+    # 4. Tie-breaking
+    if len(tied) > 1:
+        # Tie-break with enzyme identity
+        tied = closest_enz(kcat_dict, tied)
+        if not tied['id_perc'].isna().all():
+            max_id = tied['id_perc'].max()
+            tied = tied[tied['id_perc'] == max_id]
+
+    if len(tied) > 1:
+        # Tie-break with taxonomy
+        tied = closest_taxonomy(general_criteria, tied)
+        if not tied['organism_score'].isna().all():
+            min_tax = tied['organism_score'].min()
+            tied = tied[tied['organism_score'] == min_tax]
+
+    if len(tied) > 1:
+        # Tie-break with lowest kcat
+        min_kcat = tied['adj_kcat'].min()
+        tied = tied[tied['adj_kcat'] == min_kcat]
+
+    # 5. Select best candidate
+    best_candidate = tied.iloc[0].to_dict()
+    best_candidate['catalytic_enzyme'] = kcat_dict.get('catalytic_enzyme')
+    best_score = best_candidate['score']
+
+    return best_score, best_candidate
+
+
 # --- Utils --- 
 
 def _norm_name(s: str) -> str:
@@ -157,7 +250,7 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
 
     model_subs = (kcat_dict or {}).get("substrates_name", "")
     model_prods = (kcat_dict or {}).get("products_name", "")
-    model_kegg = (kcat_dict or {}).get("KEGG_rxn_id")
+    model_kegg = (kcat_dict or {}).get("rxn_kegg")
 
     # --- logique identique à avant ---
     if api == "sabio_rk":
@@ -209,96 +302,3 @@ def compute_score(kcat_dict, candidate, general_criteria, api_output):
     temperature_penalty, arrhenius = check_temperature(candidate, general_criteria, api_output) 
     score += temperature_penalty
     return score, arrhenius
-
-
-# --- Main --- 
-
-
-def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Optional[Dict[str, Any]]]:
-    """
-    Finds the best matching enzyme entry from the provided API output based on: 
-        - Kcat specific criteria: 
-            * Substrate 
-            * Catalytic enzyme(s)
-        - General criteria : 
-            * Organism
-            * Temperature
-            * pH
-
-    This function filters out mutant enzyme variants, orders the remaining entries based on enzyme and organism similarity,
-    and iteratively computes a score for each candidate to identify the best match. If a candidate requires an Arrhenius
-    adjustment, the kcat value is recalculated accordingly.
-
-    Parameters:
-        kcat_dict (dict): Dictionary containing enzyme information.
-        api_output (pd.DataFrame): DataFrame containing kcat entries and metadata from an API.
-        general_criteria (dict): Dictionary specifying matching criteria.
-
-    Returns:
-        tuple:
-            best_score (float): The lowest score found, representing the best match.
-            best_candidate (dict or None): Dictionary of the best matching candidate's data, or None if no match is found.
-    """
-
-    # 1. Remove mutant enzymes
-    api_output = api_output[api_output["EnzymeVariant"].isin(['wildtype', None])]
-    if api_output.empty:
-        return 14, None
-
-    # 2. Compute score and adjust kcat if needed
-    scores = []
-    adjusted_kcats, adjusted_temps = [], []
-
-    for _, row in api_output.iterrows():
-        candidate_dict = row.to_dict()
-        score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output)
-        if arrhenius:
-            kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
-            candidate_dict['value'] = kcat
-            candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])
-        scores.append(score)
-        adjusted_kcats.append(candidate_dict.get('value', row['value']))
-        adjusted_temps.append(candidate_dict.get('Temperature', row['Temperature']))
-
-    api_output = api_output.copy()
-    api_output['score'] = scores
-    api_output['adj_kcat'] = adjusted_kcats
-    api_output['adj_temp'] = adjusted_temps
-
-    api_output["score"] = pd.to_numeric(api_output["score"], errors="coerce").fillna(13)
-    api_output["adj_kcat"] = pd.to_numeric(api_output["adj_kcat"], errors="coerce")
-
-    # Initialize columns for tie-breaking
-    api_output['id_perc'] = -1
-    api_output['organism_score'] = np.inf
-
-    # 3. Keep only best-score candidates
-    min_score = api_output['score'].min()
-    tied = api_output[api_output['score'] == min_score]
-
-    # 4. Tie-breaking
-    if len(tied) > 1:
-        # Tie-break with enzyme identity
-        tied = closest_enz(kcat_dict, tied)
-        if not tied['id_perc'].isna().all():
-            max_id = tied['id_perc'].max()
-            tied = tied[tied['id_perc'] == max_id]
-
-    if len(tied) > 1:
-        # Tie-break with taxonomy
-        tied = closest_taxonomy(general_criteria, tied)
-        if not tied['organism_score'].isna().all():
-            min_tax = tied['organism_score'].min()
-            tied = tied[tied['organism_score'] == min_tax]
-
-    if len(tied) > 1:
-        # Tie-break with lowest kcat
-        min_kcat = tied['adj_kcat'].min()
-        tied = tied[tied['adj_kcat'] == min_kcat]
-
-    # 5. Select best candidate
-    best_candidate = tied.iloc[0].to_dict()
-    best_candidate['catalytic_enzyme'] = kcat_dict.get('catalytic_enzyme')
-    best_score = best_candidate['score']
-
-    return best_score, best_candidate

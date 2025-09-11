@@ -73,12 +73,12 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     if api_output.empty: 
         return None, 15
     # If multiple enzymes are found, prioritize based on the identified catalytic enzyme
-    if pd.notna(kcat_dict['uniprot_model']):
-        if ';' in kcat_dict['uniprot_model']:
-            catalytic_enzyme = identify_catalytic_enzyme(kcat_dict['uniprot_model'], kcat_dict['ec_code'])
+    if pd.notna(kcat_dict['uniprot']):
+        if ';' in kcat_dict['uniprot']:
+            catalytic_enzyme = identify_catalytic_enzyme(kcat_dict['uniprot'], kcat_dict['ec_code'])
             kcat_dict['catalytic_enzyme'] = catalytic_enzyme
         else:  # Only one enzyme
-            kcat_dict['catalytic_enzyme'] = kcat_dict['uniprot_model']
+            kcat_dict['catalytic_enzyme'] = kcat_dict['uniprot']
             
     best_score, best_candidate = find_best_match(kcat_dict, api_output, general_criteria)
     return best_candidate, best_score
@@ -169,8 +169,8 @@ if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     kcat_dict = {
         'ec_code': '1.1.1.1',
-        'KEGG_rxn_id': 'R00754',
-        'uniprot_model': 'P00330',
+        'rxn_kegg': 'R00754',
+        'uniprot': 'P00330',
         'substrates_name': 'H+;NADH;propanal', 
     }
 

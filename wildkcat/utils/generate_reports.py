@@ -585,7 +585,7 @@ def report_prediction_input(catapro_df, report_statistics):
 
     # Save report
     os.makedirs("reports", exist_ok=True)
-    report_path = "reports/prediction_kcat_report.html"
+    report_path = "reports/predict_kcat_report.html"
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
     logging.info(f"HTML report saved to '{report_path}'")

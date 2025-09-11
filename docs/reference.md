@@ -2,11 +2,11 @@
 
 The **WILDkCAT** package is organized into modules: 
 
-1. **Extraction** : Extraction of *kcat* values from the provided model
+1. **Extraction** : Extraction of kcat values from the provided model
 
-2. **Retrieval** : Retrieval of *kcat* values using curated databases (BRENDA and SABIO-RK)
+2. **Retrieval** : Retrieval of kcat values using curated databases (BRENDA and SABIO-RK)
 
-3. **Prediction** : Prediction of missing and low confidence *kcat* values using ML-based CataPro model
+3. **Prediction** : Prediction of missing and low confidence kcat values using ML-based CataPro model
 
 4. **Summary** : Generates an HTML report summarizing the percentage and quality of kcat values identified for the model, along with their data sources.
 
@@ -35,7 +35,7 @@ The **WILDkCAT** package is organized into modules:
 
 ## Matching process and scoring
 
-The matching process is designed to select the most appropriate *kcat* value when multiple candidates are available.  
+The matching process is designed to select the most appropriate kcat value when multiple candidates are available.  
 Each candidate is first assigned a score based on several criteria, such as:  
 
 - **kcat specific criteria:**
@@ -49,8 +49,41 @@ Each candidate is first assigned a score based on several criteria, such as:
 If two or more candidates receive the same score, tie-breaking rules are applied in the following order:  
 
 1. **Enzyme sequence identity** – the value associated with the most similar protein sequence is preferred.  
-2. **Organism proximity** – preference is given to *kcat* values measured in organisms closest to the target species.  
-3. **Minimal *kcat* value** – if ambiguity remains, the smallest *kcat* value is chosen. 
+2. **Organism proximity** – preference is given to kcat values measured in organisms closest to the target species.  
+3. **Minimal kcat value** – if ambiguity remains, the smallest kcat value is chosen. 
 
 :::wildkcat.utils.matching
-heading_level: 3
+
+---
+
+## Find closest enzyme and organism
+
+:::wildkcat.utils.organism 
+
+---
+
+## Correct the kcat value using Arrhenius equation
+
+:::wildkcat.utils.temperature
+
+---
+
+## API 
+
+:::wildkcat.api.brenda_api 
+
+:::wildkcat.api.sabio_rk_api
+
+:::wildkcat.api.uniprot_api
+
+---
+
+## Machine Learning preprocessing
+
+:::wildkcat.machine_learning.catapro
+
+---
+
+## Generate reports 
+
+:::wildkcat.utils.generate_reports

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wildkcat"
-version = "0.0.10"
+version = "0.0.11"
 authors = [
   { name="Hugues Escoffier", email="hugues.escoffier@gmail.com" },
 ]
@@ -44,5 +44,7 @@ Issues = "https://github.com/h-escoffier/WILDkCAT"
 [tool.hatch.build]
 exclude = [
   "example",
-  "reports"
+  "reports", 
+  "docs", 
+  "site"
 ]

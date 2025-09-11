@@ -8,6 +8,7 @@ from ..utils.manage_warnings import DedupFilter
 
 
 # TODO: Add a warning if there is the same SMILE for multiple KEGG IDs ?
+# TODO: Simplify the format of the final output file (remove some columns) 
 
 
 # --- Format ---

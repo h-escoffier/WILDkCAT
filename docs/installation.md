@@ -1,4 +1,6 @@
-## Installation
+# Installation
+
+## Install from PyPI
 
 Install [WILDkCAT](https://pypi.org/project/wildkcat/) directly from PyPI:
 
@@ -8,7 +10,7 @@ pip install wildkcat
 
 ---
 
-## Environment Setup 
+## Environment Setup
 
 Provide your **BRENDA login credentials** and **Entrez API email adress** to query the BRENDA enzyme database and NCBI database.
 

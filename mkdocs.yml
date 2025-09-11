@@ -43,6 +43,6 @@ nav:
   - Home: index.md
   - Installation: installation.md
   - Explanation: explanation.md
-  - Tutorials: tutorials.md
+  - Tutorials: tutorial/tutorials.md
   - References: reference.md
 

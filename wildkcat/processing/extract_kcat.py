@@ -179,15 +179,15 @@ def create_kcat_output(model):
                 ] if rxn.reversibility else [("forward", subs_names, subs_keggs, prod_names, prod_keggs)]:
                     rows.append({
                         "rxn": rxn.id,
-                        "KEGG_rxn_id": kegg_rxn_id,
+                        "rxn_kegg": kegg_rxn_id,
                         "ec_code": ec,
                         "direction": direction,
                         "substrates_name": ";".join(sn),
                         "substrates_kegg": ";".join(sk),
                         "products_name": ";".join(pn),
                         "products_kegg": ";".join(pk),
-                        "genes_model": "",
-                        "uniprot_model": "",
+                        "genes": "",
+                        "uniprot": "",
                     })
                 continue
 
@@ -211,20 +211,20 @@ def create_kcat_output(model):
                 ] if rxn.reversibility else [("forward", subs_names, subs_keggs, prod_names, prod_keggs)]:
                     rows.append({
                         "rxn": rxn.id,
-                        "KEGG_rxn_id": kegg_rxn_id,
+                        "rxn_kegg": kegg_rxn_id,
                         "ec_code": ec,
                         "direction": direction,
                         "substrates_name": ";".join(sn),
                         "substrates_kegg": ";".join(sk),
                         "products_name": ";".join(pn),
                         "products_kegg": ";".join(pk),
-                        "genes_model": ";".join(genes_group),
-                        "uniprot_model": ";".join(uniprot_ids)
+                        "genes": ";".join(genes_group),
+                        "uniprot": ";".join(uniprot_ids)
                     })
 
     # Create output 
     df = pd.DataFrame(rows).drop_duplicates(
-        subset=["ec_code", "genes_model", "substrates_name", "products_name", "direction"]
+        subset=["ec_code", "genes", "substrates_name", "products_name", "direction"]
     )
 
     before_ec_filter = len(df)
