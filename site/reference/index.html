@@ -1641,30 +1641,7 @@ Optionally, it can produce a summary report of the processed data.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/processing/predict_kcat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
 <span class="normal"> 91</span>
 <span class="normal"> 92</span>
 <span class="normal"> 93</span>
@@ -1680,7 +1657,30 @@ Optionally, it can produce a summary report of the processed data.</p>
 <span class="normal">103</span>
 <span class="normal">104</span>
 <span class="normal">105</span>
-<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part1</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part1</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                          <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                          <span class="n">limit_matching_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
                          <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1704,7 +1704,7 @@ Optionally, it can produce a summary report of the processed data.</p>
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">limit_matching_score</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">())]</span>
     <span class="c1"># Drop rows with no UniProt ID or no substrates_kegg</span>
     <span class="n">before_duplicates_filter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> 
-    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;uniprot_model&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;uniprot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
     <span class="n">nb_missing_enzymes</span> <span class="o">=</span> <span class="n">before_duplicates_filter</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
 
     <span class="c1"># Generate CataPro input file</span>
@@ -1838,34 +1838,34 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/processing/predict_kcat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part2</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part2</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                          <span class="n">catapro_predictions_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                          <span class="n">substrates_to_smiles_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                          <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2915,6 +2915,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2991,7 +2992,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">73</span>
 <span class="normal">74</span>
 <span class="normal">75</span>
-<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">closest_enz</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">):</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">closest_enz</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve and ranks the enzymes sequences closest to the sequence of the target enzyme based on the percentage of identity.</span>
 <span class="sd">    If the reference UniProt ID is missing, invalid, or the sequence cannot be retrieved, the function returns the input DataFrame with &quot;id_perc&quot; set to None.</span>
@@ -3133,6 +3134,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3212,7 +3214,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">closest_taxonomy</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">):</span> 
+<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">closest_taxonomy</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve and ranks the organisms based on their taxonomic similarity to the reference organism.</span>
 
@@ -3415,6 +3417,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
 <td><code>float</code></td>            <td>
+                  <code><span title="float">float</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3482,7 +3485,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
-<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">arrhenius_equation</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">arrhenius_equation</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimates the kcat value at a target temperature using the Arrhenius equation, based on available experimental data.</span>
 
@@ -3584,22 +3587,6 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
                 <em>required</em>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>expected_range</code>
-            </td>
-            <td>
-                  <code><span title="tuple">tuple</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Expected range for Ea in J/mol. Default is (50000, 150000).</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
       </tbody>
     </table>
 
@@ -3615,6 +3602,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
 <td><code>float</code></td>            <td>
+                  <code><span title="float">float</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3660,14 +3648,12 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">92</span>
 <span class="normal">93</span>
 <span class="normal">94</span>
-<span class="normal">95</span>
-<span class="normal">96</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_ea</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_ea</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate the activation energy (Ea) using the Arrhenius equation from kcat values at different temperatures.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        df (pd.DataFrame): DataFrame with at least &#39;Temperature&#39; (°C) and &#39;value&#39; (kcat) columns.</span>
-<span class="sd">        expected_range (tuple): Expected range for Ea in J/mol. Default is (50000, 150000).</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Estimated activation energy (Ea) in J/mol. </span>
@@ -4002,6 +3988,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4048,7 +4035,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_cofactor</span><span class="p">(</span><span class="n">ec_number</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cofactor</span><span class="p">(</span><span class="n">ec_number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Queries the BRENDA SOAP API to retrieve cofactor information for a given Enzyme Commission (EC) number.</span>
 
@@ -4146,6 +4133,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4261,7 +4249,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_turnover_number_brenda</span><span class="p">(</span><span class="n">ec_number</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_turnover_number_brenda</span><span class="p">(</span><span class="n">ec_number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Queries the BRENDA SOAP API to retrieve turnover number values for a Enzyme Commission (EC) Number.</span>
 
@@ -4424,6 +4412,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
 <td><code>str</code></td>            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4454,7 +4443,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
-<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_variant</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_variant</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts the enzyme variant information from the commentary text.</span>
 
@@ -4533,7 +4522,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 
     <div class="doc doc-contents ">
 
-        <p>Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.</p>
+        <p>Retrieve turnover number (kcat) data from SABIO-RK for a given EC number.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -4563,22 +4552,6 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
                 <em>required</em>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>kegg_reaction_id</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>KEGG reaction ID.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
       </tbody>
     </table>
 
@@ -4594,6 +4567,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4679,15 +4653,13 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_turnover_number_sabio</span><span class="p">(</span><span class="n">ec_number</span><span class="p">):</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_turnover_number_sabio</span><span class="p">(</span><span class="n">ec_number</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.</span>
+<span class="sd">    Retrieve turnover number (kcat) data from SABIO-RK for a given EC number.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        ec_number (str): Enzyme Commission number.</span>
-<span class="sd">        kegg_reaction_id (str): KEGG reaction ID.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pd.DataFrame: DataFrame containing SABIO-RK entries for kcat.</span>
@@ -4860,6 +4832,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4901,7 +4874,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">catalytic_activity</span><span class="p">(</span><span class="n">uniprot_id</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">catalytic_activity</span><span class="p">(</span><span class="n">uniprot_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieves the EC (Enzyme Commission) numbers associated with the catalytic activity of a given UniProt ID.</span>
 
@@ -4994,6 +4967,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
 <td><code>str</code></td>            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5029,7 +5003,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">convert_uniprot_to_sequence</span><span class="p">(</span><span class="n">uniprot_id</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_uniprot_to_sequence</span><span class="p">(</span><span class="n">uniprot_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a UniProt accession ID to its corresponding amino acid sequence.</span>
 
@@ -5128,6 +5102,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5168,7 +5143,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">87</span>
 <span class="normal">88</span>
 <span class="normal">89</span>
-<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">identify_catalytic_enzyme</span><span class="p">(</span><span class="n">lst_uniprot_ids</span><span class="p">,</span> <span class="n">ec</span><span class="p">):</span>
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">identify_catalytic_enzyme</span><span class="p">(</span><span class="n">lst_uniprot_ids</span><span class="p">,</span> <span class="n">ec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Identifies the catalytic enzyme from a list of UniProt IDs for a given EC number.</span>
 
@@ -5299,10 +5274,11 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="list">list</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>list</p>
+                <p>list or None: A list of SMILES strings if found, otherwise None.</p>
               </div>
             </td>
           </tr>
@@ -5334,7 +5310,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">87</span>
 <span class="normal">88</span>
 <span class="normal">89</span>
-<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert_cid_to_smiles</span><span class="p">(</span><span class="n">cid</span><span class="p">):</span>    
+<span class="normal">90</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert_cid_to_smiles</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>    
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a PubChem Compound ID (CID) to its corresponding SMILES representation.</span>
 
@@ -5342,7 +5318,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="sd">        cid (str): PubChem Compound ID.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">       list </span>
+<span class="sd">       list or None: A list of SMILES strings if found, otherwise None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/</span><span class="si">{</span><span class="n">cid</span><span class="si">}</span><span class="s2">/property/smiles/txt&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -5419,6 +5395,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
 <td><code>str</code></td>            <td>
+                  <code><span title="str">str</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5454,7 +5431,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert_kegg_compound_to_sid</span><span class="p">(</span><span class="n">kegg_compound_id</span><span class="p">):</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert_kegg_compound_to_sid</span><span class="p">(</span><span class="n">kegg_compound_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert the KEGG compound ID to the PubChem Substance ID (SID).</span>
 
@@ -5543,10 +5520,11 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="list">list</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>list</p>
+                <p>list or None: A list of SMILES strings if found, otherwise None.</p>
               </div>
             </td>
           </tr>
@@ -5580,7 +5558,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">convert_kegg_to_smiles</span><span class="p">(</span><span class="n">kegg_compound_id</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_kegg_to_smiles</span><span class="p">(</span><span class="n">kegg_compound_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert the KEGG compound ID to the PubChem Compound ID (CID).</span>
 
@@ -5588,7 +5566,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="sd">        kegg_compound_id (str): KEGG compound ID.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        list</span>
+<span class="sd">        list or None: A list of SMILES strings if found, otherwise None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sid</span> <span class="o">=</span> <span class="n">convert_kegg_compound_to_sid</span><span class="p">(</span><span class="n">kegg_compound_id</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">sid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -5665,6 +5643,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="int">int</span> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5700,7 +5679,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert_sid_to_cid</span><span class="p">(</span><span class="n">sid</span><span class="p">):</span>
+<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert_sid_to_cid</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a PubChem Substance ID (SID) to the corresponding Compound ID (CID).</span>
 
@@ -5907,7 +5886,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 
     <span class="n">counter_no_catalytic</span><span class="p">,</span> <span class="n">counter_kegg_no_matching</span><span class="p">,</span> <span class="n">counter_rxn_covered</span><span class="p">,</span> <span class="n">counter_cofactor</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">kcat_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">(),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Generating CataPro input&quot;</span><span class="p">):</span>
-        <span class="n">uniprot</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;uniprot_model&#39;</span><span class="p">]</span>
+        <span class="n">uniprot</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;uniprot&#39;</span><span class="p">]</span>
         <span class="n">ec_code</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;ec_code&#39;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uniprot</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>       
@@ -6069,6 +6048,7 @@ If multiple values are provided for a single combination of EC, Enzyme, Substrat
       <tbody>
           <tr class="doc-section-item">
             <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6122,7 +6102,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
-<span class="normal">249</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">integrate_catapro_predictions</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">substrates_to_smiles</span><span class="p">,</span> <span class="n">catapro_predictions_df</span><span class="p">):</span>
+<span class="normal">249</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">integrate_catapro_predictions</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">substrates_to_smiles</span><span class="p">,</span> <span class="n">catapro_predictions_df</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Integrates Catapro predictions into an kcat file.</span>
 <span class="sd">    If multiple values are provided for a single combination of EC, Enzyme, Substrate, the minimum value is taken.</span>
@@ -6138,7 +6118,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Convert pred_log10[kcat(s^-1)] to kcat(s^-1)</span>
     <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;kcat_s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;pred_log10[kcat(s^-1)]&#39;</span><span class="p">]</span>
-    <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;uniprot_model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;fasta_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_wild&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Extract UniProt ID</span>
+    <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;uniprot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;fasta_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_wild&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># Extract UniProt ID</span>
 
     <span class="c1"># Match the SMILES to KEGG IDs using substrates_to_smiles</span>
     <span class="c1"># If multiple KEGG IDs are found for a single SMILES, they are concatenated</span>
@@ -6148,10 +6128,10 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
     <span class="p">)</span>
     <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">catapro_predictions_df</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">smiles_to_kegg</span><span class="p">)</span>
 
-    <span class="n">catapro_map</span> <span class="o">=</span> <span class="n">catapro_predictions_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;uniprot_model&#39;</span><span class="p">,</span> <span class="s1">&#39;substrates_kegg&#39;</span><span class="p">])[</span><span class="s1">&#39;kcat_s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="n">catapro_map</span> <span class="o">=</span> <span class="n">catapro_predictions_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;uniprot&#39;</span><span class="p">,</span> <span class="s1">&#39;substrates_kegg&#39;</span><span class="p">])[</span><span class="s1">&#39;kcat_s&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_min_pred_kcat</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-        <span class="n">uniprot</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;uniprot_model&#39;</span><span class="p">]</span>
+        <span class="n">uniprot</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;uniprot&#39;</span><span class="p">]</span>
         <span class="n">kegg_ids</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
         <span class="n">kcat_values</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">catapro_map</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">uniprot</span><span class="p">,</span> <span class="n">kegg_id</span><span class="p">))</span>
