@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def arrhenius_equation(candidate, api_output, general_criteria):
+def arrhenius_equation(candidate, api_output, general_criteria) -> float:
     """
     Estimates the kcat value at a target temperature using the Arrhenius equation, based on available experimental data.
 
@@ -60,13 +60,12 @@ def arrhenius_equation(candidate, api_output, general_criteria):
 
 
 
-def calculate_ea(df):
+def calculate_ea(df) -> float:
     """
     Estimate the activation energy (Ea) using the Arrhenius equation from kcat values at different temperatures.
 
     Parameters:
         df (pd.DataFrame): DataFrame with at least 'Temperature' (°C) and 'value' (kcat) columns.
-        expected_range (tuple): Expected range for Ea in J/mol. Default is (50000, 150000).
     
     Returns:
         float: Estimated activation energy (Ea) in J/mol. 

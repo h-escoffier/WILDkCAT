@@ -15,7 +15,7 @@ from wildkcat.api.brenda_api import get_cofactor
 # --- API ---
 
 
-def convert_kegg_compound_to_sid(kegg_compound_id):
+def convert_kegg_compound_to_sid(kegg_compound_id) -> str | None:
     """
     Convert the KEGG compound ID to the PubChem Substance ID (SID).
 
@@ -40,7 +40,7 @@ def convert_kegg_compound_to_sid(kegg_compound_id):
     return sid
 
 
-def convert_sid_to_cid(sid):
+def convert_sid_to_cid(sid) -> int | None:
     """
     Converts a PubChem Substance ID (SID) to the corresponding Compound ID (CID).
 
@@ -65,7 +65,7 @@ def convert_sid_to_cid(sid):
     return cid
 
 
-def convert_cid_to_smiles(cid):    
+def convert_cid_to_smiles(cid) -> list | None:    
     """
     Converts a PubChem Compound ID (CID) to its corresponding SMILES representation.
 
@@ -73,7 +73,7 @@ def convert_cid_to_smiles(cid):
         cid (str): PubChem Compound ID.
 
     Returns:
-       list 
+       list or None: A list of SMILES strings if found, otherwise None.
     """
     url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{cid}/property/smiles/txt"
     try:
@@ -91,7 +91,7 @@ def convert_cid_to_smiles(cid):
 
 
 @lru_cache(maxsize=None)
-def convert_kegg_to_smiles(kegg_compound_id):
+def convert_kegg_to_smiles(kegg_compound_id) -> list | None:
     """
     Convert the KEGG compound ID to the PubChem Compound ID (CID).
 
@@ -99,7 +99,7 @@ def convert_kegg_to_smiles(kegg_compound_id):
         kegg_compound_id (str): KEGG compound ID.
 
     Returns:
-        list
+        list or None: A list of SMILES strings if found, otherwise None.
     """
     sid = convert_kegg_compound_to_sid(kegg_compound_id)
     if sid is None:
@@ -135,7 +135,7 @@ def create_catapro_input_file(kcat_df):
 
     counter_no_catalytic, counter_kegg_no_matching, counter_rxn_covered, counter_cofactor = 0, 0, 0, 0
     for _, row in tqdm(kcat_df.iterrows(), total=len(kcat_df), desc="Generating CataPro input"):
-        uniprot = row['uniprot_model']
+        uniprot = row['uniprot']
         ec_code = row['ec_code']
 
         if len(uniprot.split(';')) > 1:       
@@ -207,7 +207,7 @@ def create_catapro_input_file(kcat_df):
 # --- Integrate CataPro predictions into kcat file ---
 
 
-def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predictions_df):
+def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predictions_df) -> pd.DataFrame:
     """
     Integrates Catapro predictions into an kcat file.
     If multiple values are provided for a single combination of EC, Enzyme, Substrate, the minimum value is taken.
@@ -223,7 +223,7 @@ def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predict
     """
     # Convert pred_log10[kcat(s^-1)] to kcat(s^-1)
     catapro_predictions_df['kcat_s'] = 10 ** catapro_predictions_df['pred_log10[kcat(s^-1)]']
-    catapro_predictions_df['uniprot_model'] = catapro_predictions_df['fasta_id'].str.replace('_wild', '', regex=False) # Extract UniProt ID
+    catapro_predictions_df['uniprot'] = catapro_predictions_df['fasta_id'].str.replace('_wild', '', regex=False) # Extract UniProt ID
     
     # Match the SMILES to KEGG IDs using substrates_to_smiles
     # If multiple KEGG IDs are found for a single SMILES, they are concatenated
@@ -233,10 +233,10 @@ def integrate_catapro_predictions(kcat_df, substrates_to_smiles, catapro_predict
     )
     catapro_predictions_df['substrates_kegg'] = catapro_predictions_df['smiles'].map(smiles_to_kegg)
     
-    catapro_map = catapro_predictions_df.set_index(['uniprot_model', 'substrates_kegg'])['kcat_s'].to_dict()
+    catapro_map = catapro_predictions_df.set_index(['uniprot', 'substrates_kegg'])['kcat_s'].to_dict()
 
     def get_min_pred_kcat(row):
-        uniprot = row['uniprot_model']
+        uniprot = row['uniprot']
         kegg_ids = str(row['substrates_kegg']).split(';')
         kcat_values = [
             catapro_map.get((uniprot, kegg_id))

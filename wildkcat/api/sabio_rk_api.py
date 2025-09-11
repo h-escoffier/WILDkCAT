@@ -10,13 +10,12 @@ from ..utils.manage_warnings import logger_retrieval as logger
 
 
 @lru_cache(maxsize=None)
-def get_turnover_number_sabio(ec_number):
+def get_turnover_number_sabio(ec_number) -> pd.DataFrame:
     """
-    Retrieve turnover number (kcat) data from SABIO-RK for a given EC number and KEGG reaction ID.
+    Retrieve turnover number (kcat) data from SABIO-RK for a given EC number.
 
     Parameters:
         ec_number (str): Enzyme Commission number.
-        kegg_reaction_id (str): KEGG reaction ID.
 
     Returns:
         pd.DataFrame: DataFrame containing SABIO-RK entries for kcat.

@@ -48,14 +48,37 @@ def format_output(kcat_df, limit_matching_score):
     kcat_df["kcat_id_percent"] = kcat_df["kcat_id_percent"].round(2)
     kcat_df["catapro_predicted_kcat_s"] = kcat_df["catapro_predicted_kcat_s"].round(1)
 
+    # Drop useless columns
+    kcat_df = kcat_df.drop(columns=["kcat_source", "catapro_predicted_kcat_s", "kcat_source_db"])
+
+    # Rename columns 
+
+    kcat_df = kcat_df.rename(columns={
+        "kcat_db": "db"
+    })
+
+    # If db = catapro then remove the content in the columns "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
+    kcat_df.loc[kcat_df['db'] == 'catapro', [
+        "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", 
+        "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
+        ]] = np.nan
+    
     # Reorder columns
+    # kcat_df = kcat_df[[
+    #     "rxn", "rxn_kegg", "ec_code", "direction", 
+    #     "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
+    #     "genes", "uniprot",
+    #     "kcat", "kcat_source", "catapro_predicted_kcat_s", 
+    #     "kcat_source_db", "kcat_db", "matching_score",
+    #     "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
+    #     ]]
+
     kcat_df = kcat_df[[
-        "rxn", "KEGG_rxn_id", "ec_code", "direction", 
+        "rxn", "rxn_kegg", "ec_code", "direction", 
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
-        "genes_model", "uniprot_model",
-        "kcat", "kcat_source", "catapro_predicted_kcat_s", 
-        "kcat_source_db", "kcat_db", "matching_score",
-        "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
+        "genes", "uniprot",
+        "kcat", "db", 
+        "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
         ]]
 
     return kcat_df
@@ -88,7 +111,7 @@ def run_prediction_part1(kcat_file_path: str,
     kcat_df = kcat_df[(kcat_df['matching_score'] >= limit_matching_score) | (kcat_df['matching_score'].isnull())]
     # Drop rows with no UniProt ID or no substrates_kegg
     before_duplicates_filter = len(kcat_df) - 1 
-    kcat_df = kcat_df[kcat_df['uniprot_model'].notnull() & kcat_df['substrates_kegg'].notnull()]
+    kcat_df = kcat_df[kcat_df['uniprot'].notnull() & kcat_df['substrates_kegg'].notnull()]
     nb_missing_enzymes = before_duplicates_filter - len(kcat_df)
     
     # Generate CataPro input file

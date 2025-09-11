@@ -69,7 +69,7 @@ def get_brenda_credentials() -> tuple[str, str]:
 
 
 @lru_cache(maxsize=None)
-def get_turnover_number_brenda(ec_number):
+def get_turnover_number_brenda(ec_number) -> pd.DataFrame:
     """
     Queries the BRENDA SOAP API to retrieve turnover number values for a Enzyme Commission (EC) Number.
 
@@ -172,7 +172,7 @@ def get_turnover_number_brenda(ec_number):
     return df
 
 
-def get_variant(text):
+def get_variant(text) -> str | None:
     """
     Extracts the enzyme variant information from the commentary text.
     
@@ -193,7 +193,7 @@ def get_variant(text):
 
 
 @lru_cache(maxsize=None)
-def get_cofactor(ec_number):
+def get_cofactor(ec_number) -> pd.DataFrame:
     """
     Queries the BRENDA SOAP API to retrieve cofactor information for a given Enzyme Commission (EC) number.
 

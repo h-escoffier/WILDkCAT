@@ -8,7 +8,7 @@ from ..utils.manage_warnings import logger_retrieval as logger
 
 
 @lru_cache(maxsize=None)
-def convert_uniprot_to_sequence(uniprot_id):
+def convert_uniprot_to_sequence(uniprot_id) -> str | None:
     """
     Convert a UniProt accession ID to its corresponding amino acid sequence.
 
@@ -32,7 +32,7 @@ def convert_uniprot_to_sequence(uniprot_id):
 
 
 @lru_cache(maxsize=None)
-def catalytic_activity(uniprot_id):
+def catalytic_activity(uniprot_id) -> list[str] | None:
     """
     Retrieves the EC (Enzyme Commission) numbers associated with the catalytic activity of a given UniProt ID.
 
@@ -61,7 +61,7 @@ def catalytic_activity(uniprot_id):
         return None
 
 
-def identify_catalytic_enzyme(lst_uniprot_ids, ec):
+def identify_catalytic_enzyme(lst_uniprot_ids, ec) -> str | None:
     """
     Identifies the catalytic enzyme from a list of UniProt IDs for a given EC number.
 

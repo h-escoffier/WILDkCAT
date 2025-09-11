@@ -10,7 +10,7 @@ from ..api.uniprot_api import convert_uniprot_to_sequence
 load_dotenv()
 
 
-def closest_enz(kcat_dict, api_output):
+def closest_enz(kcat_dict, api_output) -> pd.DataFrame:
     """
     Retrieve and ranks the enzymes sequences closest to the sequence of the target enzyme based on the percentage of identity.
     If the reference UniProt ID is missing, invalid, or the sequence cannot be retrieved, the function returns the input DataFrame with "id_perc" set to None.
@@ -76,7 +76,7 @@ def closest_enz(kcat_dict, api_output):
     return api_output
 
 
-def closest_taxonomy(general_criteria, api_output): 
+def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame: 
     """
     Retrieve and ranks the organisms based on their taxonomic similarity to the reference organism.
     

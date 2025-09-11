@@ -17,6 +17,7 @@ tempCodeRunnerFile.python
 # Ignore personal files 
 model/Human-GEM.xml
 model/yeast-GEM.xml 
+results
 warnings
 non_functional_approaches
 in_progress

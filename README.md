@@ -73,7 +73,7 @@ wildkcat prediction-part2 kcat_retrieved.tsv
     kcat_final.tsv \
     7  # Limit matching score
 
-# Generate summary report
+# Generate summary report (IN PROGRESS)
 wildkcat report  path/to/my_model.json
     kcat_final.tsv
 ```

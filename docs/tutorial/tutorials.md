@@ -27,6 +27,8 @@ os.makedirs("output", exist_ok=True)
 os.makedirs("output/machine_learning", exist_ok=True)
 ```
 
+---
+
 ## 1 — Extract kcat values from _E. coli_ core model
 
 First, for each combination of reaction, enzyme, and substrate(s) in the model, create a TSV file. 
@@ -47,10 +49,11 @@ Example of the output file:
 | rxn | rxn_kegg | ec_code | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot |
 | :-- | :------- | :------ | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ |
 | PFK |          | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 |
-| PFL | R00212   | 2.3.1.54 | forward | Coenzyme A;Pyruvate | C00010;C00022 | Acetyl-CoA;Formate | C00024;C00058 | b0902;b0903;b2579 | P09373;P0A9N4;P68066 |
+| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 |
 
+[View the generated report](extract_ecoli_report.html)
 
-
+---
 
 ## 2 — Retrieve experimental kcat values from BRENDA and SABIO-RK
 
@@ -75,8 +78,11 @@ Example of the output file:
 | rxn | rxn_kegg | ec_code | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | kcat | matching_score | catalytic_enzyme | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_db | kcat_id_percent | kcat_organism_score |
 | :-- | :------- | :------ | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--- | :-------------- | :---------------- | :-------------- | :------------ | :---------- | :--------------- | :------ | :------- | :-------------- | :------------------ | :--- |
 | PFK |          | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | 0.016 | 1 | P0A796 | D-fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | brenda | 100.0 | 0.0 |
-| PFL | R00212   | 2.3.1.54 | forward | Coenzyme A;Pyruvate | C00010;C00022 | Acetyl-CoA;Formate | C00024;C00058 | b0902;b0903;b2579 | P09373;P0A9N4;P68066 | 11.0 | 5 | P09373 | pyruvate | Escherichia coli |  |  |  |  | brenda |  | 0.0 |
+| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 | 13.9 | 7 | P25437 | ethanol | Acinetobacter calcoaceticus |  |  |  |  | brenda |  | 4.0 |
 
+[View the generated report](retrieve_ecoli_report.html)
+
+---
 
 ## 3 — Predict missing kcat values using machine learning
 
@@ -92,11 +98,13 @@ from wildkcat import run_prediction_part1
 run_prediction_part1(
     kcat_file_path="output/e_coli_core_kcat_retrieved.tsv", 
     output_path="output/machine_learning/ecoli_catapro_input.csv",
-    limit_matching_score=8 
+    limit_matching_score=6
     )
 ```
 
 The output file `ecoli_catapro_input.csv` can then be used as input for CataPro.
+
+[View the generated report]()
 
 ### 3.2 - Integrate CataPro predictions
 
@@ -110,7 +118,7 @@ run_prediction_part2(
     catapro_predictions_path="output/machine_learning/ecoli_catapro_output.csv", 
     substrates_to_smiles_path="output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
     output_path="output/e_coli_core_kcat_full.tsv",
-    limit_matching_score=8
+    limit_matching_score=6
     )
 ```
 
@@ -119,10 +127,11 @@ Example of the output file:
 | rxn | rxn_kegg | ec_code  | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | kcat | db | matching_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent |
 | :-- | :------- | :------- | :-------- | :-------------- | :--------------- | :------------ | :-------------| :---- | :-------| :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- |
 | PFK |          | 2.7.1.11 | forward   | ATP C10H12N5O13P3; D-Fructose 6-phosphate | C00002; C05345 | ADP C10H12N5O10P2; D-Fructose 1,6-bisphosphate; H+ | C00008; C00354; C00080 | b3916 | P0A796 | 0.016 | brenda  | 1 | D-fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 |
+| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 | 16.0905 | catapro |  |  |  |  |  |  |  |  |
 
-TODO: Add an example with catapro
+---
 
-## 4 — Generate summary report
+## 4 — Generate summary report (_Currently in progress_)
 
 The final output file `e_coli_core_kcat_full.tsv` contains both experimentally retrieved and machine learning predicted kcat values for each combination of reaction, enzyme, and substrate(s) in the _E. coli_ core model. This file can be used for integration into enzyme-constrained metabolic models.
 
@@ -137,5 +146,4 @@ generate_summary_report(
     )
 ```
 
-[View the summary report](tutorial_ecoli_report.html)
-
+[View the generated report](general_ecoli_report.html)
