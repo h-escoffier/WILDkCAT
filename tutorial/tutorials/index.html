@@ -516,9 +516,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-generate-summary-report" class="md-nav__link">
+  <a href="#4-generate-summary-report-currently-in-progress" class="md-nav__link">
     <span class="md-ellipsis">
-      4 — Generate summary report
+      4 — Generate summary report (Currently in progress)
     </span>
   </a>
   
@@ -591,6 +591,7 @@
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;output/machine_learning&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
+<hr />
 <h2 id="1-extract-kcat-values-from-e-coli-core-model">1 — Extract kcat values from <em>E. coli</em> core model</h2>
 <p>First, for each combination of reaction, enzyme, and substrate(s) in the model, create a TSV file. </p>
 <p>Each row corresponds to a unique combination of reaction, enzyme, and substrate(s) and will be used to retrieve experimental kcat values from BRENDA and SABIO-RK in the next step.</p>
@@ -631,19 +632,21 @@
 <td style="text-align: left;">P0A796</td>
 </tr>
 <tr>
-<td style="text-align: left;">PFL</td>
-<td style="text-align: left;">R00212</td>
-<td style="text-align: left;">2.3.1.54</td>
+<td style="text-align: left;">ALCD2x</td>
+<td style="text-align: left;">R00754</td>
+<td style="text-align: left;">1.1.1.71</td>
 <td style="text-align: left;">forward</td>
-<td style="text-align: left;">Coenzyme A;Pyruvate</td>
-<td style="text-align: left;">C00010;C00022</td>
-<td style="text-align: left;">Acetyl-CoA;Formate</td>
-<td style="text-align: left;">C00024;C00058</td>
-<td style="text-align: left;">b0902;b0903;b2579</td>
-<td style="text-align: left;">P09373;P0A9N4;P68066</td>
+<td style="text-align: left;">Ethanol;Nicotinamide adenine dinucleotide</td>
+<td style="text-align: left;">C00469;C00003</td>
+<td style="text-align: left;">Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced</td>
+<td style="text-align: left;">C00084;C00080;C00004</td>
+<td style="text-align: left;">b0356</td>
+<td style="text-align: left;">P25437</td>
 </tr>
 </tbody>
 </table>
+<p><a href="../extract_ecoli_report.html">View the generated report</a></p>
+<hr />
 <h2 id="2-retrieve-experimental-kcat-values-from-brenda-and-sabio-rk">2 — Retrieve experimental kcat values from BRENDA and SABIO-RK</h2>
 <p>This function searches for experimentally measured turnover numbers (kcat values) in the BRENDA and/or SABIO-RK databases for the kcats listed in the input file. 
 The retrieved values are filtered based on organism, temperature, and pH conditions. The closest matching kcat values are saved to the output file.</p>
@@ -712,31 +715,33 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">0.0</td>
 </tr>
 <tr>
-<td style="text-align: left;">PFL</td>
-<td style="text-align: left;">R00212</td>
-<td style="text-align: left;">2.3.1.54</td>
+<td style="text-align: left;">ALCD2x</td>
+<td style="text-align: left;">R00754</td>
+<td style="text-align: left;">1.1.1.71</td>
 <td style="text-align: left;">forward</td>
-<td style="text-align: left;">Coenzyme A;Pyruvate</td>
-<td style="text-align: left;">C00010;C00022</td>
-<td style="text-align: left;">Acetyl-CoA;Formate</td>
-<td style="text-align: left;">C00024;C00058</td>
-<td style="text-align: left;">b0902;b0903;b2579</td>
-<td style="text-align: left;">P09373;P0A9N4;P68066</td>
-<td style="text-align: left;">11.0</td>
-<td style="text-align: left;">5</td>
-<td style="text-align: left;">P09373</td>
-<td style="text-align: left;">pyruvate</td>
-<td style="text-align: left;">Escherichia coli</td>
+<td style="text-align: left;">Ethanol;Nicotinamide adenine dinucleotide</td>
+<td style="text-align: left;">C00469;C00003</td>
+<td style="text-align: left;">Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced</td>
+<td style="text-align: left;">C00084;C00080;C00004</td>
+<td style="text-align: left;">b0356</td>
+<td style="text-align: left;">P25437</td>
+<td style="text-align: left;">13.9</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">P25437</td>
+<td style="text-align: left;">ethanol</td>
+<td style="text-align: left;">Acinetobacter calcoaceticus</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">brenda</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">0.0</td>
+<td style="text-align: left;">4.0</td>
 </tr>
 </tbody>
 </table>
+<p><a href="../retrieve_ecoli_report.html">View the generated report</a></p>
+<hr />
 <h2 id="3-predict-missing-kcat-values-using-machine-learning">3 — Predict missing kcat values using machine learning</h2>
 <h3 id="31-prepare-input-file-for-catapro">3.1 - Prepare input file for CataPro</h3>
 <p>Prepare the input file for CataPro by filtering out the kcat entries that were not found in the previous step and below a limit score (<code>limit_matching_score</code>). The resulting file will be used to predict missing kcat values using machine learning.</p>
@@ -746,10 +751,11 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <span class="n">run_prediction_part1</span><span class="p">(</span>
     <span class="n">kcat_file_path</span><span class="o">=</span><span class="s2">&quot;output/e_coli_core_kcat_retrieved.tsv&quot;</span><span class="p">,</span> 
     <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;output/machine_learning/ecoli_catapro_input.csv&quot;</span><span class="p">,</span>
-    <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">8</span> 
+    <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">6</span>
     <span class="p">)</span>
 </code></pre></div>
 <p>The output file <code>ecoli_catapro_input.csv</code> can then be used as input for CataPro.</p>
+<p><a href="">View the generated report</a></p>
 <h3 id="32-integrate-catapro-predictions">3.2 - Integrate CataPro predictions</h3>
 <p>After running CataPro with the prepared input file, integrate the predicted kcat values back into the original kcat entries. The function matches the predicted values to the original entries using the substrate names and SMILES mapping file generated in the previous step.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_prediction_part2</span>
@@ -759,7 +765,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
     <span class="n">catapro_predictions_path</span><span class="o">=</span><span class="s2">&quot;output/machine_learning/ecoli_catapro_output.csv&quot;</span><span class="p">,</span> 
     <span class="n">substrates_to_smiles_path</span><span class="o">=</span><span class="s2">&quot;output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv&quot;</span><span class="p">,</span> 
     <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;output/e_coli_core_kcat_full.tsv&quot;</span><span class="p">,</span>
-    <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">8</span>
+    <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">6</span>
     <span class="p">)</span>
 </code></pre></div>
 <p>Example of the output file:</p>
@@ -811,10 +817,32 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;"></td>
 <td style="text-align: left;">100.0</td>
 </tr>
+<tr>
+<td style="text-align: left;">ALCD2x</td>
+<td style="text-align: left;">R00754</td>
+<td style="text-align: left;">1.1.1.71</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">Ethanol;Nicotinamide adenine dinucleotide</td>
+<td style="text-align: left;">C00469;C00003</td>
+<td style="text-align: left;">Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced</td>
+<td style="text-align: left;">C00084;C00080;C00004</td>
+<td style="text-align: left;">b0356</td>
+<td style="text-align: left;">P25437</td>
+<td style="text-align: left;">16.0905</td>
+<td style="text-align: left;">catapro</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
 </tbody>
 </table>
-<p>TODO: Add an example with catapro</p>
-<h2 id="4-generate-summary-report">4 — Generate summary report</h2>
+<hr />
+<h2 id="4-generate-summary-report-currently-in-progress">4 — Generate summary report (<em>Currently in progress</em>)</h2>
 <p>The final output file <code>e_coli_core_kcat_full.tsv</code> contains both experimentally retrieved and machine learning predicted kcat values for each combination of reaction, enzyme, and substrate(s) in the <em>E. coli</em> core model. This file can be used for integration into enzyme-constrained metabolic models.</p>
 <p>The result can be visualized and summarized using the function <code>generate_summary_report</code>: </p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_summary_report</span>
@@ -824,7 +852,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
     <span class="n">kcat_file_path</span><span class="o">=</span><span class="s2">&quot;output/e_coli_core_kcat_full.tsv&quot;</span>
     <span class="p">)</span>
 </code></pre></div>
-<p><a href="../tutorial_ecoli_report.html">View the summary report</a></p>
+<p><a href="../general_ecoli_report.html">View the generated report</a></p>
 
 
 
