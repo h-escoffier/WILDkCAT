@@ -1,11 +1,11 @@
 import re 
+import logging
 import pandas as pd 
 import numpy as np
 from typing import Optional, Tuple, Dict, Any
 
 from ..utils.temperature import arrhenius_equation, calculate_ea
 from ..utils.organism import closest_enz, closest_taxonomy
-from ..utils.manage_warnings import logger_retrieval as logger
 
 
 # TODO: Limit the Ea to the same pH ? 
@@ -222,7 +222,7 @@ def check_temperature(candidate, general_criteria, api_output, min_r2=0.8, expec
         ea, r2 = calculate_ea(api_filtered)
         if r2 >= min_r2 and ea > 0:
             if not (expected_range[0] <= ea <= expected_range[1]):
-                logger.warning(f"{candidate.get('ECNumber')}: Estimated Ea ({ea:.0f} J/mol) is outside the expected range {expected_range} J/mol.")
+                logging.warning(f"{candidate.get('ECNumber')}: Estimated Ea ({ea:.0f} J/mol) is outside the expected range {expected_range} J/mol.")
             # Go Arrhenius
             return 0, True
     

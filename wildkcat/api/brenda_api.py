@@ -1,3 +1,5 @@
+import os 
+import logging
 import pandas as pd 
 from requests import Session
 from requests.adapters import HTTPAdapter
@@ -9,10 +11,7 @@ from zeep.helpers import serialize_object
 from dotenv import load_dotenv
 from functools import lru_cache
 import hashlib
-import os 
 
-
-from ..utils.manage_warnings import logger_retrieval as logger
 
 
 load_dotenv()
@@ -120,13 +119,13 @@ def get_turnover_number_brenda(ec_number) -> pd.DataFrame:
     data_organism = serialize_object(result_organism)
 
     if not data:
-        logger.warning('%s: No data found for the query in BRENDA.' % f"{ec_number}")
+        logging.warning('%s: No data found for the query in BRENDA.' % f"{ec_number}")
         return pd.DataFrame()
 
     # Remove None values (-999)
     data = [entry for entry in data if entry.get('turnoverNumber') is not None and entry.get('turnoverNumber') != '-999']
     if data == []:
-        logger.warning('%s: No valid data found for the query in BRENDA.' % f"{ec_number}")
+        logging.warning('%s: No valid data found for the query in BRENDA.' % f"{ec_number}")
         return pd.DataFrame()
 
     df = pd.DataFrame(data)

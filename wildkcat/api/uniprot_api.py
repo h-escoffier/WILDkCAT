@@ -1,7 +1,6 @@
 import requests
+import logging
 from functools import lru_cache
-
-from ..utils.manage_warnings import logger_retrieval as logger
 
 
 # --- UniProt API ---
@@ -80,10 +79,10 @@ def identify_catalytic_enzyme(lst_uniprot_ids, ec) -> str | None:
             if ec in catalytic_activity(enzyme):
                 catalytic_enzyme.append(enzyme)
     if catalytic_enzyme == []:
-        logger.warning(f"{ec}: No catalytic enzyme found for the complex {lst_uniprot_ids}.")
+        logging.warning(f"{ec}: No catalytic enzyme found for the complex {lst_uniprot_ids}.")
         catalytic_enzyme = None 
     elif len(catalytic_enzyme) > 1:
-        logger.warning(f"{ec}: Multiple catalytic enzymes found for the complex {lst_uniprot_ids}.")
+        logging.warning(f"{ec}: Multiple catalytic enzymes found for the complex {lst_uniprot_ids}.")
         catalytic_enzyme = ';'.join(catalytic_enzyme)
     else:
         catalytic_enzyme = catalytic_enzyme[0]

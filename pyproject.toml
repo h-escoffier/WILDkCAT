@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wildkcat"
-version = "0.0.14"
+version = "0.0.15"
 authors = [
   { name="Hugues Escoffier", email="hugues.escoffier@gmail.com" },
 ]

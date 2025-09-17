@@ -1,3 +1,5 @@
+import os 
+import datetime
 import logging
 import pandas as pd
 import numpy as np
@@ -101,9 +103,14 @@ def run_prediction_part1(kcat_file_path: str,
         limit_matching_score (int): Threshold for filtering entries based on matching score.
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
-    # Add a deduplication filter to the logger
+    # Intitialize logging
+    os.makedirs("logs", exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"logs/prediction1_{timestamp}.log"
     logging.getLogger().addFilter(DedupFilter())
+    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
 
+    # Run prediction part 1
     # Read the kcat file
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
 
@@ -145,6 +152,14 @@ def run_prediction_part2(kcat_file_path: str,
         output_path (str): Path to save the formatted output TSV file.
         limit_matching_score (float): Threshold for taking predictions over retrieved values.
     """ 
+    # Intitialize logging
+    os.makedirs("logs", exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"logs/prediction2_{timestamp}.log"
+    logging.getLogger().addFilter(DedupFilter())
+    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
+
+    # Run prediction part 2
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
     substrates_to_smiles = pd.read_csv(substrates_to_smiles_path, sep='\t')
     catapro_predictions_df = pd.read_csv(catapro_predictions_path, sep=',')

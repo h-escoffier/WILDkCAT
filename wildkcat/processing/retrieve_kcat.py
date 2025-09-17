@@ -1,3 +1,5 @@
+import os
+import datetime
 import time
 import logging
 import numpy as np
@@ -10,6 +12,7 @@ from ..api.brenda_api import get_turnover_number_brenda
 from ..api.uniprot_api import identify_catalytic_enzyme
 
 from ..utils.matching import find_best_match
+from ..utils.manage_warnings import DedupFilter
 from ..utils.generate_reports import report_retrieval
 
 
@@ -105,6 +108,14 @@ def run_retrieval(kcat_file_path: str,
             Options are 'both' (default), 'brenda', or 'sabio_rk'.
         report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).        
     """
+    # Intitialize logging
+    os.makedirs("logs", exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"logs/retrieval_{timestamp}.log"
+    logging.getLogger().addFilter(DedupFilter())
+    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
+
+
     # Create a dict with the general criterias
     general_criteria = {
         "Organism": organism,

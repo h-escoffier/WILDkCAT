@@ -1,12 +1,14 @@
 import re
+import os 
 import logging
+import datetime 
 import pandas as pd
 from tqdm import tqdm
 from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 from ..api.api_utilities import safe_requests_get, retry_api
-from ..utils.manage_warnings import logger_extraction as logger 
+from ..utils.manage_warnings import DedupFilter
 from ..utils.generate_reports import report_extraction
 
 
@@ -59,7 +61,7 @@ def is_ec_code_transferred(ec_code):
     if not response:
         return None
     if "Transferred to" in response.text:
-        logger.warning(f"EC code {ec_code} transferred to {response.text.split('Transferred to', 1)[1].lower().strip()}")
+        logging.warning(f"EC code {ec_code} transferred to {response.text.split('Transferred to', 1)[1].lower().strip()}")
         return True
     return False
 
@@ -163,7 +165,7 @@ def create_kcat_output(model):
             if not ec_pattern.match(ec):
                 if ec not in set_incomplete_ec_codes:
                     set_incomplete_ec_codes.add(ec)
-                    logger.warning(f"EC code {ec} is not in the correct format")
+                    logging.warning(f"EC code {ec} is not in the correct format")
                 continue
             
             is_transferred = is_ec_code_transferred(ec)
@@ -259,6 +261,14 @@ def run_extraction(model_path: str,
         output_path (str): Path to the output file (TSV format).
         report (bool, optional): Whether to generate an HTML report (default: True).
     """
+    # Intitialize logging
+    os.makedirs("logs", exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"logs/extract_{timestamp}.log"
+    logging.getLogger().addFilter(DedupFilter())
+    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
+    
+    # Run extraction
     model = read_model(model_path)
     df, report_statistics = create_kcat_output(model)
 

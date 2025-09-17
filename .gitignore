@@ -23,6 +23,7 @@ non_functional_approaches
 in_progress
 *.ipynb
 .env
+logs
 
 # Ignore documentation build files
 site 
