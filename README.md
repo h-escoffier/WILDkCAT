@@ -95,7 +95,7 @@ It demonstrates a full extraction, retrieval, and prediction workflow on the E. 
 
 ---
 
-## Key functions
+## Key scripts 
 
 ### `extract_kcat.py`
 - Verifies whether the reaction EC number exists.  
