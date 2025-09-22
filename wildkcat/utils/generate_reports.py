@@ -602,7 +602,7 @@ def report_final(model, final_df):
 
 
     df = final_df.copy()
-    df["kcat_db"] = df["kcat_db"].fillna("Unknown")
+    df["db"] = df["db"].fillna("Unknown")
     generated_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # Utility to convert matplotlib figures to base64 <img>
@@ -665,63 +665,12 @@ def report_final(model, final_df):
 
         return "<p>No valid values available for plotting.</p>"
     
-
-    def plot_kcat_distribution(column_name, title):
-        df[column_name] = pd.to_numeric(df[column_name], errors='coerce')
-        kcat_values = df[column_name].dropna()
-
-        total = len(df)
-        matched = len(kcat_values)
-        match_percent = matched / total * 100 if total else 0
-
-        if not kcat_values.empty:
-            min_exp = int(np.floor(np.log10(max(1e-6, kcat_values.min()))))
-            max_exp = int(np.ceil(np.log10(kcat_values.max())))
-            bins = np.logspace(min_exp, max_exp, num=40)
-
-            fig, ax = plt.subplots(figsize=(10, 6))
-            ax.hist(kcat_values, bins=bins, color="#2277cc",
-                    edgecolor="white", linewidth=0.7)
-
-            ax.set_xscale("log")
-            ax.set_xlim([10**min_exp / 1.5, 10**max_exp * 1.5])
-            ax.xaxis.set_major_formatter(LogFormatter(10))
-
-            ax.set_xlabel("kcat (s⁻¹)", fontsize=12)
-            ax.set_ylabel("Count", fontsize=12)
-            ax.set_title(f"{title} (n={matched}, {match_percent:.1f}%)", fontsize=13)
-
-            return fig_to_base64(fig)
-        return "<p>No valid values available for plotting.</p>"
-
-    img_source = plot_kcat_distribution_stacked(
-        'kcat_source', "Experimental kcat distribution", "kcat_source_db"
-    )
-    img_pred = plot_kcat_distribution(
-        'catapro_predicted_kcat_s', "Predicted kcat distribution"
-    )
     img_final = plot_kcat_distribution_stacked(
-        'kcat', "kcat distribution", "kcat_db"
+        'kcat', "kcat distribution", "db"
     )
-
-    # Difference boxplot
-    if "kcat_source" in df.columns and "catapro_predicted_kcat_s" in df.columns:
-        df["kcat_diff"] = df["catapro_predicted_kcat_s"] - df["kcat_source"]
-        fig, ax = plt.subplots(figsize=(8, 5))
-        df.boxplot(column="kcat_diff", by="matching_score", grid=False,
-                   boxprops=dict(color="#2277cc"), medianprops=dict(color="black"), ax=ax)
-        ax.set_yscale("symlog")
-        ax.set_ylabel("Difference (Predicted - Source kcat, s⁻¹)")
-        ax.set_xlabel("Matching Score")
-        ax.set_title("Difference of retrieved vs predicted kcat")
-        plt.suptitle("")
-        ax.axhline(0, color="#cc4455", linestyle="--", linewidth=1)
-        img_diff = fig_to_base64(fig)
-    else:
-        img_diff = "<p>Required columns missing for difference plot.</p>"
 
     # Coverage
-    db_counts = df["kcat_db"].fillna("Unknown").value_counts()
+    db_counts = df["db"].fillna("Unknown").value_counts()
     total_db = db_counts.sum()
 
     colors = {
@@ -883,39 +832,6 @@ def report_final(model, final_df):
                 <div class="img-section">
                     {img_final}
                 </div>
-                <p>
-                    Lorem Ipsum
-                </p>
-            </div>
-
-            <div class="card">
-                <h2>Experimental k<sub>cat</sub> Distribution</h2>
-                <div class="img-section">
-                    {img_source}
-                </div>
-                <p>
-                    Lorem Ipsum
-                </p>
-            </div>
-
-            <div class="card">
-                <h2>Predicted k<sub>cat</sub> Distribution</h2>
-                <div class="img-section">
-                    {img_pred}
-                </div>
-                <p>
-                    Lorem Ipsum
-                </p>
-            </div>
-
-            <div class="card">
-                <h2>Difference Analysis</h2>
-                <div class="img-section">
-                    {img_diff}
-                </div>
-                <p>
-                    Lorem Ipsum
-                </p>
             </div>
         </div>
 

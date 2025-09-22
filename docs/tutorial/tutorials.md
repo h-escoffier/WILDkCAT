@@ -147,7 +147,7 @@ Example of the output file:
 
 ---
 
-## 4 — Generate summary report (_Currently in progress_)
+## 4 — Generate summary report
 
 The final output file `e_coli_core_kcat_full.tsv` contains both experimentally retrieved and machine learning predicted kcat values for each combination of reaction, enzyme, and substrate(s) in the _E. coli_ core model. This file can be used for integration into enzyme-constrained metabolic models.
 

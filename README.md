@@ -101,13 +101,12 @@ It demonstrates a full extraction, retrieval, and prediction workflow on the E. 
 - Verifies whether the reaction EC number exists.  
 - Retains inputs where reaction-associated genes/enzymes are not supported by KEGG.  
 - Retains inputs where no enzymes are provided by the model.  
+- If multiple enzymes are provided, searches UniProt for catalytic activity.  
 
 ---
 
 ### `retrieve_kcat.py`
-- If multiple enzymes are provided, searches UniProt for catalytic activity.  
-- If multiple catalytic enzymes are identified, store all.
-- When multiple enzymes are found, computes identity percentages relative to the identified catalytic enzyme.  
+- If the same enzyme is not found, computes identity percentages relative to the identified catalytic enzyme.  
 - Applies Arrhenius correction to values within the appropriate pH range.  
 - For rows with multiple scores, selects:
   - The best score  
