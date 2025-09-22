@@ -46,10 +46,10 @@ run_extraction(
 
 Example of the output file:
 
-| rxn | rxn_kegg | ec_code | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot |
-| :-- | :------- | :------ | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ |
-| PFK |          | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 |
-| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 |
+| rxn | rxn_kegg | ec_code | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning |
+| :-- | :------- | :------ | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--------------- | :------ |
+| PFK |          | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 |  |
+| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 | P25437 |  |
 
 [View the generated report](extract_ecoli_report.html)
 
@@ -75,10 +75,10 @@ run_retrieval(
 
 Example of the output file:
 
-| rxn | rxn_kegg | ec_code | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | kcat | matching_score | catalytic_enzyme | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_db | kcat_id_percent | kcat_organism_score |
-| :-- | :------- | :------ | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--- | :-------------- | :---------------- | :-------------- | :------------ | :---------- | :--------------- | :------ | :------- | :-------------- | :------------------ | :--- |
-| PFK |          | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | 0.016 | 1 | P0A796 | D-fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | brenda | 100.0 | 0.0 |
-| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 | 13.9 | 7 | P25437 | ethanol | Acinetobacter calcoaceticus |  |  |  |  | brenda |  | 4.0 |
+| rxn | rxn_kegg | ec_code | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning | kcat | matching_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_db | kcat_id_percent | kcat_organism_score |
+| :-- | :------- | :------ | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--------------- | :------ | :--- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :------ | :-------------- | :------------------ |
+| PFK |          | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | |  0.016 | 1 | D-fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | brenda | 100.0 | 0.0 |
+| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 |P25437 | | 13.9 | 7 | ethanol | Acinetobacter calcoaceticus |  |  |  |  | brenda |  | 4.0 |
 
 [View the generated report](retrieve_ecoli_report.html)
 
@@ -102,9 +102,25 @@ run_prediction_part1(
     )
 ```
 
-The output file `ecoli_catapro_input.csv` can then be used as input for CataPro.
+The output file `ecoli_catapro_input.csv` is formatted according to the requirements of [CataPro](https://github.com/zchwang/CataPro), meaning it can be directly used as input for kcat prediction.
 
-[View the generated report]()
+!!! note 
+
+    Before running predictions, make sure you have installed CataPro by following the installation instructions provided in their [GitHub repository](https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment).
+
+Once installed, you can run CataPro with the following command:
+
+```bash 
+python predict.py \
+        -inp_fpath output/machine_learning/ecoli_catapro_input.csv \
+        -model_dpath models \
+        -batch_size 64 \
+        -device cuda:0 \
+        -out_fpath ecoli_catapro_output.csv
+```
+
+[View the generated report](predict_ecoli_report.html)
+
 
 ### 3.2 - Integrate CataPro predictions
 
@@ -124,10 +140,10 @@ run_prediction_part2(
 
 Example of the output file:
 
-| rxn | rxn_kegg | ec_code  | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | kcat | db | matching_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent |
-| :-- | :------- | :------- | :-------- | :-------------- | :--------------- | :------------ | :-------------| :---- | :-------| :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- |
-| PFK |          | 2.7.1.11 | forward   | ATP C10H12N5O13P3; D-Fructose 6-phosphate | C00002; C05345 | ADP C10H12N5O10P2; D-Fructose 1,6-bisphosphate; H+ | C00008; C00354; C00080 | b3916 | P0A796 | 0.016 | brenda  | 1 | D-fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 |
-| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 | 16.0905 | catapro |  |  |  |  |  |  |  |  |
+| rxn | rxn_kegg | ec_code  | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning | kcat | db | matching_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent |
+| :-- | :------- | :------- | :-------- | :-------------- | :--------------- | :------------ | :-------------| :---- | :------ | :--------------- | :------ | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- |
+| PFK |          | 2.7.1.11 | forward   | ATP C10H12N5O13P3; D-Fructose 6-phosphate | C00002; C05345 | ADP C10H12N5O10P2; D-Fructose 1,6-bisphosphate; H+ | C00008; C00354; C00080 | b3916 | P0A796 | P0A796 | | 0.016 | brenda  | 1 | D-fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 |
+| ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 | P25437| | 16.0905 | catapro |  |  |  |  |  |  |  |  |
 
 ---
 

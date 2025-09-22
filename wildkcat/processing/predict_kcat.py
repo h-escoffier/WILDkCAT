@@ -78,7 +78,7 @@ def format_output(kcat_df, limit_matching_score):
     kcat_df = kcat_df[[
         "rxn", "rxn_kegg", "ec_code", "direction", 
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
-        "genes", "uniprot",
+        "genes", "uniprot", "catalytic_enzyme", "warning",
         "kcat", "db", 
         "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
         ]]

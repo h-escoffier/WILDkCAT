@@ -9,7 +9,6 @@ from functools import lru_cache
 
 from ..api.sabio_rk_api import get_turnover_number_sabio
 from ..api.brenda_api import get_turnover_number_brenda
-from ..api.uniprot_api import identify_catalytic_enzyme
 
 from ..utils.matching import find_best_match
 from ..utils.manage_warnings import DedupFilter
@@ -35,7 +34,7 @@ def get_turnover_number(ec_code, database='both'):
     df_brenda = pd.DataFrame()
     df_sabio = pd.DataFrame()
 
-    if database in ('both', 'brenda'):
+    if database in ('both', 'brenda'): 
         df_brenda = get_turnover_number_brenda(ec_code)
     if database in ('both', 'sabio_rk'):
         df_sabio = get_turnover_number_sabio(ec_code)
@@ -75,13 +74,6 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     api_output = get_turnover_number(kcat_dict['ec_code'], database)
     if api_output.empty: 
         return None, 15
-    # If multiple enzymes are found, prioritize based on the identified catalytic enzyme
-    if pd.notna(kcat_dict['uniprot']):
-        if ';' in kcat_dict['uniprot']:
-            catalytic_enzyme = identify_catalytic_enzyme(kcat_dict['uniprot'], kcat_dict['ec_code'])
-            kcat_dict['catalytic_enzyme'] = catalytic_enzyme
-        else:  # Only one enzyme
-            kcat_dict['catalytic_enzyme'] = kcat_dict['uniprot']
             
     best_score, best_candidate = find_best_match(kcat_dict, api_output, general_criteria)
     return best_candidate, best_score
@@ -131,7 +123,6 @@ def run_retrieval(kcat_file_path: str,
     kcat_df['matching_score'] = None
 
     # Add data of the retrieve kcat values
-    kcat_df['catalytic_enzyme'] = None
     kcat_df['kcat_substrate'] = None
     kcat_df['kcat_organism'] = None
     kcat_df['kcat_enzyme'] = None
@@ -156,7 +147,6 @@ def run_retrieval(kcat_file_path: str,
         if best_match is not None:
             # Assign results to the main dataframe
             kcat_df.loc[row.Index, 'kcat'] = best_match['adj_kcat']
-            kcat_df.loc[row.Index, 'catalytic_enzyme'] = best_match['catalytic_enzyme']
             kcat_df.loc[row.Index, 'kcat_substrate'] = best_match['Substrate']
             kcat_df.loc[row.Index, 'kcat_organism'] = best_match['Organism']
             kcat_df.loc[row.Index, 'kcat_enzyme'] = best_match['UniProtKB_AC']
@@ -182,6 +172,7 @@ if __name__ == "__main__":
         'ec_code': '1.1.1.1',
         'rxn_kegg': 'R00754',
         'uniprot': 'P00330',
+        'catalytic_enzyme': 'P00330',
         'substrates_name': 'H+;NADH;propanal', 
     }
 

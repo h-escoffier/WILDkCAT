@@ -8,6 +8,7 @@ from functools import lru_cache
 from cobra.io import load_json_model, load_matlab_model, read_sbml_model
 
 from ..api.api_utilities import safe_requests_get, retry_api
+from ..api.uniprot_api import identify_catalytic_enzyme
 from ..utils.manage_warnings import DedupFilter
 from ..utils.generate_reports import report_extraction
 
@@ -190,6 +191,8 @@ def create_kcat_output(model):
                         "products_kegg": ";".join(pk),
                         "genes": "",
                         "uniprot": "",
+                        "catalytic_enzyme": "",
+                        "warning": ""
                     })
                 continue
 
@@ -207,6 +210,20 @@ def create_kcat_output(model):
                     except KeyError:
                         continue
                 uniprot_ids = list(set(uniprot_ids))
+                
+                # Identify catalytic enzyme
+                if len(uniprot_ids) > 1:
+                    catalytic_enzyme = identify_catalytic_enzyme(";".join(uniprot_ids), ec)
+                else: 
+                    catalytic_enzyme = uniprot_ids[0] if uniprot_ids else None
+
+                # Warning 
+                warning = (
+                    "none" if catalytic_enzyme is None
+                    else "" if len(catalytic_enzyme.split(';')) == 1
+                    else "multiple"
+                )
+
                 for direction, sn, sk, pn, pk in [
                     ("forward", subs_names, subs_keggs, prod_names, prod_keggs),
                     ("reverse", prod_names, prod_keggs, subs_names, subs_keggs)
@@ -221,7 +238,9 @@ def create_kcat_output(model):
                         "products_name": ";".join(pn),
                         "products_kegg": ";".join(pk),
                         "genes": ";".join(genes_group),
-                        "uniprot": ";".join(uniprot_ids)
+                        "uniprot": ";".join(uniprot_ids),
+                        "catalytic_enzyme": catalytic_enzyme, 
+                        "warning": warning
                     })
 
     # Create output 

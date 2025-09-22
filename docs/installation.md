@@ -17,8 +17,8 @@ Provide your **BRENDA login credentials** and **Entrez API email adress** to que
 Create a file named `.env` in the root of your project with the following content:
 
 ```bash
-ENTREZ_EMAIL=your_registered_email@example.com
-BRENDA_EMAIL=your_registered_email@example.com
+ENTREZ_EMAIL=your_email@example.com
+BRENDA_EMAIL=your_email@example.com
 BRENDA_PASSWORD=your_password
 ```
 
