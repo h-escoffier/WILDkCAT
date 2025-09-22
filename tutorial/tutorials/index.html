@@ -616,6 +616,8 @@
 <th style="text-align: left;">products_kegg</th>
 <th style="text-align: left;">genes</th>
 <th style="text-align: left;">uniprot</th>
+<th style="text-align: left;">catalytic_enzyme</th>
+<th style="text-align: left;">warning</th>
 </tr>
 </thead>
 <tbody>
@@ -630,6 +632,8 @@
 <td style="text-align: left;">C00008;C00354;C00080</td>
 <td style="text-align: left;">b3916</td>
 <td style="text-align: left;">P0A796</td>
+<td style="text-align: left;">P0A796</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;">ALCD2x</td>
@@ -642,6 +646,8 @@
 <td style="text-align: left;">C00084;C00080;C00004</td>
 <td style="text-align: left;">b0356</td>
 <td style="text-align: left;">P25437</td>
+<td style="text-align: left;">P25437</td>
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
@@ -675,9 +681,10 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">products_kegg</th>
 <th style="text-align: left;">genes</th>
 <th style="text-align: left;">uniprot</th>
+<th style="text-align: left;">catalytic_enzyme</th>
+<th style="text-align: left;">warning</th>
 <th style="text-align: left;">kcat</th>
 <th style="text-align: left;">matching_score</th>
-<th style="text-align: left;">catalytic_enzyme</th>
 <th style="text-align: left;">kcat_substrate</th>
 <th style="text-align: left;">kcat_organism</th>
 <th style="text-align: left;">kcat_enzyme</th>
@@ -701,9 +708,10 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">C00008;C00354;C00080</td>
 <td style="text-align: left;">b3916</td>
 <td style="text-align: left;">P0A796</td>
+<td style="text-align: left;">P0A796</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">0.016</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">D-fructose 6-phosphate</td>
 <td style="text-align: left;">Escherichia coli</td>
 <td style="text-align: left;">P0A796</td>
@@ -725,9 +733,10 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">C00084;C00080;C00004</td>
 <td style="text-align: left;">b0356</td>
 <td style="text-align: left;">P25437</td>
+<td style="text-align: left;">P25437</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">13.9</td>
 <td style="text-align: left;">7</td>
-<td style="text-align: left;">P25437</td>
 <td style="text-align: left;">ethanol</td>
 <td style="text-align: left;">Acinetobacter calcoaceticus</td>
 <td style="text-align: left;"></td>
@@ -754,8 +763,20 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
     <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">6</span>
     <span class="p">)</span>
 </code></pre></div>
-<p>The output file <code>ecoli_catapro_input.csv</code> can then be used as input for CataPro.</p>
-<p><a href="">View the generated report</a></p>
+<p>The output file <code>ecoli_catapro_input.csv</code> is formatted according to the requirements of <a href="https://github.com/zchwang/CataPro">CataPro</a>, meaning it can be directly used as input for kcat prediction.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before running predictions, make sure you have installed CataPro by following the installation instructions provided in their <a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">GitHub repository</a>.</p>
+</div>
+<p>Once installed, you can run CataPro with the following command:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>predict.py<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-inp_fpath<span class="w"> </span>output/machine_learning/ecoli_catapro_input.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-model_dpath<span class="w"> </span>models<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-batch_size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-device<span class="w"> </span>cuda:0<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-out_fpath<span class="w"> </span>ecoli_catapro_output.csv
+</code></pre></div>
+<p><a href="../predict_ecoli_report.html">View the generated report</a></p>
 <h3 id="32-integrate-catapro-predictions">3.2 - Integrate CataPro predictions</h3>
 <p>After running CataPro with the prepared input file, integrate the predicted kcat values back into the original kcat entries. The function matches the predicted values to the original entries using the substrate names and SMILES mapping file generated in the previous step.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_prediction_part2</span>
@@ -782,6 +803,8 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">products_kegg</th>
 <th style="text-align: left;">genes</th>
 <th style="text-align: left;">uniprot</th>
+<th style="text-align: left;">catalytic_enzyme</th>
+<th style="text-align: left;">warning</th>
 <th style="text-align: left;">kcat</th>
 <th style="text-align: left;">db</th>
 <th style="text-align: left;">matching_score</th>
@@ -806,6 +829,8 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">C00008; C00354; C00080</td>
 <td style="text-align: left;">b3916</td>
 <td style="text-align: left;">P0A796</td>
+<td style="text-align: left;">P0A796</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">0.016</td>
 <td style="text-align: left;">brenda</td>
 <td style="text-align: left;">1</td>
@@ -828,6 +853,8 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">C00084;C00080;C00004</td>
 <td style="text-align: left;">b0356</td>
 <td style="text-align: left;">P25437</td>
+<td style="text-align: left;">P25437</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">16.0905</td>
 <td style="text-align: left;">catapro</td>
 <td style="text-align: left;"></td>
