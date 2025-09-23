@@ -11,10 +11,18 @@ from matplotlib.ticker import LogFormatter
 from io import BytesIO
 
 
-def report_extraction(model, df, report_statistics):
+def report_extraction(model, df, report_statistics, shader=False) -> None:
     """
-    Generate a detailed HTML report summarizing the kcat extraction results
-    with separate tables for extracted data and EC issues, and visualizations.
+    Generates a detailed HTML report summarizing kcat extraction results from a metabolic model.
+
+    Parameters: 
+        model (cobra.Model): The metabolic model object containing reactions, metabolites, and genes.
+        df (pandas.DataFrame): DataFrame containing data from the run_extraction function.
+        report_statistics (dict): Dictionary with statistics about EC code assignment and extraction issues.
+        shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.
+
+    Returns: 
+        None: The function saves the generated HTML report to 'reports/extract_kcat_report.html'. 
     """
     # Model statistics
     nb_model_reactions = len(model.reactions)
@@ -185,8 +193,13 @@ def report_extraction(model, df, report_statistics):
         </div>
 
         <footer>WILDkCAT</footer>
+    """
+    if shader:
+        html += report_shader()
+    else: 
+        html += report_simple()
+    html += """
     </body>
-    {report_shader()}
     </html>
     """
 
@@ -198,13 +211,17 @@ def report_extraction(model, df, report_statistics):
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_retrieval(df):
+def report_retrieval(df, shader=False) -> None:
     """
     Generate a styled HTML report summarizing the kcat matching results,
     including kcat value distribution and matching score repartition.
 
     Parameters:
-        df (pd.DataFrame): Must contain ['kcat', 'matching_score', ...].
+        df (pd.DataFrame): DataFrame containing data from the run_retrieval function.
+        shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.
+
+    Returns:
+        None: The function saves the generated HTML report to 'reports/retrieve_kcat_report.html'.
     """
     # Ensure numeric kcat values to avoid TypeError on comparisons
     kcat_values = pd.to_numeric(df['kcat'], errors='coerce').dropna()
@@ -437,8 +454,12 @@ def report_retrieval(df):
         </div>
 
         <footer>WILDkCAT</footer>
-    
-    {report_shader()}
+    """
+    if shader: 
+        html += report_shader()
+    else: 
+        html += report_simple()
+    html += """
     </body>
     </html>
     """
@@ -452,7 +473,18 @@ def report_retrieval(df):
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_prediction_input(catapro_df, report_statistics): 
+def report_prediction_input(catapro_df, report_statistics, shader=False) -> None: 
+    """
+    Generate a detailed HTML report summarizing the kcat prediction input statistics.
+
+    Parameters:
+        catapro_df (pd.DataFrame): DataFrame containing the CataPro input data.
+        report_statistics (dict): Dictionary with statistics about the prediction input.
+        shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.
+
+    Returns:
+        None: The function saves the generated HTML report to 'reports/predict_kcat_report.html'.
+    """
     
     # TODO: Show the number of rows without any enzymes
 
@@ -578,7 +610,12 @@ def report_prediction_input(catapro_df, report_statistics):
             </div>
 
     <footer>WILDkCAT</footer>
-    {report_shader()}
+    """
+    if shader:
+        html += report_shader()
+    else: 
+        html += report_simple()
+    html += """
     </body>
     </html>
     """
@@ -591,9 +628,16 @@ def report_prediction_input(catapro_df, report_statistics):
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_final(model, final_df):
+def report_final(model, final_df, shader=False) -> None:
     """
-    Generate a full HTML report summarizing predicted vs. source kcat values.
+    Generate a full HTML report summarizing retrieval results, including kcat distributions and coverage.
+
+    Parameters:
+        model (cobra.Model): The metabolic model object containing reactions, metabolites, and genes.
+        final_df (pd.DataFrame): DataFrame containing the final kcat assignments from run_prediction_part2 function
+        
+    Returns: 
+        None: The function saves the generated HTML report to 'reports/general_report.html'.
     """
     # Model information 
     nb_model_reactions = len(model.reactions)
@@ -836,7 +880,12 @@ def report_final(model, final_df):
         </div>
 
         <footer>WILDkCAT</footer>
-    {report_shader()}
+    """
+    if shader:
+        html += report_shader()
+    else: 
+        html += report_simple()
+    html += """
     </body>
     </html>
     """
@@ -1041,7 +1090,20 @@ def report_style():
     </style>
     """
 
-    
+
+def report_simple():
+    """Return HTML code for report background."""
+    return """
+    <style>
+        header {
+            background-color: #2980b9; /* simple blue background */
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    """
+
+
 def report_shader(): 
     """Return HTML and GLSL shader code for report background. Adapted from localthunk (https://localthunk.com)"""
     return """
