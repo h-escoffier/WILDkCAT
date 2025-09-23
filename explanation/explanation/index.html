@@ -762,7 +762,7 @@
 </li>
 <li>
 <p><strong>Correction of the kcat value using the Arrhenius equation</strong></p>
-<p>If the temperature at which kcat was measured is outside the desired range and at least two kcat measurements are available (to estimate <span class="arithmatex">\( E_a \)</span>), the kcat value can be adjusted using the Arrhenius equation:</p>
+<p>If the temperature at which kcat was measured is outside the desired range and at least two kcat measurements are available (to estimate <span class="arithmatex">\( E_a \)</span>), the kcat value can be adjusted using the <a href="https://en.wikipedia.org/wiki/Arrhenius_equation">Arrhenius equation</a>:</p>
 <div class="arithmatex">\[
 kcat_{\text{opt}} = kcat_{\text{db}} \times \exp\left(-\frac{E_a}{R} \left(\frac{1}{T_{\text{db}}} - \frac{1}{T_{\text{opt}}}\right)\right)
 \]</div>
@@ -793,11 +793,11 @@ If a kcat value cannot be predicted, the best available experimental kcat value 
 </li>
 <li>
 <p><strong>Cofactor Identification</strong></p>
-<p>The KEGG API is queried to identify cofactors associated with the reaction. If cofactors are present, they are included in the substrate SMILES.</p>
+<p>The BRENDA API is queried to identify cofactors associated with the reaction. If no cofactors are found, the kcat prediction is performed for all the metabolites involved in the reaction, then the lowest predicted kcat value is retained.</p>
 </li>
 <li>
 <p><strong>Substrate SMILES Retrieval</strong></p>
-<p>The PubChem API is queried to retrieve the SMILES representation of each substrate. </p>
+<p>The PubChem API is queried to retrieve the SMILES representation of each substrate from their KEGG IDs.</p>
 </li>
 </ol>
 <hr />
