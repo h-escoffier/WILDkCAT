@@ -3286,7 +3286,13 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">closest_taxonomy</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span> 
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">closest_taxonomy</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve and ranks the organisms based on their taxonomic similarity to the reference organism.</span>
 
@@ -3317,6 +3323,9 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 
         <span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;taxonomy&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">tax_id</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
         <span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">records</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
         <span class="n">lineage</span> <span class="o">=</span> <span class="p">[</span><span class="n">taxon</span><span class="p">[</span><span class="s2">&quot;ScientificName&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;LineageEx&quot;</span><span class="p">]]</span>
         <span class="n">lineage</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;ScientificName&quot;</span><span class="p">])</span>  <span class="c1"># include the species itself</span>
         <span class="k">return</span> <span class="n">lineage</span>
@@ -3335,6 +3344,9 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ref_lineage</span> <span class="o">=</span> <span class="n">_fetch_taxonomy</span><span class="p">(</span><span class="n">ref_organism</span><span class="p">)</span>
         <span class="n">target_lineage</span> <span class="o">=</span> <span class="n">_fetch_taxonomy</span><span class="p">(</span><span class="n">target_organism</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target_lineage</span><span class="p">:</span> <span class="c1"># If target organism is not found</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_lineage</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># Penalize missing taxonomy</span>
 
         <span class="n">similarity</span> <span class="o">=</span> <span class="mi">0</span>
 
