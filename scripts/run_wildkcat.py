@@ -21,15 +21,15 @@ if __name__ == "__main__":
     # Prediction Part 1
     run_prediction_part1(
         kcat_file_path="output/e_coli_core_kcat_retrieved.tsv", 
-        output_path="output/machine_learning/ecoli_catapro_input.csv",
+        output_path="output/machine_learning/e_coli_core_catapro_input.csv",
         limit_matching_score=6
     )
 
     # Prediction Part 2
     run_prediction_part2(
         kcat_file_path="output/e_coli_core_kcat_retrieved.tsv", 
-        catapro_predictions_path="output/machine_learning/ecoli_catapro_output.csv", 
-        substrates_to_smiles_path="output/machine_learning/ecoli_catapro_input_substrates_to_smiles.tsv", 
+        catapro_predictions_path="output/machine_learning/e_coli_core_catapro_output.csv", 
+        substrates_to_smiles_path="output/machine_learning/e_coli_core_catapro_input_substrates_to_smiles.tsv", 
         output_path="output/e_coli_core_kcat_full.tsv",
         limit_matching_score=6
     )

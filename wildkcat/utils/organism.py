@@ -107,6 +107,9 @@ def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame:
 
         handle = Entrez.efetch(db="taxonomy", id=tax_id, retmode="xml")
         records = Entrez.read(handle)
+        if not records:
+            return []
+        
         lineage = [taxon["ScientificName"] for taxon in records[0]["LineageEx"]]
         lineage.append(records[0]["ScientificName"])  # include the species itself
         return lineage
@@ -125,6 +128,9 @@ def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame:
         """
         ref_lineage = _fetch_taxonomy(ref_organism)
         target_lineage = _fetch_taxonomy(target_organism)
+
+        if not target_lineage: # If target organism is not found
+            return len(ref_lineage) + 1  # Penalize missing taxonomy
 
         similarity = 0
 

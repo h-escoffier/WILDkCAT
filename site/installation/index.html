@@ -403,6 +403,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#install-wildkcat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install WILDkCAT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install WILDkCAT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#install-from-pypi" class="md-nav__link">
     <span class="md-ellipsis">
       Install from PyPI
@@ -410,11 +420,25 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#environment-setup" class="md-nav__link">
     <span class="md-ellipsis">
       Environment Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-catapro" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install CataPro
     </span>
   </a>
   
@@ -511,12 +535,13 @@
 
 
 <h1 id="installation">Installation</h1>
-<h2 id="install-from-pypi">Install from PyPI</h2>
+<h2 id="install-wildkcat">Install WILDkCAT</h2>
+<h3 id="install-from-pypi">Install from PyPI</h3>
 <p>Install <a href="https://pypi.org/project/wildkcat/">WILDkCAT</a> directly from PyPI:</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>wildkcat
 </code></pre></div>
 <hr />
-<h2 id="environment-setup">Environment Setup</h2>
+<h3 id="environment-setup">Environment Setup</h3>
 <p>Provide your <strong>BRENDA login credentials</strong> and <strong>Entrez API email adress</strong> to query the BRENDA enzyme database and NCBI database.</p>
 <p>Create a file named <code>.env</code> in the root of your project with the following content:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">ENTREZ_EMAIL</span><span class="o">=</span>your_email@example.com
@@ -535,6 +560,10 @@
 <li>Keep the file <code>.env</code> <strong>private</strong> (e.g., add it to your <code>.gitignore</code>) as it contains sensitive information.</li>
 </ul>
 </div>
+<hr />
+<h2 id="install-catapro">Install CataPro</h2>
+<p>To predict missing kcat values using machine learning, install <a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">CataPro</a>.</p>
+<p>CataPro also requires two additional pre-trained models: <a href="https://huggingface.co/Rostlab/prot_t5_xl_uniref50">prot_t5_xl_uniref50</a> and <a href="https://huggingface.co/laituan245/molt5-base-smiles2caption">molt5-base-smiles2caption</a>.</p>
 
 
 
