@@ -51,31 +51,30 @@ Example Workflow:
 # Extract kcat data
 wildkcat extraction \
     path/to/my_model.json \
-    path/to/kcat_data.tsv
+    path/to/folder_output
 
 # Retrieve kcat values from databases
 wildkcat retrieval \
-    path/to/kcat_data.tsv \
-    path/to/kcat_retrieved.tsv \
+    path/to/folder_output
     'Organism name' \
     20 30 \  # Temperature range
     6.5 8.5 \  # pH range
 
 # Generate input for CataPro
-wildkcat prediction-part1 kcat_data_retrieved.csv \
-    prediction_input.csv \
-    7  # Limit matching score 
+wildkcat prediction-part1 \
+    path/to/folder_output
+    6  # Limit matching score 
 
-# Integrate CataPro prediction 
-wildkcat prediction-part2 kcat_retrieved.tsv 
+# Integrate CataPro prediction
+wildkcat prediction-part2 \
+    path/to/folder_output
     prediction_output.csv \
-    substrate_to_smiles.tsv \
-    kcat_final.tsv \
-    7  # Limit matching score
+    6  # Limit matching score
 
 # Generate summary report (IN PROGRESS)
-wildkcat report  path/to/my_model.json
-    kcat_final.tsv
+wildkcat report \
+    path/to/my_model.json \
+    path/to/folder_output
 ```
 
 > [!WARNING]  

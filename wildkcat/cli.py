@@ -12,7 +12,7 @@ app = typer.Typer(help="WILDkCAT CLI - Extract, Retrieve and Predict kcat values
 @app.command()
 def extraction(
     model_path: str, 
-    output_path: str, 
+    output_folder: str, 
     report: bool = True
 ):
     """
@@ -22,18 +22,17 @@ def extraction(
 
         model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
 
-        output_path (str): Path to the output file (TSV format).
+        output_folder (str): Path to the output folder where the files will be saved.
 
         report (bool, optional): Whether to generate an HTML report (default: True).
     """
-    run_extraction(model_path=model_path, output_path=output_path, report=report)
-    typer.echo(f"Extraction finished. Output saved at {output_path}")
+    run_extraction(model_path=model_path, output_folder=output_folder, report=report)
+    typer.echo(f"Extraction finished. Output saved at {output_folder}/kcat.tsv")
 
 
 @app.command()
 def retrieval(
-    kcat_file_path: str,
-    output_path: str,
+    output_folder: str,
     organism: str,
     temperature_range: tuple[float, float],
     ph_range: tuple[float, float],
@@ -45,10 +44,8 @@ def retrieval(
     and saves the results to an output file.
     
     Parameters:
-    
-        kcat_file_path (str): Path to the input kcat file.
 
-        output_path (str): Path to save the output file with retrieved kcat values.
+        output_folder (str): Path to the output folder where the files are and will be saved.
 
         organism (str): Organism name.
 
@@ -61,21 +58,19 @@ def retrieval(
         report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).       
     """
     run_retrieval(
-        kcat_file_path=kcat_file_path,
-        output_path=output_path,
+        output_folder=output_folder,
         organism=organism,
         temperature_range=temperature_range,
         pH_range=ph_range,
         database=database,
         report=report
     )
-    typer.echo(f"Retrieval finished. Output saved at {output_path}")
+    typer.echo(f"Retrieval finished. Output saved at {output_folder}/kcat_retrieved.tsv")
 
 
 @app.command()
 def prediction_part1(
-    kcat_file_path: str, 
-    output_path: str, 
+    output_folder: str, 
     limit_matching_score: int,
     report: bool = True
 ):
@@ -84,30 +79,24 @@ def prediction_part1(
     Optionally, it can produce a summary report of the processed data.
 
     Parameters:
-    
-        kcat_file_path (str): Path to the input kcat data file.
-
-        output_path (str): Path to save the generated CataPro input CSV file.
+        output_folder (str): Path to the output folder where the files are and will be saved.
 
         limit_matching_score (int): Threshold for filtering entries based on matching score.
 
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
     run_prediction_part1(
-        kcat_file_path=kcat_file_path,
-        output_path=output_path,
+        output_folder=output_folder,
         limit_matching_score=limit_matching_score, 
         report=report
     )
-    typer.echo(f"Prediction Part 1 finished. Output saved at {output_path}")
+    typer.echo(f"Prediction Part 1 finished. Output saved at {output_folder}/machine_learning/catapro_input.csv")
 
 
 @app.command()
 def prediction_part2(
-    kcat_file_path: str,
+    output_folder: str,
     catapro_predictions_path: str,
-    substrates_to_smiles_path: str,
-    output_path: str,
     limit_matching_score: int
 ):
     """
@@ -115,30 +104,24 @@ def prediction_part2(
     mapping substrates to SMILES, formatting the output, and optionally generating a report.
     
     Parameters:
-        kcat_file_path (str): Path to the input kcat TSV file.
+        output_folder (str): Path to the output folder where the files are and will be saved.
 
         catapro_predictions_path (str): Path to the Catapro predictions CSV file.
-
-        substrates_to_smiles_path (str): Path to the TSV file mapping substrates to SMILES.
-
-        output_path (str): Path to save the formatted output TSV file.
 
         limit_matching_score (float): Threshold for taking predictions over retrieved values.
 
         report (bool, optional): If True, generates a report (default: True). 
     """
     run_prediction_part2(
-        kcat_file_path=kcat_file_path,
+        output_folder=output_folder,
         catapro_predictions_path=catapro_predictions_path,
-        substrates_to_smiles_path=substrates_to_smiles_path,
-        output_path=output_path,
         limit_matching_score=limit_matching_score
     )
-    typer.echo(f"Prediction Part 2 finished. Output saved at {output_path}")
+    typer.echo(f"Prediction Part 2 finished. Output saved at {output_folder}/kcat_full.tsv")
 
 
 @app.command()
-def report(model_path: str, kcat_file_path: str):
+def report(model_path: str, output_folder: str):
     """
     Generate a HTML report summarizing the kcat extraction, retrieval and prediction for a given model. 
 
@@ -146,13 +129,13 @@ def report(model_path: str, kcat_file_path: str):
 
         model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
         
-        kcat_file_path (str): Path to the final kcat TSV file.
+        output_folder (str): Path to the output folder where the files are and will be saved.
     """
     generate_summary_report(
         model_path=model_path,
-        kcat_file_path=kcat_file_path
+        output_folder=output_folder
     )
-    typer.echo(f"Summary report generated. Output saved at reports/general_report.html")
+    typer.echo(f"Summary report generated. Output saved at {output_folder}/reports/general_report.html")
 
 
 if __name__ == "__main__":
