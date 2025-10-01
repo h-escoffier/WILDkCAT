@@ -11,7 +11,7 @@ from matplotlib.ticker import LogFormatter
 from io import BytesIO
 
 
-def report_extraction(model, df, report_statistics, shader=False) -> None:
+def report_extraction(model, df, report_statistics, output_folder, shader=False) -> None:
     """
     Generates a detailed HTML report summarizing kcat extraction results from a metabolic model.
 
@@ -19,6 +19,7 @@ def report_extraction(model, df, report_statistics, shader=False) -> None:
         model (cobra.Model): The metabolic model object containing reactions, metabolites, and genes.
         df (pandas.DataFrame): DataFrame containing data from the run_extraction function.
         report_statistics (dict): Dictionary with statistics about EC code assignment and extraction issues.
+        output_folder (str): Path to the output folder where the report will be saved.
         shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.
 
     Returns: 
@@ -71,7 +72,7 @@ def report_extraction(model, df, report_statistics, shader=False) -> None:
     fig.update_traces(textinfo="percent+label", textfont_size=16)
     fig.update_layout(
         title="",
-        title_font=dict(size=20, color="black"),
+        title_font=dict(size=30, color="black"),
         showlegend=True
     )
 
@@ -204,20 +205,21 @@ def report_extraction(model, df, report_statistics, shader=False) -> None:
     """
 
     # Save report
-    os.makedirs("reports", exist_ok=True)
-    report_path = "reports/extract_kcat_report.html"
+    os.makedirs(os.path.join(output_folder, "reports"), exist_ok=True)
+    report_path = os.path.join(output_folder, "reports/extract_report.html")
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_retrieval(df, shader=False) -> None:
+def report_retrieval(df, output_folder,shader=False) -> None:
     """
     Generate a styled HTML report summarizing the kcat matching results,
     including kcat value distribution and matching score repartition.
 
     Parameters:
         df (pd.DataFrame): DataFrame containing data from the run_retrieval function.
+        output_folder (str): Path to the output folder where the report will be saved.
         shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.
 
     Returns:
@@ -465,21 +467,22 @@ def report_retrieval(df, shader=False) -> None:
     """
 
     # Save HTML
-    os.makedirs("reports", exist_ok=True)
-    report_path = f"reports/retrieve_kcat_report.html"
+    os.makedirs(os.path.join(output_folder, "reports"), exist_ok=True)
+    report_path = os.path.join(output_folder, "reports/retrieve_report.html")
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
 
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_prediction_input(catapro_df, report_statistics, shader=False) -> None: 
+def report_prediction_input(catapro_df, report_statistics, output_folder, shader=False) -> None: 
     """
     Generate a detailed HTML report summarizing the kcat prediction input statistics.
 
     Parameters:
         catapro_df (pd.DataFrame): DataFrame containing the CataPro input data.
         report_statistics (dict): Dictionary with statistics about the prediction input.
+        output_folder (str): Path to the output folder where the report will be saved.
         shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.
 
     Returns:
@@ -621,14 +624,14 @@ def report_prediction_input(catapro_df, report_statistics, shader=False) -> None
     """
 
     # Save report
-    os.makedirs("reports", exist_ok=True)
-    report_path = "reports/predict_kcat_report.html"
+    os.makedirs(os.path.join(output_folder, "reports"), exist_ok=True)
+    report_path = os.path.join(output_folder, "reports/predict_report.html")
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_final(model, final_df, shader=False) -> None:
+def report_final(model, final_df, output_folder, shader=False) -> None:
     """
     Generate a full HTML report summarizing retrieval results, including kcat distributions and coverage.
 
@@ -890,8 +893,8 @@ def report_final(model, final_df, shader=False) -> None:
     </html>
     """
 
-    os.makedirs("reports", exist_ok=True)
-    report_path = "reports/general_report.html"
+    os.makedirs(os.path.join(output_folder, "reports"), exist_ok=True)
+    report_path = os.path.join(output_folder, "reports/general_report.html")
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
 

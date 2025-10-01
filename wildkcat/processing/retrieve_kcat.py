@@ -79,8 +79,7 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     return best_candidate, best_score
 
 
-def run_retrieval(kcat_file_path: str,
-                  output_path: str,
+def run_retrieval(output_folder: str,
                   organism: str,
                   temperature_range: tuple,
                   pH_range: tuple,
@@ -91,8 +90,7 @@ def run_retrieval(kcat_file_path: str,
     and saves the results to an output file.
     
     Parameters:
-        kcat_file_path (str): Path to the input kcat file.
-        output_path (str): Path to save the output file with retrieved kcat values.
+        output_folder (str): Path to the output folder where the results will be saved.
         organism (str): Organism name.
         temperature_range (tuple): Acceptable temperature range for filtering (min, max).
         pH_range (tuple): Acceptable pH range for filtering (min, max).
@@ -116,6 +114,13 @@ def run_retrieval(kcat_file_path: str,
     }
 
     # Read the kcat file
+    if not os.path.exists(output_folder):
+        raise FileNotFoundError(f"The specified output folder '{output_folder}' does not exist.")
+    
+    kcat_file_path = os.path.join(output_folder, "kcat.tsv")
+    if not os.path.isfile(kcat_file_path):
+        raise FileNotFoundError(f"The specified file '{kcat_file_path}' does not exist in the output folder. Please run the function 'run_extraction()' first.")
+    
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
     
     # Initialize new columns
@@ -159,11 +164,12 @@ def run_retrieval(kcat_file_path: str,
             if best_match.get('organism_score') != np.inf:
                 kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
 
+    output_path = os.path.join(output_folder, "kcat_retrieved.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
 
     if report:
-        report_retrieval(kcat_df)
+        report_retrieval(kcat_df, output_folder)
 
 
 if __name__ == "__main__":

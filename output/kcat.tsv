@@ -1,10 +1,10 @@
 rxn	rxn_kegg	ec_code	direction	substrates_name	substrates_kegg	products_name	products_kegg	genes	uniprot	catalytic_enzyme	warning
 PFK		2.7.1.11	forward	ATP C10H12N5O13P3;D-Fructose 6-phosphate	C00002;C05345	ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+	C00008;C00354;C00080	b3916	P0A796	P0A796	
 PFK		2.7.1.11	forward	ATP C10H12N5O13P3;D-Fructose 6-phosphate	C00002;C05345	ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+	C00008;C00354;C00080	b1723	P06999	P06999	
-PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b0903;b2579	P0A9N4;P68066;P09373	P09373	
+PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b0903;b2579	P0A9N4;P09373;P68066	P09373	
 PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b0903	P0A9N4;P09373	P09373	
 PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b3114	P0A9N4;P42632	P42632	
-PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b3951;b3952	P32674;P32675		none
+PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b3951;b3952	P32675;P32674		none
 PGI		5.3.1.9	forward	D-Glucose 6-phosphate	C00092	D-Fructose 6-phosphate	C05345	b4025	P0A6T1	P0A6T1	
 PGI		5.3.1.9	reverse	D-Fructose 6-phosphate	C05345	D-Glucose 6-phosphate	C00092	b4025	P0A6T1	P0A6T1	
 PGK	R01512	2.7.2.3	forward	3-Phospho-D-glycerate;ATP C10H12N5O13P3	C00197;C00002	3-Phospho-D-glyceroyl phosphate;ADP C10H12N5O10P2	C00236;C00008	b2926	P0A799	P0A799	
@@ -192,7 +192,7 @@ NADTRHD	R00112	1.6.1.3	forward	Nicotinamide adenine dinucleotide;Nicotinamide ad
 NADTRHD	R00112	1.6.1.3	forward	Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00003;C00005	Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00004;C00006	b1602;b1603	P0AB67;P07001		none
 NADTRHD	R00112	1.6.1.1	forward	Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00003;C00005	Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00004;C00006	b3962	P27306	P27306	
 NADTRHD	R00112	1.6.1.1	forward	Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00003;C00005	Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00004;C00006	b1602;b1603	P0AB67;P07001		none
-PDH	R00209	1.8.1.4	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P06959;P0AFG8;P0A9P0	P0A9P0	
-PDH	R00209	1.2.1.51	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P06959;P0AFG8;P0A9P0		none
-PDH	R00209	1.2.4.1	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P06959;P0AFG8;P0A9P0	P0AFG8	
-PDH	R00209	2.3.1.12	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P06959;P0AFG8;P0A9P0	P06959	
+PDH	R00209	1.8.1.4	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P06959;P0A9P0	P0A9P0	
+PDH	R00209	1.2.1.51	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P06959;P0A9P0		none
+PDH	R00209	1.2.4.1	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P06959;P0A9P0	P0AFG8	
+PDH	R00209	2.3.1.12	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P06959;P0A9P0	P06959	

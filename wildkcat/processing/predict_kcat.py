@@ -89,8 +89,7 @@ def format_output(kcat_df, limit_matching_score):
 # --- Main ---
 
 
-def run_prediction_part1(kcat_file_path: str, 
-                         output_path: str, 
+def run_prediction_part1(output_folder: str,
                          limit_matching_score: int, 
                          report: bool = True) -> None:
     """
@@ -98,8 +97,7 @@ def run_prediction_part1(kcat_file_path: str,
     Optionally, it can produce a summary report of the processed data.
 
     Parameters:
-        kcat_file_path (str): Path to the input kcat data file.
-        output_path (str): Path to save the generated CataPro input CSV file.
+        output_folder (str): Path to the output folder where the results will be saved.
         limit_matching_score (int): Threshold for filtering entries based on matching score.
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
@@ -112,6 +110,13 @@ def run_prediction_part1(kcat_file_path: str,
 
     # Run prediction part 1
     # Read the kcat file
+    if not os.path.exists(output_folder):
+        raise FileNotFoundError(f"The specified output folder '{output_folder}' does not exist.")
+    
+    kcat_file_path = os.path.join(output_folder, "kcat_retrieved.tsv")
+    if not os.path.isfile(kcat_file_path):
+        raise FileNotFoundError(f"The specified file '{kcat_file_path}' does not exist in the output folder. Please run the function 'run_retrieval()' first.")
+
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
 
     # Subset rows with no values or matching score above the limit
@@ -125,6 +130,9 @@ def run_prediction_part1(kcat_file_path: str,
     catapro_input_df, substrates_to_smiles_df, report_statistics = create_catapro_input_file(kcat_df)
 
     # Save the CataPro input file and substrates to SMILES mapping
+    os.makedirs(os.path.join(output_folder, "machine_learning"), exist_ok=True)
+    output_path = os.path.join(output_folder, "machine_learning/catapro_input.csv")
+    kcat_df.to_csv(output_path, sep='\t', index=False)
     catapro_input_df.to_csv(output_path, sep=',', index=True)
     substrates_to_smiles_df.to_csv(output_path.replace('.csv', '_substrates_to_smiles.tsv'), sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
@@ -133,23 +141,19 @@ def run_prediction_part1(kcat_file_path: str,
     report_statistics["missing_enzymes"] = nb_missing_enzymes
 
     if report:
-        report_prediction_input(catapro_input_df, report_statistics)
+        report_prediction_input(catapro_input_df, report_statistics, output_folder)
 
 
-def run_prediction_part2(kcat_file_path: str, 
-                         catapro_predictions_path: str, 
-                         substrates_to_smiles_path: str, 
-                         output_path: str,
+def run_prediction_part2(output_folder: str,
+                         catapro_predictions_path: str,
                          limit_matching_score: int) -> None:
     """
     Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
     mapping substrates to SMILES, formatting the output, and optionally generating a report.
     
     Parameters:
-        kcat_file_path (str): Path to the input kcat TSV file.
-        catapro_predictions_path (str): Path to the Catapro predictions CSV file.
-        substrates_to_smiles_path (str): Path to the TSV file mapping substrates to SMILES.
-        output_path (str): Path to save the formatted output TSV file.
+        output_folder (str): Path to the output folder where the results will be saved.
+        catapro_predictions_path (str): Path to the CataPro predictions CSV file.
         limit_matching_score (float): Threshold for taking predictions over retrieved values.
     """ 
     # Intitialize logging
@@ -160,7 +164,14 @@ def run_prediction_part2(kcat_file_path: str,
     logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
 
     # Run prediction part 2
+    # Read the kcat file
+    if not os.path.exists(output_folder):
+        raise FileNotFoundError(f"The specified output folder '{output_folder}' does not exist.")
+    kcat_file_path = os.path.join(output_folder, "kcat_retrieved.tsv")
+    if not os.path.isfile(kcat_file_path):
+        raise FileNotFoundError(f"The specified file '{kcat_file_path}' does not exist in the output folder. Please run the function 'run_extraction()' first.")
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
+    substrates_to_smiles_path = os.path.join(output_folder, "machine_learning/catapro_input_substrates_to_smiles.tsv")
     substrates_to_smiles = pd.read_csv(substrates_to_smiles_path, sep='\t')
     catapro_predictions_df = pd.read_csv(catapro_predictions_path, sep=',')
     kcat_df = integrate_catapro_predictions(kcat_df, 
@@ -170,6 +181,7 @@ def run_prediction_part2(kcat_file_path: str,
     
     # Save the output as a TSV file
     kcat_df = format_output(kcat_df, limit_matching_score)
+    output_path = os.path.join(output_folder, "kcat_full.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
 

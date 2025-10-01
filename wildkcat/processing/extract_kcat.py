@@ -270,14 +270,14 @@ def create_kcat_output(model):
 
 
 def run_extraction(model_path: str, 
-                   output_path: str, 
+                   output_folder: str, 
                    report: bool = True) -> None:
     """
     Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.
 
     Parameters:
         model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).
-        output_path (str): Path to the output file (TSV format).
+        output_folder (str): Path to the output folder where all the results will be saved.
         report (bool, optional): Whether to generate an HTML report (default: True).
     """
     # Intitialize logging
@@ -291,7 +291,10 @@ def run_extraction(model_path: str,
     model = read_model(model_path)
     df, report_statistics = create_kcat_output(model)
 
+    # Save output
+    os.makedirs(output_folder, exist_ok=True)
+    output_path = os.path.join(output_folder, "kcat.tsv")
     df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
     if report:
-        report_extraction(model, df, report_statistics)
+        report_extraction(model, df, report_statistics, output_folder)

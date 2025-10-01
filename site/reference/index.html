@@ -1135,7 +1135,7 @@
 
 
 <h3 id="wildkcat.processing.extract_kcat.run_extraction" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">extract_kcat</span><span class="o">.</span><span class="n">run_extraction</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">extract_kcat</span><span class="o">.</span><span class="n">run_extraction</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 </h3>
 
@@ -1174,14 +1174,14 @@
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>output_path</code>
+                <code>output_folder</code>
             </td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the output file (TSV format).</p>
+                <p>Path to the output folder where all the results will be saved.</p>
               </div>
             </td>
             <td>
@@ -1235,15 +1235,18 @@
 <span class="normal">294</span>
 <span class="normal">295</span>
 <span class="normal">296</span>
-<span class="normal">297</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_extraction</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-                   <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_extraction</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                   <span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
                    <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts kcat-related data from a metabolic model and generates output files and an optional HTML report.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).</span>
-<span class="sd">        output_path (str): Path to the output file (TSV format).</span>
+<span class="sd">        output_folder (str): Path to the output folder where all the results will be saved.</span>
 <span class="sd">        report (bool, optional): Whether to generate an HTML report (default: True).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Intitialize logging</span>
@@ -1257,10 +1260,13 @@
     <span class="n">model</span> <span class="o">=</span> <span class="n">read_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
     <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span> <span class="o">=</span> <span class="n">create_kcat_output</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
+    <span class="c1"># Save output</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat.tsv&quot;</span><span class="p">)</span>
     <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
-        <span class="n">report_extraction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">)</span>
+        <span class="n">report_extraction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1273,7 +1279,7 @@
 
 
 <h3 id="wildkcat.processing.retrieve_kcat.run_retrieval" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">retrieve_kcat</span><span class="o">.</span><span class="n">run_retrieval</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">organism</span><span class="p">,</span> <span class="n">temperature_range</span><span class="p">,</span> <span class="n">pH_range</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">retrieve_kcat</span><span class="o">.</span><span class="n">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">organism</span><span class="p">,</span> <span class="n">temperature_range</span><span class="p">,</span> <span class="n">pH_range</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 </h3>
 
@@ -1297,30 +1303,14 @@ and saves the results to an output file.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>kcat_file_path</code>
+                <code>output_folder</code>
             </td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the input kcat file.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>output_path</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Path to save the output file with retrieved kcat values.</p>
+                <p>Path to the output folder where the results will be saved.</p>
               </div>
             </td>
             <td>
@@ -1498,8 +1488,13 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 <span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
-<span class="normal">166</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                  <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">temperature_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
                   <span class="n">pH_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
@@ -1510,8 +1505,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 <span class="sd">    and saves the results to an output file.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        kcat_file_path (str): Path to the input kcat file.</span>
-<span class="sd">        output_path (str): Path to save the output file with retrieved kcat values.</span>
+<span class="sd">        output_folder (str): Path to the output folder where the results will be saved.</span>
 <span class="sd">        organism (str): Organism name.</span>
 <span class="sd">        temperature_range (tuple): Acceptable temperature range for filtering (min, max).</span>
 <span class="sd">        pH_range (tuple): Acceptable pH range for filtering (min, max).</span>
@@ -1535,6 +1529,13 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
     <span class="p">}</span>
 
     <span class="c1"># Read the kcat file</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_folder</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified output folder &#39;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
+
+    <span class="n">kcat_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat.tsv&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified file &#39;</span><span class="si">{</span><span class="n">kcat_file_path</span><span class="si">}</span><span class="s2">&#39; does not exist in the output folder. Please run the function &#39;run_extraction()&#39; first.&quot;</span><span class="p">)</span>
+
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="c1"># Initialize new columns</span>
@@ -1578,11 +1579,12 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
             <span class="k">if</span> <span class="n">best_match</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;organism_score&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
                 <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
 
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_retrieved.tsv&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
-        <span class="n">report_retrieval</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
+        <span class="n">report_retrieval</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1595,7 +1597,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 
 
 <h3 id="wildkcat.processing.predict_kcat.run_prediction_part1" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part1</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part1</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 </h3>
 
@@ -1619,30 +1621,14 @@ Optionally, it can produce a summary report of the processed data.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>kcat_file_path</code>
+                <code>output_folder</code>
             </td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the input kcat data file.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>output_path</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Path to save the generated CataPro input CSV file.</p>
+                <p>Path to the output folder where the results will be saved.</p>
               </div>
             </td>
             <td>
@@ -1731,8 +1717,15 @@ Optionally, it can produce a summary report of the processed data.</p>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part1</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-                         <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part1</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                          <span class="n">limit_matching_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
                          <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1740,8 +1733,7 @@ Optionally, it can produce a summary report of the processed data.</p>
 <span class="sd">    Optionally, it can produce a summary report of the processed data.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        kcat_file_path (str): Path to the input kcat data file.</span>
-<span class="sd">        output_path (str): Path to save the generated CataPro input CSV file.</span>
+<span class="sd">        output_folder (str): Path to the output folder where the results will be saved.</span>
 <span class="sd">        limit_matching_score (int): Threshold for filtering entries based on matching score.</span>
 <span class="sd">        report (bool, optional): Whether to generate a report using the retrieved data (default: True). </span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1754,6 +1746,13 @@ Optionally, it can produce a summary report of the processed data.</p>
 
     <span class="c1"># Run prediction part 1</span>
     <span class="c1"># Read the kcat file</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_folder</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified output folder &#39;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
+
+    <span class="n">kcat_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_retrieved.tsv&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified file &#39;</span><span class="si">{</span><span class="n">kcat_file_path</span><span class="si">}</span><span class="s2">&#39; does not exist in the output folder. Please run the function &#39;run_retrieval()&#39; first.&quot;</span><span class="p">)</span>
+
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="c1"># Subset rows with no values or matching score above the limit</span>
@@ -1767,6 +1766,9 @@ Optionally, it can produce a summary report of the processed data.</p>
     <span class="n">catapro_input_df</span><span class="p">,</span> <span class="n">substrates_to_smiles_df</span><span class="p">,</span> <span class="n">report_statistics</span> <span class="o">=</span> <span class="n">create_catapro_input_file</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
 
     <span class="c1"># Save the CataPro input file and substrates to SMILES mapping</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;machine_learning&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;machine_learning/catapro_input.csv&quot;</span><span class="p">)</span>
+    <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">catapro_input_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">substrates_to_smiles_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;_substrates_to_smiles.tsv&#39;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
@@ -1775,7 +1777,7 @@ Optionally, it can produce a summary report of the processed data.</p>
     <span class="n">report_statistics</span><span class="p">[</span><span class="s2">&quot;missing_enzymes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nb_missing_enzymes</span>
 
     <span class="k">if</span> <span class="n">report</span><span class="p">:</span>
-        <span class="n">report_prediction_input</span><span class="p">(</span><span class="n">catapro_input_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">)</span>
+        <span class="n">report_prediction_input</span><span class="p">(</span><span class="n">catapro_input_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -1786,7 +1788,7 @@ Optionally, it can produce a summary report of the processed data.</p>
 
 
 <h3 id="wildkcat.processing.predict_kcat.run_prediction_part2" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part2</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">catapro_predictions_path</span><span class="p">,</span> <span class="n">substrates_to_smiles_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part2</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">catapro_predictions_path</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">)</span></code>
 
 </h3>
 
@@ -1810,14 +1812,14 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>kcat_file_path</code>
+                <code>output_folder</code>
             </td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the input kcat TSV file.</p>
+                <p>Path to the output folder where the results will be saved.</p>
               </div>
             </td>
             <td>
@@ -1833,39 +1835,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the Catapro predictions CSV file.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>substrates_to_smiles_path</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Path to the TSV file mapping substrates to SMILES.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>output_path</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Path to save the formatted output TSV file.</p>
+                <p>Path to the CataPro predictions CSV file.</p>
               </div>
             </td>
             <td>
@@ -1894,15 +1864,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/processing/predict_kcat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
@@ -1929,20 +1891,28 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 <span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span>
-<span class="normal">174</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part2</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-                         <span class="n">catapro_predictions_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-                         <span class="n">substrates_to_smiles_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-                         <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part2</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                         <span class="n">catapro_predictions_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                          <span class="n">limit_matching_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,</span>
 <span class="sd">    mapping substrates to SMILES, formatting the output, and optionally generating a report.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        kcat_file_path (str): Path to the input kcat TSV file.</span>
-<span class="sd">        catapro_predictions_path (str): Path to the Catapro predictions CSV file.</span>
-<span class="sd">        substrates_to_smiles_path (str): Path to the TSV file mapping substrates to SMILES.</span>
-<span class="sd">        output_path (str): Path to save the formatted output TSV file.</span>
+<span class="sd">        output_folder (str): Path to the output folder where the results will be saved.</span>
+<span class="sd">        catapro_predictions_path (str): Path to the CataPro predictions CSV file.</span>
 <span class="sd">        limit_matching_score (float): Threshold for taking predictions over retrieved values.</span>
 <span class="sd">    &quot;&quot;&quot;</span> 
     <span class="c1"># Intitialize logging</span>
@@ -1953,7 +1923,14 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
     <span class="c1"># Run prediction part 2</span>
+    <span class="c1"># Read the kcat file</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_folder</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified output folder &#39;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
+    <span class="n">kcat_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_retrieved.tsv&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified file &#39;</span><span class="si">{</span><span class="n">kcat_file_path</span><span class="si">}</span><span class="s2">&#39; does not exist in the output folder. Please run the function &#39;run_extraction()&#39; first.&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">substrates_to_smiles_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;machine_learning/catapro_input_substrates_to_smiles.tsv&quot;</span><span class="p">)</span>
     <span class="n">substrates_to_smiles</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">substrates_to_smiles_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">catapro_predictions_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">catapro_predictions_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">integrate_catapro_predictions</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> 
@@ -1963,6 +1940,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 
     <span class="c1"># Save the output as a TSV file</span>
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">format_output</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">)</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_full.tsv&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -1977,7 +1955,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 
 
 <h3 id="wildkcat.processing.summary.generate_summary_report" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">generate_summary_report</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">kcat_file_path</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">generate_summary_report</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span></code>
 
 </h3>
 
@@ -2016,14 +1994,14 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>kcat_file_path</code>
+                <code>output_folder</code>
             </td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the final kcat TSV file.</p>
+                <p>Path to the output folder where the kcat file is located.</p>
               </div>
             </td>
             <td>
@@ -2036,8 +2014,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/processing/summary.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
-<span class="normal">10</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">10</span>
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
@@ -2047,18 +2024,33 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
-<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_summary_report</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                            <span class="n">kcat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_summary_report</span><span class="p">(</span><span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                            <span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a HTML report summarizing the kcat extraction, retrieval and prediction for a given model. </span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        model_path (str): Path to the metabolic model file (JSON, MATLAB, or SBML format).</span>
-<span class="sd">        kcat_file_path (str): Path to the final kcat TSV file.</span>
+<span class="sd">        output_folder (str): Path to the output folder where the kcat file is located.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Read the kcat file</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_folder</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified output folder &#39;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&#39; does not exist.&quot;</span><span class="p">)</span>
+
+    <span class="n">kcat_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_full.tsv&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The specified file &#39;</span><span class="si">{</span><span class="n">kcat_file_path</span><span class="si">}</span><span class="s2">&#39; does not exist in the output folder. Please run the full pipeline.&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">read_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
-    <span class="n">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kcat_df</span><span class="p">)</span>
+    <span class="n">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kcat_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -6278,7 +6270,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
 
 <h4 id="wildkcat.utils.generate_reports.report_extraction" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">report_extraction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">report_extraction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 </h4>
 
@@ -6341,6 +6333,22 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
             <td>
               <div class="doc-md-description">
                 <p>Dictionary with statistics about EC code assignment and extraction issues.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>output_folder</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the output folder where the report will be saved.</p>
               </div>
             </td>
             <td>
@@ -6589,7 +6597,8 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">208</span>
 <span class="normal">209</span>
 <span class="normal">210</span>
-<span class="normal">211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_extraction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">211</span>
+<span class="normal">212</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_extraction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates a detailed HTML report summarizing kcat extraction results from a metabolic model.</span>
 
@@ -6597,6 +6606,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="sd">        model (cobra.Model): The metabolic model object containing reactions, metabolites, and genes.</span>
 <span class="sd">        df (pandas.DataFrame): DataFrame containing data from the run_extraction function.</span>
 <span class="sd">        report_statistics (dict): Dictionary with statistics about EC code assignment and extraction issues.</span>
+<span class="sd">        output_folder (str): Path to the output folder where the report will be saved.</span>
 <span class="sd">        shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.</span>
 
 <span class="sd">    Returns: </span>
@@ -6649,7 +6659,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
     <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">textinfo</span><span class="o">=</span><span class="s2">&quot;percent+label&quot;</span><span class="p">,</span> <span class="n">textfont_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span>
+        <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">),</span>
         <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
 
@@ -6782,8 +6792,8 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Save report</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">report_path</span> <span class="o">=</span> <span class="s2">&quot;reports/extract_kcat_report.html&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">report_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports/extract_report.html&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HTML report saved to &#39;</span><span class="si">{</span><span class="n">report_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
@@ -6797,7 +6807,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
 
 <h4 id="wildkcat.utils.generate_reports.report_final" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 </h4>
 
@@ -6879,10 +6889,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">631</span>
-<span class="normal">632</span>
-<span class="normal">633</span>
-<span class="normal">634</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">634</span>
 <span class="normal">635</span>
 <span class="normal">636</span>
 <span class="normal">637</span>
@@ -7147,7 +7154,10 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">896</span>
 <span class="normal">897</span>
 <span class="normal">898</span>
-<span class="normal">899</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">899</span>
+<span class="normal">900</span>
+<span class="normal">901</span>
+<span class="normal">902</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a full HTML report summarizing retrieval results, including kcat distributions and coverage.</span>
 
@@ -7409,8 +7419,8 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="s2">    &lt;/html&gt;</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">report_path</span> <span class="o">=</span> <span class="s2">&quot;reports/general_report.html&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">report_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports/general_report.html&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
 
@@ -7426,7 +7436,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
 
 <h4 id="wildkcat.utils.generate_reports.report_prediction_input" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 </h4>
 
@@ -7481,6 +7491,22 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>output_folder</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the output folder where the report will be saved.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>shader</code>
             </td>
             <td>
@@ -7524,9 +7550,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">476</span>
-<span class="normal">477</span>
-<span class="normal">478</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">478</span>
 <span class="normal">479</span>
 <span class="normal">480</span>
 <span class="normal">481</span>
@@ -7676,13 +7700,17 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">625</span>
 <span class="normal">626</span>
 <span class="normal">627</span>
-<span class="normal">628</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a detailed HTML report summarizing the kcat prediction input statistics.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        catapro_df (pd.DataFrame): DataFrame containing the CataPro input data.</span>
 <span class="sd">        report_statistics (dict): Dictionary with statistics about the prediction input.</span>
+<span class="sd">        output_folder (str): Path to the output folder where the report will be saved.</span>
 <span class="sd">        shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.</span>
 
 <span class="sd">    Returns:</span>
@@ -7824,8 +7852,8 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Save report</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">report_path</span> <span class="o">=</span> <span class="s2">&quot;reports/predict_kcat_report.html&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">report_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports/predict_report.html&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HTML report saved to &#39;</span><span class="si">{</span><span class="n">report_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
@@ -7839,7 +7867,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
 
 <h4 id="wildkcat.utils.generate_reports.report_retrieval" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">report_retrieval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">report_retrieval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 </h4>
 
@@ -7871,6 +7899,22 @@ including kcat value distribution and matching score repartition.</p>
             <td>
               <div class="doc-md-description">
                 <p>DataFrame containing data from the run_retrieval function.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>output_folder</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the output folder where the report will be saved.</p>
               </div>
             </td>
             <td>
@@ -7922,8 +7966,7 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">214</span>
-<span class="normal">215</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
@@ -8181,13 +8224,16 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">470</span>
 <span class="normal">471</span>
 <span class="normal">472</span>
-<span class="normal">473</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_retrieval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_retrieval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span><span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a styled HTML report summarizing the kcat matching results,</span>
 <span class="sd">    including kcat value distribution and matching score repartition.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        df (pd.DataFrame): DataFrame containing data from the run_retrieval function.</span>
+<span class="sd">        output_folder (str): Path to the output folder where the report will be saved.</span>
 <span class="sd">        shader (bool, optional): If True, includes a shader canvas background in the report. Default is False.</span>
 
 <span class="sd">    Returns:</span>
@@ -8435,8 +8481,8 @@ including kcat value distribution and matching score repartition.</p>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Save HTML</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;reports&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">report_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;reports/retrieve_kcat_report.html&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">report_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;reports/retrieve_report.html&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">report_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
 
@@ -8463,10 +8509,7 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1107</span>
-<span class="normal">1108</span>
-<span class="normal">1109</span>
-<span class="normal">1110</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1110</span>
 <span class="normal">1111</span>
 <span class="normal">1112</span>
 <span class="normal">1113</span>
@@ -8571,7 +8614,10 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1212</span>
 <span class="normal">1213</span>
 <span class="normal">1214</span>
-<span class="normal">1215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
+<span class="normal">1215</span>
+<span class="normal">1216</span>
+<span class="normal">1217</span>
+<span class="normal">1218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML and GLSL shader code for report background. Adapted from localthunk (https://localthunk.com)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;!-- Background adapted from original work by localthunk (https://localthunk.com) --&gt;</span>
@@ -8702,17 +8748,17 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1094</span>
-<span class="normal">1095</span>
-<span class="normal">1096</span>
-<span class="normal">1097</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1097</span>
 <span class="normal">1098</span>
 <span class="normal">1099</span>
 <span class="normal">1100</span>
 <span class="normal">1101</span>
 <span class="normal">1102</span>
 <span class="normal">1103</span>
-<span class="normal">1104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
+<span class="normal">1104</span>
+<span class="normal">1105</span>
+<span class="normal">1106</span>
+<span class="normal">1107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML code for report background.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>
@@ -8745,10 +8791,7 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 902</span>
-<span class="normal"> 903</span>
-<span class="normal"> 904</span>
-<span class="normal"> 905</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 905</span>
 <span class="normal"> 906</span>
 <span class="normal"> 907</span>
 <span class="normal"> 908</span>
@@ -8934,7 +8977,10 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1088</span>
 <span class="normal">1089</span>
 <span class="normal">1090</span>
-<span class="normal">1091</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
+<span class="normal">1091</span>
+<span class="normal">1092</span>
+<span class="normal">1093</span>
+<span class="normal">1094</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return CSS script for report style.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>
