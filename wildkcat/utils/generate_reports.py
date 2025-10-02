@@ -445,12 +445,13 @@ def report_retrieval(df, output_folder,shader=False) -> None:
                     <ol>
                         <li>Lowest total score</li>
                         <li>Highest sequence identity percentage to the target enzyme</li>
-                        <li>Adjusted k<sub>cat</sub> value (favoring the smallest value by default)</li>
+                        <li>Closest organism compared to the target organism.</li>
+                        <li>Adjusted k<sub>cat</sub> value (favoring the highest value by default)</li>
                     </ol>
                 </p>
                 <p>
                     The best candidate is the one with the lowest score after these checks. 
-                    If multiple candidates tie on score, sequence identity and k<sub>cat</sub> values break the tie.
+                    If multiple candidates tie on score, sequence identity (or organism if sequence is not available) and k<sub>cat</sub> values break the tie.
                 </p>
             </div>
         </div>

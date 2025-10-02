@@ -93,9 +93,9 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
             tied = tied[tied['organism_score'] == min_tax]
 
     if len(tied) > 1:
-        # Tie-break with lowest kcat
-        min_kcat = tied['adj_kcat'].min()
-        tied = tied[tied['adj_kcat'] == min_kcat]
+        # Tie-break with max kcat value
+        max_kcat = tied['adj_kcat'].max()
+        tied = tied[tied['adj_kcat'] == max_kcat]
 
     # 5. Select best candidate
     best_candidate = tied.iloc[0].to_dict()

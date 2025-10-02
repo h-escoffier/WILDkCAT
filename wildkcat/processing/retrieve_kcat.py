@@ -79,6 +79,19 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     return best_candidate, best_score
 
 
+def merge_ec(kcat_dict):
+    """
+    TODO: After the retrieval of kcat values, merge same combination of reaction and substrate with multiple EC numbers in one entry.
+
+    Parameters:
+        kcat_dict (dict): Dictionary containing enzyme information.
+        
+    Returns:
+        kcat_dict (dict): The updated dictionary with merged EC numbers.
+    """
+    pass 
+
+
 def run_retrieval(output_folder: str,
                   organism: str,
                   temperature_range: tuple,

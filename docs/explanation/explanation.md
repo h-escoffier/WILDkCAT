@@ -92,8 +92,8 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
     * *Sequence Identity*: Align the enzyme sequences using [BioPython](https://biopython.org)’s `Align.PairwiseAligner()` and prioritize higher sequence identity.
     
     * *Organism Proximity*: Use `Entrez.efetch()` to determine the organism closest to the target species.
-    
-    * *Minimal kcat Selection*: If ties remains, select the entry with the lowest kcat value.
+
+    * *Maximal kcat Selection*: If ties remain, select the entry with the highest kcat value, thus avoiding excessively stringent constraints on the model.
 
 3. **Correction of the kcat value using the Arrhenius equation**
 
@@ -123,6 +123,8 @@ The predictions rely on reaction substrates (SMILES) and enzyme sequences.
 
 Predicted kcat values are used to replace experimental values that fall below a threshold, defined by the `limit_matching_score` argument.
 If a kcat value cannot be predicted, the best available experimental kcat value is retained.
+
+If multiple substrates are involved in the reaction, the prediction is performed for each substrate, and the lowest predicted kcat value is retained.
 
 ### Details of the prediction process
 

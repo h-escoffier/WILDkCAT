@@ -110,7 +110,8 @@ It demonstrates a full extraction, retrieval, and prediction workflow on the E. 
 - For rows with multiple scores, selects:
   - The best score  
   - The highest identity percentage  
-  - The lowest kcat value  
+  - The closest organism (if sequence is not available)  
+  - The highest kcat value  
 
 ---
 
