@@ -79,17 +79,18 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     return best_candidate, best_score
 
 
-def merge_ec(kcat_dict):
+def merge_ec(kcat_df):
     """
     TODO: After the retrieval of kcat values, merge same combination of reaction and substrate with multiple EC numbers in one entry.
+    Select the kcat value with the highest matching score, if tie, select the highest sequence, closest organism, highest kcat value.
 
     Parameters:
-        kcat_dict (dict): Dictionary containing enzyme information.
+        kcat_dict (pd.DataFrame): DataFrame containing all kcat entries.
         
     Returns:
-        kcat_dict (dict): The updated dictionary with merged EC numbers.
+        kcat_dict (pd.DataFrame): The updated DataFrame with merged EC numbers.
     """
-    pass 
+    pass # To be implemented
 
 
 def run_retrieval(output_folder: str,
@@ -176,6 +177,9 @@ def run_retrieval(output_folder: str,
                 kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
             if best_match.get('organism_score') != np.inf:
                 kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
+
+    # Select only one kcat value per reaction and substrate
+    # kcat_df = merge_ec(kcat_df)
 
     output_path = os.path.join(output_folder, "kcat_retrieved.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)
