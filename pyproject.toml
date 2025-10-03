@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wildkcat"
-version = "0.0.21"
+version = "0.0.22"
 authors = [
   { name="Hugues Escoffier", email="hugues.escoffier@gmail.com" },
 ]
@@ -25,7 +25,8 @@ dependencies = [
     "plotly>=6.3.0", 
     "seaborn>=0.13.2",
     "zeep>=4.3.1",
-    "dotenv>=0.9.9"
+    "dotenv>=0.9.9", 
+    "typer>=0.16.1"
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
