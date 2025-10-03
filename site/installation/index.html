@@ -101,7 +101,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="WILDkCAT Documentation" class="md-header__button md-logo" aria-label="WILDkCAT Documentation" data-md-component="logo">
       
@@ -180,14 +182,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -292,7 +288,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -403,23 +405,23 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-wildkcat" class="md-nav__link">
+  <a href="#setup-a-python-environment" class="md-nav__link">
     <span class="md-ellipsis">
-      Install WILDkCAT
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Install WILDkCAT">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#install-from-pypi" class="md-nav__link">
-    <span class="md-ellipsis">
-      Install from PyPI
+      Setup a Python environment
     </span>
   </a>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#install-wildkcat-from-pypi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install WILDkCAT from PyPI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install WILDkCAT from PyPI">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#environment-setup" class="md-nav__link">
@@ -441,6 +443,48 @@
       Install CataPro
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Install CataPro">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-clone-the-catapro-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Clone the CataPro repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-set-up-git-lfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Set up Git LFS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-download-the-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Download the models
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -535,10 +579,45 @@
 
 
 <h1 id="installation">Installation</h1>
-<h2 id="install-wildkcat">Install WILDkCAT</h2>
-<h3 id="install-from-pypi">Install from PyPI</h3>
+<h2 id="setup-a-python-environment">Setup a Python environment</h2>
+<p>To ensure a clean and isolated setup, we recommend to use <a href="https://docs.astral.sh/uv/">uv</a>, a lightweight tool that simplifies Python environment and package management. If you don’t have it yet:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS / Linux</label><label for="__tabbed_1_2">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">ByPass</span> <span class="n">-c</span> <span class="s2">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Create and activate a virtual environment with uv:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">macOS / Linux</label><label for="__tabbed_2_2">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="n">uv</span> <span class="n">venv</span>
+<span class="n">source</span> <span class="p">.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Using <strong>uv</strong> helps manage dependencies easily and keeps your environment clean, avoiding conflicts with other Python packages.</p>
+</div>
+<h2 id="install-wildkcat-from-pypi">Install WILDkCAT from PyPI</h2>
 <p>Install <a href="https://pypi.org/project/wildkcat/">WILDkCAT</a> directly from PyPI:</p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>wildkcat
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>wildkcat<span class="w"> </span>
+</code></pre></div>
+<p>Verify the installation by checking the version:</p>
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>--version
 </code></pre></div>
 <hr />
 <h3 id="environment-setup">Environment Setup</h3>
@@ -562,8 +641,38 @@
 </div>
 <hr />
 <h2 id="install-catapro">Install CataPro</h2>
-<p>To predict missing kcat values using machine learning, install <a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">CataPro</a>.</p>
-<p>CataPro also requires two additional pre-trained models: <a href="https://huggingface.co/Rostlab/prot_t5_xl_uniref50">prot_t5_xl_uniref50</a> and <a href="https://huggingface.co/laituan245/molt5-base-smiles2caption">molt5-base-smiles2caption</a>.</p>
+<p><a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">CataPro</a> is required for predicting kcat values using machine learning</p>
+<h3 id="1-install-dependencies">1. Install dependencies</h3>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>install<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>transformers<span class="w"> </span>numpy<span class="w"> </span>pandas<span class="w"> </span>RDKit
+</code></pre></div>
+<h3 id="2-clone-the-catapro-repository">2. Clone the CataPro repository</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/zchwang/CataPro
+</code></pre></div>
+<h3 id="3-set-up-git-lfs">3. Set up Git LFS</h3>
+<p>CataPro uses <a href="https://git-lfs.github.com/">Git Large File Storage (LFS)</a> to handle large model files. 
+If you don't have Git LFS installed, you can install it using the following command:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>lfs<span class="w"> </span>install
+</code></pre></div>
+<h3 id="4-download-the-models">4. Download the models</h3>
+<p>CataPro requires the models <strong>ProtT5 model</strong> and <strong>MolT5 model</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The models prot5_t5_xl_uniref50 and molt5-base-smiles2caption required for CataPro are 64 and 1.9 GB, respectively. </p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>CataPro/models/
+
+GIT<span class="w"> </span><span class="nv">LFS_SKIP_SMUDGE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://huggingface.co/Rostlab/prot5_t5_xl_uniref50
+<span class="nb">cd</span><span class="w"> </span>prot5_t5_xl_uniref50
+git<span class="w"> </span>lfs<span class="w"> </span>pull
+
+<span class="nb">cd</span><span class="w"> </span>..
+
+GIT<span class="w"> </span><span class="nv">LFS_SKIP_SMUDGE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://huggingface.co/laituan245/molt5-base-smiles2caption
+<span class="nb">cd</span><span class="w"> </span>molt5-base-smiles2caption
+git<span class="w"> </span>lfs<span class="w"> </span>pull
+
+<span class="nb">cd</span><span class="w"> </span>../..
+</code></pre></div>
 
 
 
@@ -583,12 +692,6 @@
           
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
-        
-          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
-</button>
         
       </main>
       
@@ -618,7 +721,7 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy", "content.code.fold", "toc.integrate", "header.autohide", "admonition"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.expand", "navigation.tabs", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy", "content.code.fold", "toc.integrate", "admonition"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>

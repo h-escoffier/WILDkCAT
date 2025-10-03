@@ -3,16 +3,15 @@ site_name: WILDkCAT Documentation
 theme: 
   name: material
   features:
+    - navigation.tabs.sticky
     - navigation.expand
     - navigation.tabs
-    - navigation.top
     - search.suggest
     - search.highlight
     - content.code.annotate
     - content.code.copy
     - content.code.fold
     - toc.integrate
-    - header.autohide
     - admonition
   icon:
     admonition:
@@ -39,6 +38,9 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 
 
 extra_javascript:

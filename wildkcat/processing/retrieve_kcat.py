@@ -2,6 +2,7 @@ import os
 import datetime
 import time
 import logging
+from dotenv import load_dotenv
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -112,6 +113,10 @@ def run_retrieval(output_folder: str,
             Options are 'both' (default), 'brenda', or 'sabio_rk'.
         report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).        
     """
+
+    # Load environment variables
+    load_dotenv()
+
     # Intitialize logging
     os.makedirs("logs", exist_ok=True)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

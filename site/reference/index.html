@@ -99,7 +99,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="WILDkCAT Documentation" class="md-header__button md-logo" aria-label="WILDkCAT Documentation" data-md-component="logo">
       
@@ -178,14 +180,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -290,7 +286,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -1404,9 +1406,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/processing/retrieve_kcat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
@@ -1494,7 +1494,16 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 <span class="normal">182</span>
 <span class="normal">183</span>
 <span class="normal">184</span>
-<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">temperature_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
                   <span class="n">pH_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
@@ -1513,6 +1522,10 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 <span class="sd">            Options are &#39;both&#39; (default), &#39;brenda&#39;, or &#39;sabio_rk&#39;.</span>
 <span class="sd">        report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Load environment variables</span>
+    <span class="n">load_dotenv</span><span class="p">()</span>
+
     <span class="c1"># Intitialize logging</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">_%H-%M-%S&quot;</span><span class="p">)</span>
@@ -1578,6 +1591,9 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
                 <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_id_percent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">best_match</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;organism_score&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
                 <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Select only one kcat value per reaction and substrate</span>
+    <span class="c1"># kcat_df = merge_ec(kcat_df)</span>
 
     <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_retrieved.tsv&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -9205,12 +9221,6 @@ including kcat value distribution and matching score repartition.</p>
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
-          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
-  Back to top
-</button>
-        
       </main>
       
         <footer class="md-footer">
@@ -9239,7 +9249,7 @@ including kcat value distribution and matching score repartition.</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy", "content.code.fold", "toc.integrate", "header.autohide", "admonition"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.expand", "navigation.tabs", "search.suggest", "search.highlight", "content.code.annotate", "content.code.copy", "content.code.fold", "toc.integrate", "admonition"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>

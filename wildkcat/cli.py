@@ -1,4 +1,7 @@
 import typer
+import tomli
+from pathlib import Path
+
 from dotenv import load_dotenv
 from wildkcat import run_extraction, run_retrieval, run_prediction_part1, run_prediction_part2, generate_summary_report
 
@@ -7,6 +10,39 @@ load_dotenv()
 
 
 app = typer.Typer(help="WILDkCAT CLI - Extract, Retrieve and Predict kcat values for a metabolic model.")
+
+
+def get_version() -> str:
+    """Read version from pyproject.toml"""
+    pyproject_path = Path("pyproject.toml")
+    if not pyproject_path.exists():
+        return "unknown"
+    
+    try:
+        with pyproject_path.open("rb") as f:
+            pyproject_data = tomli.load(f)
+        return pyproject_data.get("project", {}).get("version", "unknown")
+    except Exception:
+        return "unknown"
+
+
+def version_callback(value: bool):
+    """Show the application's version and exit."""
+    if value:
+        typer.echo(f"WILDkCAT version: {get_version()}")
+        raise typer.Exit()
+
+
+@app.callback()
+def main(
+    ctx: typer.Context,
+    version: bool = typer.Option(
+        None, "--version", callback=version_callback, is_eager=True,
+        help="Show the application's version."
+    )
+):
+    """Common CLI callback."""
+    pass
 
 
 @app.command()
