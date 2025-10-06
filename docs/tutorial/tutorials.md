@@ -9,11 +9,22 @@ This page shows a step-by-step example of the WILDkCAT pipeline on the _E. coli_
 
 ---
 
-## Prerequisites
+## Prerequisites (_cf. [installation instructions](../installation.md)_)
 
 - Install [WILDkCAT](../installation.md) from PyPI
 - Install [CataPro](https://github.com/zchwang/CataPro) to predict kcat values using machine learning
 - Download the [E. coli core model](http://bigg.ucsd.edu/static/models/e_coli_core.json)
+
+```bash 
+mkdir model
+curl -O model/e_coli_core.json http://bigg.ucsd.edu/static/models/e_coli_core.json
+```
+
+Your working directory should contain the following folders:
+
+- `venv/` - Folder containing the Python virtual environment
+- `CataPro/` - Folder containing the CataPro repository
+- `model/` - Folder containing the _E. coli_ core model (e_coli_core.json)
 
 !!! note 
 
@@ -23,19 +34,27 @@ This page shows a step-by-step example of the WILDkCAT pipeline on the _E. coli_
 
 ## 1 — Extract kcat values from _E. coli_ core model
 
+*Time: ~3-4 min* 
+
 First, for each combination of reaction, enzyme, and substrate(s) in the model, create a TSV file. 
 
 Each row corresponds to a unique combination of reaction, enzyme, and substrate(s) and will be used to retrieve experimental kcat values from BRENDA and SABIO-RK in the next step.
 The output file is named `kcat.tsv` and is saved in the specified output folder.
 
-```python
-from wildkcat import run_extraction
+=== "Programmatic Access"
+    ```python
+    from wildkcat import run_extraction
 
-run_extraction(
-    model_path="model/e_coli_core.json",
-    output_folder="output"
-)
-```
+    run_extraction(
+        model_path="model/e_coli_core.json",
+        output_folder="output"
+    )
+    ```
+
+=== "Command Line Interface (CLI)"
+    ```bash
+    wildkcat extraction model/e_coli_core.json output
+    ```
 
 Example of the output file `kcat.tsv`:
 
@@ -48,22 +67,32 @@ Example of the output file `kcat.tsv`:
 
 ---
 
-## 2 — Retrieve experimental kcat values from BRENDA and SABIO-RK
+## 2 — Retrieve experimental kcat values from BRENDA and/or SABIO-RK
+
+*Time: ~7-10 min*
 
 This function searches for experimentally measured turnover numbers (kcat values) in the BRENDA and/or SABIO-RK databases for the kcats listed in the input file. 
 The retrieved values are filtered based on organism, temperature, and pH conditions. The closest matching kcat values are saved to the output file.
 
-```python
-from wildkcat import run_retrieval
 
-run_retrieval(
-    output_folder="output",
-    organism="Escherichia coli",
-    temperature_range=(20, 40),
-    pH_range=(6.5, 7.5),
-    database='both'
-    )
-```
+=== "Programmatic Access"
+    ```python
+    from wildkcat import run_retrieval
+
+    run_retrieval(
+        output_folder="output",
+        organism="Escherichia coli",
+        temperature_range=(20, 40),
+        pH_range=(6.5, 7.5),
+        database='both'
+        )
+    ```
+
+=== "Command Line Interface (CLI)"
+    ```bash
+    wildkcat retrieval output 'Escherichia coli' 20 40 6.5 7.5
+    ```
+
 
 Example of the output file `kcat_retrieved.tsv`:
 
@@ -73,6 +102,10 @@ Example of the output file `kcat_retrieved.tsv`:
 | ALCD2x | R00754 | 1.1.1.71 | forward | Ethanol;Nicotinamide adenine dinucleotide | C00469;C00003 | Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced | C00084;C00080;C00004 | b0356 | P25437 |P25437 | | 13.9 | 7 | ethanol | Acinetobacter calcoaceticus |  |  |  |  | brenda |  | 4.0 |
 
 [View the generated report](retrieve_ecoli_report.html)
+
+!!! note 
+
+    BRENDA requires a user account to access its data. In contrast, SABIO-RK is openly accessible and does not require registration. If you want to only use SABIO-RK, set the parameter `database='sabio_rk'` in the function or use the flag `--database sabio_rk` in the CLI command.
 
 ---
 
@@ -89,14 +122,20 @@ The function generates the files named `catapro_input.csv` and `catapro_input_su
     The file `catapro_input_substrates_to_smiles.tsv` that maps substrate names to their corresponding SMILES will be used to match back the predicted kcat values to the original kcat entries after running CataPro.
 
 
-```python
-from wildkcat import run_prediction_part1
+=== "Programmatic Access"
+    ```python
+    from wildkcat import run_prediction_part1
 
-run_prediction_part1(
-    output_folder="output",
-    limit_matching_score=6
-    )
-```
+    run_prediction_part1(
+        output_folder="output",
+        limit_matching_score=6
+        )
+    ```
+
+=== "Command Line Interface (CLI)"
+    ```bash
+    wildkcat prediction-part1 output 6
+    ```
 
 The output file `catapro_input.csv` is formatted according to the requirements of [CataPro](https://github.com/zchwang/CataPro), meaning it can be directly used as input for kcat prediction.
 
@@ -107,12 +146,12 @@ The output file `catapro_input.csv` is formatted according to the requirements o
 Once installed, you can run CataPro with the following command:
 
 ```bash 
-python predict.py \
-        -inp_fpath output/machine_learning/ecoli_catapro_input.csv \
+python CataPro.predict.py \
+        -inp_fpath output/machine_learning/catapro_input.csv \
         -model_dpath models \
         -batch_size 64 \
         -device cuda:0 \
-        -out_fpath ecoli_catapro_output.csv
+        -out_fpath output/machine_learning/catapro_output.csv
 ```
 
 [View the generated report](predict_ecoli_report.html)
@@ -122,15 +161,22 @@ python predict.py \
 
 After running CataPro with the prepared input file, integrate the predicted kcat values back into the original kcat entries. The function matches the predicted values to the original entries using the substrate names and SMILES mapping file generated in the previous step.
 
-```python
-from wildkcat import run_prediction_part2
+=== "Programmatic Access"
+    ```python
+    from wildkcat import run_prediction_part2
 
-run_prediction_part2(
-    output_folder="output", 
-    catapro_predictions_path="output/machine_learning/catapro_output.csv", 
-    limit_matching_score=6
-    )
-```
+    run_prediction_part2(
+        output_folder="output", 
+        catapro_predictions_path="output/machine_learning/catapro_output.csv", 
+        limit_matching_score=6
+        )
+    ```
+
+=== "Command Line Interface (CLI)"
+    ```bash
+    wildkcat prediction-part2 output output/machine_learning/catapro_output.csv 6
+    ```
+
 
 Example of the output file `kcat_full.tsv`:
 
@@ -147,13 +193,19 @@ The final output file `kcat_full.tsv` contains both experimentally retrieved and
 
 The result can be visualized and summarized using the function `generate_summary_report`: 
 
-```python
-from wildkcat.visualization import generate_summary_report
+=== "Programmatic Access"
+    ```python
+    from wildkcat import generate_summary_report
 
-generate_summary_report(
-    model_path="model/e_coli_core.json", 
-    output_folder="output"
-    )
-```
+    generate_summary_report(
+        model_path="model/e_coli_core.json", 
+        output_folder="output"
+        )
+    ```
+
+=== "Command Line Interface (CLI)"
+    ```bash
+    wildkcat report model/e_coli_core.json output
+    ```
 
 [View the generated report](general_ecoli_report.html)

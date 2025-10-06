@@ -101,12 +101,12 @@ def run_retrieval(output_folder: str,
                   database: str = 'both',
                   report: bool = True) -> None:
     """
-    Retrieves closests kcat values from specified databases for entries in a kcat file, applies filtering criteria, 
+    Retrieves closest kcat values from specified databases for entries in a kcat file, applies filtering criteria, 
     and saves the results to an output file.
     
     Parameters:
         output_folder (str): Path to the output folder where the results will be saved.
-        organism (str): Organism name.
+        organism (str): Organism scientific name (e.g. "Escherichia coli", "Homo sapiens").
         temperature_range (tuple): Acceptable temperature range for filtering (min, max).
         pH_range (tuple): Acceptable pH range for filtering (min, max).
         database (str, optional): Specifies which database(s) to query for kcat values. 

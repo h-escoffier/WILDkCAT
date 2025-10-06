@@ -4,6 +4,11 @@
 
 **WILDkCAT** is a set of scripts designed to extract, retrieve, and predict enzyme turnover numbers (**kcat**) for genome-scale metabolic models.   
 
+
+> [!WARNING] 
+> WILDkCAT is currently in 'beta' version. Some parameters (such as the penalty score) are not yet finalized and some features are still under development.
+> Please do not hesitate to try the package, share your experience, and report any issues or suggestions by opening an issue on the [Issues](https://github.com/h-escoffier/WILDkCAT/issues) page.
+
 ---
 
 ## Installation
@@ -71,7 +76,7 @@ wildkcat prediction-part2 \
     prediction_output.csv \
     6  # Limit matching score
 
-# Generate summary report (IN PROGRESS)
+# Generate summary report
 wildkcat report \
     path/to/my_model.json \
     path/to/folder_output

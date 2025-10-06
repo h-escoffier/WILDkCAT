@@ -83,7 +83,7 @@ def retrieval(
 
         output_folder (str): Path to the output folder where the files are and will be saved.
 
-        organism (str): Organism name.
+        organism (str): Organism scientific name (e.g. "Escherichia coli", "Homo sapiens").
 
         temperature_range (tuple): Acceptable temperature range for filtering (min, max).
 
