@@ -16,6 +16,8 @@ Each step of the pipeline also generates an HTML report that provides detailed i
 
 <p align="center"> <img src="docs/report_example.gif" alt="WILDkCAT Report Demo" width="700"/> </p>
 
+[Click here to access the report](https://h-escoffier.github.io/WILDkCAT/tutorial/general_ecoli_report.html)
+
 The HTML reports are generated automatically after each stage of the workflow (extractionn, retrieval, prediction) and can be opened directly in any web browser. 
 
 ## Installation
