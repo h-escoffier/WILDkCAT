@@ -449,9 +449,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#prerequisites-cf-installation-instructions" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      Prerequisites (cf. installation instructions)
     </span>
   </a>
   
@@ -467,9 +467,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-retrieve-experimental-kcat-values-from-brenda-and-sabio-rk" class="md-nav__link">
+  <a href="#2-retrieve-experimental-kcat-values-from-brenda-andor-sabio-rk" class="md-nav__link">
     <span class="md-ellipsis">
-      2 — Retrieve experimental kcat values from BRENDA and SABIO-RK
+      2 — Retrieve experimental kcat values from BRENDA and/or SABIO-RK
     </span>
   </a>
   
@@ -571,11 +571,20 @@
 The purpose of this design is to centralize all results in a single location, with files being added progressively as each step is executed.  </p>
 </div>
 <hr />
-<h2 id="prerequisites">Prerequisites</h2>
+<h2 id="prerequisites-cf-installation-instructions">Prerequisites (<em>cf. <a href="../../installation/">installation instructions</a></em>)</h2>
 <ul>
 <li>Install <a href="../../installation/">WILDkCAT</a> from PyPI</li>
 <li>Install <a href="https://github.com/zchwang/CataPro">CataPro</a> to predict kcat values using machine learning</li>
 <li>Download the <a href="http://bigg.ucsd.edu/static/models/e_coli_core.json">E. coli core model</a></li>
+</ul>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>model
+curl<span class="w"> </span>-O<span class="w"> </span>model/e_coli_core.json<span class="w"> </span>http://bigg.ucsd.edu/static/models/e_coli_core.json
+</code></pre></div>
+<p>Your working directory should contain the following folders:</p>
+<ul>
+<li><code>venv/</code> - Folder containing the Python virtual environment</li>
+<li><code>CataPro/</code> - Folder containing the CataPro repository</li>
+<li><code>model/</code> - Folder containing the <em>E. coli</em> core model (e_coli_core.json)</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -583,9 +592,13 @@ The purpose of this design is to centralize all results in a single location, wi
 </div>
 <hr />
 <h2 id="1-extract-kcat-values-from-e-coli-core-model">1 — Extract kcat values from <em>E. coli</em> core model</h2>
+<p><em>Time: ~3-4 min</em> </p>
 <p>First, for each combination of reaction, enzyme, and substrate(s) in the model, create a TSV file. </p>
 <p>Each row corresponds to a unique combination of reaction, enzyme, and substrate(s) and will be used to retrieve experimental kcat values from BRENDA and SABIO-RK in the next step.
 The output file is named <code>kcat.tsv</code> and is saved in the specified output folder.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Programmatic Access</label><label for="__tabbed_1_2">Command Line Interface (CLI)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_extraction</span>
 
 <span class="n">run_extraction</span><span class="p">(</span>
@@ -593,6 +606,13 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
     <span class="n">output_folder</span><span class="o">=</span><span class="s2">&quot;output&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>extraction<span class="w"> </span>model/e_coli_core.json<span class="w"> </span>output
+</code></pre></div>
+</div>
+</div>
+</div>
 <p>Example of the output file <code>kcat.tsv</code>:</p>
 <table>
 <thead>
@@ -644,9 +664,13 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 </table>
 <p><a href="../extract_ecoli_report.html">View the generated report</a></p>
 <hr />
-<h2 id="2-retrieve-experimental-kcat-values-from-brenda-and-sabio-rk">2 — Retrieve experimental kcat values from BRENDA and SABIO-RK</h2>
+<h2 id="2-retrieve-experimental-kcat-values-from-brenda-andor-sabio-rk">2 — Retrieve experimental kcat values from BRENDA and/or SABIO-RK</h2>
+<p><em>Time: ~7-10 min</em></p>
 <p>This function searches for experimentally measured turnover numbers (kcat values) in the BRENDA and/or SABIO-RK databases for the kcats listed in the input file. 
 The retrieved values are filtered based on organism, temperature, and pH conditions. The closest matching kcat values are saved to the output file.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Programmatic Access</label><label for="__tabbed_2_2">Command Line Interface (CLI)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_retrieval</span>
 
 <span class="n">run_retrieval</span><span class="p">(</span>
@@ -657,6 +681,13 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
     <span class="n">database</span><span class="o">=</span><span class="s1">&#39;both&#39;</span>
     <span class="p">)</span>
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>retrieval<span class="w"> </span>output<span class="w"> </span><span class="s1">&#39;Escherichia coli&#39;</span><span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="m">40</span><span class="w"> </span><span class="m">6</span>.5<span class="w"> </span><span class="m">7</span>.5
+</code></pre></div>
+</div>
+</div>
+</div>
 <p>Example of the output file <code>kcat_retrieved.tsv</code>:</p>
 <table>
 <thead>
@@ -740,6 +771,10 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 </tbody>
 </table>
 <p><a href="../retrieve_ecoli_report.html">View the generated report</a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>BRENDA requires a user account to access its data. In contrast, SABIO-RK is openly accessible and does not require registration. If you want to only use SABIO-RK, set the parameter <code>database='sabio_rk'</code> in the function or use the flag <code>--database sabio_rk</code> in the CLI command.</p>
+</div>
 <hr />
 <h2 id="3-predict-missing-kcat-values-using-machine-learning">3 — Predict missing kcat values using machine learning</h2>
 <h3 id="31-prepare-input-file-for-catapro">3.1 - Prepare input file for CataPro</h3>
@@ -749,6 +784,9 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <p class="admonition-title">Note</p>
 <p>The file <code>catapro_input_substrates_to_smiles.tsv</code> that maps substrate names to their corresponding SMILES will be used to match back the predicted kcat values to the original kcat entries after running CataPro.</p>
 </div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Programmatic Access</label><label for="__tabbed_3_2">Command Line Interface (CLI)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_prediction_part1</span>
 
 <span class="n">run_prediction_part1</span><span class="p">(</span>
@@ -756,22 +794,32 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
     <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">6</span>
     <span class="p">)</span>
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>prediction-part1<span class="w"> </span>output<span class="w"> </span><span class="m">6</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 <p>The output file <code>catapro_input.csv</code> is formatted according to the requirements of <a href="https://github.com/zchwang/CataPro">CataPro</a>, meaning it can be directly used as input for kcat prediction.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Before running predictions, make sure you have installed CataPro by following the installation instructions provided in their <a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">GitHub repository</a>.</p>
 </div>
 <p>Once installed, you can run CataPro with the following command:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>predict.py<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>-inp_fpath<span class="w"> </span>output/machine_learning/ecoli_catapro_input.csv<span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>CataPro.predict.py<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-inp_fpath<span class="w"> </span>output/machine_learning/catapro_input.csv<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-model_dpath<span class="w"> </span>models<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-batch_size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-device<span class="w"> </span>cuda:0<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>-out_fpath<span class="w"> </span>ecoli_catapro_output.csv
+<span class="w">        </span>-out_fpath<span class="w"> </span>output/machine_learning/catapro_output.csv
 </code></pre></div>
 <p><a href="../predict_ecoli_report.html">View the generated report</a></p>
 <h3 id="32-integrate-catapro-predictions">3.2 - Integrate CataPro predictions</h3>
 <p>After running CataPro with the prepared input file, integrate the predicted kcat values back into the original kcat entries. The function matches the predicted values to the original entries using the substrate names and SMILES mapping file generated in the previous step.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Programmatic Access</label><label for="__tabbed_4_2">Command Line Interface (CLI)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_prediction_part2</span>
 
 <span class="n">run_prediction_part2</span><span class="p">(</span>
@@ -780,6 +828,13 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
     <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">6</span>
     <span class="p">)</span>
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>prediction-part2<span class="w"> </span>output<span class="w"> </span>output/machine_learning/catapro_output.csv<span class="w"> </span><span class="m">6</span>
+</code></pre></div>
+</div>
+</div>
+</div>
 <p>Example of the output file <code>kcat_full.tsv</code>:</p>
 <table>
 <thead>
@@ -863,13 +918,23 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <h2 id="4-generate-summary-report">4 — Generate summary report</h2>
 <p>The final output file <code>kcat_full.tsv</code> contains both experimentally retrieved and machine learning predicted kcat values for each combination of reaction, enzyme, and substrate(s) in the <em>E. coli</em> core model. This file can be used for integration into enzyme-constrained metabolic models.</p>
 <p>The result can be visualized and summarized using the function <code>generate_summary_report</code>: </p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_summary_report</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Programmatic Access</label><label for="__tabbed_5_2">Command Line Interface (CLI)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">wildkcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_summary_report</span>
 
 <span class="n">generate_summary_report</span><span class="p">(</span>
     <span class="n">model_path</span><span class="o">=</span><span class="s2">&quot;model/e_coli_core.json&quot;</span><span class="p">,</span> 
     <span class="n">output_folder</span><span class="o">=</span><span class="s2">&quot;output&quot;</span>
     <span class="p">)</span>
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>report<span class="w"> </span>model/e_coli_core.json<span class="w"> </span>output
+</code></pre></div>
+</div>
+</div>
+</div>
 <p><a href="../general_ecoli_report.html">View the generated report</a></p>
 
 
