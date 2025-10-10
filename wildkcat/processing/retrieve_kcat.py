@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from functools import lru_cache 
+import pandas as pd
 
 from ..api.sabio_rk_api import get_turnover_number_sabio
 from ..api.brenda_api import get_turnover_number_brenda
@@ -80,18 +81,53 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     return best_candidate, best_score
 
 
-def merge_ec(kcat_df):
+def merge_ec(kcat_df: pd.DataFrame):
     """
-    TODO: After the retrieval of kcat values, merge same combination of reaction and substrate with multiple EC numbers in one entry.
-    Select the kcat value with the highest matching score, if tie, select the highest sequence, closest organism, highest kcat value.
+    Merge entries with the same combination of reaction and substrate that differ only in EC numbers.
+    Select the kcat entry with the highest matching score; in case of a tie, use the following priorities:
+    1. Highest matching_score
+    2. Highest sequence_score
+    3. Closest organism_score
+    4. Highest kcat_value
 
     Parameters:
-        kcat_dict (pd.DataFrame): DataFrame containing all kcat entries.
-        
+        kcat_df (pd.DataFrame): DataFrame containing columns:
+            ['reaction', 'substrate', 'EC_number', 'matching_score', 
+             'sequence_score', 'organism_score', 'kcat_value', ...]
+
     Returns:
-        kcat_dict (pd.DataFrame): The updated DataFrame with merged EC numbers.
+        merged_df (pd.DataFrame): Updated DataFrame with merged EC numbers.
+        n_dropped (int): Number of dropped duplicate rows.
     """
-    pass # To be implemented
+    
+    # Sort by the selection criteria
+    kcat_df_sorted = kcat_df.sort_values(
+        by=['rxn', 'substrates_name', 'products_kegg', 
+            'genes', 'uniprot',
+            'kcat', 'matching_score',
+            'kcat_id_percent', 'kcat_organism_score'],
+        ascending=[True, True, True, True, True, True, False, True, True]
+    )
+
+    # Select the best row per reaction-substrate pair
+    best_entries = kcat_df_sorted.groupby(['rxn', 'substrates_name', 'products_kegg', 
+                                           'genes', 'uniprot'], as_index=False).first()
+
+    # Merge EC numbers for identical reaction-substrate pairs
+    merged_ec = kcat_df_sorted.groupby(['rxn', 'substrates_name', 'products_kegg', 
+                                        'genes', 'uniprot'])['ec_code'] \
+        .apply(lambda x: ';'.join(sorted(set(x)))).reset_index()
+
+    # Add merged EC numbers to best entries
+    merged_df = pd.merge(best_entries, merged_ec, on=['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])
+
+    # merged_df['EC_number'] = merged_df['EC_number_merged']
+    # merged_df.drop(columns=['EC_number_merged'], inplace=True)
+
+    # Calculate number of dropped entries
+    n_dropped = len(kcat_df) - len(merged_df)
+
+    return merged_df, n_dropped
 
 
 def run_retrieval(output_folder: str,
@@ -196,22 +232,22 @@ def run_retrieval(output_folder: str,
 
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
-    kcat_dict = {
-        'ec_code': '1.1.1.1',
-        'rxn_kegg': 'R00754',
-        'uniprot': 'P00330',
-        'catalytic_enzyme': 'P00330',
-        'substrates_name': 'H+;NADH;propanal', 
-    }
+    # kcat_dict = {
+    #     'ec_code': '1.1.1.1',
+    #     'rxn_kegg': 'R00754',
+    #     'uniprot': 'P00330',
+    #     'catalytic_enzyme': 'P00330',
+    #     'substrates_name': 'H+;NADH;propanal', 
+    # }
 
-    general_criteria ={
-        'Organism': 'Saccharomyces cerevisiae', 
-        'Temperature': (18, 38), 
-        'pH': (4.0, 8.0)
-    }
+    # general_criteria ={
+    #     'Organism': 'Saccharomyces cerevisiae', 
+    #     'Temperature': (18, 38), 
+    #     'pH': (4.0, 8.0)
+    # }
 
-    output = extract_kcat(kcat_dict, general_criteria, database='both')
-    print(output)
+    # output = extract_kcat(kcat_dict, general_criteria, database='both')
+    # print(output)
 
     # Test : Run the retrieve function
 
@@ -244,3 +280,8 @@ if __name__ == "__main__":
     # df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
     # # df = pd.read_csv("output/ecoli_kcat_brenda.tsv", sep='\t')
     # report_retrieval(df)
+
+    # Test: Drop duplicates 
+    kcat_df = pd.read_csv('output/kcat_retrieved.tsv')
+    test = merge_ec(kcat_df)
+    print(test)

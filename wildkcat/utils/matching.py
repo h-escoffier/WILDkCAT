@@ -9,7 +9,6 @@ from ..utils.organism import closest_enz, closest_taxonomy
 
 
 # TODO: Limit the Ea to the same pH ? 
-# TODO: Tie computation could be speed up by computing only if there is different enzyme or organism
 
 
 # --- Main --- 
