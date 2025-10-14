@@ -620,6 +620,7 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <th style="text-align: left;">rxn</th>
 <th style="text-align: left;">rxn_kegg</th>
 <th style="text-align: left;">ec_code</th>
+<th style="text-align: left;">ec_codes</th>
 <th style="text-align: left;">direction</th>
 <th style="text-align: left;">substrates_name</th>
 <th style="text-align: left;">substrates_kegg</th>
@@ -636,6 +637,7 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <td style="text-align: left;">PFK</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">2.7.1.11</td>
+<td style="text-align: left;">2.7.1.11</td>
 <td style="text-align: left;">forward</td>
 <td style="text-align: left;">ATP C10H12N5O13P3;D-Fructose 6-phosphate</td>
 <td style="text-align: left;">C00002;C05345</td>
@@ -647,22 +649,23 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;">ALCD2x</td>
-<td style="text-align: left;">R00754</td>
-<td style="text-align: left;">1.1.1.71</td>
-<td style="text-align: left;">forward</td>
-<td style="text-align: left;">Ethanol;Nicotinamide adenine dinucleotide</td>
-<td style="text-align: left;">C00469;C00003</td>
-<td style="text-align: left;">Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced</td>
-<td style="text-align: left;">C00084;C00080;C00004</td>
-<td style="text-align: left;">b0356</td>
-<td style="text-align: left;">P25437</td>
-<td style="text-align: left;">P25437</td>
+<td style="text-align: left;">ACALD</td>
+<td style="text-align: left;">R00228</td>
+<td style="text-align: left;">1.2.1.10</td>
+<td style="text-align: left;">1.2.1.10</td>
+<td style="text-align: left;">reverse</td>
+<td style="text-align: left;">Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced</td>
+<td style="text-align: left;">C00024;C00080;C00004</td>
+<td style="text-align: left;">Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide</td>
+<td style="text-align: left;">C00084;C00010;C00003</td>
+<td style="text-align: left;">b1241</td>
+<td style="text-align: left;">P0A9Q7</td>
+<td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
-<p><a href="../extract_ecoli_report.html">View the generated report</a></p>
+<p><a href="../extract_report.html">View the generated report</a></p>
 <hr />
 <h2 id="2-retrieve-experimental-kcat-values-from-brenda-andor-sabio-rk">2 — Retrieve experimental kcat values from BRENDA and/or SABIO-RK</h2>
 <p><em>Time: ~7-10 min</em></p>
@@ -695,6 +698,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">rxn</th>
 <th style="text-align: left;">rxn_kegg</th>
 <th style="text-align: left;">ec_code</th>
+<th style="text-align: left;">ec_codes</th>
 <th style="text-align: left;">direction</th>
 <th style="text-align: left;">substrates_name</th>
 <th style="text-align: left;">substrates_kegg</th>
@@ -722,6 +726,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">PFK</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">2.7.1.11</td>
+<td style="text-align: left;">2.7.1.11</td>
 <td style="text-align: left;">forward</td>
 <td style="text-align: left;">ATP C10H12N5O13P3;D-Fructose 6-phosphate</td>
 <td style="text-align: left;">C00002;C05345</td>
@@ -731,9 +736,9 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">0.016</td>
+<td style="text-align: left;">88.0</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">D-fructose 6-phosphate</td>
+<td style="text-align: left;">fructose 6-phosphate</td>
 <td style="text-align: left;">Escherichia coli</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">30.0</td>
@@ -744,33 +749,34 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">0.0</td>
 </tr>
 <tr>
-<td style="text-align: left;">ALCD2x</td>
-<td style="text-align: left;">R00754</td>
-<td style="text-align: left;">1.1.1.71</td>
-<td style="text-align: left;">forward</td>
-<td style="text-align: left;">Ethanol;Nicotinamide adenine dinucleotide</td>
-<td style="text-align: left;">C00469;C00003</td>
-<td style="text-align: left;">Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced</td>
-<td style="text-align: left;">C00084;C00080;C00004</td>
-<td style="text-align: left;">b0356</td>
-<td style="text-align: left;">P25437</td>
-<td style="text-align: left;">P25437</td>
+<td style="text-align: left;">ACALD</td>
+<td style="text-align: left;">R00228</td>
+<td style="text-align: left;">1.2.1.10</td>
+<td style="text-align: left;">1.2.1.10</td>
+<td style="text-align: left;">reverse</td>
+<td style="text-align: left;">Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced</td>
+<td style="text-align: left;">C00024;C00080;C00004</td>
+<td style="text-align: left;">Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide</td>
+<td style="text-align: left;">C00084;C00010;C00003</td>
+<td style="text-align: left;">b1241</td>
+<td style="text-align: left;">P0A9Q7</td>
+<td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">13.9</td>
-<td style="text-align: left;">7</td>
-<td style="text-align: left;">ethanol</td>
-<td style="text-align: left;">Acinetobacter calcoaceticus</td>
+<td style="text-align: left;">15.7</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">acetaldehyde</td>
+<td style="text-align: left;">Escherichia coli</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">8.0</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">brenda</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">4.0</td>
+<td style="text-align: left;">0.0</td>
 </tr>
 </tbody>
 </table>
-<p><a href="../retrieve_ecoli_report.html">View the generated report</a></p>
+<p><a href="../retrieve_report.html">View the generated report</a></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>BRENDA requires a user account to access its data. In contrast, SABIO-RK is openly accessible and does not require registration. If you want to only use SABIO-RK, set the parameter <code>database='sabio_rk'</code> in the function or use the flag <code>--database sabio_rk</code> in the CLI command.</p>
@@ -814,8 +820,9 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <span class="w">        </span>-device<span class="w"> </span>cuda:0<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-out_fpath<span class="w"> </span>output/machine_learning/catapro_output.csv
 </code></pre></div>
-<p><a href="../predict_ecoli_report.html">View the generated report</a></p>
+<p><a href="../predict_report.html">View the generated report</a></p>
 <h3 id="32-integrate-catapro-predictions">3.2 - Integrate CataPro predictions</h3>
+<p><em>Time: ~2-5 sec</em></p>
 <p>After running CataPro with the prepared input file, integrate the predicted kcat values back into the original kcat entries. The function matches the predicted values to the original entries using the substrate names and SMILES mapping file generated in the previous step.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Programmatic Access</label><label for="__tabbed_4_2">Command Line Interface (CLI)</label></div>
 <div class="tabbed-content">
@@ -842,6 +849,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">rxn</th>
 <th style="text-align: left;">rxn_kegg</th>
 <th style="text-align: left;">ec_code</th>
+<th style="text-align: left;">ec_codes</th>
 <th style="text-align: left;">direction</th>
 <th style="text-align: left;">substrates_name</th>
 <th style="text-align: left;">substrates_kegg</th>
@@ -861,6 +869,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">kcat_ph</th>
 <th style="text-align: left;">kcat_variant</th>
 <th style="text-align: left;">kcat_id_percent</th>
+<th style="text-align: left;">kcat_organism_score</th>
 </tr>
 </thead>
 <tbody>
@@ -868,41 +877,45 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">PFK</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">2.7.1.11</td>
+<td style="text-align: left;">2.7.1.11</td>
 <td style="text-align: left;">forward</td>
-<td style="text-align: left;">ATP C10H12N5O13P3; D-Fructose 6-phosphate</td>
-<td style="text-align: left;">C00002; C05345</td>
-<td style="text-align: left;">ADP C10H12N5O10P2; D-Fructose 1,6-bisphosphate; H+</td>
-<td style="text-align: left;">C00008; C00354; C00080</td>
+<td style="text-align: left;">ATP C10H12N5O13P3;D-Fructose 6-phosphate</td>
+<td style="text-align: left;">C00002;C05345</td>
+<td style="text-align: left;">ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+</td>
+<td style="text-align: left;">C00008;C00354;C00080</td>
 <td style="text-align: left;">b3916</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">0.016</td>
+<td style="text-align: left;">88.0</td>
 <td style="text-align: left;">brenda</td>
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">D-fructose 6-phosphate</td>
+<td style="text-align: left;">fructose 6-phosphate</td>
 <td style="text-align: left;">Escherichia coli</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">30.0</td>
 <td style="text-align: left;">7.2</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;">100.0</td>
+<td style="text-align: left;">0.0</td>
 </tr>
 <tr>
-<td style="text-align: left;">ALCD2x</td>
-<td style="text-align: left;">R00754</td>
-<td style="text-align: left;">1.1.1.71</td>
-<td style="text-align: left;">forward</td>
-<td style="text-align: left;">Ethanol;Nicotinamide adenine dinucleotide</td>
-<td style="text-align: left;">C00469;C00003</td>
-<td style="text-align: left;">Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced</td>
-<td style="text-align: left;">C00084;C00080;C00004</td>
-<td style="text-align: left;">b0356</td>
-<td style="text-align: left;">P25437</td>
-<td style="text-align: left;">P25437</td>
+<td style="text-align: left;">ACALD</td>
+<td style="text-align: left;">R00228</td>
+<td style="text-align: left;">1.2.1.10</td>
+<td style="text-align: left;">1.2.1.10</td>
+<td style="text-align: left;">reverse</td>
+<td style="text-align: left;">Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced</td>
+<td style="text-align: left;">C00024;C00080;C00004</td>
+<td style="text-align: left;">Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide</td>
+<td style="text-align: left;">C00084;C00010;C00003</td>
+<td style="text-align: left;">b1241</td>
+<td style="text-align: left;">P0A9Q7</td>
+<td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">16.0905</td>
+<td style="text-align: left;">20.2328</td>
 <td style="text-align: left;">catapro</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -916,6 +929,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 </table>
 <hr />
 <h2 id="4-generate-summary-report">4 — Generate summary report</h2>
+<p><em>Time: ~2-5 sec</em></p>
 <p>The final output file <code>kcat_full.tsv</code> contains both experimentally retrieved and machine learning predicted kcat values for each combination of reaction, enzyme, and substrate(s) in the <em>E. coli</em> core model. This file can be used for integration into enzyme-constrained metabolic models.</p>
 <p>The result can be visualized and summarized using the function <code>generate_summary_report</code>: </p>
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Programmatic Access</label><label for="__tabbed_5_2">Command Line Interface (CLI)</label></div>
@@ -935,7 +949,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 </div>
 </div>
 </div>
-<p><a href="../general_ecoli_report.html">View the generated report</a></p>
+<p><a href="../general_report.html">View the generated report</a></p>
 
 
 

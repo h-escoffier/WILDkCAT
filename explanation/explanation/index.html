@@ -780,6 +780,10 @@ kcat_{\text{opt}} = kcat_{\text{db}} \times \exp\left(-\frac{E_a}{R} \left(\frac
 <li>The target temperature <span class="arithmatex">\( T_{opt} \)</span> corresponds to the midpoint of the desired optimal range.</li>
 </ul>
 </li>
+<li>
+<p><strong>Merging rows with same reaction-enzyme combination</strong></p>
+<p>During the extraction step, multiple rows may be generated if a combination of reaction and enzyme is associated with multiple EC numbers. In such cases, after the retrieval step, these rows are merged to retain only the best kcat value. The column <code>ec_codes</code> lists all the EC numbers associated with the reaction-enzyme pair. The column <code>ec-code</code> indicates the EC number corresponding to the selected kcat value.</p>
+</li>
 </ol>
 <hr />
 <h2 id="3-predict-missing-kcat-values-using-machine-learning">3 - Predict missing kcat values using machine learning</h2>

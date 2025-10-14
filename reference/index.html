@@ -1406,7 +1406,9 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/processing/retrieve_kcat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
@@ -1501,9 +1503,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">temperature_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
                   <span class="n">pH_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
@@ -1593,7 +1593,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
                 <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
 
     <span class="c1"># Select only one kcat value per reaction and substrate</span>
-    <span class="c1"># kcat_df = merge_ec(kcat_df)</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">merge_ec</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
 
     <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_retrieved.tsv&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1776,7 +1776,7 @@ Optionally, it can produce a summary report of the processed data.</p>
     <span class="c1"># Drop rows with no UniProt ID or no substrates_kegg</span>
     <span class="n">before_duplicates_filter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> 
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;uniprot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
-    <span class="n">nb_missing_enzymes</span> <span class="o">=</span> <span class="n">before_duplicates_filter</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
+    <span class="n">nb_missing_enzymes</span> <span class="o">=</span> <span class="n">before_duplicates_filter</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> 
 
     <span class="c1"># Generate CataPro input file</span>
     <span class="n">catapro_input_df</span><span class="p">,</span> <span class="n">substrates_to_smiles_df</span><span class="p">,</span> <span class="n">report_statistics</span> <span class="o">=</span> <span class="n">create_catapro_input_file</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
@@ -6905,7 +6905,10 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">635</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
 <span class="normal">636</span>
 <span class="normal">637</span>
 <span class="normal">638</span>
@@ -7170,10 +7173,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">897</span>
 <span class="normal">898</span>
 <span class="normal">899</span>
-<span class="normal">900</span>
-<span class="normal">901</span>
-<span class="normal">902</span>
-<span class="normal">903</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">900</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a full HTML report summarizing retrieval results, including kcat distributions and coverage.</span>
 
@@ -7716,10 +7716,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">626</span>
 <span class="normal">627</span>
 <span class="normal">628</span>
-<span class="normal">629</span>
-<span class="normal">630</span>
-<span class="normal">631</span>
-<span class="normal">632</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
+<span class="normal">629</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a detailed HTML report summarizing the kcat prediction input statistics.</span>
 
@@ -7732,9 +7729,6 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        None: The function saves the generated HTML report to &#39;reports/predict_kcat_report.html&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># TODO: Show the number of rows without any enzymes</span>
-
     <span class="c1"># CataPro Statistics </span>
     <span class="n">total_catapro_entries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
@@ -8263,7 +8257,7 @@ including kcat value distribution and matching score repartition.</p>
     <span class="n">present_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
     <span class="n">score_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">present_scores</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="n">matched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_values</span><span class="p">)</span>
+    <span class="n">matched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">match_percent</span> <span class="o">=</span> <span class="n">matched</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">total</span> <span class="k">else</span> <span class="mi">0</span>
     <span class="n">score_percent</span> <span class="o">=</span> <span class="p">(</span><span class="n">score_counts</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">total</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">present_scores</span><span class="p">)</span>
 
@@ -8527,7 +8521,10 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1111</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1108</span>
+<span class="normal">1109</span>
+<span class="normal">1110</span>
+<span class="normal">1111</span>
 <span class="normal">1112</span>
 <span class="normal">1113</span>
 <span class="normal">1114</span>
@@ -8632,10 +8629,7 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1213</span>
 <span class="normal">1214</span>
 <span class="normal">1215</span>
-<span class="normal">1216</span>
-<span class="normal">1217</span>
-<span class="normal">1218</span>
-<span class="normal">1219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
+<span class="normal">1216</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML and GLSL shader code for report background. Adapted from localthunk (https://localthunk.com)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;!-- Background adapted from original work by localthunk (https://localthunk.com) --&gt;</span>
@@ -8766,17 +8760,17 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1098</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1095</span>
+<span class="normal">1096</span>
+<span class="normal">1097</span>
+<span class="normal">1098</span>
 <span class="normal">1099</span>
 <span class="normal">1100</span>
 <span class="normal">1101</span>
 <span class="normal">1102</span>
 <span class="normal">1103</span>
 <span class="normal">1104</span>
-<span class="normal">1105</span>
-<span class="normal">1106</span>
-<span class="normal">1107</span>
-<span class="normal">1108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
+<span class="normal">1105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML code for report background.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>
@@ -8809,7 +8803,10 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 906</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 903</span>
+<span class="normal"> 904</span>
+<span class="normal"> 905</span>
+<span class="normal"> 906</span>
 <span class="normal"> 907</span>
 <span class="normal"> 908</span>
 <span class="normal"> 909</span>
@@ -8995,10 +8992,7 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1089</span>
 <span class="normal">1090</span>
 <span class="normal">1091</span>
-<span class="normal">1092</span>
-<span class="normal">1093</span>
-<span class="normal">1094</span>
-<span class="normal">1095</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
+<span class="normal">1092</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return CSS script for report style.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>
