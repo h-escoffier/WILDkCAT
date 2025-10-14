@@ -232,7 +232,7 @@ def report_retrieval(df, output_folder,shader=False) -> None:
     present_scores = sorted(df['matching_score'].dropna().unique())
     score_counts = df['matching_score'].value_counts().reindex(present_scores, fill_value=0)
     total = len(df) - 1
-    matched = len(kcat_values)
+    matched = len(kcat_values) - 1
     match_percent = matched / total * 100 if total else 0
     score_percent = (score_counts / total * 100).round(2) if total else pd.Series(0, index=present_scores)
 
@@ -489,9 +489,6 @@ def report_prediction_input(catapro_df, report_statistics, output_folder, shader
     Returns:
         None: The function saves the generated HTML report to 'reports/predict_kcat_report.html'.
     """
-    
-    # TODO: Show the number of rows without any enzymes
-
     # CataPro Statistics 
     total_catapro_entries = len(catapro_df) - 1
 

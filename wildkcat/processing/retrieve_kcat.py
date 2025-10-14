@@ -91,43 +91,41 @@ def merge_ec(kcat_df: pd.DataFrame):
     4. Highest kcat_value
 
     Parameters:
-        kcat_df (pd.DataFrame): DataFrame containing columns:
-            ['reaction', 'substrate', 'EC_number', 'matching_score', 
-             'sequence_score', 'organism_score', 'kcat_value', ...]
+        kcat_df (pd.DataFrame): DataFrame containing kcat data.  
 
     Returns:
-        merged_df (pd.DataFrame): Updated DataFrame with merged EC numbers.
-        n_dropped (int): Number of dropped duplicate rows.
+        update_kcat_df (pd.DataFrame): Updated DataFrame with merged EC numbers.
     """
     
     # Sort by the selection criteria
     kcat_df_sorted = kcat_df.sort_values(
-        by=['rxn', 'substrates_name', 'products_kegg', 
-            'genes', 'uniprot',
-            'kcat', 'matching_score',
-            'kcat_id_percent', 'kcat_organism_score'],
-        ascending=[True, True, True, True, True, True, False, True, True]
+        by=['matching_score', 'kcat_id_percent', 'kcat_organism_score', 'kcat'],
+        ascending=[True, False, True, False]
     )
 
-    # Select the best row per reaction-substrate pair
-    best_entries = kcat_df_sorted.groupby(['rxn', 'substrates_name', 'products_kegg', 
-                                           'genes', 'uniprot'], as_index=False).first()
+    # Merge EC numbers for each reaction-substrate pair
+    ec_merged = kcat_df.groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])['ec_code'] \
+                       .apply(lambda x: ';'.join(sorted(set(x)))).rename('ec_codes')
 
-    # Merge EC numbers for identical reaction-substrate pairs
-    merged_ec = kcat_df_sorted.groupby(['rxn', 'substrates_name', 'products_kegg', 
-                                        'genes', 'uniprot'])['ec_code'] \
-        .apply(lambda x: ';'.join(sorted(set(x)))).reset_index()
+
+    best_entries = kcat_df_sorted.groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], as_index=False).first()
 
     # Add merged EC numbers to best entries
-    merged_df = pd.merge(best_entries, merged_ec, on=['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])
+    update_kcat_df = best_entries.merge(ec_merged, on=['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])
 
-    # merged_df['EC_number'] = merged_df['EC_number_merged']
-    # merged_df.drop(columns=['EC_number_merged'], inplace=True)
+    # Reorder columns to place 'ec_codes' next to 'ec_code'
+    update_kcat_df = update_kcat_df[
+        [
+            'rxn', 'rxn_kegg', 'ec_code', 'ec_codes', 'direction',
+            'substrates_name', 'substrates_kegg', 'products_name', 'products_kegg',
+            'genes', 'uniprot', 'catalytic_enzyme', 'warning',
+            'kcat', 'matching_score', 'kcat_substrate', 'kcat_organism', 'kcat_enzyme',
+            'kcat_temperature', 'kcat_ph', 'kcat_variant', 'kcat_db',
+            'kcat_id_percent', 'kcat_organism_score'
+        ]
+    ]
 
-    # Calculate number of dropped entries
-    n_dropped = len(kcat_df) - len(merged_df)
-
-    return merged_df, n_dropped
+    return update_kcat_df
 
 
 def run_retrieval(output_folder: str,
@@ -220,7 +218,7 @@ def run_retrieval(output_folder: str,
                 kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
 
     # Select only one kcat value per reaction and substrate
-    # kcat_df = merge_ec(kcat_df)
+    kcat_df = merge_ec(kcat_df)
 
     output_path = os.path.join(output_folder, "kcat_retrieved.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)
@@ -282,6 +280,6 @@ if __name__ == "__main__":
     # report_retrieval(df)
 
     # Test: Drop duplicates 
-    kcat_df = pd.read_csv('output/kcat_retrieved.tsv')
-    test = merge_ec(kcat_df)
-    print(test)
+    kcat_df = pd.read_csv('output/kcat_retrieved.tsv', sep='\t')
+    test, dropped = merge_ec(kcat_df)
+    test.to_csv('test2.tsv', sep='\t', index=False)

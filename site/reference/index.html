@@ -1288,7 +1288,7 @@
 
     <div class="doc doc-contents first">
 
-        <p>Retrieves closests kcat values from specified databases for entries in a kcat file, applies filtering criteria, 
+        <p>Retrieves closest kcat values from specified databases for entries in a kcat file, applies filtering criteria, 
 and saves the results to an output file.</p>
 
 
@@ -1328,7 +1328,7 @@ and saves the results to an output file.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Organism name.</p>
+                <p>Organism scientific name (e.g. "Escherichia coli", "Homo sapiens").</p>
               </div>
             </td>
             <td>
@@ -1406,41 +1406,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/processing/retrieve_kcat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
@@ -1503,19 +1469,53 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 <span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
-<span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">temperature_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
                   <span class="n">pH_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
                   <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span>
                   <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Retrieves closests kcat values from specified databases for entries in a kcat file, applies filtering criteria, </span>
+<span class="sd">    Retrieves closest kcat values from specified databases for entries in a kcat file, applies filtering criteria, </span>
 <span class="sd">    and saves the results to an output file.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        output_folder (str): Path to the output folder where the results will be saved.</span>
-<span class="sd">        organism (str): Organism name.</span>
+<span class="sd">        organism (str): Organism scientific name (e.g. &quot;Escherichia coli&quot;, &quot;Homo sapiens&quot;).</span>
 <span class="sd">        temperature_range (tuple): Acceptable temperature range for filtering (min, max).</span>
 <span class="sd">        pH_range (tuple): Acceptable pH range for filtering (min, max).</span>
 <span class="sd">        database (str, optional): Specifies which database(s) to query for kcat values. </span>
@@ -1593,7 +1593,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
                 <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
 
     <span class="c1"># Select only one kcat value per reaction and substrate</span>
-    <span class="c1"># kcat_df = merge_ec(kcat_df)</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">merge_ec</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
 
     <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_retrieved.tsv&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1776,7 +1776,7 @@ Optionally, it can produce a summary report of the processed data.</p>
     <span class="c1"># Drop rows with no UniProt ID or no substrates_kegg</span>
     <span class="n">before_duplicates_filter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> 
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;uniprot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
-    <span class="n">nb_missing_enzymes</span> <span class="o">=</span> <span class="n">before_duplicates_filter</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
+    <span class="n">nb_missing_enzymes</span> <span class="o">=</span> <span class="n">before_duplicates_filter</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> 
 
     <span class="c1"># Generate CataPro input file</span>
     <span class="n">catapro_input_df</span><span class="p">,</span> <span class="n">substrates_to_smiles_df</span><span class="p">,</span> <span class="n">report_statistics</span> <span class="o">=</span> <span class="n">create_catapro_input_file</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
@@ -2145,7 +2145,8 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
+<span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
@@ -2153,8 +2154,7 @@ Identifies the catalytic enzyme using UniProt API.</p>
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_catalytic_enzyme</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">):</span> 
+<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_catalytic_enzyme</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">):</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the enzyme in a candidate entry matches the model&#39;s enzyme.</span>
 <span class="sd">    Identifies the catalytic enzyme using UniProt API.</span>
@@ -2186,13 +2186,13 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">152</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">151</span>
+<span class="normal">152</span>
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_organism</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span> 
+<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_organism</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the organism in a candidate entry matches the expected organism.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2221,7 +2221,8 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">171</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
+<span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
@@ -2231,8 +2232,7 @@ Identifies the catalytic enzyme using UniProt API.</p>
 <span class="normal">178</span>
 <span class="normal">179</span>
 <span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_pH</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span>
+<span class="normal">181</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_pH</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the pH in a candidate entry matches the expected pH.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2266,7 +2266,8 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">235</span>
+<span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
@@ -2308,8 +2309,7 @@ Identifies the catalytic enzyme using UniProt API.</p>
 <span class="normal">275</span>
 <span class="normal">276</span>
 <span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_substrate</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">candidate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">278</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_substrate</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">candidate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the substrate in a candidate entry matches the model&#39;s substrates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2376,7 +2376,8 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">185</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">184</span>
+<span class="normal">185</span>
 <span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
@@ -2423,8 +2424,7 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 <span class="normal">229</span>
 <span class="normal">230</span>
 <span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_temperature</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">min_r2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">expected_range</span><span class="o">=</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">150000</span><span class="p">)):</span> 
+<span class="normal">232</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_temperature</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">min_r2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">expected_range</span><span class="o">=</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">150000</span><span class="p">)):</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the temperature in a candidate entry matches the expected temperature.</span>
 <span class="sd">    If the temperature is within the specified range is not met, verify if the Arrhenius equation can be applied.</span>
@@ -2495,14 +2495,14 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">160</span>
+<span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_variant</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_variant</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the enzyme variant in a candidate entry is wildtype or unknown.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2532,7 +2532,8 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">285</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">284</span>
+<span class="normal">285</span>
 <span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
@@ -2550,8 +2551,7 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 <span class="normal">300</span>
 <span class="normal">301</span>
 <span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_score</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">):</span>
+<span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_score</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute a score for the candidate based on the Kcat dictionary and general criteria.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2699,7 +2699,8 @@ best_candidate (dict or None): Dictionary of the best matching candidate's data,
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 17</span>
+<span class="normal"> 18</span>
 <span class="normal"> 19</span>
 <span class="normal"> 20</span>
 <span class="normal"> 21</span>
@@ -2785,8 +2786,7 @@ best_candidate (dict or None): Dictionary of the best matching candidate's data,
 <span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">find_best_match</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="normal">104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">find_best_match</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the best matching enzyme entry from the provided API output based on: </span>
 <span class="sd">        - Kcat specific criteria: </span>
@@ -6905,7 +6905,10 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">635</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
 <span class="normal">636</span>
 <span class="normal">637</span>
 <span class="normal">638</span>
@@ -7170,10 +7173,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">897</span>
 <span class="normal">898</span>
 <span class="normal">899</span>
-<span class="normal">900</span>
-<span class="normal">901</span>
-<span class="normal">902</span>
-<span class="normal">903</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">900</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a full HTML report summarizing retrieval results, including kcat distributions and coverage.</span>
 
@@ -7716,10 +7716,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">626</span>
 <span class="normal">627</span>
 <span class="normal">628</span>
-<span class="normal">629</span>
-<span class="normal">630</span>
-<span class="normal">631</span>
-<span class="normal">632</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
+<span class="normal">629</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_prediction_input</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">,</span> <span class="n">report_statistics</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a detailed HTML report summarizing the kcat prediction input statistics.</span>
 
@@ -7732,9 +7729,6 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        None: The function saves the generated HTML report to &#39;reports/predict_kcat_report.html&#39;.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># TODO: Show the number of rows without any enzymes</span>
-
     <span class="c1"># CataPro Statistics </span>
     <span class="n">total_catapro_entries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">catapro_df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
@@ -8263,7 +8257,7 @@ including kcat value distribution and matching score repartition.</p>
     <span class="n">present_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
     <span class="n">score_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">present_scores</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="n">matched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_values</span><span class="p">)</span>
+    <span class="n">matched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">match_percent</span> <span class="o">=</span> <span class="n">matched</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">total</span> <span class="k">else</span> <span class="mi">0</span>
     <span class="n">score_percent</span> <span class="o">=</span> <span class="p">(</span><span class="n">score_counts</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">total</span> <span class="k">else</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">present_scores</span><span class="p">)</span>
 
@@ -8527,7 +8521,10 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1111</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1108</span>
+<span class="normal">1109</span>
+<span class="normal">1110</span>
+<span class="normal">1111</span>
 <span class="normal">1112</span>
 <span class="normal">1113</span>
 <span class="normal">1114</span>
@@ -8632,10 +8629,7 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1213</span>
 <span class="normal">1214</span>
 <span class="normal">1215</span>
-<span class="normal">1216</span>
-<span class="normal">1217</span>
-<span class="normal">1218</span>
-<span class="normal">1219</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
+<span class="normal">1216</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML and GLSL shader code for report background. Adapted from localthunk (https://localthunk.com)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;!-- Background adapted from original work by localthunk (https://localthunk.com) --&gt;</span>
@@ -8766,17 +8760,17 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1098</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1095</span>
+<span class="normal">1096</span>
+<span class="normal">1097</span>
+<span class="normal">1098</span>
 <span class="normal">1099</span>
 <span class="normal">1100</span>
 <span class="normal">1101</span>
 <span class="normal">1102</span>
 <span class="normal">1103</span>
 <span class="normal">1104</span>
-<span class="normal">1105</span>
-<span class="normal">1106</span>
-<span class="normal">1107</span>
-<span class="normal">1108</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
+<span class="normal">1105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML code for report background.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>
@@ -8809,7 +8803,10 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 906</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 903</span>
+<span class="normal"> 904</span>
+<span class="normal"> 905</span>
+<span class="normal"> 906</span>
 <span class="normal"> 907</span>
 <span class="normal"> 908</span>
 <span class="normal"> 909</span>
@@ -8995,10 +8992,7 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1089</span>
 <span class="normal">1090</span>
 <span class="normal">1091</span>
-<span class="normal">1092</span>
-<span class="normal">1093</span>
-<span class="normal">1094</span>
-<span class="normal">1095</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
+<span class="normal">1092</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return CSS script for report style.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>

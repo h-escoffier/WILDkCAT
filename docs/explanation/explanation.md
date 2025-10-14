@@ -114,6 +114,10 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 
     *  The target temperature \( T_{opt} \) corresponds to the midpoint of the desired optimal range.
 
+4. **Merging rows with same reaction-enzyme combination**
+
+    During the extraction step, multiple rows may be generated if a combination of reaction and enzyme is associated with multiple EC numbers. In such cases, after the retrieval step, these rows are merged to retain only the best kcat value. The column `ec_codes` lists all the EC numbers associated with the reaction-enzyme pair. The column `ec-code` indicates the EC number corresponding to the selected kcat value.
+
 ---
 
 ## 3 - Predict missing kcat values using machine learning
