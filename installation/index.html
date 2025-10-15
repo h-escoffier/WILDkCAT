@@ -589,6 +589,7 @@
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="n">powershell</span> <span class="n">-ExecutionPolicy</span> <span class="n">ByPass</span> <span class="n">-c</span> <span class="s2">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span>
+<span class="nv">$env:Path</span> <span class="p">+=</span> <span class="s2">&quot;;$env:USERPROFILE\.local\bin&quot;</span>
 </code></pre></div>
 </div>
 </div>
@@ -643,7 +644,7 @@
 <h2 id="install-catapro">Install CataPro</h2>
 <p><a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">CataPro</a> is required for predicting kcat values using machine learning</p>
 <h3 id="1-install-dependencies">1. Install dependencies</h3>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>install<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>transformers<span class="w"> </span>numpy<span class="w"> </span>pandas<span class="w"> </span>RDKit
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>transformers<span class="w"> </span>numpy<span class="w"> </span>pandas<span class="w"> </span>RDKit
 </code></pre></div>
 <h3 id="2-clone-the-catapro-repository">2. Clone the CataPro repository</h3>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/zchwang/CataPro
