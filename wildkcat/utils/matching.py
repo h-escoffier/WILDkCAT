@@ -257,7 +257,7 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
     """
     api = entry.get("db", candidate.get("db") if candidate else None)
 
-    # Normalisation des champs
+    # Normalize names
     entry_subs = entry.get("Substrate", "")
     entry_prods = entry.get("Product", "")
     entry_kegg = entry.get("KeggReactionID")
@@ -270,7 +270,6 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
     model_prods = (kcat_dict or {}).get("products_name", "")
     model_kegg = (kcat_dict or {}).get("rxn_kegg")
 
-    # --- logique identique à avant ---
     if api == "sabio_rk":
         
         entry_kegg = None if pd.isna(entry_kegg) else entry_kegg
@@ -292,9 +291,9 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
         base_subs = model_subs or cand_subs
         if _any_intersection(entry_subs, base_subs):
             return 0
-        return 3
+        return 8
 
-    return 3
+    return 8
 
 
 # --- Scoring ---

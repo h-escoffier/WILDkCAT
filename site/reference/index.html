@@ -1501,9 +1501,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 <span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="normal">226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_retrieval</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">organism</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">temperature_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
                   <span class="n">pH_range</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
@@ -1587,10 +1585,8 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
             <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_ph&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;pH&#39;</span><span class="p">]</span>
             <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_variant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;EnzymeVariant&#39;</span><span class="p">]</span>
             <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">best_match</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id_perc&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_id_percent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">best_match</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;organism_score&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
-                <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_id_percent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span>
+            <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
 
     <span class="c1"># Select only one kcat value per reaction and substrate</span>
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">merge_ec</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span>
@@ -2143,8 +2139,7 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">157</span>
-<span class="normal">158</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span>
@@ -2152,7 +2147,8 @@ Identifies the catalytic enzyme using UniProt API.</p>
 <span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
-<span class="normal">166</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_catalytic_enzyme</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">):</span> 
+<span class="normal">166</span>
+<span class="normal">167</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_catalytic_enzyme</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">kcat_dict</span><span class="p">):</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the enzyme in a candidate entry matches the model&#39;s enzyme.</span>
 <span class="sd">    Identifies the catalytic enzyme using UniProt API.</span>
@@ -2184,13 +2180,13 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">169</span>
-<span class="normal">170</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
-<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_organism</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span> 
+<span class="normal">175</span>
+<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_organism</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the organism in a candidate entry matches the expected organism.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2219,8 +2215,7 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
-<span class="normal">189</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
@@ -2230,7 +2225,8 @@ Identifies the catalytic enzyme using UniProt API.</p>
 <span class="normal">196</span>
 <span class="normal">197</span>
 <span class="normal">198</span>
-<span class="normal">199</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_pH</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span>
+<span class="normal">199</span>
+<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_pH</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the pH in a candidate entry matches the expected pH.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2264,8 +2260,7 @@ Identifies the catalytic enzyme using UniProt API.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">253</span>
-<span class="normal">254</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
 <span class="normal">257</span>
@@ -2313,7 +2308,7 @@ Identifies the catalytic enzyme using UniProt API.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">api</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;db&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">candidate</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="c1"># Normalisation des champs</span>
+    <span class="c1"># Normalize names</span>
     <span class="n">entry_subs</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Substrate&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">entry_prods</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Product&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">entry_kegg</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;KeggReactionID&quot;</span><span class="p">)</span>
@@ -2326,7 +2321,6 @@ Identifies the catalytic enzyme using UniProt API.</p>
     <span class="n">model_prods</span> <span class="o">=</span> <span class="p">(</span><span class="n">kcat_dict</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;products_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="n">model_kegg</span> <span class="o">=</span> <span class="p">(</span><span class="n">kcat_dict</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rxn_kegg&quot;</span><span class="p">)</span>
 
-    <span class="c1"># --- logique identique à avant ---</span>
     <span class="k">if</span> <span class="n">api</span> <span class="o">==</span> <span class="s2">&quot;sabio_rk&quot;</span><span class="p">:</span>
 
         <span class="n">entry_kegg</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">entry_kegg</span><span class="p">)</span> <span class="k">else</span> <span class="n">entry_kegg</span>
@@ -2348,9 +2342,9 @@ Identifies the catalytic enzyme using UniProt API.</p>
         <span class="n">base_subs</span> <span class="o">=</span> <span class="n">model_subs</span> <span class="ow">or</span> <span class="n">cand_subs</span>
         <span class="k">if</span> <span class="n">_any_intersection</span><span class="p">(</span><span class="n">entry_subs</span><span class="p">,</span> <span class="n">base_subs</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">return</span> <span class="mi">3</span>
+        <span class="k">return</span> <span class="mi">8</span>
 
-    <span class="k">return</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="mi">8</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2374,8 +2368,7 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">202</span>
-<span class="normal">203</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
 <span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
@@ -2422,7 +2415,8 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 <span class="normal">247</span>
 <span class="normal">248</span>
 <span class="normal">249</span>
-<span class="normal">250</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_temperature</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">min_r2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">expected_range</span><span class="o">=</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">150000</span><span class="p">)):</span> 
+<span class="normal">250</span>
+<span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_temperature</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">min_r2</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">expected_range</span><span class="o">=</span><span class="p">(</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">150000</span><span class="p">)):</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the temperature in a candidate entry matches the expected temperature.</span>
 <span class="sd">    If the temperature is within the specified range is not met, verify if the Arrhenius equation can be applied.</span>
@@ -2493,14 +2487,14 @@ If the temperature is within the specified range is not met, verify if the Arrhe
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/matching.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">178</span>
-<span class="normal">179</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
 <span class="normal">184</span>
-<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_variant</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
+<span class="normal">185</span>
+<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_variant</span><span class="p">(</span><span class="n">candidate</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks whether the enzyme variant in a candidate entry is wildtype or unknown.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2802,7 +2796,8 @@ best_candidate (dict or None): Dictionary of the best matching candidate's data,
 <span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
-<span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">find_best_match</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">find_best_match</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">api_output</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the best matching enzyme entry from the provided API output based on: </span>
 <span class="sd">        - Kcat specific criteria: </span>
@@ -2890,14 +2885,15 @@ best_candidate (dict or None): Dictionary of the best matching candidate's data,
     <span class="n">best_score</span> <span class="o">=</span> <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
 
     <span class="c1"># 6. Compute organism_score and id_perc if not present </span>
-    <span class="k">if</span> <span class="s1">&#39;organism_score&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">best_candidate</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]):</span>
-        <span class="k">if</span> <span class="s1">&#39;Organism&#39;</span> <span class="ow">in</span> <span class="n">general_criteria</span> <span class="ow">and</span> <span class="n">best_candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Organism&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">general_criteria</span><span class="p">[</span><span class="s1">&#39;Organism&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">best_candidate</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Organism&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">general_criteria</span><span class="p">[</span><span class="s1">&#39;Organism&#39;</span><span class="p">]:</span>
             <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tmp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">best_candidate</span><span class="p">])</span>
-            <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">closest_taxonomy</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">,</span> <span class="n">tmp_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
+            <span class="n">taxonomy_score</span> <span class="o">=</span> <span class="n">closest_taxonomy</span><span class="p">(</span><span class="n">general_criteria</span><span class="p">,</span> <span class="n">tmp_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span>
+            <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;organism_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxonomy_score</span>
 
-    <span class="k">if</span> <span class="s1">&#39;id_perc&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">best_candidate</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">best_candidate</span><span class="p">[</span><span class="s1">&#39;id_perc&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
         <span class="n">catalytic</span> <span class="o">=</span> <span class="n">kcat_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;catalytic_enzyme&#39;</span><span class="p">)</span>
         <span class="n">catalytic_list</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">catalytic</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">catalytic</span> <span class="ow">and</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">catalytic</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
 
