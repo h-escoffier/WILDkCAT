@@ -71,11 +71,11 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     Returns:
         tuple: 
             - best_candidate (dict or None): The best matching kcat entry, or None if no match is found.
-            - best_score (int or float): The score of the best candidate, or 15 if no match is found in the database.
+            - best_score (int or float): The score of the best candidate, or 19 if no match is found in the database.
     """
     api_output = get_turnover_number(kcat_dict['ec_code'], database)
     if api_output.empty: 
-        return None, 15
+        return None, 19
             
     best_score, best_candidate = find_best_match(kcat_dict, api_output, general_criteria)
     return best_candidate, best_score
@@ -226,24 +226,24 @@ def run_retrieval(output_folder: str,
         report_retrieval(kcat_df, output_folder)
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     # Test : Send a request for a specific EC number
-    # kcat_dict = {
-    #     'ec_code': '1.1.1.1',
-    #     'rxn_kegg': 'R00754',
-    #     'uniprot': 'P00330',
-    #     'catalytic_enzyme': 'P00330',
-    #     'substrates_name': 'H+;NADH;propanal', 
-    # }
+    kcat_dict = {
+        'ec_code': '2.7.4.3',
+        'rxn_kegg': 'R00127',
+        'uniprot': 'P69441',
+        'catalytic_enzyme': 'P69441',
+        'substrates_name': 'ADP C10H12N5O10P2', 
+    }
 
-    # general_criteria ={
-    #     'Organism': 'Saccharomyces cerevisiae', 
-    #     'Temperature': (18, 38), 
-    #     'pH': (4.0, 8.0)
-    # }
+    general_criteria ={
+        'Organism': 'Escherichia coli', 
+        'Temperature': (20, 40), 
+        'pH': (6.5, 7.5)
+    }
 
-    # output = extract_kcat(kcat_dict, general_criteria, database='both')
-    # print(output)
+    output = extract_kcat(kcat_dict, general_criteria, database='both')
+    print(output)
 
     # Test : Run the retrieve function
 

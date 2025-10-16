@@ -43,7 +43,7 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
     # 1. Remove mutant enzymes
     api_output = api_output[api_output["EnzymeVariant"].isin(['wildtype', None])]
     if api_output.empty:
-        return 14, None
+        return 18, None
 
     # 2. Compute score and adjust kcat if needed
     scores = []
@@ -285,7 +285,7 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
         base_subs = model_subs or cand_subs
         if _any_intersection(entry_subs, base_subs):
             return 0
-        return 3
+        return 8
 
     elif api == "brenda":
         base_subs = model_subs or cand_subs
