@@ -66,15 +66,6 @@ def format_output(kcat_df, limit_matching_score):
         ]] = np.nan
     
     # Reorder columns
-    # kcat_df = kcat_df[[
-    #     "rxn", "rxn_kegg", "ec_code", "direction", 
-    #     "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
-    #     "genes", "uniprot",
-    #     "kcat", "kcat_source", "catapro_predicted_kcat_s", 
-    #     "kcat_source_db", "kcat_db", "matching_score",
-    #     "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
-    #     ]]
-
     kcat_df = kcat_df[[
         "rxn", "rxn_kegg", "ec_code", "ec_codes", "direction", 
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
@@ -164,7 +155,6 @@ def run_prediction_part2(output_folder: str,
     logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
 
     # Run prediction part 2
-    # Read the kcat file
     if not os.path.exists(output_folder):
         raise FileNotFoundError(f"The specified output folder '{output_folder}' does not exist.")
     kcat_file_path = os.path.join(output_folder, "kcat_retrieved.tsv")

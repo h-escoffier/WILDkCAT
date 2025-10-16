@@ -101,6 +101,25 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
     best_candidate['catalytic_enzyme'] = kcat_dict.get('catalytic_enzyme')
     best_score = best_candidate['score']
 
+    # 6. Compute organism_score and id_perc if not present 
+    if best_candidate['organism_score'] == np.inf:
+        if best_candidate.get('Organism') == general_criteria['Organism']:
+            best_candidate['organism_score'] = 0
+        else:
+            tmp_df = pd.DataFrame([best_candidate])
+            taxonomy_score = closest_taxonomy(general_criteria, tmp_df).iloc[0]['organism_score']
+            best_candidate['organism_score'] = taxonomy_score
+
+    if best_candidate['id_perc'] == -1:
+        catalytic = kcat_dict.get('catalytic_enzyme')
+        catalytic_list = str(catalytic).split(";") if catalytic and pd.notna(catalytic) else []
+
+        if best_candidate.get('UniProtKB_AC') in catalytic_list:
+            best_candidate['id_perc'] = 100.0
+        else:
+            tmp_df = pd.DataFrame([best_candidate])
+            best_candidate['id_perc'] = closest_enz(kcat_dict, tmp_df).iloc[0]['id_perc']
+
     return best_score, best_candidate
 
 

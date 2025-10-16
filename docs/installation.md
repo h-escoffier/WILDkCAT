@@ -12,6 +12,7 @@ To ensure a clean and isolated setup, we recommend to use [uv](https://docs.astr
 === "Windows"
     ```powershell
     powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+    $env:Path += ";$env:USERPROFILE\.local\bin"
     ```
 
 Create and activate a virtual environment with uv:
@@ -77,7 +78,7 @@ BRENDA_PASSWORD=your_password
 ### 1. Install dependencies
 
 ```bash
-uv install pip install torch transformers numpy pandas RDKit
+uv pip install torch transformers numpy pandas RDKit
 ```
 
 ### 2. Clone the CataPro repository

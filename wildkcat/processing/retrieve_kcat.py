@@ -212,10 +212,8 @@ def run_retrieval(output_folder: str,
             kcat_df.loc[row.Index, 'kcat_ph'] = best_match['pH']
             kcat_df.loc[row.Index, 'kcat_variant'] = best_match['EnzymeVariant']
             kcat_df.loc[row.Index, 'kcat_db'] = best_match['db']
-            if best_match.get('id_perc') != -1:
-                kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
-            if best_match.get('organism_score') != np.inf:
-                kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
+            kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
+            kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
 
     # Select only one kcat value per reaction and substrate
     kcat_df = merge_ec(kcat_df)
@@ -228,7 +226,7 @@ def run_retrieval(output_folder: str,
         report_retrieval(kcat_df, output_folder)
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     # kcat_dict = {
     #     'ec_code': '1.1.1.1',
@@ -278,8 +276,3 @@ if __name__ == "__main__":
     # df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
     # # df = pd.read_csv("output/ecoli_kcat_brenda.tsv", sep='\t')
     # report_retrieval(df)
-
-    # Test: Drop duplicates 
-    kcat_df = pd.read_csv('output/kcat_retrieved.tsv', sep='\t')
-    test, dropped = merge_ec(kcat_df)
-    test.to_csv('test2.tsv', sep='\t', index=False)
