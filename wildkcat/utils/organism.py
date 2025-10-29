@@ -1,8 +1,10 @@
 import os
+import time
 import pandas as pd
 from Bio import Align, Entrez
 from dotenv import load_dotenv
 from functools import lru_cache
+from urllib.error import HTTPError, URLError
 
 from ..api.uniprot_api import convert_uniprot_to_sequence   
 
@@ -99,21 +101,35 @@ def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame:
             list: A list of scientific names representing the taxonomic lineage.
         """
         Entrez.email = os.getenv("ENTREZ_EMAIL")
-        handle = Entrez.esearch(db="taxonomy", term=species_name)
-        record = Entrez.read(handle)
-        if not record["IdList"]:
-            return []
-        tax_id = record["IdList"][0]
 
-        handle = Entrez.efetch(db="taxonomy", id=tax_id, retmode="xml")
-        records = Entrez.read(handle)
-        if not records:
-            return []
+        for attempt in range(1, 4): # Retry up to 3 times
+            try:
+                handle = Entrez.esearch(db="taxonomy", term=species_name)
+                record = Entrez.read(handle)
+                if not record["IdList"]:
+                    return []
+                tax_id = record["IdList"][0]
         
-        lineage = [taxon["ScientificName"] for taxon in records[0]["LineageEx"]]
-        lineage.append(records[0]["ScientificName"])  # include the species itself
-        return lineage
-    
+                handle = Entrez.efetch(db="taxonomy", id=tax_id, retmode="xml")
+                records = Entrez.read(handle)
+                if not records:
+                    return []
+        
+                lineage = [taxon["ScientificName"] for taxon in records[0]["LineageEx"]]
+                lineage.append(records[0]["ScientificName"])  # include the species itself
+                return lineage
+
+            except (HTTPError, URLError) as e:
+                if attempt < 3:
+                    sleep_time = 5
+                    time.sleep(sleep_time)
+                else:
+                    return []
+
+            except Exception as e:
+                print(f"[Error] Unexpected error for '{species_name}': {e}")
+                return []
+            
     @lru_cache(maxsize=None)
     def _calculate_taxonomy_score(ref_organism, target_organism): 
         """
@@ -140,7 +156,6 @@ def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame:
             else:
                 break
         return len(ref_lineage) - similarity
-
 
     ref_organism = general_criteria['Organism']
     api_output = api_output.copy()

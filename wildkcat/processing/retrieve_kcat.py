@@ -229,11 +229,11 @@ def run_retrieval(output_folder: str,
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     kcat_dict = {
-        'ec_code': '2.7.4.3',
-        'rxn_kegg': 'R00127',
-        'uniprot': 'P69441',
-        'catalytic_enzyme': 'P69441',
-        'substrates_name': 'ADP C10H12N5O10P2', 
+        'ec_code': '1.16.3.1',
+        'rxn_kegg': 'R00078',
+        'uniprot': 'P36649',
+        'catalytic_enzyme': 'P36649',
+        'substrates_name': 'Fe2+ mitochondria;H+;O2 O2', 
     }
 
     general_criteria ={

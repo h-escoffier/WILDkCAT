@@ -19,6 +19,7 @@ model/Human-GEM.xml
 model/yeast-GEM.xml 
 model/iML1515.xml 
 model/vibrio_natriegens.json 
+scripts/run_wildkcat_perso.py
 results
 warnings
 non_functional_approaches
