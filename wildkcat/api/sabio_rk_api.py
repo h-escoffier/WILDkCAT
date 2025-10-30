@@ -35,7 +35,49 @@ def get_turnover_number_sabio(ec_number) -> pd.DataFrame:
         return pd.DataFrame()  # Return empty DataFrame if no data found
 
     entryIDs = [int(x) for x in request.text.strip().split('\n')]
-    # Retrieve informations matching the entryIDs
+    df = query_sabio(entryIDs)
+
+    return df
+
+
+def get_enzyme_sabio(uniprot_id) -> pd.DataFrame:
+    """
+    Retrieve enzyme data from SABIO-RK for a given UniProtKB accession.
+
+    Parameters:
+        uniprot_id (str): UniProtKB accession.
+    """
+    base_url = 'https://sabiork.h-its.org/sabioRestWebServices/searchKineticLaws/entryIDs'
+    entryIDs = []
+
+    # -- Retrieve entryIDs --
+    query = {'format': 'txt', 'q': f'Parametertype:"kcat" AND UniProtKB_AC:"{uniprot_id}"'}
+
+    # Make GET request
+    request = requests.get(base_url, params=query)
+    request.raise_for_status()
+    if request.text == "no data found":
+        logging.warning('%s: No data found for the query in SABIO-RK.' % f"{uniprot_id}")
+        return pd.DataFrame()  # Return empty DataFrame if no data found
+
+    entryIDs = [int(x) for x in request.text.strip().split('\n')]
+    df = query_sabio(entryIDs)
+
+    return df
+
+
+def query_sabio(entryIDs) -> pd.DataFrame:
+    """
+    Retrieve SABIO-RK entries for given entry IDs.
+
+    Parameters:
+        entryIDs (list): List of SABIO-RK entry IDs.
+
+    Returns:
+        pd.DataFrame: DataFrame containing SABIO-RK entries.
+    """
+    parameters = 'https://sabiork.h-its.org/entry/exportToExcelCustomizable'
+
     data_field = {'entryIDs[]': entryIDs}
     # Possible fields to retrieve:
     # EntryID, Reaction, Buffer, ECNumber, CellularLocation, UniProtKB_AC, Tissue, Enzyme Variant, Enzymename, Organism
@@ -83,8 +125,9 @@ def get_turnover_number_sabio(ec_number) -> pd.DataFrame:
     df['db'] = 'sabio_rk'
     return df
 
-        
-# if __name__ == "__main__":
+if __name__ == "__main__":
     # Test : Send a request to SABIO-RK API
-    # df = get_turnover_number_sabio(ec_number="1.1.1.42")
-    # df.to_csv("in_progress/api_output_test/sabio_rk_test.tsv", sep='\t', index=False)
+    df = get_enzyme_sabio(uniprot_id="P0A830")
+    df = get_turnover_number_sabio(ec_number="1.1.1.1")
+    print(df)
+    df.to_csv("in_progress/sabio_rk_test.tsv", sep='\t', index=False)
