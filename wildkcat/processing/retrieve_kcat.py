@@ -9,8 +9,8 @@ from tqdm import tqdm
 from functools import lru_cache 
 import pandas as pd
 
-from ..api.sabio_rk_api import get_turnover_number_sabio
-from ..api.brenda_api import get_turnover_number_brenda
+from ..api.sabio_rk_api import get_turnover_number_sabio, get_enzyme_sabio
+from ..api.brenda_api import get_turnover_number_brenda, get_enzyme_brenda
 
 from ..utils.matching import find_best_match
 from ..utils.manage_warnings import DedupFilter
@@ -23,7 +23,7 @@ def get_turnover_number(ec_code, database='both'):
     Retrieves turnover number (kcat) data from specified enzyme databases and returns a merged DataFrame.
 
     Parameters: 
-        kcat_dict (dict): Dictionary containing enzyme information.
+        enzyme_uniprot (str): The UniProt ID of the enzyme.
         database (str, optional): Specifies which database(s) to query for kcat values. 
             Options are 'both' (default), 'brenda', or 'sabio_rk'.
 
@@ -58,6 +58,45 @@ def get_turnover_number(ec_code, database='both'):
     return df
 
 
+@lru_cache(maxsize=None)
+def get_enzyme(enzyme_uniprot, organism, database='both'):
+    """
+    Retrieves enzyme data from specified databases and returns a merged DataFrame.
+
+    Parameters: 
+        enzyme_uniprot (str): The UniProt ID of the enzyme.
+        database (str, optional): Specifies which database(s) to query for enzyme data. 
+            Options are 'both' (default), 'brenda', or 'sabio_rk'.
+
+    Returns: 
+        pd.DataFrame: A DataFrame containing kcat data from the selected database(s), with columns unified across sources.
+
+    Raises:
+        ValueError: If an invalid database option is provided.
+    """
+    df_brenda = pd.DataFrame()
+    df_sabio = pd.DataFrame()
+
+    if database in ('both', 'brenda'): 
+        df_brenda = get_enzyme_brenda(enzyme_uniprot, organism)
+    if database in ('both', 'sabio_rk'):
+        df_sabio = get_enzyme_sabio(enzyme_uniprot)
+        time.sleep(1)  
+    
+    # Get columns 
+    all_columns = set(df_brenda.columns).union(df_sabio.columns)
+
+    # Merge all outputs
+    df_brenda = df_brenda.reindex(columns=all_columns, fill_value=None)
+    df_sabio = df_sabio.reindex(columns=all_columns, fill_value=None)
+    non_empty_dfs = [df for df in [df_brenda, df_sabio] if not df.empty]
+    if non_empty_dfs:
+        df = pd.concat(non_empty_dfs, ignore_index=True)
+    else:
+        df = pd.DataFrame(columns=list(all_columns))
+    return df
+
+
 def extract_kcat(kcat_dict, general_criteria, database='both'): 
     """
     Extracts the best matching kcat value from a given set of criteria.
@@ -73,7 +112,11 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
             - best_candidate (dict or None): The best matching kcat entry, or None if no match is found.
             - best_score (int or float): The score of the best candidate, or 19 if no match is found in the database.
     """
-    api_output = get_turnover_number(kcat_dict['ec_code'], database)
+    if kcat_dict['ec_code'] == '' or kcat_dict['warning_ec'] in ['incomplete', 'transferred']:
+        api_output = get_enzyme(kcat_dict['catalytic_enzyme'], general_criteria['Organism'], database) 
+    else: 
+        api_output = get_turnover_number(kcat_dict['ec_code'], database)
+    
     if api_output.empty: 
         return None, 19
             
@@ -147,17 +190,8 @@ def run_retrieval(output_folder: str,
             Options are 'both' (default), 'brenda', or 'sabio_rk'.
         report (bool, optional): Whether to generate an HTML report using the retrieved data (default: True).        
     """
-
     # Load environment variables
     load_dotenv()
-
-    # Intitialize logging
-    os.makedirs("logs", exist_ok=True)
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"logs/retrieval_{timestamp}.log"
-    logging.getLogger().addFilter(DedupFilter())
-    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
-
 
     # Create a dict with the general criterias
     general_criteria = {
@@ -169,6 +203,13 @@ def run_retrieval(output_folder: str,
     # Read the kcat file
     if not os.path.exists(output_folder):
         raise FileNotFoundError(f"The specified output folder '{output_folder}' does not exist.")
+    
+    # Intitialize logging
+    os.makedirs(os.path.join(output_folder, "logs"), exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"logs/retrieval_{timestamp}.log"
+    logging.getLogger().addFilter(DedupFilter())
+    logging.basicConfig(filename=os.path.join(output_folder, filename), encoding='utf-8', level=logging.INFO)
     
     kcat_file_path = os.path.join(output_folder, "kcat.tsv")
     if not os.path.isfile(kcat_file_path):
@@ -234,6 +275,7 @@ if __name__ == "__main__":
         'uniprot': 'P36649',
         'catalytic_enzyme': 'P36649',
         'substrates_name': 'Fe2+ mitochondria;H+;O2 O2', 
+        'warning_ec': ''
     }
 
     general_criteria ={

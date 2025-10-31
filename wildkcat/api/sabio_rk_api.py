@@ -5,7 +5,6 @@ from io import StringIO
 from functools import lru_cache 
 
 
-
 # --- Sabio-RK API ---
 
 
@@ -21,7 +20,6 @@ def get_turnover_number_sabio(ec_number) -> pd.DataFrame:
         pd.DataFrame: DataFrame containing SABIO-RK entries for kcat.
     """
     base_url = 'https://sabiork.h-its.org/sabioRestWebServices/searchKineticLaws/entryIDs'
-    parameters = 'https://sabiork.h-its.org/entry/exportToExcelCustomizable'
     entryIDs = []
 
     # -- Retrieve entryIDs --
@@ -124,6 +122,7 @@ def query_sabio(entryIDs) -> pd.DataFrame:
     # Add a column for the db
     df['db'] = 'sabio_rk'
     return df
+
 
 if __name__ == "__main__":
     # Test : Send a request to SABIO-RK API

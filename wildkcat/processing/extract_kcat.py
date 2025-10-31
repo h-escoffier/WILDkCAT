@@ -124,30 +124,34 @@ def split_metabolites(metabolites):
 def create_kcat_output(model):
     """
     Generates a DataFrame summarizing kcat-related information for each reaction in a metabolic model.
-    For each reaction, the function extracts KEGG reaction IDs, EC codes, substrates, products, gene-protein-reaction (GPR) associations and UniProt IDs.
+    For each reaction, the function extracts KEGG reaction IDs, EC codes (if available), substrates, products, 
+    gene-protein-reaction (GPR) associations, and UniProt IDs. 
     It processes both forward and reverse directions for reversible reactions. 
-    The resulting DataFrame contains one row per unique combination of EC code, substrates, products (direction) and gene group.
+    The resulting DataFrame contains one row per unique combination of EC code, substrates, products (direction), and gene group.
 
     Parameters: 
-        model (cobra.Model) : A metabolic model. 
+        model (cobra.Model): A metabolic model.
 
     Returns:
-        df (pandas.DataFrame) : A DataFrame with columns including reaction ID, KEGG reaction ID, EC code, direction, substrate/product names and KEGG IDs, model genes, UniProt IDs, KEGG genes, and intersection genes.
-        report_statistics (dict) : A dictionary with statistics for the report, including the number of incomplete/incorrect EC codes and EC for which kcat values were transferred.
+        df (pandas.DataFrame): DataFrame with columns:
+            - rxn, rxn_kegg, ec_code, direction, substrates/products names & KEGG IDs, genes, uniprot, catalytic_enzyme, warning_ec, warning_enz
+        report_statistics (dict): A dictionary with statistics for the report, including the number of incomplete/incorrect EC codes and EC for which kcat values were transferred.
     """
     rows = []
-    set_incomplete_ec_codes, set_transferred_ec_codes = set(), set()
     ec_pattern = re.compile(r"^\d+\.\d+\.\d+\.\d+$")
-    
+
     for rxn in tqdm(model.reactions, desc=f"Processing {model.id} reactions"):
         kegg_rxn_id = rxn.annotation.get("kegg.reaction")
         if isinstance(kegg_rxn_id, list):
             kegg_rxn_id = ";".join(kegg_rxn_id)
+
         ec_codes = rxn.annotation.get("ec-code")
-        if not ec_codes:
-            continue
         if isinstance(ec_codes, str):
             ec_codes = [ec_codes]
+        elif not ec_codes:
+            ec_codes = [""]
+
+        # Extract substrates and products
         subs_names, subs_keggs, prod_names, prod_keggs = [], [], [], []
         for m, coeff in rxn.metabolites.items():
             name = m.name if m.name else m.id
@@ -160,26 +164,32 @@ def create_kcat_output(model):
             elif coeff > 0:
                 prod_names.append(name)
                 prod_keggs.append(kegg if kegg else "")
-        gpr_groups = parse_gpr(rxn.gene_reaction_rule)
-        for ec in ec_codes:
 
-            if not ec_pattern.match(ec):
-                if ec not in set_incomplete_ec_codes:
-                    set_incomplete_ec_codes.add(ec)
+        # Parse GPR
+        gpr_groups = parse_gpr(rxn.gene_reaction_rule)
+
+        for ec in ec_codes:
+            warning_ec = ""
+
+            # Check EC code validity (if present)
+            if ec:
+                if not ec_pattern.match(ec):
+                    warning_ec = "incomplete"
                     logging.warning(f"EC code {ec} is not in the correct format")
-                continue
-            
-            is_transferred = is_ec_code_transferred(ec)
-            if is_transferred or is_transferred == None:
-                if ec not in set_transferred_ec_codes:
-                    set_transferred_ec_codes.add(ec)
-                    # No continue to be able to identify the number of rxn, kcat dropped due to inconsistency
-            
+                    
+                if warning_ec != "incomplete":
+                    is_transferred = is_ec_code_transferred(ec)
+                    if is_transferred or is_transferred is None:
+                        warning_ec = "transferred"
+
+            # If no GPR 
             if not gpr_groups:
-                for direction, sn, sk, pn, pk in [
-                    ("forward", subs_names, subs_keggs, prod_names, prod_keggs),
-                    ("reverse", prod_names, prod_keggs, subs_names, subs_keggs)
-                ] if rxn.reversibility else [("forward", subs_names, subs_keggs, prod_names, prod_keggs)]:
+                for direction, sn, sk, pn, pk in (
+                    [("forward", subs_names, subs_keggs, prod_names, prod_keggs),
+                     ("reverse", prod_names, prod_keggs, subs_names, subs_keggs)]
+                    if rxn.reversibility else
+                    [("forward", subs_names, subs_keggs, prod_names, prod_keggs)]
+                ):
                     rows.append({
                         "rxn": rxn.id,
                         "rxn_kegg": kegg_rxn_id,
@@ -192,13 +202,18 @@ def create_kcat_output(model):
                         "genes": "",
                         "uniprot": "",
                         "catalytic_enzyme": "",
-                        "warning": ""
+                        "warning_ec": warning_ec,
+                        "warning_enz": "no_gpr"
                     })
                 continue
 
+            # Check GPR 
             for genes_group in gpr_groups:
+                warning_enz = ""
+
                 genes_group = [g.strip() for g in genes_group if g.strip()]
                 uniprot_ids = []
+
                 for gene in genes_group:
                     try:
                         uniprot = model.genes.get_by_id(gene).annotation.get("uniprot")
@@ -209,25 +224,27 @@ def create_kcat_output(model):
                                 uniprot_ids.append(uniprot)
                     except KeyError:
                         continue
+
                 uniprot_ids = list(set(uniprot_ids))
-                
+
                 # Identify catalytic enzyme
                 if len(uniprot_ids) > 1:
                     catalytic_enzyme = identify_catalytic_enzyme(";".join(uniprot_ids), ec)
-                else: 
-                    catalytic_enzyme = uniprot_ids[0] if uniprot_ids else None
+                else:
+                    catalytic_enzyme = uniprot_ids[0] if uniprot_ids else ""
 
-                # Warning 
-                warning = (
-                    "none" if catalytic_enzyme is None
-                    else "" if len(catalytic_enzyme.split(';')) == 1
-                    else "multiple"
-                )
+                # Enzyme-related warnings
+                if not catalytic_enzyme:
+                    warning_enz = "none"
+                elif ";" in catalytic_enzyme:
+                    warning_enz = "multiple"
 
-                for direction, sn, sk, pn, pk in [
-                    ("forward", subs_names, subs_keggs, prod_names, prod_keggs),
-                    ("reverse", prod_names, prod_keggs, subs_names, subs_keggs)
-                ] if rxn.reversibility else [("forward", subs_names, subs_keggs, prod_names, prod_keggs)]:
+                for direction, sn, sk, pn, pk in (
+                    [("forward", subs_names, subs_keggs, prod_names, prod_keggs),
+                     ("reverse", prod_names, prod_keggs, subs_names, subs_keggs)]
+                    if rxn.reversibility else
+                    [("forward", subs_names, subs_keggs, prod_names, prod_keggs)]
+                ):
                     rows.append({
                         "rxn": rxn.id,
                         "rxn_kegg": kegg_rxn_id,
@@ -239,29 +256,45 @@ def create_kcat_output(model):
                         "products_kegg": ";".join(pk),
                         "genes": ";".join(genes_group),
                         "uniprot": ";".join(uniprot_ids),
-                        "catalytic_enzyme": catalytic_enzyme, 
-                        "warning": warning
+                        "catalytic_enzyme": catalytic_enzyme,
+                        "warning_ec": warning_ec,
+                        "warning_enz": warning_enz
                     })
 
-    # Create output 
-    df = pd.DataFrame(rows).drop_duplicates(
-        subset=["ec_code", "genes", "substrates_name", "products_name", "direction"]
-    )
-
-    before_ec_filter = len(df)
-    before_nb_reactions = df['rxn'].nunique()
-    df = df[~df["ec_code"].isin(set_transferred_ec_codes)]
-    nb_lines_dropped = before_ec_filter - len(df)
-    nb_rxns_dropped = before_nb_reactions - df['rxn'].nunique()
-    
-    logging.info("Total of possible kcat values: %d", len(df))
+    # Build final df
+    df = pd.DataFrame(rows)
 
     report_statistics = {
-        "incomplete_ec_codes": len(set_incomplete_ec_codes),
-        "transferred_ec_codes": len(set_transferred_ec_codes),
-        "nb_of_reactions_due_to_unconsistent_ec": nb_rxns_dropped,
-        "nb_of_lines_dropped_due_to_unconsistent_ec": nb_lines_dropped
+        "nb_missing_ec": (df["ec_code"] == "").sum(),
+        "nb_incomplete_ec": (df["warning_ec"] == "incomplete").sum(),
+        "nb_transferred_ec": (df["warning_ec"] == "transferred").sum(),
+        "nb_missing_gpr": (df["warning_enz"] == "no_gpr").sum(),
+        "nb_missing_catalytic_enzyme": (df["warning_enz"] == "none").sum(),
+        "nb_multiple_catalytic_enzymes": (df["warning_enz"] == "multiple").sum()
     }
+
+    # Filtering
+    rows_before = len(df) - 1 
+    rxn_before = df['rxn'].nunique() - 1 
+
+    df = df[~((df["ec_code"] == "") & (df["catalytic_enzyme"] == ""))] # Remove rows without EC and without catalytic enzyme
+    df = df[~((df["ec_code"] == "") & (df["warning_enz"] == "none"))]
+
+    rows_exchange = len(df) - 1
+    rxn_exchange = df['rxn'].nunique() - 1
+    
+    # df = df[~df["warning_ec"].isin(["incomplete", "transferred"])] # Remove rows with incomplete or transferred EC codes
+    # df.drop(columns=["warning_ec"], inplace=True) # Remove the warning_ec column 
+
+    # rxn_after = df['rxn'].nunique() - 1
+
+    report_statistics.update({
+        "nb_of_lines_dropped_no_ec_no_enzyme": rows_before - rows_exchange,
+        "nb_of_reactions_dropped_no_ec_no_enzyme": rxn_before - rxn_exchange,
+        # "nb_of_reactions_dropped_incomplete_transferred_ec": rxn_exchange - rxn_after
+    })
+
+    logging.info("Total of possible kcat values: %d", len(df) - 1)
 
     return df, report_statistics
 
@@ -280,21 +313,26 @@ def run_extraction(model_path: str,
         output_folder (str): Path to the output folder where all the results will be saved.
         report (bool, optional): Whether to generate an HTML report (default: True).
     """
+    # Initialize output folder
+    os.makedirs(output_folder, exist_ok=True)
+
     # Intitialize logging
-    os.makedirs("logs", exist_ok=True)
+    os.makedirs(os.path.join(output_folder, "logs"), exist_ok=True)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"logs/extract_{timestamp}.log"
     logging.getLogger().addFilter(DedupFilter())
-    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
+    logging.basicConfig(filename=os.path.join(output_folder, filename), encoding='utf-8', level=logging.INFO)
     
     # Run extraction
     model = read_model(model_path)
     df, report_statistics = create_kcat_output(model)
 
     # Save output
-    os.makedirs(output_folder, exist_ok=True)
     output_path = os.path.join(output_folder, "kcat.tsv")
     df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
+
+    print(report_statistics)
+
     if report:
         report_extraction(model, df, report_statistics, output_folder)

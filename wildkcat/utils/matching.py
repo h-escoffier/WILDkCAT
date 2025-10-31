@@ -164,7 +164,7 @@ def check_catalytic_enzyme(candidate, kcat_dict):
         catalytic_enzymes = str(kcat_dict['catalytic_enzyme']).split(";")
         if candidate["UniProtKB_AC"] in catalytic_enzymes:
             return 0
-    return 2
+    return 3
 
 
 def check_organism(candidate, general_criteria): 
@@ -285,15 +285,15 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
         base_subs = model_subs or cand_subs
         if _any_intersection(entry_subs, base_subs):
             return 0
-        return 8
+        return 4
 
     elif api == "brenda":
         base_subs = model_subs or cand_subs
         if _any_intersection(entry_subs, base_subs):
             return 0
-        return 8
+        return 4
 
-    return 8
+    return 4
 
 
 # --- Scoring ---
@@ -305,17 +305,17 @@ def compute_score(kcat_dict, candidate, general_criteria, api_output):
     """
     score = 0
     # Check catalytic enzyme
-    score += check_catalytic_enzyme(candidate, kcat_dict)
+    score += check_catalytic_enzyme(candidate, kcat_dict) # + 0 or 3
     # Check organism
     if score != 0: 
-        score += check_organism(candidate, general_criteria)
+        score += check_organism(candidate, general_criteria) # + 0 or 2  
     # Check variant
-    score += check_variant(candidate) 
+    score += check_variant(candidate) # + 0, 1, or 2 
     # Check pH
-    score += check_pH(candidate, general_criteria)
+    score += check_pH(candidate, general_criteria) # + 0, 1 or 2
     # Check substrate 
-    score += check_substrate(candidate, kcat_dict)
+    score += check_substrate(candidate, kcat_dict) # + 0 or 4
     # Check temperature 
-    temperature_penalty, arrhenius = check_temperature(candidate, general_criteria, api_output) 
+    temperature_penalty, arrhenius = check_temperature(candidate, general_criteria, api_output) # + 0, 1 or 2
     score += temperature_penalty
     return score, arrhenius

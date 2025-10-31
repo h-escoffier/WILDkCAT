@@ -1,3 +1,4 @@
+from http import client
 import os 
 import logging
 import pandas as pd 
@@ -76,9 +77,8 @@ def get_turnover_number_brenda(ec_number) -> pd.DataFrame:
         ec_number (str): EC number (e.g., '1.1.1.1').
 
     Returns:
-        pd.DataFrame: A DataFrame containing turnover number entries.
+        df (pd.DataFrame): DataFrame containing both information from turnover number and organism entries.
     """
-
     email, hashed_password = get_brenda_credentials()
     client = create_brenda_client()
 
@@ -121,7 +121,7 @@ def get_turnover_number_brenda(ec_number) -> pd.DataFrame:
     if not data:
         logging.warning('%s: No data found for the query in BRENDA.' % f"{ec_number}")
         return pd.DataFrame()
-
+    
     # Remove None values (-999)
     data = [entry for entry in data if entry.get('turnoverNumber') is not None and entry.get('turnoverNumber') != '-999']
     if data == []:
@@ -131,43 +131,99 @@ def get_turnover_number_brenda(ec_number) -> pd.DataFrame:
     df = pd.DataFrame(data)
     df_org = pd.DataFrame(data_organism)
 
-    # Format the organism response
-    df_org.drop(columns=['commentary', 'textmining'], inplace=True, errors='ignore')
-    
-    # Merge on the literature column
-    df_org['literature'] = df_org['literature'].apply(lambda x: x[0] if isinstance(x, list) and len(x) > 0 else x)
-    df['literature'] = df['literature'].apply(lambda x: x[0] if isinstance(x, list) and len(x) > 0 else x)
-    df = pd.merge(df, df_org, on=['literature', 'organism'], how='left')
-    df.drop_duplicates(inplace=True)
+    # Format and merge the response
+    df_formatted = format_brenda_response(df, df_org, ec_number)
+    return df_formatted
 
-    # Rename columns for consistency with other APIs
-    df.rename(columns={
-        'turnoverNumber': 'value',
-        'sequenceCode' : 'UniProtKB_AC',
-        'substrate': 'Substrate',
-        'organism': 'Organism',
-        'ecNumber': 'ECNumber'}, inplace=True) 
 
-    # Extract pH from commentary
-    df["pH"] = df["commentary"].str.extract(r"pH\s*([\d\.]+)")
-    # Extract temperature from commentary
-    df["Temperature"] = df["commentary"].str.extract(r"([\d\.]+)\?C")
-    # Convert Temperature and pH to numeric, coercing errors to NaN
-    df['Temperature'] = pd.to_numeric(df['Temperature'], errors='coerce')
-    df['pH'] = pd.to_numeric(df['pH'], errors='coerce')
-    # Extract enzyme variant from commentary
-    df["EnzymeVariant"] = df["commentary"].apply(get_variant)
-    # Drop unnecessary columns
-    df.drop(columns=["literature", "turnoverNumberMaximum", "parameter.endValue", "commentary", "ligandStructureId"], inplace=True, errors='ignore')
+@lru_cache(maxsize=None)
+def get_enzyme_brenda(uniprot_id, organism) -> pd.DataFrame:
+    """
+    Queries the BRENDA SOAP API to retrieve turnover number values for a Uniprot enzyme.
+
+    Parameters:
+        uniprot_id (str): UniProt ID of the enzyme (e.g., 'P12345').
+        organism (str): Name of the organism.
+
+    Returns:
+        df (pd.DataFrame): DataFrame containing both information from turnover number and organism entries.
+    """
+
+    email, hashed_password = get_brenda_credentials()
+    client = create_brenda_client()
+
+    # Define the parameters for the SOAP request
+    parameters = [
+        email,
+        hashed_password,
+        "ecNumber*",
+        f"organism*{organism}",
+        f"sequenceCode*{uniprot_id}",
+        "commentary*", 
+        "literature*",
+        "textmining*"
+    ]
     
-    # Remove the cofactor from the output 
-    cofactor = get_cofactor(ec_number)
-    # Drop the lines where the cofactor is not define
-    df = df[~df['Substrate'].isin(cofactor)]   
-    # Drop duplicates
-    df.drop_duplicates(inplace=True)
-    # Add a column for the db 
-    df['db'] = 'brenda' 
+    result = client.service.getOrganism(*parameters)
+    
+    data = serialize_object(result)
+
+    if not data:
+        logging.warning('%s: No data found for the query in BRENDA.' % f"{uniprot_id}")
+        return pd.DataFrame()
+    
+    df_enz = pd.DataFrame(data)
+    df_org = get_kcat_from_organism(organism)
+
+    df = format_brenda_response(df_org, df_enz)
+
+    if df.empty:
+        logging.warning('%s: No valid data found for the query in BRENDA.' % f"{uniprot_id}")
+        return pd.DataFrame()
+    
+    return df
+
+
+@lru_cache(maxsize=None)
+def get_kcat_from_organism(organism) -> pd.DataFrame:
+    """
+    Queries the BRENDA SOAP API to retrieve organism information.
+
+    Parameters:
+        organism (str): Name of the organism.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing organism information.
+    """
+    email, hashed_password = get_brenda_credentials()
+    client = create_brenda_client()
+
+    parameters = [
+        email,
+        hashed_password,
+        "ecNumber*",
+        "turnoverNumber*", 
+        "turnoverNumberMaximum*", 
+        "substrate*", 
+        "commentary*", 
+        f"organism*{organism}", 
+        "ligandStructureId*", 
+        "literature*"
+    ]
+
+    result = client.service.getTurnoverNumber(*parameters)
+    data = serialize_object(result)
+
+    if not data:
+        raise ValueError(f"The specified organism {organism} does not exist in the BRENDA database. Please verify the organism name.")
+    
+    # Remove None values (-999)
+    data = [entry for entry in data if entry.get('turnoverNumber') is not None and entry.get('turnoverNumber') != '-999']
+    if data == []:
+        raise ValueError(f"The specified organism {organism} does not exist in the BRENDA database. Please verify the organism name.")
+
+    df = pd.DataFrame(data)
+    
     return df
 
 
@@ -226,11 +282,69 @@ def get_cofactor(ec_number) -> pd.DataFrame:
     return cofactor
 
 
-# if __name__ == "__main__":
+def format_brenda_response(df, df_org, ec_number=None) -> pd.DataFrame:
+    """
+    Merge and formats the BRENDA API response DataFrame.
+
+    Parameters:
+        df (pd.DataFrame): DataFrame containing turnover number entries.
+        df_org (pd.DataFrame): DataFrame containing organism entries.
+        ec_number (str, optional): EC number for cofactor retrieval.
+
+    Returns:
+        df (pd.DataFrame): DataFrame containing both information from turnover number and organism entries.
+    """
+    # Format the organism response
+    df_org.drop(columns=['commentary', 'textmining'], inplace=True, errors='ignore')
+    
+    # Merge on the literature column TODO: Check if this can be improved 
+    df_org['literature'] = df_org['literature'].apply(lambda x: x[0] if isinstance(x, list) and len(x) > 0 else x)
+    df['literature'] = df['literature'].apply(lambda x: x[0] if isinstance(x, list) and len(x) > 0 else x)
+    df = pd.merge(df, df_org, on=['literature', 'organism'], how='inner')
+    df.drop_duplicates(inplace=True)
+
+    # Rename columns for consistency with other APIs
+    df.rename(columns={
+        'turnoverNumber': 'value',
+        'sequenceCode' : 'UniProtKB_AC',
+        'substrate': 'Substrate',
+        'organism': 'Organism',
+        'ecNumber': 'ECNumber'}, inplace=True) 
+
+    # Extract pH from commentary
+    df["pH"] = df["commentary"].str.extract(r"pH\s*([\d\.]+)")
+    # Extract temperature from commentary
+    df["Temperature"] = df["commentary"].str.extract(r"([\d\.]+)\?C")
+    # Convert Temperature and pH to numeric, coercing errors to NaN
+    df['Temperature'] = pd.to_numeric(df['Temperature'], errors='coerce')
+    df['pH'] = pd.to_numeric(df['pH'], errors='coerce')
+    # Extract enzyme variant from commentary
+    df["EnzymeVariant"] = df["commentary"].apply(get_variant)
+    # Drop unnecessary columns
+    df.drop(columns=["literature", "turnoverNumberMaximum", "parameter.endValue", "commentary", "ligandStructureId"], inplace=True, errors='ignore')
+    
+    if ec_number is not None:
+        # Remove the cofactor from the output 
+        cofactor = get_cofactor(ec_number)
+        # Drop the lines where the substrate is a cofactor
+        df = df[~df['Substrate'].isin(cofactor)]   
+    
+    # Drop duplicates
+    df.drop_duplicates(inplace=True)
+    # Add a column for the db 
+    df['db'] = 'brenda' 
+    return df
+
+
+if __name__ == "__main__":
     # Test : Send a request to BRENDA API
-    # df = get_turnover_number_brenda(ec_number="2.5.1.3")
-    # df.to_csv("in_progress/api_output_test/brenda_test.tsv", sep='\t', index=False)
+    df = get_turnover_number_brenda(ec_number="1.1.1.1")
+    # print(df.head())
+    # print(df.columns)
+
+    # df = get_enzyme_brenda(uniprot_id="P07003", organism="Escherichia coli")
+    df.to_csv("in_progress/brenda_test.tsv", sep='\t', index=False)
 
     # Test : Identify cofactor
     # df = get_cofactor("1.1.1.42")
-    # df.to_csv("in_progress/api_output_test/brenda_cofactor.tsv", sep='\t', index=False)
+    # df.to_csv("in_progress/brenda_cofactor.tsv", sep='\t', index=False)
