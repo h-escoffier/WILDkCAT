@@ -11,6 +11,9 @@ from matplotlib.ticker import LogFormatter
 from io import BytesIO
 
 
+# TODO: In the stats, I generally do a -1 to remove the header line from counts. Is there a better way to handle this?
+
+
 def report_extraction(model, df, report_statistics, output_folder, shader=False) -> None:
     """
     Generates a detailed HTML report summarizing kcat extraction results from a metabolic model.
@@ -29,10 +32,13 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
     nb_model_reactions = len(model.reactions)
     nb_model_metabolites = len(model.metabolites)
     nb_model_genes = len(model.genes)
+    rxn_with_ec = 0
     unique_ec_codes = []
+
     for rxn in model.reactions:
         ec_code = rxn.annotation.get('ec-code')
         if ec_code:
+            rxn_with_ec += 1
             if isinstance(ec_code, str):
                 ec_code = [ec_code.strip()]
             elif isinstance(ec_code, list):
@@ -40,26 +46,33 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
             else:
                 ec_code = []
             unique_ec_codes.extend(ec_code)
+    
     nb_model_ec_codes = len(set(unique_ec_codes))
 
     # Kcat statistics
-    nb_reactions = df['rxn'].nunique()
-    nb_ec_codes = df['ec_code'].nunique()
+    nb_reactions = df['rxn'].nunique() - 1 # Remove header line
+    nb_ec_codes = df.loc[df["warning_ec"].fillna("") == "", "ec_code"].nunique() - 1 # Remove header line
 
-    nb_ec_codes_transferred = report_statistics.get('transferred_ec_codes', 0)
-    nb_ec_codes_incomplete = report_statistics.get('incomplete_ec_codes', 0)
-    nb_reactions_dropped = report_statistics.get('nb_of_reactions_due_to_unconsistent_ec', 0)
-    nb_lines_dropped = report_statistics.get('nb_of_lines_dropped_due_to_unconsistent_ec', 0)
+
+    # nb_missing_ec = report_statistics.get('nb_missing_ec', np.nan)
+    nb_incomplete_ec = report_statistics.get('nb_incomplete_ec', np.nan)
+    nb_transferred_ec = report_statistics.get('nb_transferred_ec', np.nan)
+    nb_missing_gpr = report_statistics.get('nb_missing_gpr', np.nan)
+    nb_missing_catalytic_enzyme = report_statistics.get('nb_missing_catalytic_enzyme', 0)
+    # nb_multiple_catalytic_enzymes = report_statistics.get('nb_multiple_catalytic_enzymes', np.nan)
+    nb_of_lines_dropped_no_ec_no_enzyme = report_statistics.get('nb_of_lines_dropped_no_ec_no_enzyme', np.nan)
+    nb_of_reactions_dropped_no_ec_no_enzyme = report_statistics.get('nb_of_reactions_dropped_no_ec_no_enzyme', np.nan)
 
     rxn_coverage = 100.0 * nb_reactions / nb_model_reactions if nb_model_reactions else 0
+    # percent_ec_retrieved = 100.0 * nb_ec_codes / nb_model_ec_codes if nb_model_ec_codes else 0
 
-    percent_ec_retrieved = 100.0 * nb_ec_codes / nb_model_ec_codes if nb_model_ec_codes else 0
+    rxn_ec_coverage = 100.0 * rxn_with_ec / nb_model_reactions if nb_model_ec_codes else 0
 
     # Pie Chart
     pie_data = {
         "Retrieved": nb_ec_codes,
-        "Transferred": nb_ec_codes_transferred,
-        "Incomplete": nb_ec_codes_incomplete,
+        "Transferred": nb_transferred_ec, 
+        "Incomplete": nb_incomplete_ec,
     }
 
     pie_data = {k: v for k, v in pie_data.items() if v > 0}
@@ -134,7 +147,7 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
                         <th>Visualization</th>
                     </tr>
                     <tr>
-                        <td>Reactions with EC info</td>
+                        <td>Reaction with k<sub>cat</sub> information</td>
                         <td>{nb_reactions} ({rxn_coverage:.1f}%)</td>
                         <td>
                             <div class="progress">
@@ -143,16 +156,16 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
                         </td>
                     </tr>
                     <tr>
-                        <td>EC codes retrieved in KEGG</td>
-                        <td>{nb_ec_codes} ({percent_ec_retrieved:.1f}%)</td>
+                        <td>Reactions with EC information</td>
+                        <td>{rxn_with_ec} ({rxn_ec_coverage:.1f}%)</td>
                         <td>
                             <div class="progress">
-                                <div class="progress-bar-table" style="width:{percent_ec_retrieved}%;"></div>
+                                <div class="progress-bar-table" style="width:{rxn_ec_coverage}%;"></div>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Total rows in output (Rxn - EC - Enzyme - Substrate)</td>
+                        <td>Total k<sub>cat</sub> in output</td>
                         <td>{len(df) - 1}</td>
                         <td>-</td>
                     </tr>
@@ -161,7 +174,27 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
 
             <!-- EC Issues Table -->
             <div class="card">
-                <h2>Issues in EC Assignment</h2>
+                <h2>Quality Control</h2>
+
+                <p style="text-align: justify">
+                    During the extraction process, several issues may arise that can impact the 
+                    quality of the retrieved k<sub>cat</sub> data.
+                    <br>
+                    When an EC number is incomplete or has been transferred, WILDkCAT performs the 
+                    retrieval based only on the available enzyme information. Such cases are indicated as 
+                    'incomplete' or 'transferred' in the 'warning_ec' column. 
+                    These situations reduce the likelihood of finding alternative k<sub>cat</sub> values.
+                    <br>
+                    Additionally, WILDkCAT attempts to identify the catalytic enzyme associated with 
+                    each reaction. If no Gene–Protein–Reaction rule is available, or if the catalytic 
+                    enzyme cannot be found via the UniProt API, the entry is labeled as 
+                    'none' in the 'warning_enz' column.
+                    <br>
+                    If both the EC number and the catalytic enzyme information are missing for a given 
+                    reaction, the corresponding row is removed due to insufficient information to assign 
+                    a k<sub>cat</sub> value.
+                </p>
+
                 <table>
                     <tr>
                         <th>Cases</th>
@@ -169,19 +202,23 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
                     </tr>
                     <tr>
                         <td>Transferred EC codes</td>
-                        <td>{nb_ec_codes_transferred}</td>
+                        <td>{nb_transferred_ec}</td>
                     </tr>
                     <tr>
                         <td>Incomplete EC codes</td>
-                        <td>{nb_ec_codes_incomplete}</td>
+                        <td>{nb_incomplete_ec}</td>
                     </tr>
                     <tr>
-                        <td>Number of reactions dropped due to inconsistent EC codes</td>
-                        <td>{nb_reactions_dropped}</td>
+                        <td>Number of reactions without catalytic enzyme</td>
+                        <td>{nb_missing_gpr + nb_missing_catalytic_enzyme}</td>
                     </tr>
                     <tr>
-                        <td>Number of k<sub>cat</sub> values dropped due to inconsistent EC codes</td>
-                        <td>{nb_lines_dropped}</td>
+                        <td>Number of reactions dropped due to inconsistent or absent EC codes and enzymes</td>
+                        <td>{nb_of_reactions_dropped_no_ec_no_enzyme}</td>
+                    </tr>
+                    <tr>
+                        <td>Number of k<sub>cat</sub> values dropped due to inconsistent or absent EC codes and enzymes</td>
+                        <td>{nb_of_lines_dropped_no_ec_no_enzyme}</td>
                     </tr>
                 </table>
             </div>
@@ -906,6 +943,9 @@ def report_style():
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+            line-height: 1.7;
+            padding: 2rem 1.5rem;
             background-color: #f4f6f9;
             margin: 0;
             padding: 0;
@@ -955,6 +995,9 @@ def report_style():
             margin: 8px 0 0;
             font-size: 1.1rem;
             text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+        }
+        p {
+            margin-bottom: 1.2rem;
         }
         .container {
             max-width: 1100px;
