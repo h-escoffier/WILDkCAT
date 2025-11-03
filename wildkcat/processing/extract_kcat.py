@@ -181,7 +181,9 @@ def create_kcat_output(model):
                     is_transferred = is_ec_code_transferred(ec)
                     if is_transferred or is_transferred is None:
                         warning_ec = "transferred"
-
+            else:
+                warning_ec = "missing"
+                
             # If no GPR 
             if not gpr_groups:
                 for direction, sn, sk, pn, pk in (
@@ -281,6 +283,12 @@ def create_kcat_output(model):
     df = df[~((df["ec_code"] == "") & (df["catalytic_enzyme"] == ""))]
     df = df[~((df["ec_code"] == "") & (df["warning_enz"] == "none"))] 
 
+    # Remove rows with incorrect EC codes (transferred or incomplete) and without catalytic enzyme
+    df = df[~((df["warning_ec"] == "transferred") & (df["warning_enz"] == "none"))]
+    df = df[~((df["warning_ec"] == "transferred") & (df["warning_enz"] == "no_gpr"))]
+    df = df[~((df["warning_ec"] == "incomplete") & (df["warning_enz"] == "none"))]
+    df = df[~((df["warning_ec"] == "incomplete") & (df["warning_enz"] == "no_gpr"))]    
+
     rows_exchange = len(df) - 1
     rxn_exchange = df['rxn'].nunique() - 1
     
@@ -328,8 +336,6 @@ def run_extraction(model_path: str,
     df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
 
-    print(report_statistics)
-
     if report:
         report_extraction(model, df, report_statistics, output_folder)
 
@@ -337,8 +343,8 @@ def run_extraction(model_path: str,
 import numpy as np
 
 
-if __name__ == "__main__":
-    report_extraction(read_model('model/e_coli_core.json'), 
-                      pd.read_csv('in_progress/ecoli_v2/kcat.tsv', sep='\t'), 
-                      {'nb_missing_ec': 44, 'nb_incomplete_ec': 1, 'nb_transferred_ec': 63, 'nb_missing_gpr': 26, 'nb_missing_catalytic_enzyme': np.int64(32), 'nb_multiple_catalytic_enzymes': np.int64(3), 'nb_of_lines_dropped_no_ec_no_enzyme': 53, 'nb_of_reactions_dropped_no_ec_no_enzyme': 33}, 
-                      'in_progress/ecoli_v2')
+# if __name__ == "__main__":
+#     report_extraction(read_model('model/e_coli_core.json'), 
+#                       pd.read_csv('in_progress/ecoli_v2/kcat.tsv', sep='\t'), 
+#                       {'nb_missing_ec': 44, 'nb_incomplete_ec': 1, 'nb_transferred_ec': 63, 'nb_missing_gpr': 26, 'nb_missing_catalytic_enzyme': np.int64(32), 'nb_multiple_catalytic_enzymes': np.int64(3), 'nb_of_lines_dropped_no_ec_no_enzyme': 53, 'nb_of_reactions_dropped_no_ec_no_enzyme': 33}, 
+#                       'in_progress/ecoli_v2')

@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
-from matplotlib.ticker import LogFormatter
+from matplotlib.ticker import LogFormatter, MaxNLocator
 from io import BytesIO
 
 
@@ -166,7 +166,7 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
                     </tr>
                     <tr>
                         <td>Total k<sub>cat</sub> in output</td>
-                        <td>{len(df) - 1}</td>
+                        <td>{len(df)}</td>
                         <td>-</td>
                     </tr>
                 </table>
@@ -268,13 +268,12 @@ def report_retrieval(df, output_folder,shader=False) -> None:
     # Only use scores present in the data
     present_scores = sorted(df['matching_score'].dropna().unique())
     score_counts = df['matching_score'].value_counts().reindex(present_scores, fill_value=0)
-    total = len(df) - 1
-    matched = len(kcat_values) - 1
+    total = len(df)
+    matched = len(kcat_values)
     match_percent = matched / total * 100 if total else 0
     score_percent = (score_counts / total * 100).round(2) if total else pd.Series(0, index=present_scores)
 
-    # Distinct colors for each score (up to 12, then cycle)
-    # Gradient colors from green (best score) to red (worst score)
+    # Gradient colors from green (best score) to red (worst score) # TODO: It could be better to create the scale dynamically based on present scores
     distinct_colors = [
         "#27ae60",
         "#43b76e",
@@ -283,6 +282,7 @@ def report_retrieval(df, output_folder,shader=False) -> None:
         "#98d298",
         "#b5dbb6",
         "#d1e4c4",
+        "#e8e9b9",
         "#f1e9b6",
         "#f7d97c",
         "#f9c74f",
@@ -290,9 +290,9 @@ def report_retrieval(df, output_folder,shader=False) -> None:
         "#f3722c",
         "#e67e22",
         "#e74c3c",
+        "#d35400",
         "#c0392b",
         "#a93226",
-        "#922b21",
         "#7b241c"
     ]
 
@@ -309,24 +309,52 @@ def report_retrieval(df, output_folder,shader=False) -> None:
         max_exp = int(np.ceil(np.log10(kcat_values.max())))
         bins = np.logspace(min_exp, max_exp, num=40)
 
-        fig, ax = plt.subplots(figsize=(10, 6))
+        # Rm empty score groups (16 - 17)
+        hist_data = []
+        valid_scores = []
+        for score in present_scores:
+            vals = pd.to_numeric(df[df['matching_score'] == score]['kcat'], errors='coerce')
+            vals = vals[vals.notna()]
+            if not vals.empty:
+                hist_data.append(vals)
+                valid_scores.append(score)
+
+        fig, ax = plt.subplots(figsize=(12, 6))
         
         # Stacked histogram by score
-        
-        hist_data = [pd.to_numeric(df[df['matching_score'] == score]['kcat'], errors='coerce').dropna() for score in present_scores]
         ax.hist(hist_data, bins=bins, stacked=True, 
-                color=[score_color(s) for s in present_scores], label=[f"Score {s}" for s in present_scores], edgecolor='white')
+                color=[score_color(s) for s in valid_scores],
+                label=[f"Score {s}" for s in valid_scores],
+                edgecolor='white')
         
         ax.set_xscale('log')
         ax.set_xlim([10**min_exp / 1.5, 10**max_exp * 1.5])
         ax.xaxis.set_major_formatter(LogFormatter(10))
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
         ax.set_xlabel("kcat (s⁻¹)", fontsize=12)
         ax.set_ylabel("Count", fontsize=12)
         ax.set_title(f"", fontsize=13)
-        ax.legend(title="Matching Score", fontsize=12)
         
-        plt.tight_layout()
+        ax.legend(
+            title="Matching Score", 
+            fontsize=10, 
+            title_fontsize=11,
+            loc='center left', 
+            bbox_to_anchor=(1, 0.5),
+            frameon=False
+        )
+        
+        # Style
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_color('#444444')
+        ax.spines['bottom'].set_color('#444444')
+
+        ax.grid(True, which='major', axis='y', linestyle='--', linewidth=0.6, alpha=0.4)
+        ax.grid(False, which='major', axis='x') 
+
+        plt.tight_layout(rect=[0, 0, 0.85, 1])
         buf = io.BytesIO()
         plt.savefig(buf, format='png', bbox_inches='tight')
         plt.close(fig)
@@ -424,7 +452,7 @@ def report_retrieval(df, output_folder,shader=False) -> None:
                 <h2>Matching Score</h2>
                 <p>
                     The matching score evaluates how well a candidate k<sub>cat</sub> entry fits the query enzyme and conditions. 
-                    A lower score indicates a better match (0 = best possible, 15 = no match).
+                    A lower score indicates a better match (0 = Best possible, 17 = No match).
                 </p>
                 <h3>Scoring process:</h3>
                 <ul>
@@ -437,7 +465,7 @@ def report_retrieval(df, output_folder,shader=False) -> None:
                         if possible, adjust kcat values using the Arrhenius equation.</li>
                 </ul>
 
-                <h3>Score breakdown (default penalties):</h3>
+                <h3>Score breakdown:</h3>
                 <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; text-align: left;">
                     <tr>
                         <th>Criterion</th>
@@ -445,11 +473,11 @@ def report_retrieval(df, output_folder,shader=False) -> None:
                     </tr>
                     <tr>
                         <td>Substrate mismatch</td>
-                        <td>+3</td>
+                        <td>+4</td>
                     </tr>
                     <tr>
                         <td>Catalytic enzyme mismatch</td>
-                        <td>+2</td>
+                        <td>+3</td>
                     </tr>
                     <tr>
                         <td>Organism mismatch</td>
@@ -480,15 +508,24 @@ def report_retrieval(df, output_folder,shader=False) -> None:
                 <p>
                     Candidates are then ranked by:
                     <ol>
-                        <li>Lowest total score</li>
+                        <li>Lowest penalty-score</li>
                         <li>Highest sequence identity percentage to the target enzyme</li>
                         <li>Closest organism compared to the target organism.</li>
                         <li>Adjusted k<sub>cat</sub> value (favoring the highest value by default)</li>
                     </ol>
+
+                <i>Please check the <a href="https://h-escoffier.github.io/WILDkCAT/explanation/explanation/#2-retrieve-experimental-kcat-values-from-brenda-andor-sabio-rk" target="_blank" rel="noopener noreferrer">documentation</a> for more details on the scoring system and the retrieval process.</i>
                 </p>
-                <p>
-                    The best candidate is the one with the lowest score after these checks. 
-                    If multiple candidates tie on score, sequence identity (or organism if sequence is not available) and k<sub>cat</sub> values break the tie.
+            </div>
+            
+            <div class="card">
+                <h2>Notes</h2>
+                <p style="text-align: justify">
+                    Please note that the number of rows may differ between the extraction and retrieval stages. 
+                    Indeed, when a single reaction–enzyme combination is associated with multiple EC numbers, WILDkCAT 
+                    automatically merges these rows after retrieval, keeping only the best entry according to the criteria 
+                    described above. The EC number of the selected kcat is stored in the 'ec_code' column, while all EC 
+                    numbers associated with the reaction are stored in the 'ec_codes' column.
                 </p>
             </div>
         </div>

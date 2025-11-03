@@ -110,7 +110,7 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     Returns:
         tuple: 
             - best_candidate (dict or None): The best matching kcat entry, or None if no match is found.
-            - best_score (int or float): The score of the best candidate, or 19 if no match is found in the database.
+            - best_score (int or float): The score of the best candidate, or 17 if no match is found in the database.
     """
     if kcat_dict['ec_code'] == '' or kcat_dict['warning_ec'] in ['incomplete', 'transferred']:
         api_output = get_enzyme(kcat_dict['catalytic_enzyme'], general_criteria['Organism'], database) 
@@ -118,7 +118,7 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
         api_output = get_turnover_number(kcat_dict['ec_code'], database)
     
     if api_output.empty: 
-        return None, 19
+        return None, 17
             
     best_score, best_candidate = find_best_match(kcat_dict, api_output, general_criteria)
     return best_candidate, best_score
@@ -146,9 +146,20 @@ def merge_ec(kcat_df: pd.DataFrame):
         ascending=[True, False, True, False]
     )
 
+    # Handle missing ec
+    kcat_df['ec_code'] = kcat_df['ec_code'].fillna('').astype(str)
+
+    def merge_ec_codes(x):
+        ec_list = [ec for ec in x if ec and ec.lower() != 'nan']
+        return ';'.join(sorted(set(ec_list))) if ec_list else 'NA'
+    
     # Merge EC numbers for each reaction-substrate pair
-    ec_merged = kcat_df.groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])['ec_code'] \
-                       .apply(lambda x: ';'.join(sorted(set(x)))).rename('ec_codes')
+    ec_merged = (
+        kcat_df
+        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])['ec_code']
+        .apply(merge_ec_codes)
+        .rename('ec_codes')
+    )
 
 
     best_entries = kcat_df_sorted.groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], as_index=False).first()
@@ -161,7 +172,7 @@ def merge_ec(kcat_df: pd.DataFrame):
         [
             'rxn', 'rxn_kegg', 'ec_code', 'ec_codes', 'direction',
             'substrates_name', 'substrates_kegg', 'products_name', 'products_kegg',
-            'genes', 'uniprot', 'catalytic_enzyme', 'warning',
+            'genes', 'uniprot', 'catalytic_enzyme', 'warning_ec', 'warning_enz',
             'kcat', 'matching_score', 'kcat_substrate', 'kcat_organism', 'kcat_enzyme',
             'kcat_temperature', 'kcat_ph', 'kcat_variant', 'kcat_db',
             'kcat_id_percent', 'kcat_organism_score'
@@ -268,24 +279,24 @@ def run_retrieval(output_folder: str,
 
 
 if __name__ == "__main__":
-    # Test : Send a request for a specific EC number
-    kcat_dict = {
-        'ec_code': '1.16.3.1',
-        'rxn_kegg': 'R00078',
-        'uniprot': 'P36649',
-        'catalytic_enzyme': 'P36649',
-        'substrates_name': 'Fe2+ mitochondria;H+;O2 O2', 
-        'warning_ec': ''
-    }
+    # # Test : Send a request for a specific EC number
+    # kcat_dict = {
+    #     'ec_code': '1.16.3.1',
+    #     'rxn_kegg': 'R00078',
+    #     'uniprot': 'P36649',
+    #     'catalytic_enzyme': 'P36649',
+    #     'substrates_name': 'Fe2+ mitochondria;H+;O2 O2', 
+    #     'warning_ec': ''
+    # }
 
-    general_criteria ={
-        'Organism': 'Escherichia coli', 
-        'Temperature': (20, 40), 
-        'pH': (6.5, 7.5)
-    }
+    # general_criteria ={
+    #     'Organism': 'Escherichia coli', 
+    #     'Temperature': (20, 40), 
+    #     'pH': (6.5, 7.5)
+    # }
 
-    output = extract_kcat(kcat_dict, general_criteria, database='both')
-    print(output)
+    # output = extract_kcat(kcat_dict, general_criteria, database='both')
+    # print(output)
 
     # Test : Run the retrieve function
 
@@ -316,5 +327,5 @@ if __name__ == "__main__":
 
     # Test : Generate report
     # df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
-    # # df = pd.read_csv("output/ecoli_kcat_brenda.tsv", sep='\t')
-    # report_retrieval(df)
+    df = pd.read_csv("in_progress/ecoli_v3/kcat_retrieved.tsv", sep='\t')
+    report_retrieval(df, output_folder="in_progress/ecoli_v3")
