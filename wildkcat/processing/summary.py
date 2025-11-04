@@ -20,12 +20,19 @@ def generate_summary_report(model_path: str,
     if not os.path.exists(output_folder):
         raise FileNotFoundError(f"The specified output folder '{output_folder}' does not exist.")
     
-    kcat_file_path = os.path.join(output_folder, "kcat_full.tsv")
-    if not os.path.isfile(kcat_file_path):
-        raise FileNotFoundError(f"The specified file '{kcat_file_path}' does not exist in the output folder. Please run the full pipeline.")
-    kcat_df = pd.read_csv(kcat_file_path, sep='\t')
-    model = read_model(model_path)
-    report_final(model, kcat_df, output_folder)
+    kcat_full_file_path = os.path.join(output_folder, "kcat_full.tsv")
+    kcat_retrieve_file_path = os.path.join(output_folder, "kcat_retrieved.tsv")
+    if os.path.isfile(kcat_full_file_path):
+        kcat_df = pd.read_csv(kcat_full_file_path, sep='\t')
+        model = read_model(model_path)
+        report_final(model, kcat_df, output_folder)
+    elif os.path.isfile(kcat_retrieve_file_path):
+        logging.warning(f"The file 'kcat_full.tsv' is not present in the folder '{output_folder}' the general report will be done without predicted values.")
+        model = read_model(model_path)
+        kcat_df = pd.read_csv(kcat_retrieve_file_path, sep='\t')
+        report_final(model, kcat_df, output_folder)
+    else: 
+        raise FileNotFoundError(f"The specified folder '{output_folder}' does not contain the files: 'kcat_full.tsv', 'kcat_retrieve.tsv'. Please run at least the extraction step.")
 
 
 if __name__ == "__main__":

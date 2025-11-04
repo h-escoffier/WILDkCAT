@@ -340,9 +340,6 @@ def run_extraction(model_path: str,
         report_extraction(model, df, report_statistics, output_folder)
 
 
-import numpy as np
-
-
 # if __name__ == "__main__":
 #     report_extraction(read_model('model/e_coli_core.json'), 
 #                       pd.read_csv('in_progress/ecoli_v2/kcat.tsv', sep='\t'), 

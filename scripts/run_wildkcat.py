@@ -17,13 +17,14 @@ if __name__ == "__main__":
         database="both"
     ) 
 
-    # Prediction Part 1
+    # Prediction (OPTIONAL)
+    ## Prediction Part 1
     run_prediction_part1(
         output_folder="output",
         limit_matching_score=6
     )
 
-    # Prediction Part 2
+    ## Prediction Part 2
     run_prediction_part2(
         output_folder="output", 
         catapro_predictions_path="output/machine_learning/catapro_output.csv", 

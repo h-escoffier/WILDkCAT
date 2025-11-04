@@ -173,11 +173,14 @@ def merge_ec(kcat_df: pd.DataFrame):
             'rxn', 'rxn_kegg', 'ec_code', 'ec_codes', 'direction',
             'substrates_name', 'substrates_kegg', 'products_name', 'products_kegg',
             'genes', 'uniprot', 'catalytic_enzyme', 'warning_ec', 'warning_enz',
-            'kcat', 'matching_score', 'kcat_substrate', 'kcat_organism', 'kcat_enzyme',
-            'kcat_temperature', 'kcat_ph', 'kcat_variant', 'kcat_db',
+            'kcat', 'kcat_db', 'matching_score', 'kcat_substrate', 'kcat_organism', 'kcat_enzyme',
+            'kcat_temperature', 'kcat_ph', 'kcat_variant',
             'kcat_id_percent', 'kcat_organism_score'
         ]
     ]
+
+    # Rename kcat_db to db
+    update_kcat_df = update_kcat_df.rename(columns={'kcat_db': 'db'})
 
     return update_kcat_df
 

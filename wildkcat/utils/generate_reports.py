@@ -11,9 +11,6 @@ from matplotlib.ticker import LogFormatter, MaxNLocator
 from io import BytesIO
 
 
-# TODO: In the stats, I generally do a -1 to remove the header line from counts. Is there a better way to handle this?
-
-
 def report_extraction(model, df, report_statistics, output_folder, shader=False) -> None:
     """
     Generates a detailed HTML report summarizing kcat extraction results from a metabolic model.
@@ -767,18 +764,38 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
             colors = [color_map.get(src, "#999999") for src in sources]  # fallback gray
 
             # Plot
-            fig, ax = plt.subplots(figsize=(10, 6))
+            fig, ax = plt.subplots(figsize=(12, 6))
             ax.hist(grouped_values, bins=bins, stacked=True,
                     color=colors, label=sources, edgecolor="white", linewidth=0.7)
 
             ax.set_xscale("log")
             ax.set_xlim([10**min_exp / 1.5, 10**max_exp * 1.5])
             ax.xaxis.set_major_formatter(LogFormatter(10))
+            ax.yaxis.set_major_locator(MaxNLocator(integer=True))
 
             ax.set_xlabel("kcat (s⁻¹)", fontsize=12)
             ax.set_ylabel("Count", fontsize=12)
             ax.set_title(f"{title} (n={matched}, {match_percent:.1f}%)", fontsize=13)
-            ax.legend(title="Source")
+
+            ax.legend(
+                title="Source", 
+                fontsize=10, 
+                title_fontsize=11,
+                loc='center left', 
+                bbox_to_anchor=(1, 0.5),
+                frameon=False
+            )
+
+            # Style
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_color('#444444')
+            ax.spines['bottom'].set_color('#444444')
+
+            ax.grid(True, which='major', axis='y', linestyle='--', linewidth=0.6, alpha=0.4)
+            ax.grid(False, which='major', axis='x') 
+            
+            plt.tight_layout(rect=[0, 0, 0.85, 1])
 
             return fig_to_base64(fig)
 
@@ -827,9 +844,9 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
     # Statistics 
     grouped = df.groupby("rxn")
     rxns_with_kcat = grouped["kcat"].apply(lambda x: x.notna().any())
-    nb_rxn = grouped.ngroups
+    nb_reactions = df['rxn'].nunique()
     nb_rxn_with_kcat = rxns_with_kcat.sum()
-    coverage = nb_rxn_with_kcat / nb_rxn
+    coverage = nb_rxn_with_kcat / nb_reactions
     coverage_total = nb_rxn_with_kcat / nb_model_reactions
 
     kcat_values = df["kcat"].dropna()
@@ -858,12 +875,9 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
         <div class="container">
             <div class="card">
                 <h2>Introduction</h2>
-                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                <p style="text-align: justify;">
                     This report provides a summary of the performance of k<sub>cat</sub> value extraction, retrieval, and prediction for the specified metabolic model. 
                     It presents statistics on k<sub>cat</sub> values successfully retrieved, whether experimental or predicted.
-                </p>
-                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
-                    The output file, containing the full list of k<sub>cat</sub> values associated with each reaction, are available as a tab-separated file (TSV) at the default output path: <code>output/model_name_kcat_full</code>.
                 </p>
             </div>
 
@@ -893,12 +907,12 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
                 <h2 style="margin-bottom:10px;">Coverage</h2>
                 
                 <!-- Explanation -->
-                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                <p style="text-align: justify;">
                     The coverage section reports the number of k<sub>cat</sub> values retrieved for the model and the number of reactions that have at least one 
-                    associated k<sub>cat</sub> value, whether experimental or predicted. This provides a measure of how extensively the model’s reactions are 
+                    associated k<sub>cat</sub> value. This provides a measure of how extensively the model’s reactions are 
                     annotated with kinetic data.
                 </p>
-                <p style="margin-bottom:20px; font-size:14px; color:#555; text-align: justify;">
+                <p style="text-align: justify;">
                     Higher coverage indicates that a larger fraction of reactions are constrained by k<sub>cat</sub> values, 
                     improving the accuracy and reliability of enzyme-constrained simulations.
                 </p>
@@ -909,8 +923,8 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
                 <!-- Detailed stats -->
                 <table class="table" style="width:100%; border-spacing:0; border-collapse: collapse;">
                     <tbody>
-                        <tr>
-                            <td style="padding:8px 12px;">Reactions with EC information with at least one kcat values</td>
+                    <tr>
+                            <td style="padding:8px 12px;">Eligible-reactions with at least one kcat value</td>
                             <td style="padding:8px 12px;">{nb_rxn_with_kcat} ({coverage:.1%})</td>
                             <td style="width:40%;">
                                 <div class="progress" style="height:18px;">
@@ -921,7 +935,7 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
                             </td>
                         </tr>
                         <tr>
-                            <td style="padding:8px 12px;">Reactions in the model with at least one kcat values</td>
+                            <td style="padding:8px 12px;">Model-wide reactions with at least one kcat value</td>
                             <td style="padding:8px 12px;">{nb_rxn_with_kcat} ({coverage_total:.1%})</td>
                             <td style="width:40%;">
                                 <div class="progress" style="height:18px;">
