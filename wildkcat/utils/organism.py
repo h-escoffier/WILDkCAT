@@ -111,7 +111,7 @@ def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame:
                 tax_id = record["IdList"][0]
         
                 handle = Entrez.efetch(db="taxonomy", id=tax_id, retmode="xml")
-                records = Entrez.read(handle)
+                records = Entrez.read(handle, validate=False)
                 if not records:
                     return []
         

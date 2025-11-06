@@ -27,7 +27,7 @@ def format_output(kcat_df, limit_matching_score):
     Returns: 
         pandas.DataFrame : Formatted DataFrame with selected and rounded kcat values, reordered columns, and updated source information.
     """
-    kcat_df = kcat_df.rename(columns={"kcat": "kcat_source", "kcat_db": "kcat_source_db"})
+    kcat_df = kcat_df.rename(columns={"kcat": "kcat_source", "db": "kcat_source_db"})
 
     def choose_row(row):
         if pd.notna(row["kcat_source"]):
@@ -69,7 +69,7 @@ def format_output(kcat_df, limit_matching_score):
     kcat_df = kcat_df[[
         "rxn", "rxn_kegg", "ec_code", "ec_codes", "direction", 
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
-        "genes", "uniprot", "catalytic_enzyme", "warning",
+        "genes", "uniprot", "catalytic_enzyme", "warning_ec", "warning_enz",
         "kcat", "db", 
         "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent", "kcat_organism_score"
         ]]
@@ -93,11 +93,11 @@ def run_prediction_part1(output_folder: str,
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
     # Intitialize logging
-    os.makedirs("logs", exist_ok=True)
+    os.makedirs(os.path.join(output_folder, "logs"), exist_ok=True)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"logs/prediction1_{timestamp}.log"
     logging.getLogger().addFilter(DedupFilter())
-    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
+    logging.basicConfig(filename=os.path.join(output_folder, filename), encoding='utf-8', level=logging.INFO)
 
     # Run prediction part 1
     # Read the kcat file
@@ -148,11 +148,11 @@ def run_prediction_part2(output_folder: str,
         limit_matching_score (float): Threshold for taking predictions over retrieved values.
     """ 
     # Intitialize logging
-    os.makedirs("logs", exist_ok=True)
+    os.makedirs(os.path.join(output_folder, "logs"), exist_ok=True)
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"logs/prediction2_{timestamp}.log"
     logging.getLogger().addFilter(DedupFilter())
-    logging.basicConfig(filename=filename, encoding='utf-8', level=logging.INFO)
+    logging.basicConfig(filename=os.path.join(output_folder, filename), encoding='utf-8', level=logging.INFO)
 
     # Run prediction part 2
     if not os.path.exists(output_folder):

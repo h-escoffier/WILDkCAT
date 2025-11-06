@@ -276,8 +276,8 @@ def create_kcat_output(model):
     }
 
     # Filtering
-    rows_before = len(df) - 1 
-    rxn_before = df['rxn'].nunique() - 1 
+    rows_before = len(df) 
+    rxn_before = df['rxn'].nunique() 
 
     # Remove rows without EC and without catalytic enzyme
     df = df[~((df["ec_code"] == "") & (df["catalytic_enzyme"] == ""))]
@@ -289,8 +289,8 @@ def create_kcat_output(model):
     df = df[~((df["warning_ec"] == "incomplete") & (df["warning_enz"] == "none"))]
     df = df[~((df["warning_ec"] == "incomplete") & (df["warning_enz"] == "no_gpr"))]    
 
-    rows_exchange = len(df) - 1
-    rxn_exchange = df['rxn'].nunique() - 1
+    rows_exchange = len(df) 
+    rxn_exchange = df['rxn'].nunique()
     
     report_statistics.update({
         "nb_of_lines_dropped_no_ec_no_enzyme": rows_before - rows_exchange,
@@ -298,7 +298,7 @@ def create_kcat_output(model):
         # "nb_of_reactions_dropped_incomplete_transferred_ec": rxn_exchange - rxn_after
     })
 
-    logging.info("Total of possible kcat values: %d", len(df) - 1)
+    logging.info("Total of possible kcat values: %d", len(df))
 
     return df, report_statistics
 

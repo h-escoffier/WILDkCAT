@@ -161,8 +161,12 @@ def merge_ec(kcat_df: pd.DataFrame):
         .rename('ec_codes')
     )
 
-
-    best_entries = kcat_df_sorted.groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], as_index=False).first()
+    best_entries = (
+        kcat_df_sorted
+        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], group_keys=False)
+        .head(1)
+        .reset_index(drop=True)
+    )
 
     # Add merged EC numbers to best entries
     update_kcat_df = best_entries.merge(ec_merged, on=['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])
@@ -181,6 +185,9 @@ def merge_ec(kcat_df: pd.DataFrame):
 
     # Rename kcat_db to db
     update_kcat_df = update_kcat_df.rename(columns={'kcat_db': 'db'})
+
+    # Convert kcat_organism_score column from float to int 
+    update_kcat_df["kcat_organism_score"] = update_kcat_df["kcat_organism_score"].astype("Int64")
 
     return update_kcat_df
 
@@ -271,6 +278,7 @@ def run_retrieval(output_folder: str,
             kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
 
     # Select only one kcat value per reaction and substrate
+    kcat_df.to_csv("in_progress/kcat_retrieve_before_merge.tsv", sep='\t', index=False)
     kcat_df = merge_ec(kcat_df)
 
     output_path = os.path.join(output_folder, "kcat_retrieved.tsv")
@@ -330,5 +338,10 @@ if __name__ == "__main__":
 
     # Test : Generate report
     # df = pd.read_csv("output/yeast_kcat_brenda.tsv", sep='\t')
-    df = pd.read_csv("in_progress/ecoli_v3/kcat_retrieved.tsv", sep='\t')
-    report_retrieval(df, output_folder="in_progress/ecoli_v3")
+    # df = pd.read_csv("in_progress/iML1515/kcat_retrieved.tsv", sep='\t')
+    # report_retrieval(df, output_folder="in_progress/iML1515")
+
+    # Merging 
+    df = pd.read_csv('in_progress/kcat_retrieve_before_merge.tsv', sep='\t')
+    df_test = merge_ec(df)
+    df_test.to_csv('in_progress/kcat_retrieve_after_merge.tsv', sep='\t', index=False)

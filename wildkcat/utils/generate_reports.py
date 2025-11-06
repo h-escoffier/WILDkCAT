@@ -47,8 +47,8 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
     nb_model_ec_codes = len(set(unique_ec_codes))
 
     # Kcat statistics
-    nb_reactions = df['rxn'].nunique() - 1 # Remove header line
-    nb_ec_codes = df.loc[df["warning_ec"].fillna("") == "", "ec_code"].nunique() - 1 # Remove header line
+    nb_reactions = df['rxn'].nunique()
+    nb_ec_codes = df.loc[df["warning_ec"].fillna("") == "", "ec_code"].nunique()
 
 
     # nb_missing_ec = report_statistics.get('nb_missing_ec', np.nan)
@@ -321,7 +321,7 @@ def report_retrieval(df, output_folder,shader=False) -> None:
         # Stacked histogram by score
         ax.hist(hist_data, bins=bins, stacked=True, 
                 color=[score_color(s) for s in valid_scores],
-                label=[f"Score {s}" for s in valid_scores],
+                label=[f"{s}" for s in valid_scores],
                 edgecolor='white')
         
         ax.set_xscale('log')
