@@ -20,7 +20,6 @@ theme:
       tip: fontawesome/solid/bullhorn
       danger: fontawesome/solid/skull
 
-
 plugins: 
   - search
   - mkdocstrings:
@@ -30,7 +29,6 @@ plugins:
               show_root_heading: true
               show_root_toc_entry: false
               heading_level: 3
-
 
 markdown_extensions:
   - admonition
@@ -42,16 +40,15 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
 
-
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
-
 
 nav: 
   - Home: index.md
   - Installation: installation.md
   - Explanation: explanation/explanation.md
   - Tutorial: tutorial/tutorials.md
+  - Data Collection: repository/repo.md
+  - Troubleshooting: troubleshooting.md
   - References: reference.md
-

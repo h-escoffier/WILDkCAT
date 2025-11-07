@@ -2,6 +2,7 @@ import os
 import datetime
 import time
 import logging
+import shutil
 from dotenv import load_dotenv
 import numpy as np
 import pandas as pd
@@ -192,6 +193,34 @@ def merge_ec(kcat_df: pd.DataFrame):
     return update_kcat_df
 
 
+def save_partial_results(df: pd.DataFrame, output_folder: str) -> None: 
+    """
+    Save the results in a temporary folder to avoid to rerun in case of crash
+
+    Parameters: 
+        df (pd.DataFrame): Partial output 
+        output_folder (str): Path to the output folder where the results will be saved.
+    """
+    cache_dir = os.path.join(output_folder, "cache_retrieval")
+    os.makedirs(cache_dir, exist_ok=True)
+    cache_path = os.path.join(cache_dir, "kcat_retrieved_partial.tsv")
+    df.to_csv(cache_path, sep='\t', index=False)
+
+
+def load_cached_progress(output_folder: str) -> pd.DataFrame | None:
+    """
+    Load cached results if they exists 
+
+    Parameters:
+        output_folder (str): Path to the output folder where the results will be saved.
+    """
+    cache_path = os.path.join(output_folder, "cache_retrieval", "kcat_retrieved_partial.tsv")
+    if os.path.exists(cache_path):
+        print(f"Partial file detected: resuming from {cache_path}")
+        return pd.read_csv(cache_path, sep='\t')
+    return None
+
+
 def run_retrieval(output_folder: str,
                   organism: str,
                   temperature_range: tuple,
@@ -236,24 +265,28 @@ def run_retrieval(output_folder: str,
     if not os.path.isfile(kcat_file_path):
         raise FileNotFoundError(f"The specified file '{kcat_file_path}' does not exist in the output folder. Please run the function 'run_extraction()' first.")
     
-    kcat_df = pd.read_csv(kcat_file_path, sep='\t')
+    cached_df = load_cached_progress(output_folder)
+    if cached_df is not None:
+        kcat_df = cached_df
+        start_index = kcat_df[kcat_df['kcat'].isna()].index.min() or len(kcat_df)
+    else:
+        kcat_df = pd.read_csv(kcat_file_path, sep='\t')
+        start_index = 0
     
-    # Initialize new columns
-    kcat_df['kcat'] = None
-    kcat_df['matching_score'] = None
-
-    # Add data of the retrieve kcat values
-    kcat_df['kcat_substrate'] = None
-    kcat_df['kcat_organism'] = None
-    kcat_df['kcat_enzyme'] = None
-    kcat_df['kcat_temperature'] = None
-    kcat_df['kcat_ph'] = None
-    kcat_df['kcat_variant'] = None
-    kcat_df['kcat_db'] = None
+        # Initialize new columns
+        for col in ['kcat', 'matching_score', 'kcat_substrate', 'kcat_organism',
+                    'kcat_enzyme', 'kcat_temperature', 'kcat_ph', 'kcat_variant',
+                    'kcat_db', 'kcat_id_percent', 'kcat_organism_score']:
+            if col not in kcat_df.columns:
+                kcat_df[col] = None
 
     # Retrieve kcat values from databases
     request_count = 0
     for row in tqdm(kcat_df.itertuples(), total=len(kcat_df), desc="Retrieving kcat values"):
+        
+        if row.Index < start_index:
+            continue  
+
         kcat_dict = row._asdict()
         
         # Extract kcat and matching score
@@ -276,10 +309,20 @@ def run_retrieval(output_folder: str,
             kcat_df.loc[row.Index, 'kcat_db'] = best_match['db']
             kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
             kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
+        
+        # Save partial results every 200 rows 
+        if row.Index % 200 == 0 and row.Index > 0:
+            save_partial_results(kcat_df, output_folder)
 
-    # Select only one kcat value per reaction and substrate
-    kcat_df.to_csv("in_progress/kcat_retrieve_before_merge.tsv", sep='\t', index=False)
+    # Save final 
+    save_partial_results(kcat_df, output_folder)
+
     kcat_df = merge_ec(kcat_df)
+
+    cache_dir = os.path.join(output_folder, "cache_retrieval")
+    if os.path.exists(cache_dir):
+        shutil.rmtree(cache_dir)
+        logging.info("Cache folder removed after successful completion.")
 
     output_path = os.path.join(output_folder, "kcat_retrieved.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)

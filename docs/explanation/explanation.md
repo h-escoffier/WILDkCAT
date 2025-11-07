@@ -31,10 +31,25 @@ During this step, several verification procedures are carried out to ensure cons
 
     * When a reaction is associated with multiple enzymes (enzyme complex), the UniProt API is queried to identify which subunit is the catalytic enzyme.
 
-    * A dedicated column (`warning`) is used to flag potential issues:
-        - `none`: no catalytic enzyme identified.
-        - `multiple`: more than one possible catalytic enzyme identified.
-        - (empty): one clear catalytic enzyme has been identified.
+    * Two dedicated columns (`warning_ec` and `warning_enz`) are used to flag potential issues:
+        - `warning_ec`:
+            - `missing`: no EC number found for the reaction.
+            - `invalid`: EC number is invalid.
+            - `transferred`: EC number has been transferred to a new one.
+            - (empty): EC number is valid.
+        - `warning_enz`:
+            - `no_gpr`: no gene-protein-reaction (GPR) association found for the reaction.
+            - `none`: no catalytic enzyme identified.
+            - `multiple`: more than one possible catalytic enzyme identified.
+            - (empty): one clear catalytic enzyme has been identified.
+
+4. **Retrieval of kcat with incomplete information**    
+
+    When an EC number is incomplete or has been transferred (c.f. `warning_ec` column), WILDkCAT performs the retrieval based only on the available enzyme information. These situations reduce the likelihood of finding alternative kcat values.
+
+5. **Removing rows with insufficient information**
+
+    If both the EC number and the catalytic enzyme information are missing for a given reaction, the corresponding row is removed due to insufficient information to assign a kcat value, theses rows are notified in the table generated in the `extract_report.html`.
 
 ---
 
@@ -50,13 +65,13 @@ The matching score evaluates how well a candidate kcat entry fits the query enzy
 
 * A lower score indicates a better match.
 * `0` = best possible match (perfect fit).
-* `15` = no reliable match.
+* `17` = no reliable match.
 
 ### Penalty-based scoring system 
 
 !!! warning 
 
-    Penalty values are preliminary and not final. The penalty system will be developed in collaboration with an expert in the field and can also be modified if necessary.
+    Penalty values have been set in collaboration with an expert ([Carole Linster](https://www.uni.lu/lcsb-en/people/carole-linster/)), they can be adjusted based on user feedback. To modify these values, please refer to the `wildkcat/utils/matching.py` file or contact us by creating an issue on [GitHub](https://github.com/h-escoffier/WILDkCAT/issues/new). 
 
 Each criterion adds a penalty if the candidate entry deviates from the query:
 
@@ -65,12 +80,12 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 | **Organism**         | Same organism                                         | 0       |
 |                      | Different or unknown                                  | 2       |
 | **Substrate**        | Same substrate                                        | 0       |
-|                      | Different or unknown                                  | 3       |
+|                      | Different or unknown                                  | 4       |
 | **Catalytic enzyme** | Matches expected enzyme                               | 0       |
-|                      | Does not match or unknown                             | 2       |
+|                      | Does not match or unknown                             | 3       |
 | **Variant**          | Wild-type                                             | 0       |
 |                      | Unknown                                               | 1       |
-|                      | Mutant                                                | 14      |
+|                      | Mutant                                                | 16      |
 | **Temperature**      | Within specified range                                | 0       |
 |                      | Corrected via Arrhenius equation                      | 0       |
 |                      | Unknown                                               | 1       |
@@ -116,11 +131,15 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 
 4. **Merging rows with same reaction-enzyme combination**
 
-    During the extraction step, multiple rows may be generated if a combination of reaction and enzyme is associated with multiple EC numbers. In such cases, after the retrieval step, these rows are merged to retain only the best kcat value. The column `ec_codes` lists all the EC numbers associated with the reaction-enzyme pair. The column `ec-code` indicates the EC number corresponding to the selected kcat value.
+    During the extraction step, multiple rows may be generated if a combination of reaction and enzyme is associated with multiple EC numbers. In such cases, after the retrieval step, these rows are merged to retain only the best kcat value. The column `ec_codes` lists all the EC numbers associated with the reaction-enzyme pair. The column `ec_code` indicates the EC number corresponding to the selected kcat value.
 
 ---
 
 ## 3 - Predict missing kcat values using machine learning
+
+!!! note 
+
+    The prediction step is optional and can be skipped if only experimental kcat values are desired.
 
 When no suitable experimental kcat value is found, the pipeline allows the prediction of kcat values using the CataPro machine learning model.
 The predictions rely on reaction substrates (SMILES) and enzyme sequences. 

@@ -753,20 +753,29 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
             sources = valid_df[source].unique()
             grouped_values = [valid_df.loc[valid_df[source] == src, column_name] for src in sources]
 
-            # Colors from seaborn palette
             # Fixed color mapping
             color_map = {
-                "brenda": "#55bb55",   # green
-                "sabio_rk": "#2277cc", # blue
-                "catapro": "#eedd00",  # yellow
-                "Unknown": "#dddddd"   # gray
+                "brenda": "#55bb55",   
+                "sabio_rk": "#2277cc", 
+                "catapro": "#eedd00",  
+                "Unknown": "#dddddd" 
             }
-            colors = [color_map.get(src, "#999999") for src in sources]  # fallback gray
+
+            label_map = {
+                "brenda": "Brenda",
+                "sabio_rk": "Sabio-RK",
+                "catapro": "CataPro",
+                "Unknown": "Unknown"
+            }
+
+            sources = [src for src in sources if src in valid_df[source].unique()]
+            colors = [color_map.get(src, "#999999") for src in sources]
 
             # Plot
             fig, ax = plt.subplots(figsize=(12, 6))
             ax.hist(grouped_values, bins=bins, stacked=True,
-                    color=colors, label=sources, edgecolor="white", linewidth=0.7)
+                    color=colors, label=[label_map[s] for s in sources],
+                    edgecolor="white", linewidth=0.7)
 
             ax.set_xscale("log")
             ax.set_xlim([10**min_exp / 1.5, 10**max_exp * 1.5])
@@ -802,7 +811,7 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
         return "<p>No valid values available for plotting.</p>"
     
     img_final = plot_kcat_distribution_stacked(
-        'kcat', "kcat distribution", "db"
+        'kcat', "Kcat Distribution", "db"
     )
 
     # Coverage

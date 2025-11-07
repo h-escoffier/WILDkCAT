@@ -26,12 +26,14 @@ Create and activate a virtual environment with uv:
 === "Windows"
     ```powershell
     uv venv
-    source .venv\Scripts\activate
+    .venv\Scripts\activate
     ```
 
 !!! tip 
 
     Using **uv** helps manage dependencies easily and keeps your environment clean, avoiding conflicts with other Python packages.
+
+---
 
 ## Install WILDkCAT from PyPI 
 
@@ -120,3 +122,4 @@ git lfs pull
 cd ../..
 ```
 
+---
