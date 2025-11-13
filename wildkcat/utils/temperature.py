@@ -56,6 +56,7 @@ def arrhenius_equation(candidate, api_output, general_criteria) -> float:
     temp_ref = float(api_filtered['Temperature'].iloc[0])
         
     kcat = calculate_kcat(obj_temp, ea, kcat_ref, temp_ref)
+
     return kcat
 
 

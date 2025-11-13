@@ -355,23 +355,23 @@ def run_retrieval(output_folder: str,
 
 if __name__ == "__main__":
     # # Test : Send a request for a specific EC number
-    # kcat_dict = {
-    #     'ec_code': '1.16.3.1',
-    #     'rxn_kegg': 'R00078',
-    #     'uniprot': 'P36649',
-    #     'catalytic_enzyme': 'P36649',
-    #     'substrates_name': 'Fe2+ mitochondria;H+;O2 O2', 
-    #     'warning_ec': ''
-    # }
+    kcat_dict = {
+        'ec_code': '4.4.1.20',
+        'rxn_kegg': '',
+        'uniprot': 'Q16873',
+        'catalytic_enzyme': 'Q16873',
+        'substrates_name': 'leukotriene C5', 
+        'warning_ec': ''
+    }
 
-    # general_criteria ={
-    #     'Organism': 'Escherichia coli', 
-    #     'Temperature': (20, 40), 
-    #     'pH': (6.5, 7.5)
-    # }
+    general_criteria ={
+        'Organism': 'Homo sapiens', 
+        'Temperature': (36, 38), 
+        'pH': (7, 8)
+    }
 
-    # output = extract_kcat(kcat_dict, general_criteria, database='both')
-    # print(output)
+    output = extract_kcat(kcat_dict, general_criteria, database='both')
+    print(output)
 
     # Test : Run the retrieve function
 

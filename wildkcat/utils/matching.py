@@ -54,13 +54,21 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
         score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output)
         if arrhenius:
             kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
-            candidate_dict['value'] = kcat
-            candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])
+            if 10e-8 < kcat < 10e+8: 
+                candidate_dict['value'] = kcat
+                candidate_dict['Temperature'] = np.mean(general_criteria["Temperature"])
+            # If the kcat value calculated using the Arrhenius is aberrant, use the non correct value instead
+            else:
+                logging.warning(f"{candidate_dict.get('ECNumber')}: Corrected kcat ({kcat:.0f} s-1) is outside the expected range of 10e-8, 10e+8.")
+                temperature = float(candidate_dict['Temperature'])
+                if np.isnan(temperature): 
+                    score += 1
+                else: 
+                    score += 2
         scores.append(score)
         adjusted_kcats.append(candidate_dict.get('value', row['value']))
         adjusted_temps.append(candidate_dict.get('Temperature', row['Temperature']))
 
-    api_output = api_output.copy()
     api_output['score'] = scores
     api_output['adj_kcat'] = adjusted_kcats
     api_output['adj_temp'] = adjusted_temps
@@ -119,6 +127,10 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
         else:
             tmp_df = pd.DataFrame([best_candidate])
             best_candidate['id_perc'] = closest_enz(kcat_dict, tmp_df).iloc[0]['id_perc']
+
+
+    #
+    print(api_output)
 
     return best_score, best_candidate
 
