@@ -190,6 +190,11 @@ def create_catapro_input_file(kcat_df):
     before_duplicates_filter = len(catapro_input_df)
     catapro_input_df = catapro_input_df.drop_duplicates().reset_index(drop=True)
     nb_lines_dropped = before_duplicates_filter - len(catapro_input_df)
+    # Remove 'nan' values
+    catapro_input_df = catapro_input_df.dropna(subset=['sequence', 'smiles'])
+    catapro_input_df = catapro_input_df[(catapro_input_df['sequence'].str.strip() != '') & (catapro_input_df['smiles'].str.strip() != '')]
+
+
     # Generate reverse mapping from SMILES to KEGG IDs as TSV
     substrates_to_smiles_df = pd.DataFrame(list(substrates_to_smiles.items()), columns=['kegg_id', 'smiles'])
 
