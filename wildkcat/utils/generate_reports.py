@@ -246,7 +246,7 @@ def report_extraction(model, df, report_statistics, output_folder, shader=False)
     logging.info(f"HTML report saved to '{report_path}'")
 
 
-def report_retrieval(df, output_folder,shader=False) -> None:
+def report_retrieval(df, output_folder, parameters, shader=False) -> None:
     """
     Generate a styled HTML report summarizing the kcat matching results,
     including kcat value distribution and matching score repartition.
@@ -298,6 +298,13 @@ def report_retrieval(df, output_folder,shader=False) -> None:
         return distinct_colors[idx % len(distinct_colors)]
 
     generated_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Parameters
+    temp = parameters.get('Temperature')
+    formatted_temp = f"{temp[0]} - {temp[1]}"
+
+    ph = parameters.get('pH')
+    formatted_ph = f"{ph[0]} - {ph[1]}"
 
     # Histogram with stacked bars for scores
     kcat_hist_base64 = ""
@@ -389,6 +396,30 @@ def report_retrieval(df, output_folder,shader=False) -> None:
                         <p>Matched k<sub>cat</sub> ({match_percent:.2f}%)</p>
                     </div>
                 </div>
+            </div>
+
+            <div class="card">
+                <div class="card">
+                <h2>Parameters</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>{parameters.get('Organism')}</h3>
+                        <p>Organism name</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>{formatted_ph}</h3>
+                        <p>pH range</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>{formatted_temp}</h3>
+                        <p>Temperature range</p>
+                    </div>
+                     <div class="stat-box">
+                        <h3>{parameters.get('database').capitalize()}</h3>
+                        <p>Database(s)</p>
+                    </div>
+                </div>
+            </div>
             </div>
 
             <div class="card">

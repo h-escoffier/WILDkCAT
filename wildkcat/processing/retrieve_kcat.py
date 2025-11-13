@@ -217,7 +217,7 @@ def load_cached_progress(output_folder: str) -> pd.DataFrame | None:
     cache_path = os.path.join(output_folder, "cache_retrieval", "kcat_retrieved_partial.tsv")
     if os.path.exists(cache_path):
         print(f"Partial file detected: resuming from {cache_path}")
-        return pd.read_csv(cache_path, sep='\t')
+        return pd.read_csv(cache_path, sep='\t', low_memory=False)
     return None
 
 
@@ -268,7 +268,8 @@ def run_retrieval(output_folder: str,
     cached_df = load_cached_progress(output_folder)
     if cached_df is not None:
         kcat_df = cached_df
-        start_index = kcat_df[kcat_df['kcat'].isna()].index.min() or len(kcat_df)
+        unprocessed_indices = kcat_df.index[kcat_df['processed'] == False]
+        start_index = unprocessed_indices.min() if len(unprocessed_indices) > 0 else len(kcat_df)
     else:
         kcat_df = pd.read_csv(kcat_file_path, sep='\t')
         start_index = 0
@@ -279,6 +280,9 @@ def run_retrieval(output_folder: str,
                     'kcat_db', 'kcat_id_percent', 'kcat_organism_score']:
             if col not in kcat_df.columns:
                 kcat_df[col] = None
+        
+        # Initialize 'processed' column
+        kcat_df['processed'] = False
 
     # Retrieve kcat values from databases
     request_count = 0
@@ -310,13 +314,18 @@ def run_retrieval(output_folder: str,
             kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
             kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
         
+        # Mark the line as processed 
+        kcat_df.loc[row.Index, 'processed'] = True
         # Save partial results every 200 rows 
         if row.Index % 200 == 0 and row.Index > 0:
             save_partial_results(kcat_df, output_folder)
 
     # Save final 
     save_partial_results(kcat_df, output_folder)
-
+    
+    # Remove 'processed' column before final save
+    if 'processed' in kcat_df.columns:
+        kcat_df.drop(columns=['processed'], inplace=True)
     kcat_df = merge_ec(kcat_df)
 
     cache_dir = os.path.join(output_folder, "cache_retrieval")
@@ -324,12 +333,24 @@ def run_retrieval(output_folder: str,
         shutil.rmtree(cache_dir)
         logging.info("Cache folder removed after successful completion.")
 
+    # Format the df
+    kcat_df['matching_score'] = (
+        kcat_df['matching_score']
+        .round()
+        .astype('Int64')
+        )
+    
     output_path = os.path.join(output_folder, "kcat_retrieved.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")
 
     if report:
-        report_retrieval(kcat_df, output_folder)
+
+        general_criteria.update({
+            'database': database
+        }) 
+
+        report_retrieval(kcat_df, output_folder, general_criteria)
 
 
 if __name__ == "__main__":
