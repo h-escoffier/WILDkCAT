@@ -128,10 +128,6 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
             tmp_df = pd.DataFrame([best_candidate])
             best_candidate['id_perc'] = closest_enz(kcat_dict, tmp_df).iloc[0]['id_perc']
 
-
-    #
-    print(api_output)
-
     return best_score, best_candidate
 
 
