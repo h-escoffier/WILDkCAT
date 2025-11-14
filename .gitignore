@@ -34,5 +34,5 @@ logs
 # Ignore documentation build files
 site 
 
-
-
+# Ignore article folder for the moment 
+article

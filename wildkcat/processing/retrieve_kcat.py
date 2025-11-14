@@ -157,20 +157,25 @@ def merge_ec(kcat_df: pd.DataFrame):
     # Merge EC numbers for each reaction-substrate pair
     ec_merged = (
         kcat_df
-        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])['ec_code']
+        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], dropna=False)['ec_code']
         .apply(merge_ec_codes)
         .rename('ec_codes')
     )
 
     best_entries = (
         kcat_df_sorted
-        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], group_keys=False)
+        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], group_keys=False, dropna=False)
         .head(1)
         .reset_index(drop=True)
     )
 
     # Add merged EC numbers to best entries
-    update_kcat_df = best_entries.merge(ec_merged, on=['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'])
+    update_kcat_df = best_entries.merge(
+        ec_merged,
+        on=['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'],
+        how='left'
+    )
+
 
     # Reorder columns to place 'ec_codes' next to 'ec_code'
     update_kcat_df = update_kcat_df[
@@ -328,14 +333,15 @@ def run_retrieval(output_folder: str,
         kcat_df.drop(columns=['processed'], inplace=True)
     kcat_df = merge_ec(kcat_df)
 
-    cache_dir = os.path.join(output_folder, "cache_retrieval")
-    if os.path.exists(cache_dir):
-        shutil.rmtree(cache_dir)
-        logging.info("Cache folder removed after successful completion.")
+    # TODO: Remove it later
+    # cache_dir = os.path.join(output_folder, "cache_retrieval")
+    # if os.path.exists(cache_dir):
+    #     shutil.rmtree(cache_dir)
+    #     logging.info("Cache folder removed after successful completion.")
 
     # Format the df
     kcat_df['matching_score'] = (
-        kcat_df['matching_score']
+        pd.to_numeric(kcat_df['matching_score'], errors='coerce')
         .round()
         .astype('Int64')
         )
@@ -354,7 +360,7 @@ def run_retrieval(output_folder: str,
 
 
 if __name__ == "__main__":
-    # # Test : Send a request for a specific EC number
+    # Test : Send a request for a specific EC number
     kcat_dict = {
         'ec_code': '4.4.1.20',
         'rxn_kegg': '',
