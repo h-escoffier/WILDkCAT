@@ -80,7 +80,7 @@ BRENDA_PASSWORD=your_password
 ### 1. Install dependencies
 
 ```bash
-uv pip install torch transformers numpy pandas RDKit
+uv pip install torch transformers numpy pandas RDKit sentencepiece
 ```
 
 ### 2. Clone the CataPro repository
@@ -104,22 +104,40 @@ CataPro requires the models **ProtT5 model** and **MolT5 model**.
 
 !!! warning 
 
-    The models prot5_t5_xl_uniref50 and molt5-base-smiles2caption required for CataPro are 64 and 1.9 GB, respectively. 
+    The models prot_t5_xl_uniref50 and molt5-base-smiles2caption required for CataPro are 64 and 1.9 GB, respectively. 
 
-```bash
-cd CataPro/models/
 
-GIT LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/Rostlab/prot5_t5_xl_uniref50
-cd prot5_t5_xl_uniref50
-git lfs pull
+=== "macOS / Linux"
+    ```bash
+    cd CataPro/models/
 
-cd ..
+    LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/Rostlab/prot_t5_xl_uniref50
+    cd prot_t5_xl_uniref50
+    git lfs pull
 
-GIT LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/laituan245/molt5-base-smiles2caption
-cd molt5-base-smiles2caption
-git lfs pull
+    cd ..
 
-cd ../..
-```
+    LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/laituan245/molt5-base-smiles2caption
+    cd molt5-base-smiles2caption
+    git lfs pull
+
+    cd ../..
+    ```
+
+=== "Windows"
+    ```powershell
+    git -c filter.lfs.smudge= -c filter.lfs.required=false clone https://huggingface.co/Rostlab/prot_t5_xl_uniref50
+    cd prot_t5_xl_uniref50
+    git lfs pull
+
+    cd ..
+
+    git -c filter.lfs.smudge= -c filter.lfs.required=false clone https://huggingface.co/laituan245/molt5-base-smiles2caption
+    cd molt5-base-smiles2caption
+    git lfs pull
+
+    cd ../..
+    ```
+
 
 ---

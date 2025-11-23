@@ -11,10 +11,9 @@ These data are archived to facilitate their usage, accelerate analyses and preve
 
 | Model              | Organism                   | Temperature range | pH range | Date of process | General Report                                | Download kcat                           | Download model                                         | Process by       |
 | :----------------- | :------------------------- | :---------------- | :------- | :-------------- | :-------------------------------------------- | :-------------------------------------- | :----------------------------------------------------- | :--------------- | 
-| e_coli_core        | Escherichia coli           | 20 - 45           | 7 - 8    | 06/11/2025      | [Link](data/e_coli_core/general_report.html)  | [ZIP](data/e_coli_core/e_coli_core.zip) | [Link](data/e_coli_core/e_coli_core.json)              | h-escoffier      |
-| iML1515            | Escherichia coli           | 20 - 45           | 7 - 8    | 11/11/2025      | [Link](data/iML1515/general_report.html)      | [ZIP](data/iML1515/iML1515.zip)         | [Link](http://bigg.ucsd.edu/static/models/iML1515.xml) | h-escoffier      |
-| Yeast-GEM          | Saccharomyces cerevisiae   | 20 - 45           | 7 - 8    | FILL            | Link           | ZIP            | Link            | h-escoffier      |
-| Human-GEM          | Homo Sapiens               | 36 - 38           | 7 - 8    | FILL            | Link           | ZIP            | Link            | h-escoffier      |
+| e_coli_core        | Escherichia coli           | 20 - 45           | 7 - 8    | 14/11/2025      | [Link](data/e_coli_core/general_report.html)  | [ZIP](data/e_coli_core/e_coli_core.zip) | [Link](data/e_coli_core/e_coli_core.json)              | h-escoffier      |
+| iML1515            | Escherichia coli           | 20 - 45           | 7 - 8    | 17/11/2025      | [Link](data/iML1515/general_report.html)      | [ZIP](data/iML1515/iML1515.zip)         | [Link](http://bigg.ucsd.edu/static/models/iML1515.xml) | h-escoffier      |
+| Human-GEM          | Homo Sapiens               | 36 - 38           | 7 - 8    | 20/11/2025      | [Link](data/human-GEM/general_report.html)    | [ZIP](data/human-GEM/Human_GEM.zip)     | [Link](https://github.com/SysBioChalmers/Human-GEM/blob/main/model/Human-GEM.xml)            | h-escoffier      |
 
 !!! note 
 

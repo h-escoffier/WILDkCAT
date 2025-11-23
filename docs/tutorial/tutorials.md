@@ -12,8 +12,8 @@ This page shows a step-by-step example of the WILDkCAT pipeline on the _E. coli_
 ## Prerequisites (_cf. [installation instructions](../installation.md)_)
 
 - Install [WILDkCAT](../installation.md) from PyPI
-- Download the [E. coli core model](http://bigg.ucsd.edu/static/models/e_coli_core.json)
 - _(Optional)_ Install [CataPro](https://github.com/zchwang/CataPro) to predict kcat values using machine learning
+- Download the [E. coli core model](http://bigg.ucsd.edu/static/models/e_coli_core.json) : 
 
 ```bash 
 mkdir model
@@ -113,6 +113,8 @@ Example of the output file `kcat_retrieved.tsv`:
 
 ### 3.1 - Prepare input file for CataPro
 
+*Time: ~3-5 min* 
+
 Prepare the input file for CataPro by filtering out the kcat entries that were not found in the previous step and below a limit score (`limit_matching_score`). The resulting file will be used to predict missing kcat values using machine learning.
 
 The function generates the files named `catapro_input.csv` and `catapro_input_substrates_to_smiles.tsv` in the subfolder `machine_learning`. 
@@ -139,14 +141,10 @@ The function generates the files named `catapro_input.csv` and `catapro_input_su
 
 The output file `catapro_input.csv` is formatted according to the requirements of [CataPro](https://github.com/zchwang/CataPro), meaning it can be directly used as input for kcat prediction.
 
-!!! note 
-
-    Before running predictions, make sure you have installed CataPro by following the installation instructions provided in their [GitHub repository](https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment).
-
-Once installed, you can run CataPro with the following command:
+You can run CataPro with the following command:
 
 ```bash 
-python CataPro.predict.py \
+python CataPro.inference.predict.py \
         -inp_fpath output/machine_learning/catapro_input.csv \
         -model_dpath models \
         -batch_size 64 \

@@ -136,7 +136,7 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 
 5. **Caching intermediate retrieval results** 
 
-    During the retrieval step, partial results are periodically stored (every 200 rows) in a temporary folder named `cache_retrieval`. This caching mechanism allows the process to resume seamlessly after an interruption (e.g. API failure or network issue) without restarting from the beginning. Each row in the dataset is marked with a processed flag to indicate whether it has already been queried, ensuring that previously completed entries are skipped upon resumption. Once the retrieval completes successfully and the final file is generated, the cache folder and the processed column are removed to keep the output directory clean.
+    During the retrieval step, partial results are periodically stored (every 200 rows) in a temporary folder named `cache_retrieval`. This caching mechanism allows the process to resume seamlessly after an interruption (e.g. API failure or network issue) without restarting from the beginning. Each row in the dataset is marked with a processed flag to indicate whether it has already been queried, ensuring that previously completed entries are skipped upon resumption. Once the retrieval completes successfully and the final file is generated, the cache folder is keeped and the `processed` column is removed to keep the output file clean.
 
 ---
 

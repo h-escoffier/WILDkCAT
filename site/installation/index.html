@@ -272,6 +272,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../repository/repo/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Collection
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../troubleshooting/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Troubleshooting
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../reference/" class="md-tabs__link">
         
   
@@ -547,6 +585,50 @@
   
   
     <li class="md-nav__item">
+      <a href="../repository/repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../reference/" class="md-nav__link">
         
   
@@ -604,7 +686,7 @@
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="n">uv</span> <span class="n">venv</span>
-<span class="n">source</span> <span class="p">.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
+<span class="p">.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">activate</span>
 </code></pre></div>
 </div>
 </div>
@@ -613,6 +695,7 @@
 <p class="admonition-title">Tip</p>
 <p>Using <strong>uv</strong> helps manage dependencies easily and keeps your environment clean, avoiding conflicts with other Python packages.</p>
 </div>
+<hr />
 <h2 id="install-wildkcat-from-pypi">Install WILDkCAT from PyPI</h2>
 <p>Install <a href="https://pypi.org/project/wildkcat/">WILDkCAT</a> directly from PyPI:</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>wildkcat<span class="w"> </span>
@@ -644,7 +727,7 @@
 <h2 id="install-catapro">Install CataPro</h2>
 <p><a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">CataPro</a> is required for predicting kcat values using machine learning</p>
 <h3 id="1-install-dependencies">1. Install dependencies</h3>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>transformers<span class="w"> </span>numpy<span class="w"> </span>pandas<span class="w"> </span>RDKit
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>transformers<span class="w"> </span>numpy<span class="w"> </span>pandas<span class="w"> </span>RDKit<span class="w"> </span>sentencepiece
 </code></pre></div>
 <h3 id="2-clone-the-catapro-repository">2. Clone the CataPro repository</h3>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/zchwang/CataPro
@@ -658,22 +741,43 @@ If you don't have Git LFS installed, you can install it using the following comm
 <p>CataPro requires the models <strong>ProtT5 model</strong> and <strong>MolT5 model</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The models prot5_t5_xl_uniref50 and molt5-base-smiles2caption required for CataPro are 64 and 1.9 GB, respectively. </p>
+<p>The models prot_t5_xl_uniref50 and molt5-base-smiles2caption required for CataPro are 64 and 1.9 GB, respectively. </p>
 </div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">macOS / Linux</label><label for="__tabbed_3_2">Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>CataPro/models/
 
-GIT<span class="w"> </span><span class="nv">LFS_SKIP_SMUDGE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://huggingface.co/Rostlab/prot5_t5_xl_uniref50
-<span class="nb">cd</span><span class="w"> </span>prot5_t5_xl_uniref50
+<span class="nv">LFS_SKIP_SMUDGE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://huggingface.co/Rostlab/prot_t5_xl_uniref50
+<span class="nb">cd</span><span class="w"> </span>prot_t5_xl_uniref50
 git<span class="w"> </span>lfs<span class="w"> </span>pull
 
 <span class="nb">cd</span><span class="w"> </span>..
 
-GIT<span class="w"> </span><span class="nv">LFS_SKIP_SMUDGE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://huggingface.co/laituan245/molt5-base-smiles2caption
+<span class="nv">LFS_SKIP_SMUDGE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://huggingface.co/laituan245/molt5-base-smiles2caption
 <span class="nb">cd</span><span class="w"> </span>molt5-base-smiles2caption
 git<span class="w"> </span>lfs<span class="w"> </span>pull
 
 <span class="nb">cd</span><span class="w"> </span>../..
 </code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="n">git</span> <span class="n">-c</span> <span class="k">filter</span><span class="p">.</span><span class="n">lfs</span><span class="p">.</span><span class="n">smudge</span><span class="p">=</span> <span class="n">-c</span> <span class="k">filter</span><span class="p">.</span><span class="n">lfs</span><span class="p">.</span><span class="n">required</span><span class="p">=</span><span class="n">false</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">huggingface</span><span class="p">.</span><span class="n">co</span><span class="p">/</span><span class="n">Rostlab</span><span class="p">/</span><span class="n">prot_t5_xl_uniref50</span>
+<span class="nb">cd </span><span class="n">prot_t5_xl_uniref50</span>
+<span class="n">git</span> <span class="n">lfs</span> <span class="n">pull</span>
+
+<span class="nb">cd </span><span class="p">..</span>
+
+<span class="n">git</span> <span class="n">-c</span> <span class="k">filter</span><span class="p">.</span><span class="n">lfs</span><span class="p">.</span><span class="n">smudge</span><span class="p">=</span> <span class="n">-c</span> <span class="k">filter</span><span class="p">.</span><span class="n">lfs</span><span class="p">.</span><span class="n">required</span><span class="p">=</span><span class="n">false</span> <span class="n">clone</span> <span class="n">https</span><span class="p">://</span><span class="n">huggingface</span><span class="p">.</span><span class="n">co</span><span class="p">/</span><span class="n">laituan245</span><span class="p">/</span><span class="n">molt5-base-smiles2caption</span>
+<span class="nb">cd </span><span class="n">molt5-base-smiles2caption</span>
+<span class="n">git</span> <span class="n">lfs</span> <span class="n">pull</span>
+
+<span class="nb">cd </span><span class="p">../..</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<hr />
 
 
 

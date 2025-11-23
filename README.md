@@ -17,7 +17,7 @@ The HTML reports are generated automatically after each stage of the workflow (e
 
 <p align="center"> <img src="docs/report_example.gif" alt="WILDkCAT Report Demo" width="700"/> </p>
 
-[Access the report here](https://h-escoffier.github.io/WILDkCAT/tutorial/general_ecoli_report.html)
+[Access the report here](https://h-escoffier.github.io/WILDkCAT/tutorial/general_report.html)
 
 ## Installation
 

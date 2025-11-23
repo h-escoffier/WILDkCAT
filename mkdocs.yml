@@ -19,6 +19,8 @@ theme:
       note: fontawesome/solid/note-sticky
       tip: fontawesome/solid/bullhorn
       danger: fontawesome/solid/skull
+  # logo: assets/logo.png
+  # favicon: assets/logo.png
 
 plugins: 
   - search
