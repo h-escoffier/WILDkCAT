@@ -110,9 +110,8 @@ It demonstrates a full extraction, retrieval, and prediction workflow on the E. 
 ## Key scripts 
 
 ### `extract_kcat.py`
-- Verifies whether the reaction EC number exists.  
-- Retains inputs where reaction-associated genes/enzymes are not supported by KEGG.  
-- Retains inputs where no enzymes are provided by the model.  
+- Identify all enyme-reaction combination in the model 
+- Verify if EC numbers are valid (incomplete or transferred via KEGG) 
 - If multiple enzymes are provided, searches UniProt for catalytic activity.  
 
 ---
@@ -129,8 +128,9 @@ It demonstrates a full extraction, retrieval, and prediction workflow on the E. 
 ---
 
 ### `predict_kcat.py`
-- If multiple enzymes are provided, searches UniProt for catalytic activity.  
-- Skips entries missing KEGG compound IDs.  
+- Predict kcat values not retrieved in experimental databases using machine learning. 
+
+_cf. Refer to the [documentation](https://h-escoffier.github.io/WILDkCAT/explanation/explanation/) for a more detailed explanation._ 
 
 --- 
 
