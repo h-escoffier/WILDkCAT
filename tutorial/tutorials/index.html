@@ -12,7 +12,7 @@
         <link rel="prev" href="../../explanation/explanation/">
       
       
-        <link rel="next" href="../../reference/">
+        <link rel="next" href="../../repository/repo/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -272,6 +272,44 @@
   
   
     <li class="md-tabs__item">
+      <a href="../../repository/repo/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Collection
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../troubleshooting/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Troubleshooting
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
       <a href="../../reference/" class="md-tabs__link">
         
   
@@ -476,13 +514,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-predict-missing-kcat-values-using-machine-learning" class="md-nav__link">
+  <a href="#3-optional-predict-missing-kcat-values-using-machine-learning" class="md-nav__link">
     <span class="md-ellipsis">
-      3 — Predict missing kcat values using machine learning
+      3 — (Optional) Predict missing kcat values using machine learning
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3 — Predict missing kcat values using machine learning">
+    <nav class="md-nav" aria-label="3 — (Optional) Predict missing kcat values using machine learning">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -521,6 +559,50 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../repository/repo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -574,8 +656,8 @@ The purpose of this design is to centralize all results in a single location, wi
 <h2 id="prerequisites-cf-installation-instructions">Prerequisites (<em>cf. <a href="../../installation/">installation instructions</a></em>)</h2>
 <ul>
 <li>Install <a href="../../installation/">WILDkCAT</a> from PyPI</li>
-<li>Install <a href="https://github.com/zchwang/CataPro">CataPro</a> to predict kcat values using machine learning</li>
-<li>Download the <a href="http://bigg.ucsd.edu/static/models/e_coli_core.json">E. coli core model</a></li>
+<li><em>(Optional)</em> Install <a href="https://github.com/zchwang/CataPro">CataPro</a> to predict kcat values using machine learning</li>
+<li>Download the <a href="http://bigg.ucsd.edu/static/models/e_coli_core.json">E. coli core model</a> : </li>
 </ul>
 <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>model
 curl<span class="w"> </span>-O<span class="w"> </span>model/e_coli_core.json<span class="w"> </span>http://bigg.ucsd.edu/static/models/e_coli_core.json
@@ -583,8 +665,8 @@ curl<span class="w"> </span>-O<span class="w"> </span>model/e_coli_core.json<spa
 <p>Your working directory should contain the following folders:</p>
 <ul>
 <li><code>venv/</code> - Folder containing the Python virtual environment</li>
-<li><code>CataPro/</code> - Folder containing the CataPro repository</li>
 <li><code>model/</code> - Folder containing the <em>E. coli</em> core model (e_coli_core.json)</li>
+<li><em>(Optional)</em> <code>CataPro/</code> - Folder containing the CataPro repository</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -592,7 +674,7 @@ curl<span class="w"> </span>-O<span class="w"> </span>model/e_coli_core.json<spa
 </div>
 <hr />
 <h2 id="1-extract-kcat-values-from-e-coli-core-model">1 — Extract kcat values from <em>E. coli</em> core model</h2>
-<p><em>Time: ~3-4 min</em> </p>
+<p><em>Time: ~3-5 min</em> </p>
 <p>First, for each combination of reaction, enzyme, and substrate(s) in the model, create a TSV file. </p>
 <p>Each row corresponds to a unique combination of reaction, enzyme, and substrate(s) and will be used to retrieve experimental kcat values from BRENDA and SABIO-RK in the next step.
 The output file is named <code>kcat.tsv</code> and is saved in the specified output folder.</p>
@@ -620,7 +702,6 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <th style="text-align: left;">rxn</th>
 <th style="text-align: left;">rxn_kegg</th>
 <th style="text-align: left;">ec_code</th>
-<th style="text-align: left;">ec_codes</th>
 <th style="text-align: left;">direction</th>
 <th style="text-align: left;">substrates_name</th>
 <th style="text-align: left;">substrates_kegg</th>
@@ -629,14 +710,14 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <th style="text-align: left;">genes</th>
 <th style="text-align: left;">uniprot</th>
 <th style="text-align: left;">catalytic_enzyme</th>
-<th style="text-align: left;">warning</th>
+<th style="text-align: left;">warning_ec</th>
+<th style="text-align: left;">warning_enz</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;">PFK</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">2.7.1.11</td>
 <td style="text-align: left;">2.7.1.11</td>
 <td style="text-align: left;">forward</td>
 <td style="text-align: left;">ATP C10H12N5O13P3;D-Fructose 6-phosphate</td>
@@ -647,11 +728,11 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;">ACALD</td>
 <td style="text-align: left;">R00228</td>
-<td style="text-align: left;">1.2.1.10</td>
 <td style="text-align: left;">1.2.1.10</td>
 <td style="text-align: left;">reverse</td>
 <td style="text-align: left;">Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced</td>
@@ -661,6 +742,7 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <td style="text-align: left;">b1241</td>
 <td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;">P0A9Q7</td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
@@ -707,8 +789,10 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">genes</th>
 <th style="text-align: left;">uniprot</th>
 <th style="text-align: left;">catalytic_enzyme</th>
-<th style="text-align: left;">warning</th>
+<th style="text-align: left;">warning_ec</th>
+<th style="text-align: left;">warning_enz</th>
 <th style="text-align: left;">kcat</th>
+<th style="text-align: left;">db</th>
 <th style="text-align: left;">matching_score</th>
 <th style="text-align: left;">kcat_substrate</th>
 <th style="text-align: left;">kcat_organism</th>
@@ -716,7 +800,6 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">kcat_temperature</th>
 <th style="text-align: left;">kcat_ph</th>
 <th style="text-align: left;">kcat_variant</th>
-<th style="text-align: left;">kcat_db</th>
 <th style="text-align: left;">kcat_id_percent</th>
 <th style="text-align: left;">kcat_organism_score</th>
 </tr>
@@ -736,7 +819,9 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">88.0</td>
+<td style="text-align: left;">brenda</td>
 <td style="text-align: left;">1</td>
 <td style="text-align: left;">fructose 6-phosphate</td>
 <td style="text-align: left;">Escherichia coli</td>
@@ -744,9 +829,8 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">30.0</td>
 <td style="text-align: left;">7.2</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">brenda</td>
 <td style="text-align: left;">100.0</td>
-<td style="text-align: left;">0.0</td>
+<td style="text-align: left;">0</td>
 </tr>
 <tr>
 <td style="text-align: left;">ACALD</td>
@@ -762,7 +846,9 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">15.7</td>
+<td style="text-align: left;">brenda</td>
 <td style="text-align: left;">8</td>
 <td style="text-align: left;">acetaldehyde</td>
 <td style="text-align: left;">Escherichia coli</td>
@@ -770,9 +856,8 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">25</td>
 <td style="text-align: left;">8.0</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">brenda</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">0.0</td>
+<td style="text-align: left;">0</td>
 </tr>
 </tbody>
 </table>
@@ -782,8 +867,9 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <p>BRENDA requires a user account to access its data. In contrast, SABIO-RK is openly accessible and does not require registration. If you want to only use SABIO-RK, set the parameter <code>database='sabio_rk'</code> in the function or use the flag <code>--database sabio_rk</code> in the CLI command.</p>
 </div>
 <hr />
-<h2 id="3-predict-missing-kcat-values-using-machine-learning">3 — Predict missing kcat values using machine learning</h2>
+<h2 id="3-optional-predict-missing-kcat-values-using-machine-learning">3 — <em>(Optional)</em> Predict missing kcat values using machine learning</h2>
 <h3 id="31-prepare-input-file-for-catapro">3.1 - Prepare input file for CataPro</h3>
+<p><em>Time: ~3-5 min</em> </p>
 <p>Prepare the input file for CataPro by filtering out the kcat entries that were not found in the previous step and below a limit score (<code>limit_matching_score</code>). The resulting file will be used to predict missing kcat values using machine learning.</p>
 <p>The function generates the files named <code>catapro_input.csv</code> and <code>catapro_input_substrates_to_smiles.tsv</code> in the subfolder <code>machine_learning</code>. </p>
 <div class="admonition note">
@@ -808,12 +894,8 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 </div>
 </div>
 <p>The output file <code>catapro_input.csv</code> is formatted according to the requirements of <a href="https://github.com/zchwang/CataPro">CataPro</a>, meaning it can be directly used as input for kcat prediction.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Before running predictions, make sure you have installed CataPro by following the installation instructions provided in their <a href="https://github.com/zchwang/CataPro?tab=readme-ov-file#create-the-catapro-environment">GitHub repository</a>.</p>
-</div>
-<p>Once installed, you can run CataPro with the following command:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>CataPro.predict.py<span class="w"> </span><span class="se">\</span>
+<p>You can run CataPro with the following command:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>CataPro.inference.predict.py<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-inp_fpath<span class="w"> </span>output/machine_learning/catapro_input.csv<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-model_dpath<span class="w"> </span>models<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-batch_size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
@@ -858,7 +940,8 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">genes</th>
 <th style="text-align: left;">uniprot</th>
 <th style="text-align: left;">catalytic_enzyme</th>
-<th style="text-align: left;">warning</th>
+<th style="text-align: left;">warning_ec</th>
+<th style="text-align: left;">warning_enz</th>
 <th style="text-align: left;">kcat</th>
 <th style="text-align: left;">db</th>
 <th style="text-align: left;">matching_score</th>
@@ -887,6 +970,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;">P0A796</td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">88.0</td>
 <td style="text-align: left;">brenda</td>
 <td style="text-align: left;">1</td>
@@ -913,6 +997,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;">P0A9Q7</td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;">20.2328</td>
 <td style="text-align: left;">catapro</td>
 <td style="text-align: left;"></td>
@@ -930,7 +1015,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <hr />
 <h2 id="4-generate-summary-report">4 — Generate summary report</h2>
 <p><em>Time: ~2-5 sec</em></p>
-<p>The final output file <code>kcat_full.tsv</code> contains both experimentally retrieved and machine learning predicted kcat values for each combination of reaction, enzyme, and substrate(s) in the <em>E. coli</em> core model. This file can be used for integration into enzyme-constrained metabolic models.</p>
+<p>The output files <code>kcat_retrieved.tsv</code> (containing only values retrieved from databases) or <code>kcat_full.tsv</code> (including both retrieved and predicted values) can be used for integration into enzyme-constrained metabolic models.</p>
 <p>The result can be visualized and summarized using the function <code>generate_summary_report</code>: </p>
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Programmatic Access</label><label for="__tabbed_5_2">Command Line Interface (CLI)</label></div>
 <div class="tabbed-content">
