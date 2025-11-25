@@ -82,15 +82,15 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
     run_retrieval(
         output_folder="output",
         organism="Escherichia coli",
-        temperature_range=(20, 40),
-        pH_range=(6.5, 7.5),
+        temperature_range=(20, 45),
+        pH_range=(7, 8),
         database='both'
         )
     ```
 
 === "Command Line Interface (CLI)"
     ```bash
-    wildkcat retrieval output 'Escherichia coli' 20 40 6.5 7.5
+    wildkcat retrieval output 'Escherichia coli' 20 45 7 8
     ```
 
 

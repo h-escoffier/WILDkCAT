@@ -8,28 +8,14 @@ from wildkcat import run_extraction, run_retrieval, run_prediction_part1, run_pr
 
 load_dotenv()
 
+__version__ = "0.1.0"
 
 app = typer.Typer(help="WILDkCAT CLI - Extract, Retrieve and Predict kcat values for a metabolic model.")
-
-
-def get_version() -> str:
-    """Read version from pyproject.toml"""
-    pyproject_path = Path("pyproject.toml")
-    if not pyproject_path.exists():
-        return "unknown"
-    
-    try:
-        with pyproject_path.open("rb") as f:
-            pyproject_data = tomli.load(f)
-        return pyproject_data.get("project", {}).get("version", "unknown")
-    except Exception:
-        return "unknown"
-
 
 def version_callback(value: bool):
     """Show the application's version and exit."""
     if value:
-        typer.echo(f"WILDkCAT version: {get_version()}")
+        typer.echo(f"WILDkCAT version: {__version__}")
         raise typer.Exit()
 
 
