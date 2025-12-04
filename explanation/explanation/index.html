@@ -508,9 +508,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#matching-score" class="md-nav__link">
+  <a href="#penalty-score" class="md-nav__link">
     <span class="md-ellipsis">
-      Matching score
+      Penalty score
     </span>
   </a>
   
@@ -738,12 +738,12 @@
 <h2 id="2-retrieve-experimental-kcat-values-from-brenda-andor-sabio-rk">2 - Retrieve experimental kcat values from BRENDA and/or SABIO-RK</h2>
 <p>In this step, experimental kcat values are retrieved from the BRENDA and SABIO-RK databases.</p>
 <p>If no exact value is available, the pipeline assigns the closest possible match using a penalty-based scoring system.</p>
-<h3 id="matching-score">Matching score</h3>
-<p>The matching score evaluates how well a candidate kcat entry fits the query enzyme and conditions.</p>
+<h3 id="penalty-score">Penalty score</h3>
+<p>The penalty score evaluates how well a candidate kcat entry fits the query enzyme and conditions.</p>
 <ul>
 <li>A lower score indicates a better match.</li>
 <li><code>0</code> = best possible match (perfect fit).</li>
-<li><code>17</code> = no reliable match.</li>
+<li><code>16</code> = no reliable match.</li>
 </ul>
 <h3 id="penalty-based-scoring-system">Penalty-based scoring system</h3>
 <div class="admonition warning">
@@ -803,7 +803,7 @@
 <tr>
 <td></td>
 <td>Mutant</td>
-<td>16</td>
+<td>15</td>
 </tr>
 <tr>
 <td><strong>Temperature</strong></td>
@@ -850,7 +850,7 @@
 </li>
 <li>
 <p><strong>Tie-Breaking Strategy</strong></p>
-<p>When multiple kcat entries share the same matching score, the following criteria are applied sequentially to select the most appropriate value:</p>
+<p>When multiple kcat entries share the same penalty score, the following criteria are applied sequentially to select the most appropriate value:</p>
 <ul>
 <li>
 <p><em>Sequence Identity</em>: Align the enzyme sequences using <a href="https://biopython.org">BioPython</a>’s <code>Align.PairwiseAligner()</code> and prioritize higher sequence identity.</p>
@@ -898,7 +898,7 @@ kcat_{\text{opt}} = kcat_{\text{db}} \times \exp\left(-\frac{E_a}{R} \left(\frac
 </div>
 <p>When no suitable experimental kcat value is found, the pipeline allows the prediction of kcat values using the CataPro machine learning model.
 The predictions rely on reaction substrates (SMILES) and enzyme sequences. </p>
-<p>Predicted kcat values are used to replace experimental values that fall below a threshold, defined by the <code>limit_matching_score</code> argument.
+<p>Predicted kcat values are used to replace experimental values that fall below a threshold, defined by the <code>limit_penalty_score</code> argument.
 If a kcat value cannot be predicted, the best available experimental kcat value is retained.</p>
 <p>If multiple substrates are involved in the reaction, the prediction is performed for each substrate, and the lowest predicted kcat value is retained.</p>
 <h3 id="details-of-the-prediction-process">Details of the prediction process</h3>

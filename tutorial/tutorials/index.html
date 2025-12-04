@@ -793,7 +793,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">warning_enz</th>
 <th style="text-align: left;">kcat</th>
 <th style="text-align: left;">db</th>
-<th style="text-align: left;">matching_score</th>
+<th style="text-align: left;">penalty_score</th>
 <th style="text-align: left;">kcat_substrate</th>
 <th style="text-align: left;">kcat_organism</th>
 <th style="text-align: left;">kcat_enzyme</th>
@@ -870,7 +870,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <h2 id="3-optional-predict-missing-kcat-values-using-machine-learning">3 — <em>(Optional)</em> Predict missing kcat values using machine learning</h2>
 <h3 id="31-prepare-input-file-for-catapro">3.1 - Prepare input file for CataPro</h3>
 <p><em>Time: ~3-5 min</em> </p>
-<p>Prepare the input file for CataPro by filtering out the kcat entries that were not found in the previous step and below a limit score (<code>limit_matching_score</code>). The resulting file will be used to predict missing kcat values using machine learning.</p>
+<p>Prepare the input file for CataPro by filtering out the kcat entries that were not found in the previous step and below a limit score (<code>limit_penalty_score</code>). The resulting file will be used to predict missing kcat values using machine learning.</p>
 <p>The function generates the files named <code>catapro_input.csv</code> and <code>catapro_input_substrates_to_smiles.tsv</code> in the subfolder <code>machine_learning</code>. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -883,7 +883,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 
 <span class="n">run_prediction_part1</span><span class="p">(</span>
     <span class="n">output_folder</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span>
-    <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">6</span>
+    <span class="n">limit_penalty_score</span><span class="o">=</span><span class="mi">6</span>
     <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -914,7 +914,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <span class="n">run_prediction_part2</span><span class="p">(</span>
     <span class="n">output_folder</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> 
     <span class="n">catapro_predictions_path</span><span class="o">=</span><span class="s2">&quot;output/machine_learning/catapro_output.csv&quot;</span><span class="p">,</span> 
-    <span class="n">limit_matching_score</span><span class="o">=</span><span class="mi">6</span>
+    <span class="n">limit_penalty_score</span><span class="o">=</span><span class="mi">6</span>
     <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -944,7 +944,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <th style="text-align: left;">warning_enz</th>
 <th style="text-align: left;">kcat</th>
 <th style="text-align: left;">db</th>
-<th style="text-align: left;">matching_score</th>
+<th style="text-align: left;">penalty_score</th>
 <th style="text-align: left;">kcat_substrate</th>
 <th style="text-align: left;">kcat_organism</th>
 <th style="text-align: left;">kcat_enzyme</th>
