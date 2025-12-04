@@ -71,13 +71,13 @@ wildkcat retrieval \
 # Generate input for CataPro
 wildkcat prediction-part1 \
     path/to/folder_output
-    6  # Limit matching score 
+    6  # Limit penalty score 
 
 # Integrate CataPro prediction
 wildkcat prediction-part2 \
     path/to/folder_output
     prediction_output.csv \
-    6  # Limit matching score
+    6  # Limit penalty score
 
 # Generate summary report
 wildkcat report \
@@ -86,7 +86,7 @@ wildkcat report \
 ```
 
 > [!WARNING]  
-> Currently, the [SABIO-RK database](http://sabio.h-its.org) is experiencing server overload and queries can be very slow, especially for large models. In these cases, it is recommended to use only the 'brenda' database in the `retrieval` command.
+> The [SABIO-RK database](http://sabio.h-its.org) is often experiencing server overload and queries can be very slow, especially for large models. In these cases, it is recommended to use only the 'brenda' database in the `retrieval` command.
 
 ---
 

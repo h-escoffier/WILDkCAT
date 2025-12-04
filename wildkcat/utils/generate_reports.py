@@ -263,8 +263,8 @@ def report_retrieval(df, output_folder, parameters, shader=False) -> None:
     kcat_values = pd.to_numeric(df['kcat'], errors='coerce').dropna()
 
     # Only use scores present in the data
-    present_scores = sorted(df['matching_score'].dropna().unique())
-    score_counts = df['matching_score'].value_counts().reindex(present_scores, fill_value=0)
+    present_scores = sorted(df['penalty_score'].dropna().unique())
+    score_counts = df['penalty_score'].value_counts().reindex(present_scores, fill_value=0)
     total = len(df)
     matched = len(kcat_values)
     match_percent = matched / total * 100 if total else 0
@@ -313,11 +313,11 @@ def report_retrieval(df, output_folder, parameters, shader=False) -> None:
         max_exp = int(np.ceil(np.log10(kcat_values.max())))
         bins = np.logspace(min_exp, max_exp, num=40)
 
-        # Rm empty score groups (16 - 17)
+        # Rm empty score groups (15 - 16)
         hist_data = []
         valid_scores = []
         for score in present_scores:
-            vals = pd.to_numeric(df[df['matching_score'] == score]['kcat'], errors='coerce')
+            vals = pd.to_numeric(df[df['penalty_score'] == score]['kcat'], errors='coerce')
             vals = vals[vals.notna()]
             if not vals.empty:
                 hist_data.append(vals)
@@ -341,7 +341,7 @@ def report_retrieval(df, output_folder, parameters, shader=False) -> None:
         ax.set_title(f"", fontsize=13)
         
         ax.legend(
-            title="Matching Score", 
+            title="Penalty Score", 
             fontsize=10, 
             title_fontsize=11,
             loc='center left', 
@@ -423,7 +423,7 @@ def report_retrieval(df, output_folder, parameters, shader=False) -> None:
             </div>
 
             <div class="card">
-                <h2>Matching Score Distribution</h2>
+                <h2>Penalty Score Distribution</h2>
                 <div class="progress-stacked">
     """
 
@@ -464,7 +464,7 @@ def report_retrieval(df, output_folder, parameters, shader=False) -> None:
     # Histogram section (stacked by score)
     html += """
         <div class="card">
-            <h2>Distribution of k<sub>cat</sub> values (Stacked by Matching Score)</h2>
+            <h2>Distribution of k<sub>cat</sub> values (Stacked by Penalty Score)</h2>
             <div class="img-section">
     """
     if kcat_hist_base64:
@@ -477,10 +477,10 @@ def report_retrieval(df, output_folder, parameters, shader=False) -> None:
     # Metadata section
     html += f"""
             <div class="card">
-                <h2>Matching Score</h2>
+                <h2>Penalty Score</h2>
                 <p>
-                    The matching score evaluates how well a candidate k<sub>cat</sub> entry fits the query enzyme and conditions. 
-                    A lower score indicates a better match (0 = Best possible, 17 = No match).
+                    The penalty score evaluates how well a candidate k<sub>cat</sub> entry fits the query enzyme and conditions. 
+                    A lower score indicates a better match (0 = Best possible, 16 = No match).
                 </p>
                 <h3>Scoring process:</h3>
                 <ul>
@@ -842,34 +842,44 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
         return "<p>No valid values available for plotting.</p>"
     
     img_final = plot_kcat_distribution_stacked(
-        'kcat', "Kcat Distribution", "db"
+        'kcat', rf"{model.id} - $k_{{\mathrm{{cat}}}}$ Distribution", "db"
     )
-
-    # Coverage
+    
     db_counts = df["db"].fillna("Unknown").value_counts()
     total_db = db_counts.sum()
 
+    # Couleurs
     colors = {
-        "brenda": "#55bb55",      # blue
-        "sabio_rk": "#2277cc",    # orange
-        "catapro": "#eedd00",     # green
-        "Unknown": "#ddd"      # gray
+        "brenda": "#55bb55",
+        "sabio_rk": "#2277cc",
+        "catapro": "#eedd00",
+        "Unknown": "#ddd"
     }
 
-    db_colors = {db: colors.get(db, "#ddd") for db in db_counts.index}
+    # Ordre imposé
+    ordered_dbs = ["brenda", "sabio_rk", "catapro", "Unknown"]
 
     progress_segments = ""
     legend_items = ""
-    for db, count in db_counts.items():
-        percent = count / total_db * 100
+
+    for db in ordered_dbs:
+        count = db_counts.get(db, 0)
+        if total_db > 0:
+            percent = count / total_db * 100
+        else:
+            percent = 0
+
+        color = colors.get(db, "#ddd")
+
         progress_segments += f"""
-            <div class="progress-segment" style="width:{percent:.1f}%; background-color:{db_colors[db]};"
+            <div class="progress-segment" style="width:{percent:.1f}%; background-color:{color};"
                 title="{db.capitalize()}: {percent:.1f}%"></div>
         """
+
         legend_items += f"""
             <span style="display:flex; align-items:center; margin-right:15px; margin-bottom:5px;">
                 <span style="display:flex; align-items:center; width:16px; height:16px; 
-                            background:{db_colors[db]}; border:1px solid #000; margin-right:5px;"></span>
+                            background:{color}; border:1px solid #000; margin-right:5px;"></span>
                 {db.capitalize()} ({percent:.1f}%)
             </span>
         """
@@ -878,7 +888,9 @@ def report_final(model, final_df, output_folder, shader=False) -> None:
         <div class="progress-multi" style="height: 18px; margin-bottom:18px; display:flex;">
             {progress_segments}
         </div>
-        <div style="margin-top:10px; display:flex; justify-content:center; flex-wrap: wrap;">{legend_items}</div>
+        <div style="margin-top:10px; display:flex; justify-content:center; flex-wrap: wrap;">
+            {legend_items}
+        </div>
     """
 
     # Statistics 

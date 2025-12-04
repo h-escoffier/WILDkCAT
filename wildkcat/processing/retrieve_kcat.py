@@ -111,7 +111,7 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
     Returns:
         tuple: 
             - best_candidate (dict or None): The best matching kcat entry, or None if no match is found.
-            - best_score (int or float): The score of the best candidate, or 17 if no match is found in the database.
+            - best_score (int or float): The score of the best candidate, or 16 if no match is found in the database.
     """
     if kcat_dict['ec_code'] == '' or kcat_dict['warning_ec'] in ['incomplete', 'transferred']:
         api_output = get_enzyme(kcat_dict['catalytic_enzyme'], general_criteria['Organism'], database) 
@@ -119,7 +119,7 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
         api_output = get_turnover_number(kcat_dict['ec_code'], database)
     
     if api_output.empty: 
-        return None, 17
+        return None, 16
             
     best_score, best_candidate = find_best_match(kcat_dict, api_output, general_criteria)
     return best_candidate, best_score
@@ -128,8 +128,8 @@ def extract_kcat(kcat_dict, general_criteria, database='both'):
 def merge_ec(kcat_df: pd.DataFrame):
     """
     Merge entries with the same combination of reaction and substrate that differ only in EC numbers.
-    Select the kcat entry with the highest matching score; in case of a tie, use the following priorities:
-    1. Highest matching_score
+    Select the kcat entry with the highest penalty score; in case of a tie, use the following priorities:
+    1. Highest penalty_score
     2. Highest sequence_score
     3. Closest organism_score
     4. Highest kcat_value
@@ -143,7 +143,7 @@ def merge_ec(kcat_df: pd.DataFrame):
     
     # Sort by the selection criteria
     kcat_df_sorted = kcat_df.sort_values(
-        by=['matching_score', 'kcat_id_percent', 'kcat_organism_score', 'kcat'],
+        by=['penalty_score', 'kcat_id_percent', 'kcat_organism_score', 'kcat'],
         ascending=[True, False, True, False]
     )
 
@@ -183,7 +183,7 @@ def merge_ec(kcat_df: pd.DataFrame):
             'rxn', 'rxn_kegg', 'ec_code', 'ec_codes', 'direction',
             'substrates_name', 'substrates_kegg', 'products_name', 'products_kegg',
             'genes', 'uniprot', 'catalytic_enzyme', 'warning_ec', 'warning_enz',
-            'kcat', 'kcat_db', 'matching_score', 'kcat_substrate', 'kcat_organism', 'kcat_enzyme',
+            'kcat', 'kcat_db', 'penalty_score', 'kcat_substrate', 'kcat_organism', 'kcat_enzyme',
             'kcat_temperature', 'kcat_ph', 'kcat_variant',
             'kcat_id_percent', 'kcat_organism_score'
         ]
@@ -280,7 +280,7 @@ def run_retrieval(output_folder: str,
         start_index = 0
     
         # Initialize new columns
-        for col in ['kcat', 'matching_score', 'kcat_substrate', 'kcat_organism',
+        for col in ['kcat', 'penalty_score', 'kcat_substrate', 'kcat_organism',
                     'kcat_enzyme', 'kcat_temperature', 'kcat_ph', 'kcat_variant',
                     'kcat_db', 'kcat_id_percent', 'kcat_organism_score']:
             if col not in kcat_df.columns:
@@ -298,9 +298,9 @@ def run_retrieval(output_folder: str,
 
         kcat_dict = row._asdict()
         
-        # Extract kcat and matching score
-        best_match, matching_score = extract_kcat(kcat_dict, general_criteria, database=database)
-        kcat_df.loc[row.Index, 'matching_score'] = matching_score
+        # Extract kcat and penalty score
+        best_match, penalty_score = extract_kcat(kcat_dict, general_criteria, database=database)
+        kcat_df.loc[row.Index, 'penalty_score'] = penalty_score
 
         request_count += 1
         if request_count % 300 == 0:
@@ -340,8 +340,8 @@ def run_retrieval(output_folder: str,
     #     logging.info("Cache folder removed after successful completion.")
 
     # Format the df
-    kcat_df['matching_score'] = (
-        pd.to_numeric(kcat_df['matching_score'], errors='coerce')
+    kcat_df['penalty_score'] = (
+        pd.to_numeric(kcat_df['penalty_score'], errors='coerce')
         .round()
         .astype('Int64')
         )

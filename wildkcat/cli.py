@@ -1,6 +1,4 @@
 import typer
-import tomli
-from pathlib import Path
 
 from dotenv import load_dotenv
 from wildkcat import run_extraction, run_retrieval, run_prediction_part1, run_prediction_part2, generate_summary_report
@@ -8,7 +6,7 @@ from wildkcat import run_extraction, run_retrieval, run_prediction_part1, run_pr
 
 load_dotenv()
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 app = typer.Typer(help="WILDkCAT CLI - Extract, Retrieve and Predict kcat values for a metabolic model.")
 
@@ -93,7 +91,7 @@ def retrieval(
 @app.command()
 def prediction_part1(
     output_folder: str, 
-    limit_matching_score: int,
+    limit_penalty_score: int,
     report: bool = True
 ):
     """
@@ -103,13 +101,13 @@ def prediction_part1(
     Parameters:
         output_folder (str): Path to the output folder where the files are and will be saved.
 
-        limit_matching_score (int): Threshold for filtering entries based on matching score.
+        limit_penalty_score (int): Threshold for filtering entries based on penalty score.
 
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
     run_prediction_part1(
         output_folder=output_folder,
-        limit_matching_score=limit_matching_score, 
+        limit_penalty_score=limit_penalty_score, 
         report=report
     )
     typer.echo(f"Prediction Part 1 finished. Output saved at {output_folder}/machine_learning/catapro_input.csv")
@@ -119,7 +117,7 @@ def prediction_part1(
 def prediction_part2(
     output_folder: str,
     catapro_predictions_path: str,
-    limit_matching_score: int
+    limit_penalty_score: int
 ):
     """
     Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
@@ -130,14 +128,14 @@ def prediction_part2(
 
         catapro_predictions_path (str): Path to the Catapro predictions CSV file.
 
-        limit_matching_score (float): Threshold for taking predictions over retrieved values.
+        limit_penalty_score (float): Threshold for taking predictions over retrieved values.
 
         report (bool, optional): If True, generates a report (default: True). 
     """
     run_prediction_part2(
         output_folder=output_folder,
         catapro_predictions_path=catapro_predictions_path,
-        limit_matching_score=limit_matching_score
+        limit_penalty_score=limit_penalty_score
     )
     typer.echo(f"Prediction Part 2 finished. Output saved at {output_folder}/kcat_full.tsv")
 

@@ -16,13 +16,13 @@ from ..utils.manage_warnings import DedupFilter
 # --- Format ---
 
 
-def format_output(kcat_df, limit_matching_score):
+def format_output(kcat_df, limit_penalty_score):
     """
     Formats the kcat DataFrame by selecting and rounding kcat values based on matching score and prediction availability.
 
     Parameters:
         kcat_df (pandas.DataFrame) : Input DataFrame containing kcat-related columns and prediction results.
-        limit_matching_score (float) : Threshold for the matching score to determine whether to use predicted kcat values.
+        limit_penalty_score (float) : Threshold for the matching score to determine whether to use predicted kcat values.
 
     Returns: 
         pandas.DataFrame : Formatted DataFrame with selected and rounded kcat values, reordered columns, and updated source information.
@@ -31,7 +31,7 @@ def format_output(kcat_df, limit_matching_score):
 
     def choose_row(row):
         if pd.notna(row["kcat_source"]):
-            if row["matching_score"] >= limit_matching_score and pd.notna(row["catapro_predicted_kcat_s"]):
+            if row["penalty_score"] >= limit_penalty_score and pd.notna(row["catapro_predicted_kcat_s"]):
                 return pd.Series([row["catapro_predicted_kcat_s"], "catapro"])
             else:
                 return pd.Series([row["kcat_source"], row["kcat_source_db"]])
@@ -59,9 +59,9 @@ def format_output(kcat_df, limit_matching_score):
         "kcat_db": "db"
     })
 
-    # If db = catapro then remove the content in the columns "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
+    # If db = catapro then remove the content in the columns "penalty_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
     kcat_df.loc[kcat_df['db'] == 'catapro', [
-        "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", 
+        "penalty_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", 
         "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent", "kcat_organism_score"
         ]] = np.nan
     
@@ -71,7 +71,7 @@ def format_output(kcat_df, limit_matching_score):
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
         "genes", "uniprot", "catalytic_enzyme", "warning_ec", "warning_enz",
         "kcat", "db", 
-        "matching_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent", "kcat_organism_score"
+        "penalty_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent", "kcat_organism_score"
         ]]
 
     return kcat_df
@@ -81,7 +81,7 @@ def format_output(kcat_df, limit_matching_score):
 
 
 def run_prediction_part1(output_folder: str,
-                         limit_matching_score: int, 
+                         limit_penalty_score: int, 
                          report: bool = True) -> None:
     """
     Processes kcat data file to generate input files for CataPro prediction.
@@ -89,7 +89,7 @@ def run_prediction_part1(output_folder: str,
 
     Parameters:
         output_folder (str): Path to the output folder where the results will be saved.
-        limit_matching_score (int): Threshold for filtering entries based on matching score.
+        limit_penalty_score (int): Threshold for filtering entries based on matching score.
         report (bool, optional): Whether to generate a report using the retrieved data (default: True). 
     """
     # Intitialize logging
@@ -111,7 +111,7 @@ def run_prediction_part1(output_folder: str,
     kcat_df = pd.read_csv(kcat_file_path, sep='\t')
 
     # Subset rows with no values or matching score above the limit
-    kcat_df = kcat_df[(kcat_df['matching_score'] >= limit_matching_score) | (kcat_df['matching_score'].isnull())]
+    kcat_df = kcat_df[(kcat_df['penalty_score'] >= limit_penalty_score) | (kcat_df['penalty_score'].isnull())]
     # Drop rows with no UniProt ID or no substrates_kegg
     before_duplicates_filter = len(kcat_df) - 1 
     kcat_df = kcat_df[kcat_df['uniprot'].notnull() & kcat_df['substrates_kegg'].notnull()]
@@ -137,7 +137,7 @@ def run_prediction_part1(output_folder: str,
 
 def run_prediction_part2(output_folder: str,
                          catapro_predictions_path: str,
-                         limit_matching_score: int) -> None:
+                         limit_penalty_score: int) -> None:
     """
     Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
     mapping substrates to SMILES, formatting the output, and optionally generating a report.
@@ -145,7 +145,7 @@ def run_prediction_part2(output_folder: str,
     Parameters:
         output_folder (str): Path to the output folder where the results will be saved.
         catapro_predictions_path (str): Path to the CataPro predictions CSV file.
-        limit_matching_score (float): Threshold for taking predictions over retrieved values.
+        limit_penalty_score (float): Threshold for taking predictions over retrieved values.
     """ 
     # Intitialize logging
     os.makedirs(os.path.join(output_folder, "logs"), exist_ok=True)
@@ -170,7 +170,7 @@ def run_prediction_part2(output_folder: str,
                                             )
     
     # Save the output as a TSV file
-    kcat_df = format_output(kcat_df, limit_matching_score)
+    kcat_df = format_output(kcat_df, limit_penalty_score)
     output_path = os.path.join(output_folder, "kcat_full.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")

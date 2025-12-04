@@ -59,13 +59,13 @@ In this step, experimental kcat values are retrieved from the BRENDA and SABIO-R
 
 If no exact value is available, the pipeline assigns the closest possible match using a penalty-based scoring system.
 
-### Matching score
+### Penalty score
 
-The matching score evaluates how well a candidate kcat entry fits the query enzyme and conditions.
+The penalty score evaluates how well a candidate kcat entry fits the query enzyme and conditions.
 
 * A lower score indicates a better match.
 * `0` = best possible match (perfect fit).
-* `17` = no reliable match.
+* `16` = no reliable match.
 
 ### Penalty-based scoring system 
 
@@ -85,7 +85,7 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 |                      | Does not match or unknown                             | 3       |
 | **Variant**          | Wild-type                                             | 0       |
 |                      | Unknown                                               | 1       |
-|                      | Mutant                                                | 16      |
+|                      | Mutant                                                | 15      |
 | **Temperature**      | Within specified range                                | 0       |
 |                      | Corrected via Arrhenius equation                      | 0       |
 |                      | Unknown                                               | 1       |
@@ -102,7 +102,7 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 
 2. **Tie-Breaking Strategy**
 
-    When multiple kcat entries share the same matching score, the following criteria are applied sequentially to select the most appropriate value:
+    When multiple kcat entries share the same penalty score, the following criteria are applied sequentially to select the most appropriate value:
 
     * *Sequence Identity*: Align the enzyme sequences using [BioPython](https://biopython.org)’s `Align.PairwiseAligner()` and prioritize higher sequence identity.
     
@@ -149,7 +149,7 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 When no suitable experimental kcat value is found, the pipeline allows the prediction of kcat values using the CataPro machine learning model.
 The predictions rely on reaction substrates (SMILES) and enzyme sequences. 
 
-Predicted kcat values are used to replace experimental values that fall below a threshold, defined by the `limit_matching_score` argument.
+Predicted kcat values are used to replace experimental values that fall below a threshold, defined by the `limit_penalty_score` argument.
 If a kcat value cannot be predicted, the best available experimental kcat value is retained.
 
 If multiple substrates are involved in the reaction, the prediction is performed for each substrate, and the lowest predicted kcat value is retained.

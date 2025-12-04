@@ -43,7 +43,7 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
     # 1. Remove mutant enzymes
     api_output = api_output[api_output["EnzymeVariant"].isin(['wildtype', None])].copy()
     if api_output.empty:
-        return 16, None
+        return 15, None
 
     # 2. Compute score and adjust kcat if needed
     scores = []

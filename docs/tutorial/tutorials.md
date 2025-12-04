@@ -96,7 +96,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 
 Example of the output file `kcat_retrieved.tsv`:
 
-| rxn | rxn_kegg | ec_code | ec_codes | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | matching_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
+| rxn | rxn_kegg | ec_code | ec_codes | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
 | :-- | :------- | :------ | :------- | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--------------- | :--------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
 | PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0 |
 | ACALD | R00228 | 1.2.1.10 | 1.2.1.10 | reverse | Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced | C00024;C00080;C00004 | Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide | C00084;C00010;C00003 | b1241 | P0A9Q7 | P0A9Q7 | | | 15.7 | brenda | 8 | acetaldehyde | Escherichia coli |  | 25 | 8.0 |  |  | 0 |
@@ -115,7 +115,7 @@ Example of the output file `kcat_retrieved.tsv`:
 
 *Time: ~3-5 min* 
 
-Prepare the input file for CataPro by filtering out the kcat entries that were not found in the previous step and below a limit score (`limit_matching_score`). The resulting file will be used to predict missing kcat values using machine learning.
+Prepare the input file for CataPro by filtering out the kcat entries that were not found in the previous step and below a limit score (`limit_penalty_score`). The resulting file will be used to predict missing kcat values using machine learning.
 
 The function generates the files named `catapro_input.csv` and `catapro_input_substrates_to_smiles.tsv` in the subfolder `machine_learning`. 
 
@@ -130,7 +130,7 @@ The function generates the files named `catapro_input.csv` and `catapro_input_su
 
     run_prediction_part1(
         output_folder="output",
-        limit_matching_score=6
+        limit_penalty_score=6
         )
     ```
 
@@ -168,7 +168,7 @@ After running CataPro with the prepared input file, integrate the predicted kcat
     run_prediction_part2(
         output_folder="output", 
         catapro_predictions_path="output/machine_learning/catapro_output.csv", 
-        limit_matching_score=6
+        limit_penalty_score=6
         )
     ```
 
@@ -180,7 +180,7 @@ After running CataPro with the prepared input file, integrate the predicted kcat
 
 Example of the output file `kcat_full.tsv`:
 
-| rxn | rxn_kegg | ec_code  | ec_codes | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | matching_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
+| rxn | rxn_kegg | ec_code  | ec_codes | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
 | :-- | :------- | :------- | :------- | :-------- | :-------------- | :--------------- | :------------ | :-------------| :---- | :------ | :--------------- | :--------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
 | PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0.0 |
 | ACALD | R00228 | 1.2.1.10 | 1.2.1.10 | reverse | Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced | C00024;C00080;C00004 | Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide | C00084;C00010;C00003 | b1241 | P0A9Q7 | P0A9Q7 | | | 20.2328 | catapro |  |  |  |  |  |  |  |  |
