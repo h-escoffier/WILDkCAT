@@ -71,13 +71,13 @@ wildkcat retrieval \
 # Generate input for CataPro
 wildkcat prediction-part1 \
     path/to/folder_output
-    6  # Limit penalty score 
+    9  # Limit penalty score 
 
 # Integrate CataPro prediction
 wildkcat prediction-part2 \
     path/to/folder_output
     prediction_output.csv \
-    6  # Limit penalty score
+    9  # Limit penalty score
 
 # Generate summary report
 wildkcat report \

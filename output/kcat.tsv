@@ -3,8 +3,8 @@ PFK		2.7.1.11	forward	ATP C10H12N5O13P3;D-Fructose 6-phosphate	C00002;C05345	ADP
 PFK		2.7.1.11	forward	ATP C10H12N5O13P3;D-Fructose 6-phosphate	C00002;C05345	ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+	C00008;C00354;C00080	b1723	P06999	P06999		
 PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b0903;b2579	P68066;P0A9N4;P09373	P09373		
 PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b0903	P0A9N4;P09373	P09373		
-PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b3114	P0A9N4;P42632	P42632		
-PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b3951;b3952	P32675;P32674			none
+PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b0902;b3114	P42632;P0A9N4	P42632		
+PFL	R00212	2.3.1.54	forward	Coenzyme A;Pyruvate	C00010;C00022	Acetyl-CoA;Formate	C00024;C00058	b3951;b3952	P32674;P32675			none
 PGI		5.3.1.9	forward	D-Glucose 6-phosphate	C00092	D-Fructose 6-phosphate	C05345	b4025	P0A6T1	P0A6T1		
 PGI		5.3.1.9	reverse	D-Fructose 6-phosphate	C05345	D-Glucose 6-phosphate	C00092	b4025	P0A6T1	P0A6T1		
 PGK	R01512	2.7.2.3	forward	3-Phospho-D-glycerate;ATP C10H12N5O13P3	C00197;C00002	3-Phospho-D-glyceroyl phosphate;ADP C10H12N5O10P2	C00236;C00008	b2926	P0A799	P0A799		
@@ -73,7 +73,6 @@ ACONTb	R01900	4.2.1.3	forward	Cis-Aconitate;H2O H2O	C00417;C00001	Isocitrate	C00
 ACONTb	R01900	4.2.1.3	reverse	Isocitrate	C00311	Cis-Aconitate;H2O H2O	C00417;C00001	b1276	P25516	P25516		
 ATPM	R00086	3.6.1.5	forward	ATP C10H12N5O13P3;H2O H2O	C00002;C00001	ADP C10H12N5O10P2;H+;Phosphate	C00008;C00080;C00009					no_gpr
 ATPM	R00086	3.6.1.8	forward	ATP C10H12N5O13P3;H2O H2O	C00002;C00001	ADP C10H12N5O10P2;H+;Phosphate	C00008;C00080;C00009					no_gpr
-ATPM	R00086	3.6.4.10	forward	ATP C10H12N5O13P3;H2O H2O	C00002;C00001	ADP C10H12N5O10P2;H+;Phosphate	C00008;C00080;C00009					no_gpr
 ATPM	R00086	3.6.1.3	forward	ATP C10H12N5O13P3;H2O H2O	C00002;C00001	ADP C10H12N5O10P2;H+;Phosphate	C00008;C00080;C00009					no_gpr
 ATPM	R00086	3.6.1.15	forward	ATP C10H12N5O13P3;H2O H2O	C00002;C00001	ADP C10H12N5O10P2;H+;Phosphate	C00008;C00080;C00009					no_gpr
 ATPM	R00086	3.6.3.11	forward	ATP C10H12N5O13P3;H2O H2O	C00002;C00001	ADP C10H12N5O10P2;H+;Phosphate	C00008;C00080;C00009					no_gpr
@@ -84,10 +83,10 @@ PPCK	R00341	4.1.1.49	forward	ATP C10H12N5O13P3;Oxaloacetate	C00002;C00036	ADP C1
 PPS	R00199	2.7.9.2	forward	ATP C10H12N5O13P3;H2O H2O;Pyruvate	C00002;C00001;C00022	AMP C10H12N5O7P;H+;Phosphoenolpyruvate;Phosphate	C00020;C00080;C00074;C00009	b1702	P23538	P23538		
 ADK1	R00127	2.7.4.3	forward	AMP C10H12N5O7P;ATP C10H12N5O13P3	C00020;C00002	ADP C10H12N5O10P2	C00008	b0474	P69441	P69441		
 ADK1	R00127	2.7.4.3	reverse	ADP C10H12N5O10P2	C00008	AMP C10H12N5O7P;ATP C10H12N5O13P3	C00020;C00002	b0474	P69441	P69441		
-AKGDH	R08549	1.2.1.52	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0A9P0;P0AFG6;P0AFG3			none
-AKGDH	R08549	2.3.1.61	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0A9P0;P0AFG6;P0AFG3	P0AFG6		
-AKGDH	R08549	1.8.1.4	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0A9P0;P0AFG6;P0AFG3	P0A9P0		
-AKGDH	R08549	1.2.4.2	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0A9P0;P0AFG6;P0AFG3	P0AFG3		
+AKGDH	R08549	1.2.1.52	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0AFG3;P0A9P0;P0AFG6			none
+AKGDH	R08549	2.3.1.61	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0AFG3;P0A9P0;P0AFG6	P0AFG6		
+AKGDH	R08549	1.8.1.4	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0AFG3;P0A9P0;P0AFG6	P0A9P0		
+AKGDH	R08549	1.2.4.2	forward	2-Oxoglutarate;Coenzyme A;Nicotinamide adenine dinucleotide	C00026;C00010;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Succinyl-CoA	C00011;C00004;C00091	b0116;b0726;b0727	P0AFG3;P0A9P0;P0AFG6	P0AFG3		
 PTAr	R00230	2.3.1.8	forward	Acetyl-CoA;Phosphate	C00024;C00009	Acetyl phosphate;Coenzyme A	C00227;C00010	b2297	P0A9M8	P0A9M8		
 PTAr	R00230	2.3.1.8	reverse	Acetyl phosphate;Coenzyme A	C00227;C00010	Acetyl-CoA;Phosphate	C00024;C00009	b2297	P0A9M8	P0A9M8		
 PTAr	R00230	2.3.1.8	forward	Acetyl-CoA;Phosphate	C00024;C00009	Acetyl phosphate;Coenzyme A	C00227;C00010	b2458	P77218	P77218		
@@ -112,8 +111,8 @@ D_LACt2			forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P3
 D_LACt2			reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing	
 ENO	R00658	4.2.1.11	forward	D-Glycerate 2-phosphate	C00631	H2O H2O;Phosphoenolpyruvate	C00001;C00074	b2779	P0A6P9	P0A6P9		
 ENO	R00658	4.2.1.11	reverse	H2O H2O;Phosphoenolpyruvate	C00001;C00074	D-Glycerate 2-phosphate	C00631	b2779	P0A6P9	P0A6P9		
-SUCOAS	R00405	6.2.1.5	forward	ATP C10H12N5O13P3;Coenzyme A;Succinate	C00002;C00010;C00042	ADP C10H12N5O10P2;Phosphate;Succinyl-CoA	C00008;C00009;C00091	b0728;b0729	P0AGE9;P0A836	P0AGE9;P0A836		multiple
-SUCOAS	R00405	6.2.1.5	reverse	ADP C10H12N5O10P2;Phosphate;Succinyl-CoA	C00008;C00009;C00091	ATP C10H12N5O13P3;Coenzyme A;Succinate	C00002;C00010;C00042	b0728;b0729	P0AGE9;P0A836	P0AGE9;P0A836		multiple
+SUCOAS	R00405	6.2.1.5	forward	ATP C10H12N5O13P3;Coenzyme A;Succinate	C00002;C00010;C00042	ADP C10H12N5O10P2;Phosphate;Succinyl-CoA	C00008;C00009;C00091	b0728;b0729	P0A836;P0AGE9	P0A836;P0AGE9		multiple
+SUCOAS	R00405	6.2.1.5	reverse	ADP C10H12N5O10P2;Phosphate;Succinyl-CoA	C00008;C00009;C00091	ATP C10H12N5O13P3;Coenzyme A;Succinate	C00002;C00010;C00042	b0728;b0729	P0A836;P0AGE9	P0A836;P0AGE9		multiple
 TALA	R01827	2.2.1.2	forward	Glyceraldehyde 3-phosphate;Sedoheptulose 7-phosphate	C00661;C05382	D-Erythrose 4-phosphate;D-Fructose 6-phosphate	C00279;C05345	b2464	P0A867	P0A867		
 TALA	R01827	2.2.1.2	reverse	D-Erythrose 4-phosphate;D-Fructose 6-phosphate	C00279;C05345	Glyceraldehyde 3-phosphate;Sedoheptulose 7-phosphate	C00661;C05382	b2464	P0A867	P0A867		
 TALA	R01827	2.2.1.2	forward	Glyceraldehyde 3-phosphate;Sedoheptulose 7-phosphate	C00661;C05382	D-Erythrose 4-phosphate;D-Fructose 6-phosphate	C00279;C05345	b0008	P0A870	P0A870		
@@ -222,7 +221,7 @@ NADTRHD	R00112	1.6.1.1	forward	Nicotinamide adenine dinucleotide;Nicotinamide ad
 NADTRHD	R00112	1.6.1.1	forward	Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00003;C00005	Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00004;C00006	b1602;b1603	P0AB67;P07001			none
 NH4t			forward	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing	
 NH4t			reverse	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing	
-PDH	R00209	1.8.1.4	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0A9P0;P0AFG8;P06959	P0A9P0		
-PDH	R00209	1.2.1.51	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0A9P0;P0AFG8;P06959			none
-PDH	R00209	1.2.4.1	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0A9P0;P0AFG8;P06959	P0AFG8		
-PDH	R00209	2.3.1.12	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0A9P0;P0AFG8;P06959	P06959		
+PDH	R00209	1.8.1.4	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P0A9P0;P06959	P0A9P0		
+PDH	R00209	1.2.1.51	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P0A9P0;P06959			none
+PDH	R00209	1.2.4.1	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P0A9P0;P06959	P0AFG8		
+PDH	R00209	2.3.1.12	forward	Coenzyme A;Nicotinamide adenine dinucleotide;Pyruvate	C00010;C00003;C00022	Acetyl-CoA;CO2 CO2;Nicotinamide adenine dinucleotide - reduced	C00024;C00011;C00004	b0114;b0115;b0116	P0AFG8;P0A9P0;P06959	P06959		

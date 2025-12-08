@@ -1723,7 +1723,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
         <span class="n">start_index</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Initialize new columns</span>
-        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;kcat&#39;</span><span class="p">,</span> <span class="s1">&#39;matching_score&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_substrate&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_organism&#39;</span><span class="p">,</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;kcat&#39;</span><span class="p">,</span> <span class="s1">&#39;penalty_score&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_substrate&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_organism&#39;</span><span class="p">,</span>
                     <span class="s1">&#39;kcat_enzyme&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_ph&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_variant&#39;</span><span class="p">,</span>
                     <span class="s1">&#39;kcat_db&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_id_percent&#39;</span><span class="p">,</span> <span class="s1">&#39;kcat_organism_score&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kcat_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -1741,9 +1741,9 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 
         <span class="n">kcat_dict</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>
 
-        <span class="c1"># Extract kcat and matching score</span>
-        <span class="n">best_match</span><span class="p">,</span> <span class="n">matching_score</span> <span class="o">=</span> <span class="n">extract_kcat</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
-        <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matching_score</span>
+        <span class="c1"># Extract kcat and penalty score</span>
+        <span class="n">best_match</span><span class="p">,</span> <span class="n">penalty_score</span> <span class="o">=</span> <span class="n">extract_kcat</span><span class="p">(</span><span class="n">kcat_dict</span><span class="p">,</span> <span class="n">general_criteria</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">)</span>
+        <span class="n">kcat_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="s1">&#39;penalty_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">penalty_score</span>
 
         <span class="n">request_count</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">request_count</span> <span class="o">%</span> <span class="mi">300</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1783,8 +1783,8 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
     <span class="c1">#     logging.info(&quot;Cache folder removed after successful completion.&quot;)</span>
 
     <span class="c1"># Format the df</span>
-    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+    <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;penalty_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;penalty_score&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
         <span class="o">.</span><span class="n">round</span><span class="p">()</span>
         <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;Int64&#39;</span><span class="p">)</span>
         <span class="p">)</span>
@@ -1812,7 +1812,7 @@ Options are 'both' (default), 'brenda', or 'sabio_rk'.</p>
 
 
 <h3 id="wildkcat.processing.predict_kcat.run_prediction_part1" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part1</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part1</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">limit_penalty_score</span><span class="p">,</span> <span class="n">report</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 </h3>
 
@@ -1852,7 +1852,7 @@ Optionally, it can produce a summary report of the processed data.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>limit_matching_score</code>
+                <code>limit_penalty_score</code>
             </td>
             <td>
                   <code><span title="int">int</span></code>
@@ -1941,7 +1941,7 @@ Optionally, it can produce a summary report of the processed data.</p>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part1</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                         <span class="n">limit_matching_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+                         <span class="n">limit_penalty_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
                          <span class="n">report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Processes kcat data file to generate input files for CataPro prediction.</span>
@@ -1949,7 +1949,7 @@ Optionally, it can produce a summary report of the processed data.</p>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        output_folder (str): Path to the output folder where the results will be saved.</span>
-<span class="sd">        limit_matching_score (int): Threshold for filtering entries based on matching score.</span>
+<span class="sd">        limit_penalty_score (int): Threshold for filtering entries based on matching score.</span>
 <span class="sd">        report (bool, optional): Whether to generate a report using the retrieved data (default: True). </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Intitialize logging</span>
@@ -1971,7 +1971,7 @@ Optionally, it can produce a summary report of the processed data.</p>
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">kcat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="c1"># Subset rows with no values or matching score above the limit</span>
-    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">limit_matching_score</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">())]</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;penalty_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">limit_penalty_score</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;penalty_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">())]</span>
     <span class="c1"># Drop rows with no UniProt ID or no substrates_kegg</span>
     <span class="n">before_duplicates_filter</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> 
     <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">kcat_df</span><span class="p">[</span><span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;uniprot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">kcat_df</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
@@ -2003,7 +2003,7 @@ Optionally, it can produce a summary report of the processed data.</p>
 
 
 <h3 id="wildkcat.processing.predict_kcat.run_prediction_part2" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part2</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">catapro_predictions_path</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">wildkcat</span><span class="o">.</span><span class="n">processing</span><span class="o">.</span><span class="n">predict_kcat</span><span class="o">.</span><span class="n">run_prediction_part2</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">catapro_predictions_path</span><span class="p">,</span> <span class="n">limit_penalty_score</span><span class="p">)</span></code>
 
 </h3>
 
@@ -2059,7 +2059,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>limit_matching_score</code>
+                <code>limit_penalty_score</code>
             </td>
             <td>
                   <code><span title="float">float</span></code>
@@ -2119,7 +2119,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 <span class="normal">175</span>
 <span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_prediction_part2</span><span class="p">(</span><span class="n">output_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                          <span class="n">catapro_predictions_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                         <span class="n">limit_matching_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                         <span class="n">limit_penalty_score</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,</span>
 <span class="sd">    mapping substrates to SMILES, formatting the output, and optionally generating a report.</span>
@@ -2127,7 +2127,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
 <span class="sd">    Parameters:</span>
 <span class="sd">        output_folder (str): Path to the output folder where the results will be saved.</span>
 <span class="sd">        catapro_predictions_path (str): Path to the CataPro predictions CSV file.</span>
-<span class="sd">        limit_matching_score (float): Threshold for taking predictions over retrieved values.</span>
+<span class="sd">        limit_penalty_score (float): Threshold for taking predictions over retrieved values.</span>
 <span class="sd">    &quot;&quot;&quot;</span> 
     <span class="c1"># Intitialize logging</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;logs&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -2152,7 +2152,7 @@ mapping substrates to SMILES, formatting the output, and optionally generating a
                                             <span class="p">)</span>
 
     <span class="c1"># Save the output as a TSV file</span>
-    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">format_output</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">limit_matching_score</span><span class="p">)</span>
+    <span class="n">kcat_df</span> <span class="o">=</span> <span class="n">format_output</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">limit_penalty_score</span><span class="p">)</span>
     <span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;kcat_full.tsv&quot;</span><span class="p">)</span>
     <span class="n">kcat_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output saved to &#39;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
@@ -3051,7 +3051,7 @@ best_candidate (dict or None): Dictionary of the best matching candidate's data,
     <span class="c1"># 1. Remove mutant enzymes</span>
     <span class="n">api_output</span> <span class="o">=</span> <span class="n">api_output</span><span class="p">[</span><span class="n">api_output</span><span class="p">[</span><span class="s2">&quot;EnzymeVariant&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;wildtype&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">api_output</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">16</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="mi">15</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="c1"># 2. Compute score and adjust kcat if needed</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
@@ -8256,7 +8256,19 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">1025</span>
 <span class="normal">1026</span>
 <span class="normal">1027</span>
-<span class="normal">1028</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">1028</span>
+<span class="normal">1029</span>
+<span class="normal">1030</span>
+<span class="normal">1031</span>
+<span class="normal">1032</span>
+<span class="normal">1033</span>
+<span class="normal">1034</span>
+<span class="normal">1035</span>
+<span class="normal">1036</span>
+<span class="normal">1037</span>
+<span class="normal">1038</span>
+<span class="normal">1039</span>
+<span class="normal">1040</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_final</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">final_df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">shader</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a full HTML report summarizing retrieval results, including kcat distributions and coverage.</span>
 
@@ -8367,34 +8379,44 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
         <span class="k">return</span> <span class="s2">&quot;&lt;p&gt;No valid values available for plotting.&lt;/p&gt;&quot;</span>
 
     <span class="n">img_final</span> <span class="o">=</span> <span class="n">plot_kcat_distribution_stacked</span><span class="p">(</span>
-        <span class="s1">&#39;kcat&#39;</span><span class="p">,</span> <span class="s2">&quot;Kcat Distribution&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span>
+        <span class="s1">&#39;kcat&#39;</span><span class="p">,</span> <span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> - $k_</span><span class="se">{{</span><span class="s2">\mathrm</span><span class="se">{{</span><span class="s2">cat</span><span class="se">}}}}</span><span class="s2">$ Distribution&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span>
     <span class="p">)</span>
 
-    <span class="c1"># Coverage</span>
     <span class="n">db_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;db&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
     <span class="n">total_db</span> <span class="o">=</span> <span class="n">db_counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
+    <span class="c1"># Couleurs</span>
     <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;brenda&quot;</span><span class="p">:</span> <span class="s2">&quot;#55bb55&quot;</span><span class="p">,</span>      <span class="c1"># blue</span>
-        <span class="s2">&quot;sabio_rk&quot;</span><span class="p">:</span> <span class="s2">&quot;#2277cc&quot;</span><span class="p">,</span>    <span class="c1"># orange</span>
-        <span class="s2">&quot;catapro&quot;</span><span class="p">:</span> <span class="s2">&quot;#eedd00&quot;</span><span class="p">,</span>     <span class="c1"># green</span>
-        <span class="s2">&quot;Unknown&quot;</span><span class="p">:</span> <span class="s2">&quot;#ddd&quot;</span>      <span class="c1"># gray</span>
+        <span class="s2">&quot;brenda&quot;</span><span class="p">:</span> <span class="s2">&quot;#55bb55&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sabio_rk&quot;</span><span class="p">:</span> <span class="s2">&quot;#2277cc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;catapro&quot;</span><span class="p">:</span> <span class="s2">&quot;#eedd00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Unknown&quot;</span><span class="p">:</span> <span class="s2">&quot;#ddd&quot;</span>
     <span class="p">}</span>
 
-    <span class="n">db_colors</span> <span class="o">=</span> <span class="p">{</span><span class="n">db</span><span class="p">:</span> <span class="n">colors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="s2">&quot;#ddd&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="n">db_counts</span><span class="o">.</span><span class="n">index</span><span class="p">}</span>
+    <span class="c1"># Ordre imposé</span>
+    <span class="n">ordered_dbs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;brenda&quot;</span><span class="p">,</span> <span class="s2">&quot;sabio_rk&quot;</span><span class="p">,</span> <span class="s2">&quot;catapro&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">]</span>
 
     <span class="n">progress_segments</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">legend_items</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">db</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">db_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">percent</span> <span class="o">=</span> <span class="n">count</span> <span class="o">/</span> <span class="n">total_db</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="n">ordered_dbs</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">db_counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_db</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">percent</span> <span class="o">=</span> <span class="n">count</span> <span class="o">/</span> <span class="n">total_db</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">percent</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="s2">&quot;#ddd&quot;</span><span class="p">)</span>
+
         <span class="n">progress_segments</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">            &lt;div class=&quot;progress-segment&quot; style=&quot;width:</span><span class="si">{</span><span class="n">percent</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%; background-color:</span><span class="si">{</span><span class="n">db_colors</span><span class="p">[</span><span class="n">db</span><span class="p">]</span><span class="si">}</span><span class="s2">;&quot;</span>
+<span class="s2">            &lt;div class=&quot;progress-segment&quot; style=&quot;width:</span><span class="si">{</span><span class="n">percent</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%; background-color:</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">;&quot;</span>
 <span class="s2">                title=&quot;</span><span class="si">{</span><span class="n">db</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">percent</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;&gt;&lt;/div&gt;</span>
 <span class="s2">        &quot;&quot;&quot;</span>
+
         <span class="n">legend_items</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            &lt;span style=&quot;display:flex; align-items:center; margin-right:15px; margin-bottom:5px;&quot;&gt;</span>
 <span class="s2">                &lt;span style=&quot;display:flex; align-items:center; width:16px; height:16px; </span>
-<span class="s2">                            background:</span><span class="si">{</span><span class="n">db_colors</span><span class="p">[</span><span class="n">db</span><span class="p">]</span><span class="si">}</span><span class="s2">; border:1px solid #000; margin-right:5px;&quot;&gt;&lt;/span&gt;</span>
+<span class="s2">                            background:</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">; border:1px solid #000; margin-right:5px;&quot;&gt;&lt;/span&gt;</span>
 <span class="s2">                </span><span class="si">{</span><span class="n">db</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">percent</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)</span>
 <span class="s2">            &lt;/span&gt;</span>
 <span class="s2">        &quot;&quot;&quot;</span>
@@ -8403,7 +8425,9 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="s2">        &lt;div class=&quot;progress-multi&quot; style=&quot;height: 18px; margin-bottom:18px; display:flex;&quot;&gt;</span>
 <span class="s2">            </span><span class="si">{</span><span class="n">progress_segments</span><span class="si">}</span>
 <span class="s2">        &lt;/div&gt;</span>
-<span class="s2">        &lt;div style=&quot;margin-top:10px; display:flex; justify-content:center; flex-wrap: wrap;&quot;&gt;</span><span class="si">{</span><span class="n">legend_items</span><span class="si">}</span><span class="s2">&lt;/div&gt;</span>
+<span class="s2">        &lt;div style=&quot;margin-top:10px; display:flex; justify-content:center; flex-wrap: wrap;&quot;&gt;</span>
+<span class="s2">            </span><span class="si">{</span><span class="n">legend_items</span><span class="si">}</span>
+<span class="s2">        &lt;/div&gt;</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Statistics </span>
@@ -9431,8 +9455,8 @@ including kcat value distribution and matching score repartition.</p>
     <span class="n">kcat_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;kcat&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 
     <span class="c1"># Only use scores present in the data</span>
-    <span class="n">present_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-    <span class="n">score_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">present_scores</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">present_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;penalty_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="n">score_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;penalty_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">present_scores</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="n">matched</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kcat_values</span><span class="p">)</span>
     <span class="n">match_percent</span> <span class="o">=</span> <span class="n">matched</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">total</span> <span class="k">else</span> <span class="mi">0</span>
@@ -9481,11 +9505,11 @@ including kcat value distribution and matching score repartition.</p>
         <span class="n">max_exp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">kcat_values</span><span class="o">.</span><span class="n">max</span><span class="p">())))</span>
         <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">min_exp</span><span class="p">,</span> <span class="n">max_exp</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
 
-        <span class="c1"># Rm empty score groups (16 - 17)</span>
+        <span class="c1"># Rm empty score groups (15 - 16)</span>
         <span class="n">hist_data</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">valid_scores</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">present_scores</span><span class="p">:</span>
-            <span class="n">vals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;matching_score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">score</span><span class="p">][</span><span class="s1">&#39;kcat&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;penalty_score&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">score</span><span class="p">][</span><span class="s1">&#39;kcat&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
             <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="n">vals</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">vals</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="n">hist_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
@@ -9509,7 +9533,7 @@ including kcat value distribution and matching score repartition.</p>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
-            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Matching Score&quot;</span><span class="p">,</span> 
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Penalty Score&quot;</span><span class="p">,</span> 
             <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
             <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
             <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span> 
@@ -9591,7 +9615,7 @@ including kcat value distribution and matching score repartition.</p>
 <span class="s2">            &lt;/div&gt;</span>
 
 <span class="s2">            &lt;div class=&quot;card&quot;&gt;</span>
-<span class="s2">                &lt;h2&gt;Matching Score Distribution&lt;/h2&gt;</span>
+<span class="s2">                &lt;h2&gt;Penalty Score Distribution&lt;/h2&gt;</span>
 <span class="s2">                &lt;div class=&quot;progress-stacked&quot;&gt;</span>
 <span class="s2">    &quot;&quot;&quot;</span>
 
@@ -9632,7 +9656,7 @@ including kcat value distribution and matching score repartition.</p>
     <span class="c1"># Histogram section (stacked by score)</span>
     <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        &lt;div class=&quot;card&quot;&gt;</span>
-<span class="s2">            &lt;h2&gt;Distribution of k&lt;sub&gt;cat&lt;/sub&gt; values (Stacked by Matching Score)&lt;/h2&gt;</span>
+<span class="s2">            &lt;h2&gt;Distribution of k&lt;sub&gt;cat&lt;/sub&gt; values (Stacked by Penalty Score)&lt;/h2&gt;</span>
 <span class="s2">            &lt;div class=&quot;img-section&quot;&gt;</span>
 <span class="s2">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">kcat_hist_base64</span><span class="p">:</span>
@@ -9645,10 +9669,10 @@ including kcat value distribution and matching score repartition.</p>
     <span class="c1"># Metadata section</span>
     <span class="n">html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">            &lt;div class=&quot;card&quot;&gt;</span>
-<span class="s2">                &lt;h2&gt;Matching Score&lt;/h2&gt;</span>
+<span class="s2">                &lt;h2&gt;Penalty Score&lt;/h2&gt;</span>
 <span class="s2">                &lt;p&gt;</span>
-<span class="s2">                    The matching score evaluates how well a candidate k&lt;sub&gt;cat&lt;/sub&gt; entry fits the query enzyme and conditions. </span>
-<span class="s2">                    A lower score indicates a better match (0 = Best possible, 17 = No match).</span>
+<span class="s2">                    The penalty score evaluates how well a candidate k&lt;sub&gt;cat&lt;/sub&gt; entry fits the query enzyme and conditions. </span>
+<span class="s2">                    A lower score indicates a better match (0 = Best possible, 16 = No match).</span>
 <span class="s2">                &lt;/p&gt;</span>
 <span class="s2">                &lt;h3&gt;Scoring process:&lt;/h3&gt;</span>
 <span class="s2">                &lt;ul&gt;</span>
@@ -9766,19 +9790,7 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1242</span>
-<span class="normal">1243</span>
-<span class="normal">1244</span>
-<span class="normal">1245</span>
-<span class="normal">1246</span>
-<span class="normal">1247</span>
-<span class="normal">1248</span>
-<span class="normal">1249</span>
-<span class="normal">1250</span>
-<span class="normal">1251</span>
-<span class="normal">1252</span>
-<span class="normal">1253</span>
-<span class="normal">1254</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1254</span>
 <span class="normal">1255</span>
 <span class="normal">1256</span>
 <span class="normal">1257</span>
@@ -9874,7 +9886,19 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1347</span>
 <span class="normal">1348</span>
 <span class="normal">1349</span>
-<span class="normal">1350</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
+<span class="normal">1350</span>
+<span class="normal">1351</span>
+<span class="normal">1352</span>
+<span class="normal">1353</span>
+<span class="normal">1354</span>
+<span class="normal">1355</span>
+<span class="normal">1356</span>
+<span class="normal">1357</span>
+<span class="normal">1358</span>
+<span class="normal">1359</span>
+<span class="normal">1360</span>
+<span class="normal">1361</span>
+<span class="normal">1362</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_shader</span><span class="p">():</span> 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML and GLSL shader code for report background. Adapted from localthunk (https://localthunk.com)&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;!-- Background adapted from original work by localthunk (https://localthunk.com) --&gt;</span>
@@ -10005,17 +10029,17 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1229</span>
-<span class="normal">1230</span>
-<span class="normal">1231</span>
-<span class="normal">1232</span>
-<span class="normal">1233</span>
-<span class="normal">1234</span>
-<span class="normal">1235</span>
-<span class="normal">1236</span>
-<span class="normal">1237</span>
-<span class="normal">1238</span>
-<span class="normal">1239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1241</span>
+<span class="normal">1242</span>
+<span class="normal">1243</span>
+<span class="normal">1244</span>
+<span class="normal">1245</span>
+<span class="normal">1246</span>
+<span class="normal">1247</span>
+<span class="normal">1248</span>
+<span class="normal">1249</span>
+<span class="normal">1250</span>
+<span class="normal">1251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_simple</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return HTML code for report background.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>
@@ -10048,19 +10072,7 @@ including kcat value distribution and matching score repartition.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/utils/generate_reports.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1031</span>
-<span class="normal">1032</span>
-<span class="normal">1033</span>
-<span class="normal">1034</span>
-<span class="normal">1035</span>
-<span class="normal">1036</span>
-<span class="normal">1037</span>
-<span class="normal">1038</span>
-<span class="normal">1039</span>
-<span class="normal">1040</span>
-<span class="normal">1041</span>
-<span class="normal">1042</span>
-<span class="normal">1043</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1043</span>
 <span class="normal">1044</span>
 <span class="normal">1045</span>
 <span class="normal">1046</span>
@@ -10243,7 +10255,19 @@ including kcat value distribution and matching score repartition.</p>
 <span class="normal">1223</span>
 <span class="normal">1224</span>
 <span class="normal">1225</span>
-<span class="normal">1226</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
+<span class="normal">1226</span>
+<span class="normal">1227</span>
+<span class="normal">1228</span>
+<span class="normal">1229</span>
+<span class="normal">1230</span>
+<span class="normal">1231</span>
+<span class="normal">1232</span>
+<span class="normal">1233</span>
+<span class="normal">1234</span>
+<span class="normal">1235</span>
+<span class="normal">1236</span>
+<span class="normal">1237</span>
+<span class="normal">1238</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">report_style</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return CSS script for report style.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    &lt;style&gt;</span>

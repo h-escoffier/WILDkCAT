@@ -12,8 +12,8 @@ if __name__ == "__main__":
     run_retrieval(
         output_folder="output",
         organism="Escherichia coli",
-        temperature_range=(20, 40),
-        pH_range=(6.5, 7.5),
+        temperature_range=(20, 45),
+        pH_range=(4, 8),
         database="both"
     ) 
 
@@ -21,14 +21,14 @@ if __name__ == "__main__":
     ## Prediction Part 1
     run_prediction_part1(
         output_folder="output",
-        limit_penalty_score=6
+        limit_penalty_score=9
     )
 
     ## Prediction Part 2
     run_prediction_part2(
         output_folder="output", 
         catapro_predictions_path="output/machine_learning/catapro_output.csv", 
-        limit_penalty_score=6
+        limit_penalty_score=9
     )
 
     # Summary Report
