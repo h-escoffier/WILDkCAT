@@ -8,7 +8,7 @@
 
 WILDkCAT produces a `.tsv` file with the retrieved and predicted kcat values for each combination of enzyme, substrates in your genome-scale metabolic model.
 Each step of the pipeline also generates an HTML report that provides detailed information about the retrieval process to facilitate transparency and reproducibility.
-The HTML reports are generated automatically after each stage of the workflow (extractionn, retrieval, prediction) and can be opened directly in any web browser. 
+The HTML reports are generated automatically after each stage of the workflow (extraction, retrieval, prediction) and can be opened directly in any web browser. 
 
 <p align="center"> <img src="docs/report_example.gif" alt="WILDkCAT Report Demo" width="700"/> </p>
 
