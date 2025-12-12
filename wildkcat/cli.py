@@ -21,7 +21,7 @@ def version_callback(value: bool):
 def main(
     ctx: typer.Context,
     version: bool = typer.Option(
-        None, "--version", callback=version_callback, is_eager=True,
+        False, "--version", callback=version_callback, is_eager=True,
         help="Show the application's version."
     )
 ):
