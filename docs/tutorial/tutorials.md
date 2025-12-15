@@ -17,7 +17,7 @@ This page shows a step-by-step example of the WILDkCAT pipeline on the _E. coli_
 
 ```bash 
 mkdir model
-curl -O model/e_coli_core.json http://bigg.ucsd.edu/static/models/e_coli_core.json
+curl -o model/e_coli_core.json http://bigg.ucsd.edu/static/models/e_coli_core.json
 ```
 
 Your working directory should contain the following folders:
@@ -61,7 +61,7 @@ Example of the output file `kcat.tsv`:
 | rxn | rxn_kegg | ec_code | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz |
 | :-- | :------- | :------ | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--------------- | :--------- | :---------- |
 | PFK |          | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | |
-| ACALD | R00228 | 1.2.1.10 | reverse | Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced | C00024;C00080;C00004 | Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide | C00084;C00010;C00003 | b1241 | P0A9Q7 | P0A9Q7 | | |
+| GLUt2r | | | forward | L-Glutamate;H+ | C00025;C00080 | L-Glutamate;H+ | C00025;C00080 | b4077 | P21345 | P21345 | missing | |
 
 [View the generated report](extract_report.html)
 
@@ -99,7 +99,7 @@ Example of the output file `kcat_retrieved.tsv`:
 | rxn | rxn_kegg | ec_code | ec_codes | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
 | :-- | :------- | :------ | :------- | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--------------- | :--------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
 | PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0 |
-| ACALD | R00228 | 1.2.1.10 | 1.2.1.10 | reverse | Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced | C00024;C00080;C00004 | Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide | C00084;C00010;C00003 | b1241 | P0A9Q7 | P0A9Q7 | | | 15.7 | brenda | 8 | acetaldehyde | Escherichia coli |  | 25 | 8.0 |  |  | 0 |
+| GLUt2r | | | | forward | L-Glutamate;H+ | C00025;C00080 | L-Glutamate;H+ | C00025;C00080 | b4077 | P21345 | P21345 | missing | | | | 16 | | | | | | | | |
 
 [View the generated report](retrieve_report.html)
 
@@ -130,13 +130,13 @@ The function generates the files named `catapro_input.csv` and `catapro_input_su
 
     run_prediction_part1(
         output_folder="output",
-        limit_penalty_score=6
+        limit_penalty_score=9
         )
     ```
 
 === "Command Line Interface (CLI)"
     ```bash
-    wildkcat prediction-part1 output 6
+    wildkcat prediction-part1 output 9
     ```
 
 The output file `catapro_input.csv` is formatted according to the requirements of [CataPro](https://github.com/zchwang/CataPro), meaning it can be directly used as input for kcat prediction.
@@ -146,7 +146,7 @@ You can run CataPro with the following command:
 ```bash 
 python CataPro.inference.predict.py \
         -inp_fpath output/machine_learning/catapro_input.csv \
-        -model_dpath models \
+        -model_dpath CataPro.models \
         -batch_size 64 \
         -device cuda:0 \
         -out_fpath output/machine_learning/catapro_output.csv
@@ -168,13 +168,13 @@ After running CataPro with the prepared input file, integrate the predicted kcat
     run_prediction_part2(
         output_folder="output", 
         catapro_predictions_path="output/machine_learning/catapro_output.csv", 
-        limit_penalty_score=6
+        limit_penalty_score=9
         )
     ```
 
 === "Command Line Interface (CLI)"
     ```bash
-    wildkcat prediction-part2 output output/machine_learning/catapro_output.csv 6
+    wildkcat prediction-part2 output output/machine_learning/catapro_output.csv 9
     ```
 
 
@@ -183,7 +183,7 @@ Example of the output file `kcat_full.tsv`:
 | rxn | rxn_kegg | ec_code  | ec_codes | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
 | :-- | :------- | :------- | :------- | :-------- | :-------------- | :--------------- | :------------ | :-------------| :---- | :------ | :--------------- | :--------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
 | PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0.0 |
-| ACALD | R00228 | 1.2.1.10 | 1.2.1.10 | reverse | Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced | C00024;C00080;C00004 | Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide | C00084;C00010;C00003 | b1241 | P0A9Q7 | P0A9Q7 | | | 20.2328 | catapro |  |  |  |  |  |  |  |  |
+| GLUt2r | | | | forward | L-Glutamate;H+ | C00025;C00080 | L-Glutamate;H+ | C00025;C00080 | b4077 | P21345 | P21345 | missing | | 23.3748 | catapro |  |  |  |  |  |  |  |  |
 
 ---
 

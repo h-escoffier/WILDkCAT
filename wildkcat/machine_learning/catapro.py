@@ -26,7 +26,7 @@ def convert_kegg_compound_to_sid(kegg_compound_id) -> str | None:
         str: The PubChem SID if found, otherwise None.
     """
     url = f"https://rest.kegg.jp/conv/pubchem/compound:{kegg_compound_id}"
-    safe_get_with_retry = retry_api(max_retries=2, backoff_factor=2)(safe_requests_get)
+    safe_get_with_retry = retry_api()(safe_requests_get)
     response = safe_get_with_retry(url)
 
     if response is None:
@@ -51,7 +51,7 @@ def convert_sid_to_cid(sid) -> int | None:
         int or None: The corresponding PubChem Compound ID (CID), or None if not found.
     """
     url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/substance/sid/{sid}/cids/JSON"
-    safe_get_with_retry = retry_api(max_retries=1, backoff_factor=2)(safe_requests_get)
+    safe_get_with_retry = retry_api()(safe_requests_get)
     response = safe_get_with_retry(url)
     
     if response is None:
@@ -77,7 +77,7 @@ def convert_cid_to_smiles(cid) -> list | None:
     """
     url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{cid}/property/smiles/txt"
     try:
-        safe_get_with_retry = retry_api(max_retries=1, backoff_factor=2)(safe_requests_get)
+        safe_get_with_retry = retry_api()(safe_requests_get)
         response = safe_get_with_retry(url)
 
         if response is None:
@@ -146,11 +146,11 @@ def create_catapro_input_file(kcat_df):
             else: 
                 uniprot = catalytic_enzyme
                 
-        # If the number of KEGG Compound IDs is not matching the number of names, continue 
+        # If the number of KEGG Compound IDs is not matching the number of names  
         if len([s for s in row['substrates_kegg'].split(';') if s]) != len(row['substrates_name'].split(';')):
             logging.warning(f"Number of KEGG compounds IDs does not match number of names for {ec_code}: {uniprot}.")
             counter_kegg_no_matching += 1
-            continue
+            # continue
 
         sequence = convert_uniprot_to_sequence(uniprot) 
         if sequence is None:
@@ -164,6 +164,8 @@ def create_catapro_input_file(kcat_df):
         cofactor = get_cofactor(ec_code) 
 
         for name, kegg_compound_id in zip(names, kegg_ids):
+            if kegg_compound_id == '':
+                continue
             if name.lower() in [c.lower() for c in cofactor]:  # TODO: Should we add a warning if no cofactor is found for a reaction? 
                 counter_cofactor += 1
                 continue
@@ -193,7 +195,6 @@ def create_catapro_input_file(kcat_df):
     # Remove 'nan' values
     catapro_input_df = catapro_input_df.dropna(subset=['sequence', 'smiles'])
     catapro_input_df = catapro_input_df[(catapro_input_df['sequence'].str.strip() != '') & (catapro_input_df['smiles'].str.strip() != '')]
-
 
     # Generate reverse mapping from SMILES to KEGG IDs as TSV
     substrates_to_smiles_df = pd.DataFrame(list(substrates_to_smiles.items()), columns=['kegg_id', 'smiles'])

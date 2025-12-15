@@ -6393,7 +6393,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/</span><span class="si">{</span><span class="n">cid</span><span class="si">}</span><span class="s2">/property/smiles/txt&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">safe_get_with_retry</span> <span class="o">=</span> <span class="n">retry_api</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backoff_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">)(</span><span class="n">safe_requests_get</span><span class="p">)</span>
+        <span class="n">safe_get_with_retry</span> <span class="o">=</span> <span class="n">retry_api</span><span class="p">()(</span><span class="n">safe_requests_get</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">safe_get_with_retry</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -6513,7 +6513,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="sd">        str: The PubChem SID if found, otherwise None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://rest.kegg.jp/conv/pubchem/compound:</span><span class="si">{</span><span class="n">kegg_compound_id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">safe_get_with_retry</span> <span class="o">=</span> <span class="n">retry_api</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">backoff_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">)(</span><span class="n">safe_requests_get</span><span class="p">)</span>
+    <span class="n">safe_get_with_retry</span> <span class="o">=</span> <span class="n">retry_api</span><span class="p">()(</span><span class="n">safe_requests_get</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">safe_get_with_retry</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -6761,7 +6761,7 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="sd">        int or None: The corresponding PubChem Compound ID (CID), or None if not found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://pubchem.ncbi.nlm.nih.gov/rest/pug/substance/sid/</span><span class="si">{</span><span class="n">sid</span><span class="si">}</span><span class="s2">/cids/JSON&quot;</span>
-    <span class="n">safe_get_with_retry</span> <span class="o">=</span> <span class="n">retry_api</span><span class="p">(</span><span class="n">max_retries</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backoff_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">)(</span><span class="n">safe_requests_get</span><span class="p">)</span>
+    <span class="n">safe_get_with_retry</span> <span class="o">=</span> <span class="n">retry_api</span><span class="p">()(</span><span class="n">safe_requests_get</span><span class="p">)</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">safe_get_with_retry</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -6946,7 +6946,8 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
 <span class="normal">206</span>
 <span class="normal">207</span>
 <span class="normal">208</span>
-<span class="normal">209</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_catapro_input_file</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">):</span>
+<span class="normal">209</span>
+<span class="normal">210</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_catapro_input_file</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate CataPro input file and a mapping of substrate KEGG IDs to SMILES.</span>
 
@@ -6973,11 +6974,11 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
             <span class="k">else</span><span class="p">:</span> 
                 <span class="n">uniprot</span> <span class="o">=</span> <span class="n">catalytic_enzyme</span>
 
-        <span class="c1"># If the number of KEGG Compound IDs is not matching the number of names, continue </span>
+        <span class="c1"># If the number of KEGG Compound IDs is not matching the number of names  </span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;substrates_kegg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;substrates_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of KEGG compounds IDs does not match number of names for </span><span class="si">{</span><span class="n">ec_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">uniprot</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="n">counter_kegg_no_matching</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">continue</span>
+            <span class="c1"># continue</span>
 
         <span class="n">sequence</span> <span class="o">=</span> <span class="n">convert_uniprot_to_sequence</span><span class="p">(</span><span class="n">uniprot</span><span class="p">)</span> 
         <span class="k">if</span> <span class="n">sequence</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -6991,6 +6992,8 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
         <span class="n">cofactor</span> <span class="o">=</span> <span class="n">get_cofactor</span><span class="p">(</span><span class="n">ec_code</span><span class="p">)</span> 
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">kegg_compound_id</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">kegg_ids</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">kegg_compound_id</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cofactor</span><span class="p">]:</span>  <span class="c1"># TODO: Should we add a warning if no cofactor is found for a reaction? </span>
                 <span class="n">counter_cofactor</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">continue</span>
@@ -7020,7 +7023,6 @@ If the reference UniProt ID is missing, invalid, or the sequence cannot be retri
     <span class="c1"># Remove &#39;nan&#39; values</span>
     <span class="n">catapro_input_df</span> <span class="o">=</span> <span class="n">catapro_input_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">,</span> <span class="s1">&#39;smiles&#39;</span><span class="p">])</span>
     <span class="n">catapro_input_df</span> <span class="o">=</span> <span class="n">catapro_input_df</span><span class="p">[(</span><span class="n">catapro_input_df</span><span class="p">[</span><span class="s1">&#39;sequence&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">catapro_input_df</span><span class="p">[</span><span class="s1">&#39;smiles&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">)]</span>
-
 
     <span class="c1"># Generate reverse mapping from SMILES to KEGG IDs as TSV</span>
     <span class="n">substrates_to_smiles_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">substrates_to_smiles</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;kegg_id&#39;</span><span class="p">,</span> <span class="s1">&#39;smiles&#39;</span><span class="p">])</span>
@@ -7144,8 +7146,7 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 
             <details class="quote">
               <summary>Source code in <code>wildkcat/machine_learning/catapro.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
-<span class="normal">216</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
@@ -7183,7 +7184,8 @@ the integrated Catapro predicted kcat(s^-1) values.</p>
 <span class="normal">251</span>
 <span class="normal">252</span>
 <span class="normal">253</span>
-<span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">integrate_catapro_predictions</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">substrates_to_smiles</span><span class="p">,</span> <span class="n">catapro_predictions_df</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="normal">254</span>
+<span class="normal">255</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">integrate_catapro_predictions</span><span class="p">(</span><span class="n">kcat_df</span><span class="p">,</span> <span class="n">substrates_to_smiles</span><span class="p">,</span> <span class="n">catapro_predictions_df</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Integrates Catapro predictions into an kcat file.</span>
 <span class="sd">    If multiple values are provided for a single combination of EC, Enzyme, Substrate, the minimum value is taken.</span>
