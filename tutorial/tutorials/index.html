@@ -731,18 +731,18 @@ The output file is named <code>kcat.tsv</code> and is saved in the specified out
 <td style="text-align: left;"></td>
 </tr>
 <tr>
-<td style="text-align: left;">ACALD</td>
-<td style="text-align: left;">R00228</td>
-<td style="text-align: left;">1.2.1.10</td>
-<td style="text-align: left;">reverse</td>
-<td style="text-align: left;">Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced</td>
-<td style="text-align: left;">C00024;C00080;C00004</td>
-<td style="text-align: left;">Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide</td>
-<td style="text-align: left;">C00084;C00010;C00003</td>
-<td style="text-align: left;">b1241</td>
-<td style="text-align: left;">P0A9Q7</td>
-<td style="text-align: left;">P0A9Q7</td>
+<td style="text-align: left;">GLUt2r</td>
 <td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">L-Glutamate;H+</td>
+<td style="text-align: left;">C00025;C00080</td>
+<td style="text-align: left;">L-Glutamate;H+</td>
+<td style="text-align: left;">C00025;C00080</td>
+<td style="text-align: left;">b4077</td>
+<td style="text-align: left;">P21345</td>
+<td style="text-align: left;">P21345</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;"></td>
 </tr>
 </tbody>
@@ -833,31 +833,31 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">0</td>
 </tr>
 <tr>
-<td style="text-align: left;">ACALD</td>
-<td style="text-align: left;">R00228</td>
-<td style="text-align: left;">1.2.1.10</td>
-<td style="text-align: left;">1.2.1.10</td>
-<td style="text-align: left;">reverse</td>
-<td style="text-align: left;">Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced</td>
-<td style="text-align: left;">C00024;C00080;C00004</td>
-<td style="text-align: left;">Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide</td>
-<td style="text-align: left;">C00084;C00010;C00003</td>
-<td style="text-align: left;">b1241</td>
-<td style="text-align: left;">P0A9Q7</td>
-<td style="text-align: left;">P0A9Q7</td>
+<td style="text-align: left;">GLUt2r</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">15.7</td>
-<td style="text-align: left;">brenda</td>
-<td style="text-align: left;">8</td>
-<td style="text-align: left;">acetaldehyde</td>
-<td style="text-align: left;">Escherichia coli</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">25</td>
-<td style="text-align: left;">8.0</td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">L-Glutamate;H+</td>
+<td style="text-align: left;">C00025;C00080</td>
+<td style="text-align: left;">L-Glutamate;H+</td>
+<td style="text-align: left;">C00025;C00080</td>
+<td style="text-align: left;">b4077</td>
+<td style="text-align: left;">P21345</td>
+<td style="text-align: left;">P21345</td>
+<td style="text-align: left;">missing</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">0</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
@@ -883,12 +883,12 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 
 <span class="n">run_prediction_part1</span><span class="p">(</span>
     <span class="n">output_folder</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span>
-    <span class="n">limit_penalty_score</span><span class="o">=</span><span class="mi">6</span>
+    <span class="n">limit_penalty_score</span><span class="o">=</span><span class="mi">9</span>
     <span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>prediction-part1<span class="w"> </span>output<span class="w"> </span><span class="m">6</span>
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>prediction-part1<span class="w"> </span>output<span class="w"> </span><span class="m">9</span>
 </code></pre></div>
 </div>
 </div>
@@ -897,7 +897,7 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <p>You can run CataPro with the following command:</p>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>CataPro.inference.predict.py<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-inp_fpath<span class="w"> </span>output/machine_learning/catapro_input.csv<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>-model_dpath<span class="w"> </span>models<span class="w"> </span><span class="se">\</span>
+<span class="w">        </span>-model_dpath<span class="w"> </span>CataPro.models<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-batch_size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-device<span class="w"> </span>cuda:0<span class="w"> </span><span class="se">\</span>
 <span class="w">        </span>-out_fpath<span class="w"> </span>output/machine_learning/catapro_output.csv
@@ -914,12 +914,12 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <span class="n">run_prediction_part2</span><span class="p">(</span>
     <span class="n">output_folder</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> 
     <span class="n">catapro_predictions_path</span><span class="o">=</span><span class="s2">&quot;output/machine_learning/catapro_output.csv&quot;</span><span class="p">,</span> 
-    <span class="n">limit_penalty_score</span><span class="o">=</span><span class="mi">6</span>
+    <span class="n">limit_penalty_score</span><span class="o">=</span><span class="mi">9</span>
     <span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>prediction-part2<span class="w"> </span>output<span class="w"> </span>output/machine_learning/catapro_output.csv<span class="w"> </span><span class="m">6</span>
+<div class="highlight"><pre><span></span><code>wildkcat<span class="w"> </span>prediction-part2<span class="w"> </span>output<span class="w"> </span>output/machine_learning/catapro_output.csv<span class="w"> </span><span class="m">9</span>
 </code></pre></div>
 </div>
 </div>
@@ -984,21 +984,21 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 <td style="text-align: left;">0.0</td>
 </tr>
 <tr>
-<td style="text-align: left;">ACALD</td>
-<td style="text-align: left;">R00228</td>
-<td style="text-align: left;">1.2.1.10</td>
-<td style="text-align: left;">1.2.1.10</td>
-<td style="text-align: left;">reverse</td>
-<td style="text-align: left;">Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced</td>
-<td style="text-align: left;">C00024;C00080;C00004</td>
-<td style="text-align: left;">Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide</td>
-<td style="text-align: left;">C00084;C00010;C00003</td>
-<td style="text-align: left;">b1241</td>
-<td style="text-align: left;">P0A9Q7</td>
-<td style="text-align: left;">P0A9Q7</td>
+<td style="text-align: left;">GLUt2r</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;">20.2328</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">forward</td>
+<td style="text-align: left;">L-Glutamate;H+</td>
+<td style="text-align: left;">C00025;C00080</td>
+<td style="text-align: left;">L-Glutamate;H+</td>
+<td style="text-align: left;">C00025;C00080</td>
+<td style="text-align: left;">b4077</td>
+<td style="text-align: left;">P21345</td>
+<td style="text-align: left;">P21345</td>
+<td style="text-align: left;">missing</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">23.3748</td>
 <td style="text-align: left;">catapro</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
