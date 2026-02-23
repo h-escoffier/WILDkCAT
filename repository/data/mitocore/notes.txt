@@ -1,0 +1,2 @@
+The MitoCore model developed by Anthony C. Smith does not contain EC codes or UniProt IDs in its version v1.01. 
+In order to retrieve the kcat values using WILDkCAT, we have integrated them using Cobrapy based on the annotations available in the following excel document: CompanionAnnotation_v1.01.xlsx (https://www.mrc-mbu.cam.ac.uk/research-resources-and-facilities/mitocore)
