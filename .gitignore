@@ -24,6 +24,8 @@ model/iML1515.xml
 model/Recon3D.xml
 model/Recon3D_301.mat
 model/vibrio_natriegens.json 
+model/ENGRO2.xml
+model/mitocore_v2.xml
 
 # Ignore personal files
 scripts/run_wildkcat_perso.py

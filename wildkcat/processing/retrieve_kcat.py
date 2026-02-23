@@ -152,19 +152,19 @@ def merge_ec(kcat_df: pd.DataFrame):
 
     def merge_ec_codes(x):
         ec_list = [ec for ec in x if ec and ec.lower() != 'nan']
-        return ';'.join(sorted(set(ec_list))) if ec_list else 'NA'
+        return ';'.join(sorted(set(ec_list)))
     
     # Merge EC numbers for each reaction-substrate pair
     ec_merged = (
         kcat_df
-        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], dropna=False)['ec_code']
+        .groupby(['rxn', 'direction', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], dropna=False)['ec_code']
         .apply(merge_ec_codes)
         .rename('ec_codes')
     )
 
     best_entries = (
         kcat_df_sorted
-        .groupby(['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], group_keys=False, dropna=False)
+        .groupby(['rxn', 'direction', 'substrates_name', 'products_kegg', 'genes', 'uniprot'], group_keys=False, dropna=False)
         .head(1)
         .reset_index(drop=True)
     )
@@ -351,7 +351,6 @@ def run_retrieval(output_folder: str,
     logging.info(f"Output saved to '{output_path}'")
 
     if report:
-
         general_criteria.update({
             'database': database
         }) 
