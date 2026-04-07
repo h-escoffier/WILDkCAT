@@ -125,25 +125,15 @@ ACALD	R00228	1.2.1.10	1.2.1.10	reverse	Acetyl-CoA;H+;Nicotinamide adenine dinucl
 ADK1	R00127	2.7.4.3	2.7.4.3	forward	AMP C10H12N5O7P;ATP C10H12N5O13P3	C00020;C00002	ADP C10H12N5O10P2	C00008	b0474	P69441	P69441			24.526	catapro									
 ADK1	R00127	2.7.4.3	2.7.4.3	reverse	ADP C10H12N5O10P2	C00008	AMP C10H12N5O7P;ATP C10H12N5O13P3	C00020;C00002	b0474	P69441	P69441			28.5621	catapro									
 AKGt2r				forward	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing		5.5058	catapro									
-AKGt2r				forward	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing		5.5058	catapro									
-AKGt2r				reverse	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing		5.5058	catapro									
 AKGt2r				reverse	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing		5.5058	catapro									
 PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing		44.15	catapro									
-PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing		44.15	catapro									
-PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing		44.15	catapro									
 PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing		44.15	catapro									
 PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing		44.5251	catapro									
-PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing		44.5251	catapro									
-PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing		44.5251	catapro									
 PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing		44.5251	catapro									
 SUCCt2_2				forward	H+;Succinate	C00080;C00042	H+;Succinate	C00080;C00042	b3528	P0A830	P0A830	missing		8.2668	catapro									
 D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing		66.0962	catapro									
-D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing		66.0962	catapro									
-D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing		66.0962	catapro									
 D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing		66.0962	catapro									
 D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing		65.764	catapro									
-D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing		65.764	catapro									
-D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing		65.764	catapro									
 D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing		65.764	catapro									
 FORt2				forward	Formate;H+	C00058;C00080	Formate;H+	C00058;C00080	b0904	P0AC23	P0AC23	missing		145.8368	catapro									
 FORt2				forward	Formate;H+	C00058;C00080	Formate;H+	C00058;C00080	b2492	P77733	P77733	missing		7.2407	catapro									
@@ -151,15 +141,9 @@ FORt				forward	Formate	C00058	Formate	C00058	b0904	P0AC23	P0AC23	missing		145.8
 FORt				forward	Formate	C00058	Formate	C00058	b2492	P77733	P77733	missing		7.7299	catapro									
 FUMt2_2				forward	Fumarate;H+	C00122;C00080	Fumarate;H+	C00122;C00080	b3528	P0A830	P0A830	missing		20.6419	catapro									
 GLUt2r				forward	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing		23.3748	catapro									
-GLUt2r				forward	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing		23.3748	catapro									
-GLUt2r				reverse	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing		23.3748	catapro									
 GLUt2r				reverse	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing		23.3748	catapro									
 H2Ot				forward	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing		135.6818	catapro									
-H2Ot				forward	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing		135.6818	catapro									
-H2Ot				reverse	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing		135.6818	catapro									
 H2Ot				reverse	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing		135.6818	catapro									
 MALt2_2				forward	H+;L-Malate	C00080;C00149	H+;L-Malate	C00080;C00149	b3528	P0A830	P0A830	missing		17.7647	catapro									
 NH4t				forward	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing		161.7661	catapro									
-NH4t				forward	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing		161.7661	catapro									
-NH4t				reverse	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing		161.7661	catapro									
 NH4t				reverse	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing		161.7661	catapro									

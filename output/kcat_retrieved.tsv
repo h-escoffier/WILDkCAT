@@ -55,17 +55,17 @@ GLUDy	R00248	1.4.1.4	1.4.1.13;1.4.1.3;1.4.1.4	reverse	2-Oxoglutarate;H+;Nicotina
 ACKr	R00315	2.7.2.1	2.7.2.1;2.7.2.15	reverse	Acetyl phosphate;ADP C10H12N5O10P2	C00227;C00008	Acetate;ATP C10H12N5O13P3	C00033;C00002	b3115	P11868	P11868			3600.0	brenda	4	acetyl phosphate	Escherichia coli	P0A6A3	25.0	7.5		37.32876712328767	0
 ACKr	R00315	2.7.2.1	2.7.2.1;2.7.2.15	forward	Acetate;ATP C10H12N5O13P3	C00033;C00002	Acetyl phosphate;ADP C10H12N5O10P2	C00227;C00008	b3115	P11868	P11868			3062.9020746392557	brenda	4	acetate	Escherichia coli	P0A6A3	32.5	7.5		37.32876712328767	0
 RPE	R01529	5.1.3.1	5.1.3.1	forward	D-Ribulose 5-phosphate	C00199	D-Xylulose 5-phosphate	C00231	b3386	P0AG07	P0AG07			2.0	sabio_rk	4	D-Ribulose 5-phosphate	Escherichia coli	P32719		7.5	wildtype	31.03448275862069	0
-RPE	R01529	5.1.3.1	5.1.3.1	forward	D-Ribulose 5-phosphate	C00199	D-Xylulose 5-phosphate	C00231	b4301	P39362	P39362			2.0	sabio_rk	4	D-Ribulose 5-phosphate	Escherichia coli	P32719		7.5	wildtype	26.361031518624642	0
+RPE	R01529	5.1.3.1	5.1.3.1	forward	D-Ribulose 5-phosphate	C00199	D-Xylulose 5-phosphate	C00231	b4301	P39362	P39362			2.0	sabio_rk	4	D-Ribulose 5-phosphate	Escherichia coli	P32719		7.5	wildtype	26.36103151862464	0
 ACKr	R00315	2.7.2.1	2.7.2.1;2.7.2.15	reverse	Acetyl phosphate;ADP C10H12N5O10P2	C00227;C00008	Acetate;ATP C10H12N5O13P3	C00033;C00002	b1849	P33221	P33221			3600.0	brenda	4	acetyl phosphate	Escherichia coli	P0A6A3	25.0	7.5		22.981366459627328	0
 ACKr	R00315	2.7.2.1	2.7.2.1;2.7.2.15	forward	Acetate;ATP C10H12N5O13P3	C00033;C00002	Acetyl phosphate;ADP C10H12N5O10P2	C00227;C00008	b1849	P33221	P33221			3062.9020746392557	brenda	4	acetate	Escherichia coli	P0A6A3	32.5	7.5		22.981366459627328	0
-LDH_D	R00704	1.1.1.28	1.1.1.28	reverse	H+;Nicotinamide adenine dinucleotide - reduced;Pyruvate	C00080;C00004;C00022	D-Lactate;Nicotinamide adenine dinucleotide	C00256;C00003	b2133	P06149	P06149			410.0	brenda	4	pyruvate	Escherichia coli	A0A140N893	30.0	7.0		0	0
-LDH_D	R00704	1.1.1.28	1.1.1.28	reverse	H+;Nicotinamide adenine dinucleotide - reduced;Pyruvate	C00080;C00004;C00022	D-Lactate;Nicotinamide adenine dinucleotide	C00256;C00003	b1380	P52643	P52643			410.0	brenda	4	pyruvate	Escherichia coli	A0A140N893	30.0	7.0		0	0
+LDH_D	R00704	1.1.1.28	1.1.1.28	reverse	H+;Nicotinamide adenine dinucleotide - reduced;Pyruvate	C00080;C00004;C00022	D-Lactate;Nicotinamide adenine dinucleotide	C00256;C00003	b2133	P06149	P06149			410.0	brenda	4	pyruvate	Escherichia coli	A0A140N893	30.0	7.0		0.0	0
+LDH_D	R00704	1.1.1.28	1.1.1.28	reverse	H+;Nicotinamide adenine dinucleotide - reduced;Pyruvate	C00080;C00004;C00022	D-Lactate;Nicotinamide adenine dinucleotide	C00256;C00003	b1380	P52643	P52643			410.0	brenda	4	pyruvate	Escherichia coli	A0A140N893	30.0	7.0		0.0	0
 TPI	R01015	5.3.1.1	5.3.1.1	reverse	Glyceraldehyde 3-phosphate	C00661	Dihydroxyacetone phosphate	C00111	b3919	P0A858	P0A858			9000.0	brenda	4	D-glyceraldehyde 3-phosphate	Escherichia coli			7.6	wildtype		0
 PGK	R01512	2.7.2.3	2.7.2.3	forward	3-Phospho-D-glycerate;ATP C10H12N5O13P3	C00197;C00002	3-Phospho-D-glyceroyl phosphate;ADP C10H12N5O10P2	C00236;C00008	b2926	P0A799	P0A799			1480.0	sabio_rk	4	3-Phospho-D-glycerate;ATP	Escherichia coli		22.0		wildtype		0
 GLNS	R00253	6.3.1.2	6.3.1.2	forward	ATP C10H12N5O13P3;L-Glutamate;Ammonium	C00002;C00025;C00014	ADP C10H12N5O10P2;L-Glutamine;H+;Phosphate	C00008;C00064;C00080;C00009	b1297	P78061	P78061			131.7	brenda	4	L-glutamate	Escherichia coli		37.0	7.4			0
 ACALD	R00228	1.2.1.10	1.2.1.10	forward	Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide	C00084;C00010;C00003	Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced	C00024;C00080;C00004	b0351	P77580	P77580			15.7	brenda	4	acetaldehyde	Escherichia coli		25.0	8.0			0
 ACALD	R00228	1.2.1.10	1.2.1.10	forward	Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide	C00084;C00010;C00003	Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced	C00024;C00080;C00004	b1241	P0A9Q7	P0A9Q7			15.7	brenda	4	acetaldehyde	Escherichia coli		25.0	8.0			0
-NADTRHD	R00112	1.6.1.2	1.6.1.1;1.6.1.2;1.6.1.3	forward	Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00003;C00005	Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00004;C00006	b3962	P27306	P27306	transferred		259.5	brenda	5	thio-NAD+	Escherichia coli	P27306	35	7.5		100.0	0
+NADTRHD	R00112	1.6.1.2	1.6.1.1;1.6.1.2;1.6.1.3	forward	Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00003;C00005	Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00004;C00006	b3962	P27306	P27306	transferred		259.5	brenda	5	thio-NAD+	Escherichia coli	P27306	35.0	7.5		100.0	0
 PGI		5.3.1.9	5.3.1.9	forward	D-Glucose 6-phosphate	C00092	D-Fructose 6-phosphate	C05345	b4025	P0A6T1	P0A6T1			1000.0	brenda	5	D-glucose 6-phosphate	Homo sapiens	P06744	30.0	7.5	wildtype	51.22950819672131	8
 PGI		5.3.1.9	5.3.1.9	reverse	D-Fructose 6-phosphate	C05345	D-Glucose 6-phosphate	C00092	b4025	P0A6T1	P0A6T1			650.0	brenda	5	D-fructose 6-phosphate	Homo sapiens	P06744	30.0	7.5	wildtype	51.22950819672131	8
 GND	R01528	1.1.1.44	1.1.1.351;1.1.1.44	forward	6-Phospho-D-gluconate;Nicotinamide adenine dinucleotide phosphate	C00345;C00006	CO2 CO2;Nicotinamide adenine dinucleotide phosphate - reduced;D-Ribulose 5-phosphate	C00011;C00005;C00199	b2029	P00350	P00350			64.5	brenda	5	6-phospho-D-gluconate	Synechocystis sp.	P52208	32.0	7.3	wildtype	45.48238897396631	7
@@ -80,8 +80,8 @@ TKT2	R01830	2.2.1.1	2.2.1.1	reverse	D-Fructose 6-phosphate;Glyceraldehyde 3-phos
 TKT1		2.2.1.1	2.2.1.1	forward	Alpha-D-Ribose 5-phosphate;D-Xylulose 5-phosphate	C03736;C00231	Glyceraldehyde 3-phosphate;Sedoheptulose 7-phosphate	C00661;C05382	b2935	P27302	P27302			46.3	sabio_rk	5	D-Xylulose 5-phosphate;D-Ribose 5-phosphate	Saccharomyces cerevisiae	P23254	25.0	7.6	wildtype	37.32106339468303	8
 TKT2	R01830	2.2.1.1	2.2.1.1	forward	D-Erythrose 4-phosphate;D-Xylulose 5-phosphate	C00279;C00231	D-Fructose 6-phosphate;Glyceraldehyde 3-phosphate	C05345;C00661	b2935	P27302	P27302			46.3	sabio_rk	5	D-Xylulose 5-phosphate;D-Ribose 5-phosphate	Saccharomyces cerevisiae	P23254	25.0	7.6	wildtype	37.32106339468303	8
 ALCD2x	R00754	1.1.1.1	1.1.1.1;1.1.1.71	reverse	Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced	C00084;C00080;C00004	Ethanol;Nicotinamide adenine dinucleotide	C00469;C00003	b0356	P25437	P25437			0.13	sabio_rk	5	H+;NADH;5beta-Androstane-17beta-ol-3-one	Homo sapiens	P00326	37.0	7.3	wildtype	37.269372693726936	8
-TKT1		2.2.1.1	2.2.1.1	reverse	Glyceraldehyde 3-phosphate;Sedoheptulose 7-phosphate	C00661;C05382	Alpha-D-Ribose 5-phosphate;D-Xylulose 5-phosphate	C03736;C00231	b2935	P27302	P27302			28.642	brenda	5	sedoheptulose 7-phosphate	Scheffersomyces stipitis	P34736	25.0	8.0	wildtype	36.874361593462716	8
-TKT2	R01830	2.2.1.1	2.2.1.1	reverse	D-Fructose 6-phosphate;Glyceraldehyde 3-phosphate	C05345;C00661	D-Erythrose 4-phosphate;D-Xylulose 5-phosphate	C00279;C00231	b2935	P27302	P27302			26.87	brenda	5	D-fructose 6-phosphate	Scheffersomyces stipitis	P34736	25.0	8.0	wildtype	36.874361593462716	8
+TKT1		2.2.1.1	2.2.1.1	reverse	Glyceraldehyde 3-phosphate;Sedoheptulose 7-phosphate	C00661;C05382	Alpha-D-Ribose 5-phosphate;D-Xylulose 5-phosphate	C03736;C00231	b2935	P27302	P27302			28.642	brenda	5	sedoheptulose 7-phosphate	Scheffersomyces stipitis	P34736	25.0	8.0	wildtype	36.87436159346272	8
+TKT2	R01830	2.2.1.1	2.2.1.1	reverse	D-Fructose 6-phosphate;Glyceraldehyde 3-phosphate	C05345;C00661	D-Erythrose 4-phosphate;D-Xylulose 5-phosphate	C00279;C00231	b2935	P27302	P27302			26.87	brenda	5	D-fructose 6-phosphate	Scheffersomyces stipitis	P34736	25.0	8.0	wildtype	36.87436159346272	8
 ME1	R00214	1.1.1.38	1.1.1.38;1.1.1.39	forward	L-Malate;Nicotinamide adenine dinucleotide	C00149;C00003	CO2 CO2;Nicotinamide adenine dinucleotide - reduced;Pyruvate	C00011;C00004;C00022	b1479	P26616	P26616			207.9	sabio_rk	5	NAD+;L-Malate	Homo sapiens	P23368	30.0	7.4	wildtype	32.986111111111114	8
 ICL	R00479	4.1.3.1	4.1.3.1	forward	Isocitrate	C00311	Glyoxylate;Succinate	C00048;C00042	b4015	P0A9G6	P0A9G6			17.6	brenda	5	isocitrate	Pyricularia oryzae	P0CT06	37.0	7.0	wildtype	29.933774834437084	8
 LDH_D	R00704	1.1.1.28	1.1.1.28	forward	D-Lactate;Nicotinamide adenine dinucleotide	C00256;C00003	H+;Nicotinamide adenine dinucleotide - reduced;Pyruvate	C00080;C00004;C00022	b1380	P52643	P52643			260.0	sabio_rk	5	NAD+;D-Lactate	Lactobacillus plantarum	Q88VJ2	30.0	7.5	wildtype	29.607843137254903	10
@@ -90,7 +90,7 @@ TALA	R01827	2.2.1.2	2.2.1.2	reverse	D-Erythrose 4-phosphate;D-Fructose 6-phospha
 TALA	R01827	2.2.1.2	2.2.1.2	reverse	D-Erythrose 4-phosphate;D-Fructose 6-phosphate	C00279;C05345	Glyceraldehyde 3-phosphate;Sedoheptulose 7-phosphate	C00661;C05382	b0008	P0A870	P0A870			13.86	brenda	5	D-fructose 6-phosphate	Thermoplasma acidophilum	Q9HKI3	30.0	7.5	wildtype	25.290023201856147	8
 ME2	R00216	1.1.1.40	1.1.1.40	forward	L-Malate;Nicotinamide adenine dinucleotide phosphate	C00149;C00006	CO2 CO2;Nicotinamide adenine dinucleotide phosphate - reduced;Pyruvate	C00011;C00005;C00022	b2463	P76558	P76558			369.0	sabio_rk	5	L-Malate;NADP+	Columba livia	P40927	30.0	7.4	wildtype	22.646784715750233	8
 LDH_D	R00704	1.1.1.28	1.1.1.28	forward	D-Lactate;Nicotinamide adenine dinucleotide	C00256;C00003	H+;Nicotinamide adenine dinucleotide - reduced;Pyruvate	C00080;C00004;C00022	b2133	P06149	P06149			260.0	sabio_rk	5	NAD+;D-Lactate	Lactobacillus plantarum	Q88VJ2	30.0	7.5	wildtype	22.523744911804613	10
-PGL	R02035	3.1.1.31	3.1.1.31	forward	6-phospho-D-glucono-1,5-lactone;H2O H2O	C01236;C00001	6-Phospho-D-gluconate;H+	C00345;C00080	b0767	P52697	P52697			14.3	sabio_rk	5	6-Phospho-D-glucono-1,5-lactone;H2O	Bos taurus	Q2TBQ8	25.0	7.4	wildtype	21.694214876033058	8
+PGL	R02035	3.1.1.31	3.1.1.31	forward	6-phospho-D-glucono-1,5-lactone;H2O H2O	C01236;C00001	6-Phospho-D-gluconate;H+	C00345;C00080	b0767	P52697	P52697			14.3	sabio_rk	5	6-Phospho-D-glucono-1,5-lactone;H2O	Bos taurus	Q2TBQ8	25.0	7.4	wildtype	21.694214876033055	8
 ALCD2x	R00754	1.1.1.1	1.1.1.1;1.1.1.71	forward	Ethanol;Nicotinamide adenine dinucleotide	C00469;C00003	Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced	C00084;C00080;C00004	b1241	P0A9Q7	P0A9Q7			0.0492121806928701	brenda	5	ethanol	Geobacillus stearothermophilus	P42328	32.5	8.0	wildtype	20.0	7
 ALCD2x	R00754	1.1.1.1	1.1.1.1;1.1.1.71	reverse	Acetaldehyde;H+;Nicotinamide adenine dinucleotide - reduced	C00084;C00080;C00004	Ethanol;Nicotinamide adenine dinucleotide	C00469;C00003	b1241	P0A9Q7	P0A9Q7			74.0	sabio_rk	5	NADH;Acetaldehyde;H+	Macaca mulatta	P28469	30.0	7.3	wildtype	20.0	8
 SUCOAS	R00405	6.2.1.5	6.2.1.5	reverse	ADP C10H12N5O10P2;Phosphate;Succinyl-CoA	C00008;C00009;C00091	ATP C10H12N5O13P3;Coenzyme A;Succinate	C00002;C00010;C00042	b0728;b0729	P0AGE9;P0A836	P0AGE9;P0A836		multiple	26.7	brenda	5	CoA	Escherichia coli K-12	P0AGE9	30.0	7.4			0
@@ -117,7 +117,7 @@ RPI		5.3.1.6	5.3.1.6	forward	Alpha-D-Ribose 5-phosphate	C03736	D-Ribulose 5-phos
 ENO	R00658	4.2.1.11	4.2.1.11	reverse	H2O H2O;Phosphoenolpyruvate	C00001;C00074	D-Glycerate 2-phosphate	C00631	b2779	P0A6P9	P0A6P9			15.47	brenda	7	phosphoenolpyruvate	Klebsiella pneumoniae			7.8			2
 PPS	R00199	2.7.9.2	2.7.9.2	forward	ATP C10H12N5O13P3;H2O H2O;Pyruvate	C00002;C00001;C00022	AMP C10H12N5O7P;H+;Phosphoenolpyruvate;Phosphate	C00020;C00080;C00074;C00009	b1702	P23538	P23538			0.683	brenda	8	pyruvate	Thermoproteus tenax	Q70WQ8	70.0	7.0		34.17085427135678	8
 RPE	R01529	5.1.3.1	5.1.3.1	reverse	D-Xylulose 5-phosphate	C00231	D-Ribulose 5-phosphate	C00199	b3386	P0AG07	P0AG07			2.0	sabio_rk	8	D-Ribulose 5-phosphate	Escherichia coli	P32719		7.5	wildtype	31.03448275862069	0
-RPE	R01529	5.1.3.1	5.1.3.1	reverse	D-Xylulose 5-phosphate	C00231	D-Ribulose 5-phosphate	C00199	b4301	P39362	P39362			2.0	sabio_rk	8	D-Ribulose 5-phosphate	Escherichia coli	P32719		7.5	wildtype	26.361031518624642	0
+RPE	R01529	5.1.3.1	5.1.3.1	reverse	D-Xylulose 5-phosphate	C00231	D-Ribulose 5-phosphate	C00199	b4301	P39362	P39362			2.0	sabio_rk	8	D-Ribulose 5-phosphate	Escherichia coli	P32719		7.5	wildtype	26.36103151862464	0
 THD2		1.6.1.1	1.6.1.1	forward	H+;Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00080;C00004;C00006	H+;Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00080;C00003;C00005	b1602;b1603	P0AB67;P07001			none	259.5	brenda	8	thio-NAD+	Escherichia coli		35.0	7.5			0
 NADTRHD	R00112	1.6.1.1	1.6.1.1;1.6.1.3	forward	Nicotinamide adenine dinucleotide;Nicotinamide adenine dinucleotide phosphate - reduced	C00003;C00005	Nicotinamide adenine dinucleotide - reduced;Nicotinamide adenine dinucleotide phosphate	C00004;C00006	b1602;b1603	P0AB67;P07001			none	259.5	brenda	8	thio-NAD+	Escherichia coli		35.0	7.5			0
 ACALD	R00228	1.2.1.10	1.2.1.10	reverse	Acetyl-CoA;H+;Nicotinamide adenine dinucleotide - reduced	C00024;C00080;C00004	Acetaldehyde;Coenzyme A;Nicotinamide adenine dinucleotide	C00084;C00010;C00003	b0351	P77580	P77580			15.7	brenda	8	acetaldehyde	Escherichia coli		25.0	8.0			0
@@ -125,25 +125,15 @@ ACALD	R00228	1.2.1.10	1.2.1.10	reverse	Acetyl-CoA;H+;Nicotinamide adenine dinucl
 ADK1	R00127	2.7.4.3	2.7.4.3	forward	AMP C10H12N5O7P;ATP C10H12N5O13P3	C00020;C00002	ADP C10H12N5O10P2	C00008	b0474	P69441	P69441			0.07333333	sabio_rk	9	ATP;AMP	Bacillus subtilis	P16304	45.0	7.2	wildtype	39.48220064724919	7
 ADK1	R00127	2.7.4.3	2.7.4.3	reverse	ADP C10H12N5O10P2	C00008	AMP C10H12N5O7P;ATP C10H12N5O13P3	C00020;C00002	b0474	P69441	P69441			0.07333333	sabio_rk	9	ATP;AMP	Bacillus subtilis	P16304	45.0	7.2	wildtype	39.48220064724919	7
 AKGt2r				forward	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing				16								
-AKGt2r				forward	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing				16								
-AKGt2r				reverse	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing				16								
 AKGt2r				reverse	2-Oxoglutarate;H+	C00026;C00080	2-Oxoglutarate;H+	C00026;C00080	b2587	P0AEX3	P0AEX3	missing				16								
 PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing				16								
-PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing				16								
-PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing				16								
 PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b2987	P43676	P43676	missing				16								
 PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing				16								
-PIt2r				forward	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing				16								
-PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing				16								
 PIt2r				reverse	H+;Phosphate	C00080;C00009	H+;Phosphate	C00080;C00009	b3493	P0AFJ7	P0AFJ7	missing				16								
 SUCCt2_2				forward	H+;Succinate	C00080;C00042	H+;Succinate	C00080;C00042	b3528	P0A830	P0A830	missing				16								
 D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing				16								
-D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing				16								
-D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing				16								
 D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b2975	Q46839	Q46839	missing				16								
 D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing				16								
-D_LACt2				forward	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing				16								
-D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing				16								
 D_LACt2				reverse	H+;D-Lactate	C00080;C00256	H+;D-Lactate	C00080;C00256	b3603	P33231	P33231	missing				16								
 FORt2				forward	Formate;H+	C00058;C00080	Formate;H+	C00058;C00080	b0904	P0AC23	P0AC23	missing				16								
 FORt2				forward	Formate;H+	C00058;C00080	Formate;H+	C00058;C00080	b2492	P77733	P77733	missing				16								
@@ -151,15 +141,9 @@ FORt				forward	Formate	C00058	Formate	C00058	b0904	P0AC23	P0AC23	missing				16
 FORt				forward	Formate	C00058	Formate	C00058	b2492	P77733	P77733	missing				16								
 FUMt2_2				forward	Fumarate;H+	C00122;C00080	Fumarate;H+	C00122;C00080	b3528	P0A830	P0A830	missing				16								
 GLUt2r				forward	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing				16								
-GLUt2r				forward	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing				16								
-GLUt2r				reverse	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing				16								
 GLUt2r				reverse	L-Glutamate;H+	C00025;C00080	L-Glutamate;H+	C00025;C00080	b4077	P21345	P21345	missing				16								
 H2Ot				forward	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing				16								
-H2Ot				forward	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing				16								
-H2Ot				reverse	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing				16								
 H2Ot				reverse	H2O H2O	C00001	H2O H2O	C00001	b0875	P60844	P60844	missing				16								
 MALt2_2				forward	H+;L-Malate	C00080;C00149	H+;L-Malate	C00080;C00149	b3528	P0A830	P0A830	missing				16								
 NH4t				forward	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing				16								
-NH4t				forward	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing				16								
-NH4t				reverse	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing				16								
 NH4t				reverse	Ammonium	C00014	Ammonium	C00014	b0451	P69681	P69681	missing				16								

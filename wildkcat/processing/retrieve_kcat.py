@@ -172,10 +172,9 @@ def merge_ec(kcat_df: pd.DataFrame):
     # Add merged EC numbers to best entries
     update_kcat_df = best_entries.merge(
         ec_merged,
-        on=['rxn', 'substrates_name', 'products_kegg', 'genes', 'uniprot'],
+        on=['rxn', 'direction', 'substrates_name', 'products_kegg', 'genes', 'uniprot'],
         how='left'
     )
-
 
     # Reorder columns to place 'ec_codes' next to 'ec_code'
     update_kcat_df = update_kcat_df[
@@ -332,12 +331,6 @@ def run_retrieval(output_folder: str,
     if 'processed' in kcat_df.columns:
         kcat_df.drop(columns=['processed'], inplace=True)
     kcat_df = merge_ec(kcat_df)
-
-    # TODO: Remove it later
-    # cache_dir = os.path.join(output_folder, "cache_retrieval")
-    # if os.path.exists(cache_dir):
-    #     shutil.rmtree(cache_dir)
-    #     logging.info("Cache folder removed after successful completion.")
 
     # Format the df
     kcat_df['penalty_score'] = (
