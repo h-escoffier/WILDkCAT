@@ -539,6 +539,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#env-variables-not-loaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      .env Variables not loaded
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -592,8 +601,7 @@
 <details>
 <summary>Example error</summary>
 
-<div class="highlight"><pre><span></span><code>❯<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>scripts.run_wildkcat_perso
-Retrieving<span class="w"> </span>kcat<span class="w"> </span>values:<span class="w">   </span><span class="m">0</span>%<span class="p">|</span><span class="w">                                                                                                                                                                                                                          </span><span class="p">|</span><span class="w"> </span><span class="m">0</span>/6072<span class="w"> </span><span class="o">[</span><span class="m">00</span>:01&lt;?,<span class="w"> </span>?it/s<span class="o">]</span>
+<div class="highlight"><pre><span></span><code>Retrieving<span class="w"> </span>kcat<span class="w"> </span>values:<span class="w">   </span><span class="m">0</span>%<span class="p">|</span><span class="w">                                                                                                                                                                                                                          </span><span class="p">|</span><span class="w"> </span><span class="m">0</span>/6072<span class="w"> </span><span class="o">[</span><span class="m">00</span>:01&lt;?,<span class="w"> </span>?it/s<span class="o">]</span>
 Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
 <span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;&lt;frozen runpy&gt;&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">198</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>_run_module_as_main
 <span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;&lt;frozen runpy&gt;&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">88</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>_run_code
@@ -624,6 +632,47 @@ requests.exceptions.HTTPError:<span class="w"> </span><span class="m">404</span>
 <li>If the site is online, try rerunning your script after a few minutes.</li>
 <li>Otherwise, rerun the script with the <code>--database=brenda</code> option or wait until the Sabio-RK service is back online.</li>
 </ol>
+<hr />
+<h2 id="env-variables-not-loaded"><code>.env</code> Variables not loaded</h2>
+<p><strong>Problem:</strong> Environment variables defined in the .env file are not being read by WILDkCAT, causing it to fail on startup or during execution.</p>
+<details>
+<summary>Example error</summary>
+
+<div class="highlight"><pre><span></span><code>Retrieving<span class="w"> </span>kcat<span class="w"> </span>values:<span class="w">   </span><span class="m">0</span>%<span class="p">|</span><span class="w">                                                                                                                                                                                  </span><span class="p">|</span><span class="w"> </span><span class="m">0</span>/226<span class="w"> </span><span class="o">[</span><span class="m">00</span>:00&lt;?,<span class="w"> </span>?it/s<span class="o">]</span>
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;&lt;frozen runpy&gt;&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">198</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>_run_module_as_main
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;&lt;frozen runpy&gt;&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">88</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>_run_code
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;/Users/hugues_esc/VSCodeProjects/KcatMatchMod/scripts/run_wildkcat_perso.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">12</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>&lt;module&gt;
+<span class="w">    </span>run_retrieval<span class="o">(</span>
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;/Users/hugues_esc/VSCodeProjects/KcatMatchMod/wildkcat/processing/retrieve_kcat.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">302</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>run_retrieval
+<span class="w">    </span>best_match,<span class="w"> </span><span class="nv">penalty_score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>extract_kcat<span class="o">(</span>kcat_dict,<span class="w"> </span>general_criteria,<span class="w"> </span><span class="nv">database</span><span class="o">=</span>database<span class="o">)</span>
+<span class="w">                                </span>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;/Users/hugues_esc/VSCodeProjects/KcatMatchMod/wildkcat/processing/retrieve_kcat.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">119</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>extract_kcat
+<span class="w">    </span><span class="nv">api_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>get_turnover_number<span class="o">(</span>kcat_dict<span class="o">[</span><span class="s1">&#39;ec_code&#39;</span><span class="o">]</span>,<span class="w"> </span>database<span class="o">)</span>
+<span class="w">                 </span>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;/Users/hugues_esc/VSCodeProjects/KcatMatchMod/wildkcat/processing/retrieve_kcat.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">41</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>get_turnover_number
+<span class="w">    </span><span class="nv">df_brenda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>get_turnover_number_brenda<span class="o">(</span>ec_code<span class="o">)</span>
+<span class="w">                </span>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;/Users/hugues_esc/VSCodeProjects/KcatMatchMod/wildkcat/api/brenda_api.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">82</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>get_turnover_number_brenda
+<span class="w">    </span>email,<span class="w"> </span><span class="nv">hashed_password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>get_brenda_credentials<span class="o">()</span>
+<span class="w">                             </span>^^^^^^^^^^^^^^^^^^^^^^^^
+<span class="w">  </span>File<span class="w"> </span><span class="s2">&quot;/Users/hugues_esc/VSCodeProjects/KcatMatchMod/wildkcat/api/brenda_api.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">62</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>get_brenda_credentials
+<span class="w">    </span>raise<span class="w"> </span>ValueError<span class="o">(</span><span class="s2">&quot;BRENDA_EMAIL and BRENDA_PASSWORD environment variables must be set.&quot;</span><span class="o">)</span>
+ValueError:<span class="w"> </span>BRENDA_EMAIL<span class="w"> </span>and<span class="w"> </span>BRENDA_PASSWORD<span class="w"> </span>environment<span class="w"> </span>variables<span class="w"> </span>must<span class="w"> </span>be<span class="w"> </span>set.
+</code></pre></div>
+
+</details>
+
+<p><strong>Cause:</strong> On Windows, Conda environments do not automatically load <code>.env</code> files. As a result, variables like <code>ENTREZ_EMAIL</code>, <code>BRENDA_EMAIL</code>, and <code>BRENDA_PASSWORD</code> are never injected into the environment, even if the <code>.env</code> file exists and is correctly formatted.</p>
+<p><strong>Solution:</strong> Set the variables directly in your Conda environment so they are loaded automatically on activation:</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>activate<span class="w"> </span>env-name
+conda<span class="w"> </span>env<span class="w"> </span>config<span class="w"> </span>vars<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">ENTREZ_EMAIL</span><span class="o">=</span>your_email@example.com
+conda<span class="w"> </span>env<span class="w"> </span>config<span class="w"> </span>vars<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">BRENDA_EMAIL</span><span class="o">=</span>your_email@example.com
+conda<span class="w"> </span>env<span class="w"> </span>config<span class="w"> </span>vars<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">BRENDA_PASSWORD</span><span class="o">=</span>your_password
+
+<span class="c1"># Re-activate the environment to apply the changes</span>
+conda<span class="w"> </span>activate<span class="w"> </span>env-name
+</code></pre></div>
 <hr />
 
 
