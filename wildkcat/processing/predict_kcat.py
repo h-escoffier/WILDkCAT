@@ -61,6 +61,7 @@ def format_output(kcat_df, limit_penalty_score):
 
     # If db = catapro then remove the content in the columns "penalty_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent"
     kcat_df.loc[kcat_df['db'] == 'catapro', [
+        "warning_arr",
         "penalty_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", 
         "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent", "kcat_organism_score"
         ]] = np.nan
@@ -69,7 +70,8 @@ def format_output(kcat_df, limit_penalty_score):
     kcat_df = kcat_df[[
         "rxn", "rxn_kegg", "ec_code", "ec_codes", "direction", 
         "substrates_name", "substrates_kegg", "products_name", "products_kegg", 
-        "genes", "uniprot", "catalytic_enzyme", "warning_ec", "warning_enz",
+        "genes", "uniprot", "catalytic_enzyme", 
+        "warning_ec", "warning_enz", "warning_arr", 
         "kcat", "db", 
         "penalty_score", "kcat_substrate", "kcat_organism", "kcat_enzyme", "kcat_temperature", "kcat_ph", "kcat_variant", "kcat_id_percent", "kcat_organism_score"
         ]]
@@ -131,6 +133,13 @@ def run_prediction_part1(output_folder: str,
     # Add statistics 
     report_statistics["missing_enzymes"] = nb_missing_enzymes
 
+    nb_predicted_transport = 0
+    for _, row in kcat_df.iterrows():         
+        if row['substrates_kegg'] == row['products_kegg'] and row['penalty_score'] >= limit_penalty_score: 
+            nb_predicted_transport += 1
+    
+    report_statistics['predicted_transport'] = nb_predicted_transport
+
     if report:
         report_prediction_input(catapro_input_df, report_statistics, output_folder)
 
@@ -140,7 +149,7 @@ def run_prediction_part2(output_folder: str,
                          limit_penalty_score: int) -> None:
     """
     Runs the second part of the kcat prediction pipeline by integrating Catapro predictions,
-    mapping substrates to SMILES, formatting the output, and optionally generating a report.
+    mapping substrates to SMILES and formatting the output. 
     
     Parameters:
         output_folder (str): Path to the output folder where the results will be saved.
@@ -168,9 +177,15 @@ def run_prediction_part2(output_folder: str,
                                             substrates_to_smiles,
                                             catapro_predictions_df
                                             )
-    
+
     # Save the output as a TSV file
     kcat_df = format_output(kcat_df, limit_penalty_score)
+
+    # Add warning for the predicted transport reactions in the log file
+    for _, row in kcat_df.iterrows():         
+        if row['substrates_kegg'] == row['products_kegg'] and row['db'] == 'catapro': 
+            logging.warning(f"kcat for transport reaction: '{row['rxn']}' was ML-predicted. Transport reaction predictions are less reliable due to sparse training data")
+    
     output_path = os.path.join(output_folder, "kcat_full.tsv")
     kcat_df.to_csv(output_path, sep='\t', index=False)
     logging.info(f"Output saved to '{output_path}'")

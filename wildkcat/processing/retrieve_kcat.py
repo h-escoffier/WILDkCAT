@@ -181,10 +181,11 @@ def merge_ec(kcat_df: pd.DataFrame):
         [
             'rxn', 'rxn_kegg', 'ec_code', 'ec_codes', 'direction',
             'substrates_name', 'substrates_kegg', 'products_name', 'products_kegg',
-            'genes', 'uniprot', 'catalytic_enzyme', 'warning_ec', 'warning_enz',
+            'genes', 'uniprot', 'catalytic_enzyme', 
+            'warning_ec', 'warning_enz', 'warning_arr',
             'kcat', 'kcat_db', 'penalty_score', 'kcat_substrate', 'kcat_organism', 'kcat_enzyme',
             'kcat_temperature', 'kcat_ph', 'kcat_variant',
-            'kcat_id_percent', 'kcat_organism_score'
+            'kcat_id_percent', 'kcat_organism_score', 
         ]
     ]
 
@@ -317,6 +318,9 @@ def run_retrieval(output_folder: str,
             kcat_df.loc[row.Index, 'kcat_db'] = best_match['db']
             kcat_df.loc[row.Index, 'kcat_id_percent'] = best_match['id_perc']
             kcat_df.loc[row.Index, 'kcat_organism_score'] = best_match['organism_score']
+            kcat_df.loc[row.Index, 'warning_arr'] = None
+            if best_match['arrhenius'] != 0: 
+                kcat_df.loc[row.Index, 'warning_arr'] = best_match['arrhenius']
         
         # Mark the line as processed 
         kcat_df.loc[row.Index, 'processed'] = True
@@ -354,18 +358,18 @@ def run_retrieval(output_folder: str,
 if __name__ == "__main__":
     # Test : Send a request for a specific EC number
     kcat_dict = {
-        'ec_code': '4.4.1.20',
-        'rxn_kegg': '',
-        'uniprot': 'Q16873',
-        'catalytic_enzyme': 'Q16873',
-        'substrates_name': 'leukotriene C5', 
+        'ec_code': '2.1.3.5',
+        'rxn_kegg': 'R02937',
+        'uniprot': '',
+        'catalytic_enzyme': '',
+        'substrates_name': 'Oxalureate;Phosphate', 
         'warning_ec': ''
     }
 
     general_criteria ={
-        'Organism': 'Homo sapiens', 
-        'Temperature': (36, 38), 
-        'pH': (7, 8)
+        'Organism': 'Escherichia coli', 
+        'Temperature': (20, 45), 
+        'pH': (4, 8)
     }
 
     output = extract_kcat(kcat_dict, general_criteria, database='both')
@@ -404,6 +408,6 @@ if __name__ == "__main__":
     # report_retrieval(df, output_folder="in_progress/iML1515")
 
     # Merging 
-    df = pd.read_csv('in_progress/kcat_retrieve_before_merge.tsv', sep='\t')
-    df_test = merge_ec(df)
-    df_test.to_csv('in_progress/kcat_retrieve_after_merge.tsv', sep='\t', index=False)
+    # df = pd.read_csv('in_progress/kcat_retrieve_before_merge.tsv', sep='\t')
+    # df_test = merge_ec(df)
+    # df_test.to_csv('in_progress/kcat_retrieve_after_merge.tsv', sep='\t', index=False)

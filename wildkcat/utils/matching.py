@@ -47,12 +47,13 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
 
     # 2. Compute score and adjust kcat if needed
     scores = []
-    adjusted_kcats, adjusted_temps = [], []
+    adjusted_kcats, adjusted_temps, arrhenius_warning = [], [], []
 
     for _, row in api_output.iterrows():
         candidate_dict = row.to_dict()
         score, arrhenius = compute_score(kcat_dict, candidate_dict, general_criteria, api_output)
-        if arrhenius:
+        candidate_dict['arrhenius'] = arrhenius
+        if arrhenius != 0:
             kcat = arrhenius_equation(candidate_dict, api_output, general_criteria)
             if 10e-8 < kcat < 10e+8: 
                 candidate_dict['value'] = kcat
@@ -61,6 +62,7 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
             else:
                 logging.warning(f"{candidate_dict.get('ECNumber')}: Corrected kcat ({kcat:.0f} s-1) is outside the expected range of 10e-8, 10e+8.")
                 temperature = float(candidate_dict['Temperature'])
+                candidate_dict['arrhenius'] = 0
                 if np.isnan(temperature): 
                     score += 1
                 else: 
@@ -68,10 +70,12 @@ def find_best_match(kcat_dict, api_output, general_criteria) -> Tuple[float, Opt
         scores.append(score)
         adjusted_kcats.append(candidate_dict.get('value', row['value']))
         adjusted_temps.append(candidate_dict.get('Temperature', row['Temperature']))
+        arrhenius_warning.append(candidate_dict.get('arrhenius'))
 
     api_output['score'] = scores
     api_output['adj_kcat'] = adjusted_kcats
     api_output['adj_temp'] = adjusted_temps
+    api_output['arrhenius'] = arrhenius_warning
 
     api_output["score"] = pd.to_numeric(api_output["score"], errors="coerce").fillna(13)
     api_output["adj_kcat"] = pd.to_numeric(api_output["adj_kcat"], errors="coerce")
@@ -218,7 +222,7 @@ def check_temperature(candidate, general_criteria, api_output, min_r2=0.8, expec
     candidate_temp = candidate.get("Temperature")
     
     if temp_min <= candidate_temp <= temp_max:
-        return 0, False
+        return 0, 0
 
     # Try to find a correct the kcat value using the Arrhenius equation
     ph_min, ph_max = general_criteria["pH"]
@@ -245,18 +249,18 @@ def check_temperature(candidate, general_criteria, api_output, min_r2=0.8, expec
     api_filtered["Temperature"] = api_filtered["Temperature"] + 273.15
 
     if temps_dispo >= 2:
-        ea, r2 = calculate_ea(api_filtered)
+        ea, r2, n = calculate_ea(api_filtered)
         if r2 >= min_r2 and ea > 0:
             if not (expected_range[0] <= ea <= expected_range[1]):
                 logging.warning(f"{candidate.get('ECNumber')}: Estimated Ea ({ea:.0f} J/mol) is outside the expected range {expected_range} J/mol.")
             # Go Arrhenius
-            return 0, True
+            return 0, n
     
     if pd.isna(candidate_temp):
-        return 1, False
+        return 1, 0
 
     else:
-        return 2, False
+        return 2, 0
 
 
 def check_substrate(entry, kcat_dict=None, candidate=None):
@@ -309,7 +313,7 @@ def check_substrate(entry, kcat_dict=None, candidate=None):
 
 def compute_score(kcat_dict, candidate, general_criteria, api_output):
     """
-    Compute a score for the candidate based on the Kcat dictionary and general criteria.
+    Compute a score for the candidate based on the kcat dictionary and general criteria.
     """
     score = 0
     # Check catalytic enzyme

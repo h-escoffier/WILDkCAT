@@ -601,6 +601,7 @@ def report_prediction_input(catapro_df, report_statistics, output_folder, shader
     kegg_missing = report_statistics['kegg_no_matching']
     duplicates = report_statistics['duplicates_enzyme_substrates']
     missing_enzyme = report_statistics['missing_enzymes']
+    predicted_transport =  report_statistics['predicted_transport']
 
     total_rxn = rxn_covered + no_catalytic + kegg_missing + missing_enzyme
     rxn_coverage = (rxn_covered / total_rxn * 100) if total_rxn > 0 else 0
@@ -696,16 +697,37 @@ def report_prediction_input(catapro_df, report_statistics, output_folder, shader
                         <td>{duplicates}</td>
                     </tr>
                 </table>
-                <p>
+                <p style="text-align: justify">
                     Duplicates occur when multiple reactions share the same enzyme-substrate combination. 
                     A high number of duplicates may result from multiple enzyme complexes sharing the same catalytic enzyme.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Warning</h2>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Number of transport reactions</td>
+                        <td>{predicted_transport}</td>
+                    </tr>
+                </table>
+                <p style="text-align: justify">
+                    Transport reaction represents the transfer of one metabolite from one cellular compartment to another without altering their chemical structure. 
+                    The enzymes catalysing these transport reactions are often not represented in experimental databases (BRENDA and SABIO-RK). 
+                    We argue that kcat  predictions for such reactions tend to be less reliable due to the limited availability of experimental data, which limits the performance of deep learning models. 
+                    Consequently, these values should be interpreted with caution. 
+                    The full list of the predicted transport reactions is available in the log file 'prediction2_YYYY-MM-DD_HH-MM-SS.log'.
                 </p>
             </div>
 
             <!-- Prediction Instructions -->
             <div class="card">
                 <h2>Running k<sub>cat</sub> Predictions with CataPro</h2>
-                <p>
+                <p style="text-align: justify">
                     This report provides the input needed to run the CataPro machine learning model 
                     (<a href="https://github.com/zchwang/CataPro" target="_blank">CataPro repository</a>). 
                     Follow the instructions in the repository to set up the environment and generate k<sub>cat</sub> predictions.

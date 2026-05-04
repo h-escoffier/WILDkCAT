@@ -49,7 +49,7 @@ def arrhenius_equation(candidate, api_output, general_criteria) -> float:
     api_filtered["Temperature"] = api_filtered["Temperature"] + 273.15
 
     # Estimate the activation energy (Ea)
-    ea, _ = calculate_ea(api_filtered)
+    ea, _, _ = calculate_ea(api_filtered)
 
     # Select one kcat for the ref
     kcat_ref = float(api_filtered['value'].iloc[0])
@@ -79,6 +79,7 @@ def calculate_ea(df) -> float:
 
     temps_K = valid['Temperature'].values
     kcats = pd.to_numeric(valid['value'], errors='coerce').values
+    n = len(kcats)
 
     x = 1 / temps_K
     y = np.log(kcats)
@@ -93,4 +94,4 @@ def calculate_ea(df) -> float:
     # Activation energy 
     ea = float(-slope * r)
 
-    return ea, r2 
+    return ea, r2, n 
