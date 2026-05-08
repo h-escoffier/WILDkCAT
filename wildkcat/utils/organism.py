@@ -1,5 +1,7 @@
 import os
 import time
+import socket
+import logging
 import pandas as pd
 from Bio import Align, Entrez
 from dotenv import load_dotenv
@@ -78,7 +80,65 @@ def closest_enz(kcat_dict, api_output) -> pd.DataFrame:
     return api_output
 
 
-def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame: 
+Entrez.email = os.getenv("ENTREZ_EMAIL")
+
+
+@lru_cache(maxsize=None)
+def _fetch_taxonomy(species_name):
+    """Fetch and cache the taxonomic lineage of a species from NCBI."""
+    for attempt in range(3):
+        try:
+            with Entrez.esearch(db="taxonomy", term=species_name) as handle:
+                record = Entrez.read(handle)
+            if not record["IdList"]:
+                return ()
+            tax_id = record["IdList"][0]
+            with Entrez.efetch(db="taxonomy", id=tax_id, retmode="xml") as handle:
+                records = Entrez.read(handle, validate=False)
+            if not records:
+                return ()
+            lineage = tuple(
+                taxon["ScientificName"] for taxon in records[0]["LineageEx"]
+            ) + (records[0]["ScientificName"],)
+            return lineage
+        except (HTTPError, URLError, socket.error, RuntimeError) as e: # TODO: Put in log file ? 
+            print(f"[Retry {attempt+1}/3] Taxonomy fetch failed for '{species_name}': {e}")
+            time.sleep(3)
+        except Exception as e:
+            print(f"[Fatal] '{species_name}': {type(e).__name__}: {e}")
+            return ()
+    return ()
+
+
+@lru_cache(maxsize=None)
+def _calculate_taxonomy_score(ref_organism, target_organism):
+    """
+    Calculate a taxonomy distance score between reference and target organisms.
+        
+    Parameters: 
+        ref_organism (str): The reference organism's name.
+        target_organism (str): The target organism's name.
+
+    Returns:
+        int: distance between reference and target organisms (0 = identical species, higher = more distant).
+    """
+    ref_lineage = _fetch_taxonomy(ref_organism)
+    target_lineage = _fetch_taxonomy(target_organism)
+
+    if not target_lineage:
+        return len(ref_lineage) + 1  # Penalize missing taxonomy
+
+    ref_set = set(ref_lineage)
+    similarity = 0
+    for taxon in target_lineage:
+        if taxon in ref_set:
+            similarity += 1
+        else:
+            break
+    return len(ref_lineage) - similarity
+
+
+def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame:
     """
     Retrieve and ranks the organisms based on their taxonomic similarity to the reference organism.
     
@@ -89,78 +149,14 @@ def closest_taxonomy(general_criteria, api_output) -> pd.DataFrame:
     Returns:
         pd.DataFrame: A copy of `api_output` with an added "organism_score" column.
     """
-    @lru_cache(maxsize=None)
-    def _fetch_taxonomy(species_name): 
-        """
-        Fetches the taxonomic lineage for a given species name using NCBI Entrez.
-        
-        Parameters:
-            species_name (str): The name of the species.
-        
-        Returns: 
-            list: A list of scientific names representing the taxonomic lineage.
-        """
-        Entrez.email = os.getenv("ENTREZ_EMAIL")
-
-        for attempt in range(1, 4): # Retry up to 3 times
-            try:
-                handle = Entrez.esearch(db="taxonomy", term=species_name)
-                record = Entrez.read(handle)
-                if not record["IdList"]:
-                    return []
-                tax_id = record["IdList"][0]
-        
-                handle = Entrez.efetch(db="taxonomy", id=tax_id, retmode="xml")
-                records = Entrez.read(handle, validate=False)
-                if not records:
-                    return []
-        
-                lineage = [taxon["ScientificName"] for taxon in records[0]["LineageEx"]]
-                lineage.append(records[0]["ScientificName"])  # include the species itself
-                return lineage
-
-            except (HTTPError, URLError) as e:
-                if attempt < 3:
-                    sleep_time = 5
-                    time.sleep(sleep_time)
-                else:
-                    return []
-
-            except Exception as e:
-                print(f"[Error] Unexpected error for '{species_name}': {e}")
-                return []
-            
-    @lru_cache(maxsize=None)
-    def _calculate_taxonomy_score(ref_organism, target_organism): 
-        """
-        Calculate a taxonomy distance score between reference and target organisms.
-        
-        Parameters: 
-            ref_organism (str): The reference organism's name.
-            target_organism (str): The target organism's name.
-
-        Returns:
-            int: distance between reference and target organisms (0 = identical species, higher = more distant).
-        """
-        ref_lineage = _fetch_taxonomy(ref_organism)
-        target_lineage = _fetch_taxonomy(target_organism)
-
-        if not target_lineage: # If target organism is not found
-            return len(ref_lineage) + 1  # Penalize missing taxonomy
-
-        similarity = 0
-
-        for taxon in target_lineage: 
-            if taxon in ref_lineage:
-                similarity += 1
-            else:
-                break
-        return len(ref_lineage) - similarity
-
-    ref_organism = general_criteria['Organism']
+    ref_organism = general_criteria["Organism"]
     api_output = api_output.copy()
-    api_output["organism_score"] = [
-        _calculate_taxonomy_score(ref_organism, target) 
-        for target in api_output["Organism"]
-    ]
+
+    unique_organisms = api_output["Organism"].unique()
+    score_map = {
+        organism: _calculate_taxonomy_score(ref_organism, organism)
+        for organism in unique_organisms
+    }
+
+    api_output["organism_score"] = api_output["Organism"].map(score_map)
     return api_output
