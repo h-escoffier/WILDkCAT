@@ -878,7 +878,12 @@ kcat_{\text{opt}} = kcat_{\text{db}} \times \exp\left(-\frac{E_a}{R} \left(\frac
 </ul>
 <p>Notes: </p>
 <ul>
-<li>The target temperature <span class="arithmatex">\( T_{opt} \)</span> corresponds to the midpoint of the desired optimal range.</li>
+<li>
+<p>The target temperature <span class="arithmatex">\( T_{opt} \)</span> corresponds to the midpoint of the desired optimal range.</p>
+</li>
+<li>
+<p>In cases where temperature correction is performed, the number of kcat values used to estimate the activation energy (<span class="arithmatex">\( E_a \)</span>) is reported in the <code>warning_arr</code> column.</p>
+</li>
 </ul>
 </li>
 <li>
@@ -916,7 +921,6 @@ If a kcat value cannot be predicted, the best available experimental kcat value 
 <p>The PubChem API is queried to retrieve the SMILES representation of each substrate from their KEGG IDs.</p>
 </li>
 </ol>
-<hr />
 
 
 
