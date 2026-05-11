@@ -96,10 +96,10 @@ The retrieved values are filtered based on organism, temperature, and pH conditi
 
 Example of the output file `kcat_retrieved.tsv`:
 
-| rxn | rxn_kegg | ec_code | ec_codes | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
-| :-- | :------- | :------ | :------- | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--------------- | :--------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
-| PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0 |
-| GLUt2r | | | | forward | L-Glutamate;H+ | C00025;C00080 | L-Glutamate;H+ | C00025;C00080 | b4077 | P21345 | P21345 | missing | | | | 16 | | | | | | | | |
+| rxn | rxn_kegg | ec_code | ec_codes | direction | substrates_name | substrates_kegg | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | warning_arr | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
+| :-- | :------- | :------ | :------- | :-------- | :-------------- | :-------------- | :------------ | :------------ | :---- | :------ | :--------------- | :--------- | :---------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
+| PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0 |
+| GLUt2r | | | | forward | L-Glutamate;H+ | C00025;C00080 | L-Glutamate;H+ | C00025;C00080 | b4077 | P21345 | P21345 | missing | | | | | 16 | | | | | | | | |
 
 [View the generated report](retrieve_report.html)
 
@@ -180,10 +180,10 @@ After running CataPro with the prepared input file, integrate the predicted kcat
 
 Example of the output file `kcat_full.tsv`:
 
-| rxn | rxn_kegg | ec_code  | ec_codes | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
-| :-- | :------- | :------- | :------- | :-------- | :-------------- | :--------------- | :------------ | :-------------| :---- | :------ | :--------------- | :--------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
-| PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0.0 |
-| GLUt2r | | | | forward | L-Glutamate;H+ | C00025;C00080 | L-Glutamate;H+ | C00025;C00080 | b4077 | P21345 | P21345 | missing | | 23.3748 | catapro |  |  |  |  |  |  |  |  |
+| rxn | rxn_kegg | ec_code  | ec_codes | direction | substrates_name | substrates_kegg  | products_name | products_kegg | genes | uniprot | catalytic_enzyme | warning_ec | warning_enz | warning_arr | kcat | db | penalty_score | kcat_substrate | kcat_organism | kcat_enzyme | kcat_temperature | kcat_ph | kcat_variant | kcat_id_percent | kcat_organism_score |
+| :-- | :------- | :------- | :------- | :-------- | :-------------- | :--------------- | :------------ | :-------------| :---- | :------ | :--------------- | :--------- | :---------- | :---------- | :--- | :- | :------------- | :------------- | :------------ | :---------- | :--------------- | :------ | :----------- | :-------------- | :------------------ |
+| PFK |          | 2.7.1.11 | 2.7.1.11 | forward | ATP C10H12N5O13P3;D-Fructose 6-phosphate | C00002;C05345 | ADP C10H12N5O10P2;D-Fructose 1,6-bisphosphate;H+ | C00008;C00354;C00080 | b3916 | P0A796 | P0A796 | | | | 88.0 | brenda | 1 | fructose 6-phosphate | Escherichia coli | P0A796 | 30.0 | 7.2 |  | 100.0 | 0.0 |
+| GLUt2r | | | | | forward | L-Glutamate;H+ | C00025;C00080 | L-Glutamate;H+ | C00025;C00080 | b4077 | P21345 | P21345 | missing | | 23.3748 | catapro |  |  |  |  |  |  |  |  |
 
 ---
 

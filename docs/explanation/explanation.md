@@ -129,10 +129,11 @@ Each criterion adds a penalty if the candidate entry deviates from the query:
 
     *  The target temperature \( T_{opt} \) corresponds to the midpoint of the desired optimal range.
 
+    * In cases where temperature correction is performed, the number of kcat values used to estimate the activation energy (\( E_a \)) is reported in the `warning_arr` column.
+
 4. **Merging rows with same reaction-enzyme combination**
 
     During the extraction step, multiple rows may be generated if a combination of reaction and enzyme is associated with multiple EC numbers. In such cases, after the retrieval step, these rows are merged to retain only the best kcat value. The column `ec_codes` lists all the EC numbers associated with the reaction-enzyme pair. The column `ec_code` indicates the EC number corresponding to the selected kcat value.
-
 
 5. **Caching intermediate retrieval results** 
 
@@ -167,5 +168,3 @@ If multiple substrates are involved in the reaction, the prediction is performed
 3. **Substrate SMILES Retrieval**
 
     The PubChem API is queried to retrieve the SMILES representation of each substrate from their KEGG IDs.
-
----

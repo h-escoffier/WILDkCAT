@@ -205,7 +205,7 @@
             <canvas id="shader-canvas"></canvas>
             <div class="overlay">
                 <h1>Predict k<sub>cat</sub> Report</h1>
-                <p>Generated on 2026-02-02 17:10:23</p>
+                <p>Generated on 2026-04-23 11:43:16</p>
             </div>
         </header>
 
@@ -215,11 +215,11 @@
                 <h2>Overview</h2>
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <h3>41</h3>
+                        <h3>25</h3>
                         <p>Total k<sub>cat</sub> values</p>
                     </div>
                     <div class="stat-box">
-                        <h3>41</h3>
+                        <h3>25</h3>
                         <p>k<sub>cat</sub> to be predicted (100.00%)</p>
                     </div>
                 </div>
@@ -275,19 +275,40 @@
                     </tr>
                     <tr>
                         <td>Number of duplicates</td>
-                        <td>46</td>
+                        <td>18</td>
                     </tr>
                 </table>
-                <p>
+                <p style="text-align: justify">
                     Duplicates occur when multiple reactions share the same enzyme-substrate combination. 
                     A high number of duplicates may result from multiple enzyme complexes sharing the same catalytic enzyme.
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>Warning</h2>
+                <table>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Number of transport reactions</td>
+                        <td>23</td>
+                    </tr>
+                </table>
+                <p style="text-align: justify">
+                    Transport reaction represents the transfer of one metabolite from one cellular compartment to another without altering their chemical structure. 
+                    The enzymes catalysing these transport reactions are often not represented in experimental databases (BRENDA and SABIO-RK). 
+                    We argue that kcat  predictions for such reactions tend to be less reliable due to the limited availability of experimental data, which limits the performance of deep learning models. 
+                    Consequently, these values should be interpreted with caution. 
+                    The full list of the predicted transport reactions is available in the log file 'prediction2_YYYY-MM-DD_HH-MM-SS.log'.
                 </p>
             </div>
 
             <!-- Prediction Instructions -->
             <div class="card">
                 <h2>Running k<sub>cat</sub> Predictions with CataPro</h2>
-                <p>
+                <p style="text-align: justify">
                     This report provides the input needed to run the CataPro machine learning model 
                     (<a href="https://github.com/zchwang/CataPro" target="_blank">CataPro repository</a>). 
                     Follow the instructions in the repository to set up the environment and generate k<sub>cat</sub> predictions.
