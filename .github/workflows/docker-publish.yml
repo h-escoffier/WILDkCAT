@@ -33,5 +33,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/h-escoffier/wildkcat-public:latest
-            ghcr.io/h-escoffier/wildkcat-public:${{ github.ref_name }}
+            ghcr.io/h-escoffier/wildkcat-package:latest
+            ghcr.io/h-escoffier/wildkcat-package:${{ github.ref_name }}
