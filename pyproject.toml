@@ -40,8 +40,8 @@ classifiers = [
 wildkcat = "wildkcat.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/h-escoffier/WILDkCAT"
-Issues = "https://github.com/h-escoffier/WILDkCAT"
+Homepage = "https://github.com/sysbiolux/WILDkCAT"
+Issues = "https://github.com/sysbiolux/WILDkCAT"
 
 [tool.hatch.build]
 exclude = [

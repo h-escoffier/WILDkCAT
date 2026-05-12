@@ -28,7 +28,7 @@ Your working directory should contain the following folders:
 
 !!! note 
 
-    All the files used and created in this tutorial are available in the [output folder](https://github.com/h-escoffier/WILDkCAT/tree/main/output) of the WILDkCAT repository
+    All the files used and created in this tutorial are available in the [output folder](https://github.com/sysbiolux/WILDkCAT/tree/main/output) of the WILDkCAT repository
 
 ---
 

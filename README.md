@@ -12,7 +12,7 @@ The HTML reports are generated automatically after each stage of the workflow (e
 
 <p align="center"> <img src="docs/report_example.gif" alt="WILDkCAT Report Demo" width="700"/> </p>
 
-[Access the report here](https://h-escoffier.github.io/WILDkCAT/tutorial/general_report.html)
+[Access the report here](https://sysbiolux.github.io/WILDkCAT/tutorial/general_report.html)
 
 ## Installation
 
@@ -97,7 +97,7 @@ from wildkcat import run_extraction, run_retrieval, run_prediction_part1, run_pr
 ```
 
 ### Example: E. coli Core Model
-A ready-to-run example is available [here](https://github.com/h-escoffier/WILDkCAT/blob/main/scripts/run_wildkcat.py). 
+A ready-to-run example is available [here](https://github.com/sysbiolux/WILDkCAT/blob/main/scripts/run_wildkcat.py). 
 It demonstrates a full extraction, retrieval, and prediction workflow on the E. coli core model.
 
 ---
@@ -125,10 +125,10 @@ It demonstrates a full extraction, retrieval, and prediction workflow on the E. 
 ### `predict_kcat.py`
 - Predict kcat values not retrieved in experimental databases using machine learning. 
 
-_cf. Refer to the [documentation](https://h-escoffier.github.io/WILDkCAT/explanation/explanation/) for a more detailed explanation._ 
+_cf. Refer to the [documentation](https://sysbiolux.github.io/WILDkCAT/explanation/explanation/) for a more detailed explanation._ 
 
 --- 
 
 ## Feedback & Improvements
 
-Contributions, suggestions, and feedback are very welcome! If you encounter any [issues](https://github.com/h-escoffier/WILDkCAT/issues), have ideas for new features, or notice room for improvement, feel free to open an issue or submit a pull request.
+Contributions, suggestions, and feedback are very welcome! If you encounter any [issues](https://github.com/sysbiolux/WILDkCAT/issues), have ideas for new features, or notice room for improvement, feel free to open an issue or submit a pull request.

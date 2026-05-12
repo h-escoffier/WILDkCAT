@@ -24,4 +24,4 @@ These data are archived to facilitate their usage, accelerate analyses and preve
 
 ## Contributing 
 
-If you have some data for models not present here or more recent data, please do not hesitate to [contact us](https://github.com/h-escoffier/WILDkCAT/issues/new) to be integrated to the data collection. 
+If you have some data for models not present here or more recent data, please do not hesitate to [contact us](https://github.com/sysbiolux/WILDkCAT/issues/new) to be integrated to the data collection. 

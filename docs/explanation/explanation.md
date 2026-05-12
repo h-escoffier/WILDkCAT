@@ -71,7 +71,7 @@ The penalty score evaluates how well a candidate kcat entry fits the query enzym
 
 !!! warning 
 
-    Penalty values have been set in collaboration with an expert ([Carole Linster](https://www.uni.lu/lcsb-en/people/carole-linster/)), they can be adjusted based on user feedback. To modify these values, please refer to the `wildkcat/utils/matching.py` file or contact us by creating an issue on [GitHub](https://github.com/h-escoffier/WILDkCAT/issues/new). 
+    Penalty values have been set in collaboration with an expert ([Carole Linster](https://www.uni.lu/lcsb-en/people/carole-linster/)), they can be adjusted based on user feedback. To modify these values, please refer to the `wildkcat/utils/matching.py` file or contact us by creating an issue on [GitHub](https://github.com/sysbiolux/WILDkCAT/issues/new). 
 
 Each criterion adds a penalty if the candidate entry deviates from the query:
 
